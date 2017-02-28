@@ -53,8 +53,8 @@ test {
 
 sonarqube {
     properties {
-        property "sonar.projectName", "sopra_group-XX-service"
-        property "sonar.projectKey", "sopra_group-XX-service"
+        property "sonar.projectName", "sopra_group-09-service"
+        property "sonar.projectKey", "sopra_group-09-service"
     }
 }
 
