@@ -39,22 +39,22 @@ gradle bootRun
 gradle test
 ```
 
-### Git Rules
+# Git Rules
 
-### Issue Rules
+# Issue Rules
 Issues are not only for **defining task responsibilities** but also for **tracking the workflow** and make it understandable for not envolved team members.
 
-## Creating an Issue
+#### Creating an Issue
 - giving it a selfdescribing name
 - assign responsible team member
 - try to relate on a user story in the description
 
-## Working on a Issue
+#### Working on a Issue
 - relate your commits on your branch to this issue
 
-## Passing a Issue
+#### Passing a Issue
 - assign new responsible team member
 - leave a comment what has to be done next
 
-## Closing Issue
+#### Closing Issue
 - 
