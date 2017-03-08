@@ -1,7 +1,4 @@
-
-```diff
-- [Git Rules](#git-rules)
-```
+[Git Rules](#git-rules)
 
 # SoPra RESTful Service Template
 
