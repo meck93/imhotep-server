@@ -1,3 +1,5 @@
+[Git Rules](#git-rules)
+
 # SoPra RESTful Service Template
 
 ## Spring Boot
@@ -35,3 +37,5 @@ gradle bootRun
 ```bash
 gradle test
 ```
+
+### Git Rules
