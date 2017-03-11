@@ -55,7 +55,6 @@ public class UserResource extends GenericResource {Logger logger  = LoggerFactor
         return user;
     }
 
-
     @RequestMapping(method = RequestMethod.GET, value = "{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable Long userId) {

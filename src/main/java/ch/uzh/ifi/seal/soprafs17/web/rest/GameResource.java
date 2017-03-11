@@ -47,7 +47,10 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
         gameRepo.findAll().forEach(result::add);
         return result;
     }
-
+    /*
+    * Context: /game
+    *
+    */
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
@@ -164,12 +167,13 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
         Game game = gameRepo.findOne(gameId);
         User player = userRepo.findByToken(userToken);
 
-        if (game != null && player != null
-                && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
+        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
             game.getPlayers().add(player);
             logger.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
             return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size() - 1);
-        } else {
+        }
+
+        else {
             logger.error("Error adding player with token: " + userToken);
         }
         return null;
