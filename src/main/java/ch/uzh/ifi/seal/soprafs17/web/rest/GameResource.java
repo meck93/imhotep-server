@@ -34,7 +34,7 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
     @Autowired
     private GameRepository gameRepo;
 
-    private final String   CONTEXT = "/game";
+    private final String CONTEXT = "/game";
 
     /*
      * Context: /game
