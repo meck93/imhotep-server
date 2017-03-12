@@ -35,6 +35,7 @@ public class GameService {
         newGame.setName(name);
         newGame.setOwner(owner);
         newGame.setStatus(status);
+        gameRepository.save(newGame);
         log.debug("Created Information for Game: {}", newGame);
         return newGame;
     }

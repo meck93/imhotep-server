@@ -44,8 +44,10 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
     @ResponseStatus(HttpStatus.OK)
     public List<Game> listGames() {
         logger.debug("listGames");
+
         List<Game> result = new ArrayList<>();
         gameRepo.findAll().forEach(result::add);
+
         return result;
     }
     /*
@@ -63,6 +65,8 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
             // TODO Mapping into Game
             // Started a little bit
             game.setStatus(GameStatus.PENDING);
+            game.setCurrentPlayer(1);
+
             game = gameRepo.save(game);
 
             return CONTEXT + "/" + game.getId();
