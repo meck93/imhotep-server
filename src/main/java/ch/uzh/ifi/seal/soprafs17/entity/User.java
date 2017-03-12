@@ -14,7 +14,6 @@ import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 
 @Entity
 public class User implements Serializable {
-	
 
 	private static final long serialVersionUID = 1L;
 
