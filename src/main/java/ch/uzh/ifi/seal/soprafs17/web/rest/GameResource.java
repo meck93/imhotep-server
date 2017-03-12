@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,8 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
 
         if (owner != null) {
             // TODO Mapping into Game
+            // Started a little bit
+            game.setStatus(GameStatus.PENDING);
             game = gameRepo.save(game);
 
             return CONTEXT + "/" + game.getId();
