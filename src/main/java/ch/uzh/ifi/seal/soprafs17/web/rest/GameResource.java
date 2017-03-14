@@ -127,6 +127,7 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
             return game.getMoves();
         }
 
+        // Sonarqube suggest to return an empty List<Move> instead of Null
         return null;
     }
 
