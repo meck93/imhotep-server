@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs17.entity.Move;
 
 @Repository("moveRepository")
 public interface MoveRepository extends CrudRepository<Move, Long> {
-    Move findByName(String name);
-    Move findById (Long id);
+
+    //Possible move functions
+    //Move findById (Long id);
 }

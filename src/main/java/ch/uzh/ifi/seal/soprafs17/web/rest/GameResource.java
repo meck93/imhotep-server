@@ -28,14 +28,18 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 // You can refer to the UserService as example
 
 @RestController
-public class GameResource extends GenericResource {Logger logger  = LoggerFactory.getLogger(GameResource.class);
+@RequestMapping(GameResource.CONTEXT)
+public class GameResource extends GenericResource {
+
+    Logger logger  = LoggerFactory.getLogger(GameResource.class);
+
+    // Standard URI Mapping of this class
+    static final String CONTEXT = "/games";
 
     @Autowired
     private UserRepository userRepo;
     @Autowired
     private GameRepository gameRepo;
-
-    private final String CONTEXT = "/game";
 
     /*
      * Context: /game
@@ -117,7 +121,7 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
     /*
      * Context: /game/{game-id}/move
      */
-    @RequestMapping(value = CONTEXT + "/{gameId}/move")
+    @RequestMapping(value = CONTEXT + "/{gameId}/moves")
     @ResponseStatus(HttpStatus.OK)
     public List<Move> listMoves(@PathVariable Long gameId) {
         logger.debug("listMoves");
@@ -131,14 +135,14 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
         return null;
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/move", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/moves", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody Move move) {
         logger.debug("addMove: " + move);
         // TODO Mapping into Move + execution of move
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/move/{moveId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
         logger.debug("getMove: " + gameId);
@@ -154,7 +158,7 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
     /*
      * Context: /game/{game-id}/player
      */
-    @RequestMapping(value = CONTEXT + "/{gameId}/player")
+    @RequestMapping(value = CONTEXT + "/{gameId}/players")
     @ResponseStatus(HttpStatus.OK)
     public List<User> listPlayers(@PathVariable Long gameId) {
         logger.debug("listPlayers");
@@ -167,7 +171,7 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
         return null;
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/player", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/players", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("addPlayer: " + userToken);
@@ -187,7 +191,7 @@ public class GameResource extends GenericResource {Logger logger  = LoggerFactor
         return null;
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/player/{playerId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}")
     @ResponseStatus(HttpStatus.OK)
     public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
         logger.debug("getPlayer: " + gameId);
