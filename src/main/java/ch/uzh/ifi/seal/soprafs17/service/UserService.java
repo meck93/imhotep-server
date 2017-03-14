@@ -24,13 +24,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-
 
     public User createUser(String name, String username, String token, UserStatus status, List<Game> games) {
 
@@ -45,13 +42,10 @@ public class UserService {
         return newUser;
     }
 
-
     public void deleteUser(Long id) {
         User user = userRepository.findById(id); //TODO check if user exists
         userRepository.delete(id);
         log.debug("Deleted User: {}", user);
     }
-
-
 
 }
