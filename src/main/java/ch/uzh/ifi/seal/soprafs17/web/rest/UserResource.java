@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,68 +33,42 @@ public class UserResource extends GenericResource {
     // Standard URI mapping of this class
     static final String CONTEXT = "/users";
 
+    // Mo's shit
+    private final UserService userService;
+
     @Autowired
-    private UserRepository userRepo;
+    public UserResource(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<User> listUsers() {
-        logger.debug("listUsers");
-
-        List<User> result = new ArrayList<>();
-        userRepo.findAll().forEach(result::add);
-
-        return result;
+        return userService.listUsers();
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public User addUser(@RequestBody User user) {
-        logger.debug("addUser: " + user);
-
-        user.setStatus(UserStatus.OFFLINE);
-        user.setToken(UUID.randomUUID().toString());
-        user = userRepo.save(user);
-
-        return user;
+        return userService.createUser(user.getName(), user.getUsername());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable Long userId) {
-        logger.debug("getUser: " + userId);
-
-        return userRepo.findOne(userId);
+         return userService.getUser(userId);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "{userId}/login")
     @ResponseStatus(HttpStatus.OK)
     public User login(@PathVariable Long userId) {
-        logger.debug("login: " + userId);
-
-        User user = userRepo.findOne(userId);
-        if (user != null) {
-            user.setToken(UUID.randomUUID().toString());
-            user.setStatus(UserStatus.ONLINE);
-            user = userRepo.save(user);
-
-            return user;
-        }
-
-        return null;
+        return userService.login(userId);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "{userId}/logout")
     @ResponseStatus(HttpStatus.OK)
     public void logout(@PathVariable Long userId, @RequestParam("token") String userToken) {
-        logger.debug("getUser: " + userId);
-
-        User user = userRepo.findOne(userId);
-
-        if (user != null && user.getToken().equals(userToken)) {
-            user.setStatus(UserStatus.OFFLINE);
-            userRepo.save(user);
-        }
+        userService.logout(userId, userToken);
     }
 }

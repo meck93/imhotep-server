@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -29,23 +31,66 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(String name, String username, String token, UserStatus status, List<Game> games) {
+    public User createUser(String name, String username) {
 
         User newUser = new User();
         newUser.setName(name);
         newUser.setUsername(username);
-        newUser.setToken(token);
-        newUser.setStatus(status);
-        newUser.setGames(games);
+        newUser.setStatus(UserStatus.OFFLINE);
+        newUser.setGames(new ArrayList<Game>());
+        newUser.setToken(UUID.randomUUID().toString());
+
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
+
         return newUser;
     }
 
-    public void deleteUser(Long id) {
-        User user = userRepository.findById(id); //TODO check if user exists
-        userRepository.delete(id);
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId); //TODO check if user exists
+        userRepository.delete(userId);
         log.debug("Deleted User: {}", user);
     }
 
+    // Mo's Testing bullshit
+    public List<User> listUsers() {
+        log.debug("listUsers");
+
+        List<User> result = new ArrayList<>();
+        userRepository.findAll().forEach(result::add);
+
+        return result;
+    }
+
+    public User getUser(Long userId){
+        log.debug("getUser: " + userId);
+
+        return userRepository.findOne(userId);
+    }
+
+    public User login(Long userId){
+        log.debug("login: " + userId);
+
+        User user = userRepository.findOne(userId);
+        if (user != null) {
+            user.setToken(UUID.randomUUID().toString());
+            user.setStatus(UserStatus.ONLINE);
+            user = userRepository.save(user);
+
+            return user;
+        }
+
+        return null;
+    }
+
+    public void logout(Long userId, String userToken){
+        log.debug("getUser: " + userId);
+
+        User user = userRepository.findOne(userId);
+
+        if (user != null && user.getToken().equals(userToken)) {
+            user.setStatus(UserStatus.OFFLINE);
+            userRepository.save(user);
+        }
+    }
 }
