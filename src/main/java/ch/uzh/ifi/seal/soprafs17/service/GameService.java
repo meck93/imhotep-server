@@ -25,10 +25,12 @@ public class GameService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final GameRepository gameRepository;
+    private final UserService userService;
 
     @Autowired
-    public GameService(GameRepository gameRepository) {
+    public GameService(GameRepository gameRepository, UserService userService) {
         this.gameRepository = gameRepository;
+        this.userService = userService;
     }
 
     public Game createGame(String name, String owner, GameStatus status) {
@@ -48,6 +50,7 @@ public class GameService {
         //TODO check if game exists and then delete it
         Game game = gameRepository.findById(id);
         gameRepository.delete(id);
+
         log.debug("Deleted Game: {}", game);
     }
 
@@ -62,21 +65,18 @@ public class GameService {
 
     public String addGame(Game game, String userToken) {
         // TODO Implement the function which adds a Game
-
         log.debug("addGame: " + game);
 
-        // How do we check the user? Does the userService need to do this?
-        // Or can the gameService directly do this?
-        User owner = userRepository.findByToken(userToken);
+        User owner = userService.getUserByToken(userToken);
 
         if (owner != null) {
             // Started a little bit
             game.setStatus(GameStatus.PENDING);
             game.setCurrentPlayer(1);
 
-            game = gameRepo.save(game);
+            game = gameRepository.save(game);
 
-            return CONTEXT + "/" + game.getId();
+            return "/games" + "/" + game.getId();
         }
 
         // We need to change this: should not return NULL
@@ -91,12 +91,11 @@ public class GameService {
     public void startGame(Long gameId, String userToken) {
         log.debug("startGame: " + gameId);
 
-        // TODO figure out where the check needs to happen (Service or Controller) and then implement startGame() here
+        // TODO figure out where the check needs to happen (Service or Controller) & implement startGame() here
 
         Game game = gameRepository.findOne(gameId);
         // Same access question as above
-        User owner = userRepository.findByToken(userToken);
-
+        User owner = userService.getUserByToken(userToken);
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
         }
@@ -109,7 +108,7 @@ public class GameService {
 
         Game game = gameRepository.findOne(gameId);
         // Same access question as above
-        User owner = userRepo.findByToken(userToken);
+        User owner = userService.getUserByToken(userToken);
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
@@ -119,15 +118,12 @@ public class GameService {
     public List<User> getPlayers(Long gameId) {
         log.debug("listPlayers");
 
-        // TODO implement getPlayers
+        // TODO implement getPlayers in either userService or playerService
 
         Game game = gameRepository.findOne(gameId);
         if (game != null) {
             // Maybe as a List
             return game.getPlayers();
-
-            //Or otherwise from the playerRepository
-            return playerRepository.getPlayers(gameId);
         }
 
         return null;

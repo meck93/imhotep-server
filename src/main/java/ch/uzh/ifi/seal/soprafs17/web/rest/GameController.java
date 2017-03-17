@@ -65,19 +65,13 @@ public class GameController extends GenericController {
     public List<Game> listGames() {
         return gameService.listGames();
     }
-    /*
-    * Context: /game
-    *
-    */
+
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         return gameService.addGame(game, userToken);
     }
 
-    /*
-     * Context: /game/{game-id}
-     */
     @RequestMapping(value = CONTEXT + "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public Game getGame(@PathVariable Long gameId) {
@@ -96,44 +90,13 @@ public class GameController extends GenericController {
         gameService.stopGame(gameId, userToken);
     }
 
-    /*
-     * Context: /game/{game-id}/move
-     */
-    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}/moves")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Move> listMoves(@PathVariable Long gameId, @PathVariable Long playerId) {
-        //TODO this method must be implemented in the MoveController
-    }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}/moves", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void addMove(@RequestBody Move move) {
-        log.debug("addMove: " + move);
-        // TODO Mapping into MoveController + Execution of addMove in moveService
-    }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}/moves/{moveId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
-        // TODO Mapping into MoveController + Execution of getMove in moveService
-        log.debug("getMove: " + gameId);
-
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getMoves().get(moveId);
-        }
-
-        return null;
-    }
-
-    /*
-     * Context: /game/{game-id}/player
-     */
     @RequestMapping(value = CONTEXT + "/{gameId}/players")
     @ResponseStatus(HttpStatus.OK)
     public List<User> listPlayers(@PathVariable Long gameId) {
         return gameService.getPlayers(gameId);
     }
+
+    //TODO Everything below here concerning the player must be moved from here
 
     @RequestMapping(value = CONTEXT + "/{gameId}/players", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)

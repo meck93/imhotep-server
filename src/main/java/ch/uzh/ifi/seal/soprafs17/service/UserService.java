@@ -68,6 +68,12 @@ public class UserService {
         return userRepository.findOne(userId);
     }
 
+    public User getUserByToken(String userToken) {
+        log.debug("getUser: " + userToken);
+
+        return userRepository.findByToken(userToken);
+    }
+
     public User login(Long userId){
         log.debug("login: " + userId);
 
