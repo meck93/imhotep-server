@@ -52,22 +52,18 @@ public class GameController extends GenericController {
         this.gameService = gameService;
         this.userService = userService;
     }
-    
+
     // TODO Correct the implementation: Controller calls the service to do a action
     // TODO Correct the implemenation: Service handles the request in service
 
     /*
      * Context: /game
+     * Returns a list of all games
      */
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)
     public List<Game> listGames() {
-        log.debug("listGames");
-
-        List<Game> result = new ArrayList<>();
-        gameRepo.findAll().forEach(result::add);
-
-        return result;
+        return gameService.listGames();
     }
     /*
     * Context: /game
@@ -76,22 +72,7 @@ public class GameController extends GenericController {
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
-        log.debug("addGame: " + game);
-
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null) {
-            // TODO Mapping into Game
-            // Started a little bit
-            game.setStatus(GameStatus.PENDING);
-            game.setCurrentPlayer(1);
-
-            game = gameRepo.save(game);
-
-            return CONTEXT + "/" + game.getId();
-        }
-
-        return null;
+        return gameService.addGame(game, userToken);
     }
 
     /*
@@ -100,66 +81,41 @@ public class GameController extends GenericController {
     @RequestMapping(value = CONTEXT + "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public Game getGame(@PathVariable Long gameId) {
-        log.debug("getGame: " + gameId);
-
-        Game game = gameRepo.findOne(gameId);
-
-        return game;
+        return gameService.getGame(gameId);
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        log.debug("startGame: " + gameId);
-
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Start game in GameService
-        }
+        gameService.startGame(gameId, userToken);
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        log.debug("stopGame: " + gameId);
-
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Stop game in GameService
-        }
+        gameService.stopGame(gameId, userToken);
     }
 
     /*
      * Context: /game/{game-id}/move
      */
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves")
+    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}/moves")
     @ResponseStatus(HttpStatus.OK)
-    public List<Move> listMoves(@PathVariable Long gameId) {
-        log.debug("listMoves");
-
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getMoves();
-        }
-
-        // Sonarqube suggest to return an empty List<Move> instead of Null
-        return null;
+    public List<Move> listMoves(@PathVariable Long gameId, @PathVariable Long playerId) {
+        //TODO this method must be implemented in the MoveController
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}/moves", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody Move move) {
         log.debug("addMove: " + move);
-        // TODO Mapping into Move + execution of move
+        // TODO Mapping into MoveController + Execution of addMove in moveService
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves/{moveId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
+        // TODO Mapping into MoveController + Execution of getMove in moveService
         log.debug("getMove: " + gameId);
 
         Game game = gameRepo.findOne(gameId);
@@ -176,14 +132,7 @@ public class GameController extends GenericController {
     @RequestMapping(value = CONTEXT + "/{gameId}/players")
     @ResponseStatus(HttpStatus.OK)
     public List<User> listPlayers(@PathVariable Long gameId) {
-        log.debug("listPlayers");
-
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getPlayers();
-        }
-
-        return null;
+        return gameService.getPlayers(gameId);
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/players", method = RequestMethod.POST)
