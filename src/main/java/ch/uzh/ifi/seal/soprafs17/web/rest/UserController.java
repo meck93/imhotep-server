@@ -26,7 +26,7 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 
 @RestController
 @RequestMapping(UserController.CONTEXT)
-public class UserController extends GenericResource {
+public class UserController extends GenericController {
 
     Logger log  = LoggerFactory.getLogger(UserController.class);
 

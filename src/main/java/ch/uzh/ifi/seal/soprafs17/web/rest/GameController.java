@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +37,24 @@ public class GameController extends GenericController {
 
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games";
-
+    /*
     @Autowired
     private UserRepository userRepo;
     @Autowired
     private GameRepository gameRepo;
+    */
+    private GameService gameService;
+
+    private UserService userService;
+
+    @Autowired
+    public GameController(GameService gameService, UserService userService){
+        this.gameService = gameService;
+        this.userService = userService;
+    }
+    
+    // TODO Correct the implementation: Controller calls the service to do a action
+    // TODO Correct the implemenation: Service handles the request in service
 
     /*
      * Context: /game
