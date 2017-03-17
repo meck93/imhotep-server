@@ -25,19 +25,19 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 
 
 @RestController
-@RequestMapping(UserResource.CONTEXT)
-public class UserResource extends GenericResource {
+@RequestMapping(UserController.CONTEXT)
+public class UserController extends GenericResource {
 
-    Logger logger  = LoggerFactory.getLogger(UserResource.class);
+    Logger log  = LoggerFactory.getLogger(UserController.class);
 
     // Standard URI mapping of this class
     static final String CONTEXT = "/users";
 
-    // Mo's shit
+    // Service associated with this controller
     private final UserService userService;
 
     @Autowired
-    public UserResource(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
