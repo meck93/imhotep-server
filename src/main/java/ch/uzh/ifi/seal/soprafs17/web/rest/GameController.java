@@ -160,7 +160,7 @@ public class GameController extends GenericController {
     public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
         log.debug("getPlayer: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
 
         return game.getPlayers().get(playerId);
     }
