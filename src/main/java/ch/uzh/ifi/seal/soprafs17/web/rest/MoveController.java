@@ -63,20 +63,13 @@ public class MoveController extends GenericController {
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody Move move) {
         // TODO Mapping into MoveController + Execution of addMove in moveService
-        return moveService.addMove(Move move);
+        moveService.addMove(move);
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
-    public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
+    public Move getMove(@PathVariable Long gameId, @PathVariable Long moveId) {
         // TODO Mapping into MoveController + Execution of getMove in moveService
-        log.debug("getMove: " + gameId);
-
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getMoves().get(moveId);
-        }
-
-        return null;
+        return moveService.getMove(moveId);
     }
 }

@@ -1,9 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Move;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.MoveRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
@@ -15,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Service class for managing moves.
@@ -61,5 +58,21 @@ public class MoveService {
         log.debug("addMove: " + move);
 
         // TODO implementation of addMove()
+
+        return null;
+    }
+
+    public Move getMove(Long moveId) {
+        log.debug("getMove: " + moveId);
+
+        // Find the move in the DB
+        Move move = moveRepository.findOne(moveId);
+
+        if (move != null) {
+            return move;
+        }
+
+        // TODO Not return null instead something more meaning full
+        return null;
     }
 }

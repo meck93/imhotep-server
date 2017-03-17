@@ -32,18 +32,21 @@ public class GameService {
     }
 
     public Game createGame(String name, String owner, GameStatus status) {
-
+        // Creating the Game and saving it to the Repository
         Game newGame = new Game();
         newGame.setName(name);
         newGame.setOwner(owner);
         newGame.setStatus(status);
         gameRepository.save(newGame);
+
         log.debug("Created Information for Game: {}", newGame);
+
         return newGame;
     }
 
     public void deleteGame(Long id) {
-        Game game = gameRepository.findById(id); //TODO check if game exists
+        //TODO check if game exists and then delete it
+        Game game = gameRepository.findById(id);
         gameRepository.delete(id);
         log.debug("Deleted Game: {}", game);
     }
@@ -58,6 +61,8 @@ public class GameService {
     }
 
     public String addGame(Game game, String userToken) {
+        // TODO Implement the function which adds a Game
+
         log.debug("addGame: " + game);
 
         // How do we check the user? Does the userService need to do this?
@@ -65,7 +70,6 @@ public class GameService {
         User owner = userRepository.findByToken(userToken);
 
         if (owner != null) {
-            // TODO Mapping into Game
             // Started a little bit
             game.setStatus(GameStatus.PENDING);
             game.setCurrentPlayer(1);
@@ -87,17 +91,21 @@ public class GameService {
     public void startGame(Long gameId, String userToken) {
         log.debug("startGame: " + gameId);
 
+        // TODO figure out where the check needs to happen (Service or Controller) and then implement startGame() here
+
         Game game = gameRepository.findOne(gameId);
         // Same access question as above
-        User owner = userRepo.findByToken(userToken);
+        User owner = userRepository.findByToken(userToken);
+
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Start game in GameService
         }
     }
 
     public void stopGame(Long gameId, String userToken) {
         log.debug("stopGame: " + gameId);
+
+        // TODO implement stopGame
 
         Game game = gameRepository.findOne(gameId);
         // Same access question as above
@@ -110,6 +118,8 @@ public class GameService {
 
     public List<User> getPlayers(Long gameId) {
         log.debug("listPlayers");
+
+        // TODO implement getPlayers
 
         Game game = gameRepository.findOne(gameId);
         if (game != null) {
