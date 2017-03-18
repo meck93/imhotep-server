@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,165 +30,90 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 // You can refer to the UserService as example
 
 @RestController
-@RequestMapping(GameResource.CONTEXT)
-public class GameResource extends GenericResource {
+@RequestMapping(GameController.CONTEXT)
+public class GameController extends GenericController {
 
-    Logger logger  = LoggerFactory.getLogger(GameResource.class);
+    Logger log  = LoggerFactory.getLogger(GameController.class);
 
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games";
-
+    /*
     @Autowired
     private UserRepository userRepo;
     @Autowired
     private GameRepository gameRepo;
+    */
+    private GameService gameService;
+
+    private UserService userService;
+
+    @Autowired
+    public GameController(GameService gameService, UserService userService){
+        this.gameService = gameService;
+        this.userService = userService;
+    }
+
+    // TODO Correct the implementation: Controller calls the service to do a action
+    // TODO Correct the implemenation: Service handles the request in service
 
     /*
      * Context: /game
+     * Returns a list of all games
      */
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)
     public List<Game> listGames() {
-        logger.debug("listGames");
-
-        List<Game> result = new ArrayList<>();
-        gameRepo.findAll().forEach(result::add);
-
-        return result;
+        return gameService.listGames();
     }
-    /*
-    * Context: /game
-    *
-    */
+
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
-        logger.debug("addGame: " + game);
-
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null) {
-            // TODO Mapping into Game
-            // Started a little bit
-            game.setStatus(GameStatus.PENDING);
-            game.setCurrentPlayer(1);
-
-            game = gameRepo.save(game);
-
-            return CONTEXT + "/" + game.getId();
-        }
-
-        return null;
+        return gameService.addGame(game, userToken);
     }
 
-    /*
-     * Context: /game/{game-id}
-     */
     @RequestMapping(value = CONTEXT + "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public Game getGame(@PathVariable Long gameId) {
-        logger.debug("getGame: " + gameId);
-
-        Game game = gameRepo.findOne(gameId);
-
-        return game;
+        return gameService.getGame(gameId);
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        logger.debug("startGame: " + gameId);
-
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Start game in GameService
-        }
+        gameService.startGame(gameId, userToken);
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        logger.debug("stopGame: " + gameId);
-
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Stop game in GameService
-        }
+        gameService.stopGame(gameId, userToken);
     }
 
-    /*
-     * Context: /game/{game-id}/move
-     */
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Move> listMoves(@PathVariable Long gameId) {
-        logger.debug("listMoves");
-
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getMoves();
-        }
-
-        // Sonarqube suggest to return an empty List<Move> instead of Null
-        return null;
-    }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void addMove(@RequestBody Move move) {
-        logger.debug("addMove: " + move);
-        // TODO Mapping into Move + execution of move
-    }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves/{moveId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
-        logger.debug("getMove: " + gameId);
-
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getMoves().get(moveId);
-        }
-
-        return null;
-    }
-
-    /*
-     * Context: /game/{game-id}/player
-     */
     @RequestMapping(value = CONTEXT + "/{gameId}/players")
     @ResponseStatus(HttpStatus.OK)
     public List<User> listPlayers(@PathVariable Long gameId) {
-        logger.debug("listPlayers");
-
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getPlayers();
-        }
-
-        return null;
+        return gameService.getPlayers(gameId);
     }
+
+    //TODO Everything below here concerning the player must be moved from here
 
     @RequestMapping(value = CONTEXT + "/{gameId}/players", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        logger.debug("addPlayer: " + userToken);
+        log.debug("addPlayer: " + userToken);
 
         Game game = gameRepo.findOne(gameId);
         User player = userRepo.findByToken(userToken);
 
         if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
             game.getPlayers().add(player);
-            logger.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
+            log.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
             return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size() - 1);
         }
 
         else {
-            logger.error("Error adding player with token: " + userToken);
+            log.error("Error adding player with token: " + userToken);
         }
         return null;
     }
@@ -194,9 +121,9 @@ public class GameResource extends GenericResource {
     @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}")
     @ResponseStatus(HttpStatus.OK)
     public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
-        logger.debug("getPlayer: " + gameId);
+        log.debug("getPlayer: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
 
         return game.getPlayers().get(playerId);
     }
