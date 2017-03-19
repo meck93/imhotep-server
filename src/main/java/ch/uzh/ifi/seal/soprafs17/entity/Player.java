@@ -20,16 +20,13 @@ public class Player implements Serializable {
     @Id
     @GeneratedValue
     private long id;
-
+    /*
     @OneToOne(optional = false, targetEntity = User.class, mappedBy = "user")
     private User user;
 
     @OneToMany(mappedBy = "player")
     private List<Move> moves;
-
-    @OneToMany(mappedBy = "player")
-    private List<MarketCard> marketCards;
-
+    */
     @Column
     private int points;
 
@@ -39,9 +36,6 @@ public class Player implements Serializable {
     @Column
     private int playerNumber;
 
-    @OneToOne(optional = false)
-    private SupplySled supplySled;
-
     public long getId() {
         return id;
     }
@@ -49,7 +43,7 @@ public class Player implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
-
+    /*
     public User getUser() {
         return user;
     }
@@ -65,15 +59,7 @@ public class Player implements Serializable {
     public void setMoves(List<Move> moves) {
         this.moves = moves;
     }
-
-    public List<MarketCard> getMarketCards() {
-        return marketCards;
-    }
-
-    public void setMarketCards(List<MarketCard> marketCards) {
-        this.marketCards = marketCards;
-    }
-
+    */
     public int getPoints() {
         return points;
     }
@@ -98,11 +84,4 @@ public class Player implements Serializable {
         this.playerNumber = playerNumber;
     }
 
-    public SupplySled getSupplySled() {
-        return supplySled;
-    }
-
-    public void setSupplySled(SupplySled supplySled) {
-        this.supplySled = supplySled;
-    }
 }

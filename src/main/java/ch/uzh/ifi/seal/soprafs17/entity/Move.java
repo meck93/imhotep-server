@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public abstract class Move implements Serializable {
+public class Move implements Serializable {
 	
 	/**
 	 *  Implements the Move class
