@@ -38,7 +38,8 @@ public class Game implements Serializable {
 
     @OneToMany(mappedBy="game")
     private List<Move> moves;
-    
+
+    // TODO Change to correct mapping into Player and not User
     @ManyToMany(mappedBy="games")
     private List<User> players;
     

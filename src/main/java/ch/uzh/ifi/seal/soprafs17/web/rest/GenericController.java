@@ -9,19 +9,19 @@ import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public abstract class GenericResource {
+public abstract class GenericController {
 
-	Logger logger = LoggerFactory.getLogger(GenericResource.class);
+	Logger log = LoggerFactory.getLogger(GenericController.class);
 
 	@ExceptionHandler(TransactionSystemException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public void handleTransactionSystemException(Exception exception, HttpServletRequest request) {
-		logger.error("", exception);
+		log.error("", exception);
 	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public void handleException(Exception exception, HttpServletRequest request) {
-		logger.error("", exception);
+		log.error("", exception);
 	}
 }
