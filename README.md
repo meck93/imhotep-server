@@ -51,6 +51,7 @@ gradle test
 **First view GitHub presentation on OLAT _Git_GitHub.pdf_.**
 
 _[Basic Git commands (Atlassian Documentation)](https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html)_
+
 _[Git Cheat Sheet](https://www.git-tower.com/blog/git-cheat-sheet/)_
 
 The following section describes the workflow of one coding session. If you code over multiple days (you will :)) or start coding in the morning, having a break and continue in the evening, it is not one single session.
@@ -134,7 +135,7 @@ Derive Issues from the task list.
 #### Creating an Issue
 - give it a selfdescribing name
 - relate your description to a user story or/and task from the task list
-- assign responsible team member
+- assign responsible team member (there is no issue without an assignee)
 - add a matching label (or multiple)
 - add issue to the corresponding project board (either TODO or In Progress)
 - add milestone
