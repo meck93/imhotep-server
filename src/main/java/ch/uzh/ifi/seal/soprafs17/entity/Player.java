@@ -20,6 +20,8 @@ public class Player implements Serializable {
     @Id
     @GeneratedValue
     private long id;
+
+    //TODO implement the correct mapping into the User and Move entity
     /*
     @OneToOne(optional = false, targetEntity = User.class, mappedBy = "user")
     private User user;

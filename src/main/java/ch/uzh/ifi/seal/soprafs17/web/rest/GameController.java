@@ -35,12 +35,10 @@ public class GameController extends GenericController {
     static final String CONTEXT = "/games";
 
     private GameService gameService;
-    private UserService userService;
 
     @Autowired
-    public GameController(GameService gameService, UserService userService){
+    public GameController(GameService gameService){
         this.gameService = gameService;
-        this.userService = userService;
     }
 
     // TODO Correct the implementation: Controller calls the service to do a action

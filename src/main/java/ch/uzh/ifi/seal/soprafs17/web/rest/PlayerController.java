@@ -35,18 +35,12 @@ public class PlayerController extends GenericController {
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games/{gameId}/players";
 
-    private GameService gameService;
-    private UserService userService;
     private PlayerService playerService;
 
     @Autowired
-    public PlayerController(GameService gameService, UserService userService, PlayerService playerService){
-        this.gameService = gameService;
-        this.userService = userService;
+    public PlayerController(PlayerService playerService){
         this.playerService = playerService;
     }
-
-    //TODO Everything below here concerning the player must be moved from here
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)

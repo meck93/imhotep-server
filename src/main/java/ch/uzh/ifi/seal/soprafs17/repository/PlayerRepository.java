@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository("playerRepository")
-public interface PlayerRepository extends CrudRepository<User, Long> {
+public interface PlayerRepository extends CrudRepository<Player, Long> {
     // TODO Implement the PlayerRepository
 }

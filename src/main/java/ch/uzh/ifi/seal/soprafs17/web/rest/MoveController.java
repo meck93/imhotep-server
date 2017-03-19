@@ -37,21 +37,16 @@ public class MoveController extends GenericController {
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games/{gameId}/players/{playersId}/moves";
 
-    private MoveRepository moveRepository;
     private MoveService moveService;
 
     @Autowired
-    public MoveController(MoveRepository moveRepository, MoveService moveService) {
-        this.moveRepository = moveRepository;
+    public MoveController(MoveService moveService) {
         this.moveService = moveService;
     }
 
     // TODO Correct the implementation: Controller calls the service to do a action
     // TODO Correct the implemenation: Service handles the request in service
 
-    /*
-     * Context: /game/{game-id}/move
-     */
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)
     public List<Move> listMoves(@PathVariable Long gameId, @PathVariable Long playerId) {

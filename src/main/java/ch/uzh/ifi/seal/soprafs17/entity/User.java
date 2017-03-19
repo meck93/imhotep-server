@@ -15,6 +15,8 @@ import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 @Entity
 public class User implements Serializable {
 
+	//TODO implement the correct mapping into/from the player class
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
