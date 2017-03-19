@@ -24,12 +24,12 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 
 @RestController
 @RequestMapping(UserResource.CONTEXT)
-public class UserResource
-        extends GenericResource {
+public class UserResource extends GenericResource {
 
-    Logger                 logger  = LoggerFactory.getLogger(UserResource.class);
+    Logger logger  = LoggerFactory.getLogger(UserResource.class);
 
-    static final String    CONTEXT = "/user";
+    // Standard URI mapping of this class
+    static final String CONTEXT = "/users";
 
     @Autowired
     private UserRepository userRepo;
@@ -57,7 +57,6 @@ public class UserResource
 
         return user;
     }
-
 
     @RequestMapping(method = RequestMethod.GET, value = "{userId}")
     @ResponseStatus(HttpStatus.OK)
