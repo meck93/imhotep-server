@@ -39,22 +39,109 @@ gradle bootRun
 gradle test
 ```
 
+
+
+***
+
+
+
+
+
 # Git Rules
+**View GitHub presentation on OLAT _Git_GitHub.pdf_.**
+
+The following section describes the workflow of one coding session. If you code over multiple days (you will :)) or start coding in the morning, having a break and continue in the evening please it is not one single session.
+
+#### Before Working (starting your coding session)
+- check slack and issues before working on your task
+- never start working on a task without an issue ([Issue Rules](#issue-rules))
+
+#### Start working on a new issue
+- go to local repository
+- switch to development branch
+```bash
+git checkout development
+```
+- pull development branch
+```bash
+git pull
+```
+- switch to your branch
+```bash
+git checkout [your_name]
+```
+- merge your branch with the development branch
+```bash
+git merge development
+```
+
+#### Continue working on an issue
+- be sure you are working on the newest version (maybe pull and merge newest changes of development branch to your branch as described in the section above)
+
+#### Committing your Work
+**Commit if your work can't be described in one single line**
+- stage all files you want to have in your commit...
+
+... see which files were added, changed and deleted ...
+```bash
+git status
+```
+... stage either chosen files ...
+```bash
+git add [file_name]
+```
+... or stage all changed files ...
+```bash
+git add -A
+```
+
+- commit your staged files with the following scheme
+```bash
+git commit -m "#[issue_number]: [work description]"
+```
+e.g.
+
+```bash
+git commit -m "#5: [work description]"
+```
+
+#### After Work (end of your coding session)
+- push your work and commits of **YOUR** branch (be sure you are in your branch) to the remote repository
+
+... for the first time ...
+```bash
+git push origin [branch name]
+```
+... later on ...
+```bash
+git push
+```
+
+- if your work is tested and seems to work fine merge your branch into the development branch (or better make a pull request if you are not sure)
+
+
+
 
 # Issue Rules
 Issues are not only for **defining task responsibilities** but also for **tracking the workflow** and make it understandable for not envolved team members.
+Derive Issues from the task list. **DO NOT START WORKING BEFORE THERE IS AN ISSUE FOR YOUR IMPLEMENTATION TASK!**
 
 #### Creating an Issue
-- giving it a selfdescribing name
+- give it a selfdescribing name
+- relate your description to a user story/task from the task list
 - assign responsible team member
-- try to relate on a user story in the description
+- add a matching label (or multiple)
+- add issue to the corresponding project board (either TODO or In Progress)
+- add milestone
 
-#### Working on a Issue
-- relate your commits on your branch to this issue
+#### Working on an Issue
+- relate your commits on your branch to this issue (see [Git Rules](#git-rules))
 
-#### Passing a Issue
+#### Passing an Issue
 - assign new responsible team member
-- leave a comment what has to be done next
+- leave a comment what has to be done next (and what is already done)
 
-#### Closing Issue
-- 
+#### Closing an Issue
+- be sure all work is done (including comments on this issue)
+- close issue
+- move issue to "Done" on the project board
