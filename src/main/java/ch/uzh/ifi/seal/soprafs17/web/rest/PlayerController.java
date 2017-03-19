@@ -5,6 +5,7 @@ import java.util.List;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,43 +37,26 @@ public class PlayerController extends GenericController {
 
     private GameService gameService;
     private UserService userService;
+    private PlayerService playerService;
 
     @Autowired
-    public PlayerController(GameService gameService, UserService userService){
+    public PlayerController(GameService gameService, UserService userService, PlayerService playerService){
         this.gameService = gameService;
         this.userService = userService;
+        this.playerService = playerService;
     }
 
     //TODO Everything below here concerning the player must be moved from here
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/players", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        log.debug("addPlayer: " + userToken);
-
-        Game game = gameRepo.findOne(gameId);
-        User player = userRepo.findByToken(userToken);
-
-        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-            game.getPlayers().add(player);
-            log.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
-            return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size() - 1);
-        }
-
-        else {
-            log.error("Error adding player with token: " + userToken);
-        }
-        return null;
+        return playerService.addPlayer(gameId, userToken);
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}")
+    @RequestMapping(value = CONTEXT + "/{playerId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
-        log.debug("getPlayer: " + gameId);
-
-        Game game = gameRepository.findOne(gameId);
-
-        return game.getPlayers().get(playerId);
+        return playerService.getPlayer(gameId, playerId);
     }
-
 }
