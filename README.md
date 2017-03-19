@@ -48,12 +48,15 @@ gradle test
 
 
 # Git Rules
-**View GitHub presentation on OLAT _Git_GitHub.pdf_.**
+**First view GitHub presentation on OLAT _Git_GitHub.pdf_.**
 
-The following section describes the workflow of one coding session. If you code over multiple days (you will :)) or start coding in the morning, having a break and continue in the evening please it is not one single session.
+_[Basic Git commands (Atlassian Documentation)](https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html)_
+_[Git Cheat Sheet](https://www.git-tower.com/blog/git-cheat-sheet/)_
+
+The following section describes the workflow of one coding session. If you code over multiple days (you will :)) or start coding in the morning, having a break and continue in the evening, it is not one single session.
 
 #### Before Working (starting your coding session)
-- check slack and issues before working on your task
+- check slack and issues before working on your task (there might have been some changes or the work might have been already done)
 - never start working on a task without an issue ([Issue Rules](#issue-rules))
 
 #### Start working on a new issue
@@ -102,7 +105,7 @@ git commit -m "#[issue_number]: [work description]"
 e.g.
 
 ```bash
-git commit -m "#5: [work description]"
+git commit -m "#5: added Git and Issue Rules and Workflow to ReadMe"
 ```
 
 #### After Work (end of your coding session)
@@ -117,18 +120,20 @@ git push origin [branch name]
 git push
 ```
 
-- if your work is tested and seems to work fine merge your branch into the development branch (or better make a pull request if you are not sure)
+- if your work is tested and seems to work fine, merge your branch into the development branch (or better make a pull request if you are not sure)
 
 
 
 
 # Issue Rules
 Issues are not only for **defining task responsibilities** but also for **tracking the workflow** and make it understandable for not envolved team members.
-Derive Issues from the task list. **DO NOT START WORKING BEFORE THERE IS AN ISSUE FOR YOUR IMPLEMENTATION TASK!**
+Derive Issues from the task list.
+
+**DO NOT START WORKING BEFORE THERE IS AN ISSUE FOR YOUR IMPLEMENTATION TASK!**
 
 #### Creating an Issue
 - give it a selfdescribing name
-- relate your description to a user story/task from the task list
+- relate your description to a user story or/and task from the task list
 - assign responsible team member
 - add a matching label (or multiple)
 - add issue to the corresponding project board (either TODO or In Progress)
@@ -145,3 +150,4 @@ Derive Issues from the task list. **DO NOT START WORKING BEFORE THERE IS AN ISSU
 - be sure all work is done (including comments on this issue)
 - close issue
 - move issue to "Done" on the project board
+- merge your branch to the development branch (see [Git Rules](#git-rules))
