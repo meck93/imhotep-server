@@ -40,14 +40,18 @@ public class UserServiceTest {
     @Test
     public void createUser() {
         Assert.assertNull(userRepository.findByToken("t123"));
-        User user = userService.createUser("testName", "testUsername", "t123", UserStatus.ONLINE, games);
+        User user = userService.createUser("testName", "testUsername");
+        user.setToken("t123");
+        user.setGames(games);
         assertNotNull(userRepository.findByToken("t123"));
         Assert.assertEquals(userRepository.findByToken("t123"), user);
     }
 
     @Test
     public void deleteUser() {
-        User user = userService.createUser("testName", "testUsername", "t123", UserStatus.ONLINE, games);
+        User user = userService.createUser("testName", "testUsername");
+        user.setToken("t123");
+        user.setGames(games);
         userRepository.delete(user.getId());
         Assert.assertNull(userRepository.findById(user.getId()));
     }

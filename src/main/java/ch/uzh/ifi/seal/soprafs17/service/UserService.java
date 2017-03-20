@@ -65,12 +65,14 @@ public class UserService {
     public User getUser(Long userId){
         log.debug("getUser: " + userId);
 
+        // TODO Implement check to see whether the user exists
         return userRepository.findOne(userId);
     }
 
     public User getUserByToken(String userToken) {
         log.debug("getUser: " + userToken);
 
+        // TODO Implement check to see whether the user exists
         return userRepository.findByToken(userToken);
     }
 
@@ -86,6 +88,7 @@ public class UserService {
             return user;
         }
 
+        // TODO This situation needs to be handle in a better way: Should not return null if user cannot be found
         return null;
     }
 

@@ -49,7 +49,7 @@ public class MoveService {
         List<Move> result = new ArrayList<>();
 
         // TODO change to find for user in game and then add
-        moveRepository.findAll().forEach(result::add);
+        //moveRepository.findAll().forEach(result::add);
 
         return result;
     }
@@ -66,12 +66,12 @@ public class MoveService {
         log.debug("getMove: " + moveId);
 
         // Find the move in the DB
-        Move move = moveRepository.findOne(moveId);
+        /*Move move = moveRepository.findOne(moveId);
 
         if (move != null) {
             return move;
         }
-
+        */
         // TODO Not return null instead something more meaning full
         return null;
     }

@@ -25,10 +25,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.User;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 
-// For this controlles the correspndant service is missing
-// Todo create a GameService in which you implement the logic of the game
-// You can refer to the UserService as example
-
 @RestController
 @RequestMapping(GameController.CONTEXT)
 public class GameController extends GenericController {
@@ -37,24 +33,16 @@ public class GameController extends GenericController {
 
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games";
-    /*
-    @Autowired
-    private UserRepository userRepo;
-    @Autowired
-    private GameRepository gameRepo;
-    */
+
     private GameService gameService;
 
-    private UserService userService;
-
     @Autowired
-    public GameController(GameService gameService, UserService userService){
+    public GameController(GameService gameService){
         this.gameService = gameService;
-        this.userService = userService;
     }
 
     // TODO Correct the implementation: Controller calls the service to do a action
-    // TODO Correct the implemenation: Service handles the request in service
+    // TODO Correct the implementation: Service handles the request in service
 
     /*
      * Context: /game
@@ -95,37 +83,4 @@ public class GameController extends GenericController {
     public List<User> listPlayers(@PathVariable Long gameId) {
         return gameService.getPlayers(gameId);
     }
-
-    //TODO Everything below here concerning the player must be moved from here
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/players", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        log.debug("addPlayer: " + userToken);
-
-        Game game = gameRepo.findOne(gameId);
-        User player = userRepo.findByToken(userToken);
-
-        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-            game.getPlayers().add(player);
-            log.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
-            return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size() - 1);
-        }
-
-        else {
-            log.error("Error adding player with token: " + userToken);
-        }
-        return null;
-    }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}")
-    @ResponseStatus(HttpStatus.OK)
-    public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
-        log.debug("getPlayer: " + gameId);
-
-        Game game = gameRepository.findOne(gameId);
-
-        return game.getPlayers().get(playerId);
-    }
-
 }

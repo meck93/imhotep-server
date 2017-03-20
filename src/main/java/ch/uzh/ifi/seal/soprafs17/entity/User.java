@@ -15,6 +15,8 @@ import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 @Entity
 public class User implements Serializable {
 
+	//TODO implement the correct mapping into/from the player class
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,9 +37,6 @@ public class User implements Serializable {
 
     @ManyToMany
     private List<Game> games;
-	
-    @OneToMany(mappedBy="user")
-    private List<Move> moves;
 
 	public Long getId() {
 		return id;
@@ -69,14 +68,6 @@ public class User implements Serializable {
 
 	public void setGames(List<Game> games) {
 		this.games = games;
-	}
-
-	public List<Move> getMoves() {
-		return moves;
-	}
-
-	public void setMoves(List<Move> moves) {
-		this.moves = moves;
 	}
 
 	public String getToken() {

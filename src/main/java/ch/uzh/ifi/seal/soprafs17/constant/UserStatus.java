@@ -1,8 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.constant;
 
-import java.util.Set;
-import java.util.stream.Collector;
-
 public enum UserStatus {
 	/*
 	* Online: the user is currently active in a game as a player
