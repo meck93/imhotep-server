@@ -4,13 +4,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Player implements Serializable {
@@ -22,13 +16,12 @@ public class Player implements Serializable {
     private long id;
 
     //TODO implement the correct mapping into the User and Move entity
-/*
-    @OneToOne(optional = false, targetEntity = User.class, mappedBy = "user")
+    @OneToOne
+    @JoinColumn(name="USER_ID")
     private User user;
 
     @OneToMany(mappedBy = "player")
     private List<Move> moves;
-*/
 
     @OneToOne
     private Game game;
@@ -55,7 +48,7 @@ public class Player implements Serializable {
         this.id = id;
     }
 
-/*    public User getUser() {
+    public User getUser() {
         return user;
     }
 
@@ -69,7 +62,15 @@ public class Player implements Serializable {
 
     public void setMoves(List<Move> moves) {
         this.moves = moves;
-    }*/
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
     public int getPoints() {
         return points;
@@ -94,5 +95,4 @@ public class Player implements Serializable {
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = playerNumber;
     }
-
 }
