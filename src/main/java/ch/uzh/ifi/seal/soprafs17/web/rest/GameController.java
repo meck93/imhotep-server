@@ -61,6 +61,7 @@ public class GameController extends GenericController {
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
+    // TODO Rename addGame in both Controller and Service to createGame
     public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         return gameService.addGame(game, userToken);
     }
