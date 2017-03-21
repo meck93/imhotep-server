@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
@@ -43,14 +44,20 @@ public class PlayerController extends GenericController {
     }
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         return playerService.addPlayer(gameId, userToken);
     }
 
     @RequestMapping(value = CONTEXT + "/{playerId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
+    public Player getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
         return playerService.getPlayer(gameId, playerId);
+    }
+
+    @RequestMapping(value = CONTEXT, method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Player> listPlayers(@PathVariable Long gameId) {
+        return playerService.getPlayers(gameId);
     }
 }

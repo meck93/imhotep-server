@@ -22,13 +22,13 @@ public class Player implements Serializable {
     private long id;
 
     //TODO implement the correct mapping into the User and Move entity
-    /*
+/*
     @OneToOne(optional = false, targetEntity = User.class, mappedBy = "user")
     private User user;
 
     @OneToMany(mappedBy = "player")
     private List<Move> moves;
-    */
+*/
 
     @OneToOne
     private Game game;
@@ -42,6 +42,11 @@ public class Player implements Serializable {
     @Column
     private int playerNumber;
 
+    /*
+    @ManyToOne or something like that
+    private SupplySled supplySled;
+     */
+
     public long getId() {
         return id;
     }
@@ -49,8 +54,8 @@ public class Player implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
-    /*
-    public User getUser() {
+
+/*    public User getUser() {
         return user;
     }
 
@@ -64,8 +69,8 @@ public class Player implements Serializable {
 
     public void setMoves(List<Move> moves) {
         this.moves = moves;
-    }
-    */
+    }*/
+
     public int getPoints() {
         return points;
     }
