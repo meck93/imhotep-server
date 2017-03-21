@@ -20,10 +20,10 @@ public class Player implements Serializable {
     @JoinColumn(name="USER_ID")
     private User user;
 
-    @OneToMany(mappedBy = "player")
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private List<Move> moves;
 
-    @OneToOne
+    @ManyToOne(targetEntity = Game.class)
     private Game game;
 
     @Column
