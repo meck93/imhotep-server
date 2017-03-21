@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +37,13 @@ public class GameController extends GenericController {
     static final String CONTEXT = "/games";
 
     private GameService gameService;
+    private PlayerService playerService;
+
 
     @Autowired
-    public GameController(GameService gameService){
+    public GameController(GameService gameService, PlayerService playerService){
         this.gameService = gameService;
+        this.playerService = playerService;
     }
 
     // TODO Correct the implementation: Controller calls the service to do a action
@@ -80,7 +85,7 @@ public class GameController extends GenericController {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/players")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> listPlayers(@PathVariable Long gameId) {
-        return gameService.getPlayers(gameId);
+    public List<Player> listPlayers(@PathVariable Long gameId) {
+        return playerService.getPlayers(gameId);
     }
 }

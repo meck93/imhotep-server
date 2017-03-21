@@ -115,7 +115,7 @@ public class GameService {
         }
     }
 
-    public List<User> getPlayers(Long gameId) {
+    /*public List<User> getPlayers(Long gameId) {
         log.debug("listPlayers");
 
         // TODO implement getPlayers in either userService or playerService
@@ -127,5 +127,5 @@ public class GameService {
         }
 
         return null;
-    }
+    }*/
 }

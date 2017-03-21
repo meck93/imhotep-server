@@ -29,6 +29,10 @@ public class Player implements Serializable {
     @OneToMany(mappedBy = "player")
     private List<Move> moves;
     */
+
+    @OneToOne
+    private Game game;
+
     @Column
     private int points;
 
