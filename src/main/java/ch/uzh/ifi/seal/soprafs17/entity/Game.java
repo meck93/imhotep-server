@@ -52,6 +52,22 @@ public class Game implements Serializable {
    /* @OneToMany(MappedBy= "game")
 	private List<IRateable> buildingSites;*/
 
+   /*
+   * Amount of players exists only for providing
+   * dummy data to the client.
+   */
+
+	@Column
+	private int amountOfPlayers;
+
+	public int getAmountOfPlayers() {
+		return amountOfPlayers;
+	}
+
+	public void setAmountOfPlayers(int amountOfPlayers) {
+		this.amountOfPlayers = amountOfPlayers;
+	}
+
 	public Long getId() {
 		return id;
 	}
