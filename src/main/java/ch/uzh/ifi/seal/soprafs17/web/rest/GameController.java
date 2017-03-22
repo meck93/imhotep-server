@@ -53,32 +53,32 @@ public class GameController extends GenericController {
      * Context: /game
      * Returns a list of all games
      */
-    @RequestMapping(value = CONTEXT)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<Game> listGames() {
         return gameService.listGames();
     }
 
-    @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     // TODO Rename addGame in both Controller and Service to createGame
     public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         return gameService.addGame(game, userToken);
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}")
+    @RequestMapping(value = "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public Game getGame(@PathVariable Long gameId) {
         return gameService.getGame(gameId);
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
+    @RequestMapping(value = "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         gameService.startGame(gameId, userToken);
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/stop", method = RequestMethod.POST)
+    @RequestMapping(value = "/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         gameService.stopGame(gameId, userToken);

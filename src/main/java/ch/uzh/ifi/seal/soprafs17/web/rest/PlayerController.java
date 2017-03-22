@@ -43,19 +43,19 @@ public class PlayerController extends GenericController {
         this.playerService = playerService;
     }
 
-    @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         return playerService.addPlayer(gameId, userToken);
     }
 
-    @RequestMapping(value = CONTEXT + "/{playerId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{playerId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Player getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
         return playerService.getPlayer(gameId, playerId);
     }
 
-    @RequestMapping(value = CONTEXT, method = RequestMethod.GET)
+    @RequestMapping( method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<Player> listPlayers(@PathVariable Long gameId) {
         return playerService.getPlayers(gameId);

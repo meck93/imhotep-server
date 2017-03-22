@@ -49,7 +49,7 @@ public class LobbyController {
     }
 
     /*
-     * Context: /lobbies
+     * Context: /lobby
      * Returns a list of all games
      */
     @RequestMapping(method = RequestMethod.GET)

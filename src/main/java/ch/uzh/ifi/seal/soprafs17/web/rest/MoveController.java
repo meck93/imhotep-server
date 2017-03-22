@@ -47,21 +47,21 @@ public class MoveController extends GenericController {
     // TODO Correct the implementation: Controller calls the service to do a action
     // TODO Correct the implemenation: Service handles the request in service
 
-    @RequestMapping(value = CONTEXT)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<Move> listMoves(@PathVariable Long gameId, @PathVariable Long playerId) {
         //TODO getMoves must be implemented in the MoveService
         return moveService.getMoves(gameId, playerId);
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}/moves", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody Move move) {
         // TODO Execution of addMove in moveService
         moveService.addMove(move);
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}/moves/{moveId}")
+    @RequestMapping(value = "/{moveId}",method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Move getMove(@PathVariable Long gameId, @PathVariable Long moveId) {
         // TODO Execution of getMove in moveService
