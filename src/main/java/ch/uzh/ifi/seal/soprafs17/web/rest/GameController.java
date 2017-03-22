@@ -83,10 +83,4 @@ public class GameController extends GenericController {
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         gameService.stopGame(gameId, userToken);
     }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/players")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Player> listPlayers(@PathVariable Long gameId) {
-        return playerService.getPlayers(gameId);
-    }
 }

@@ -3,12 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 
@@ -35,8 +30,8 @@ public class User implements Serializable {
 	@Column(nullable = false) 
 	private UserStatus status;
 
-    @ManyToMany
-    private List<Game> games;
+    @OneToOne(mappedBy = "user")
+	private Player player;
 
 	public Long getId() {
 		return id;
@@ -62,14 +57,6 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	public List<Game> getGames() {
-		return games;
-	}
-
-	public void setGames(List<Game> games) {
-		this.games = games;
-	}
-
 	public String getToken() {
 		return token;
 	}
@@ -84,5 +71,13 @@ public class User implements Serializable {
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

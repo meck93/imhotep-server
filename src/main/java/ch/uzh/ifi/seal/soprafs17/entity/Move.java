@@ -33,8 +33,8 @@ public class Move implements Serializable {
     private Game game;
     
     @ManyToOne
-    @JoinColumn(name="USER_ID")
-    private User user;
+    @JoinColumn(name="PLAYER_ID")
+    private Player player;
 
 	public Long getId() {
 		return id;
@@ -42,6 +42,22 @@ public class Move implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public MoveType getMoveType() {
+		return moveType;
+	}
+
+	public void setMoveType(MoveType moveType) {
+		this.moveType = moveType;
 	}
 
 	public Game getGame() {
@@ -52,11 +68,11 @@ public class Move implements Serializable {
 		this.game = game;
 	}
 
-	public User getUser() {
-		return user;
+	public Player getPlayer() {
+		return player;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -55,7 +56,7 @@ public class PlayerService {
         return null;
     }
 
-    public User getPlayer(Long gameId, Integer playerId) {
+    public Player getPlayer(Long gameId, Integer playerId) {
         log.debug("getPlayer: " + gameId);
 
         Game game = gameService.getGame(gameId);
@@ -67,17 +68,12 @@ public class PlayerService {
         return null;
     }
 
-    public ArrayList<Player> getPlayers(Long gameId) {
-        log.debug("listPlayers");
+    public List<Player> getPlayers(Long gameId) {
+        log.debug("listPlayers of Game " + gameId);
 
-        /*// TODO implement getPlayers in either userService or playerService
+        List<Player> result = new ArrayList<>();
+        playerRepository.findAll().forEach(result::add);
 
-        Game game = gameRepository.findOne(gameId);
-        if (game != null) {
-            // Maybe as a List
-            return game.getPlayers();
-        }*/
-
-        return null;
+        return result;
     }
 }

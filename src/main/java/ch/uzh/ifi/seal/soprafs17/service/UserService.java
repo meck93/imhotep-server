@@ -37,7 +37,6 @@ public class UserService {
         newUser.setName(name);
         newUser.setUsername(username);
         newUser.setStatus(UserStatus.OFFLINE);
-        newUser.setGames(new ArrayList<Game>());
         newUser.setToken(UUID.randomUUID().toString());
 
         userRepository.save(newUser);

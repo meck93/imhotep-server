@@ -40,7 +40,7 @@ public class Game implements Serializable {
 	private List<Round> rounds;*/
 
     // TODO Change to correct mapping into Player and not User
-    @OneToMany(mappedBy="game")
+    @OneToMany
     private List<Player> players;
 
     @Column
