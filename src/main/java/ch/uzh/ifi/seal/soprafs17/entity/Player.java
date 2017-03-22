@@ -11,6 +11,9 @@ public class Player implements Serializable {
     // TODO Implementation of the Player Entity
     private static final long serialVersionUID = 1L;
 
+    //did a constructor
+    public Player(User user){this.user = user;}
+
     @Id
     @GeneratedValue
     private long id;
