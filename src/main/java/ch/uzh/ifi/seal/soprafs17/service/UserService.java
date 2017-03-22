@@ -51,6 +51,18 @@ public class UserService {
         log.debug("Deleted User: {}", user);
     }
 
+    /*
+    This method deletes all the users in the userRepository and returns a list of all still existing users - should always be empty.
+    Only implemented for testing purposes of the frontend.
+     */
+    public List<User> deleteAll(){
+        userRepository.deleteAll();
+        List<User> list = new ArrayList<>();
+        userRepository.findAll().forEach(list::add);
+
+        return list;
+    }
+
     // Mo's Testing bullshit
     public List<User> listUsers() {
         log.debug("listUsers");
