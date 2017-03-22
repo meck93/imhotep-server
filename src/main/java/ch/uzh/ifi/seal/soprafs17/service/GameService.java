@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.User;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
@@ -68,9 +69,12 @@ public class GameService {
             Game game1 = createGame("dave","sepp",GameStatus.RUNNING);
             Game game2 = createGame("hans","paul",GameStatus.PENDING);
             Game game3 = createGame("fritz","peter",GameStatus.RUNNING);
+
             game1.setAmountOfPlayers(2);
             game2.setAmountOfPlayers(3);
             game3.setAmountOfPlayers(4);
+
+            hasBeenCreated = true;
         }
 
         List<Game> result = new ArrayList<>();
