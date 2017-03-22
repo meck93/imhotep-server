@@ -16,7 +16,7 @@ import java.util.List;
 
 
 /**
- * Service class for managing users.
+ * Service class for managing players.
  */
 @Service
 @Transactional
@@ -42,6 +42,24 @@ public class PlayerService {
 
         Game game = gameService.getGame(gameId);
         User player = userService.getUserByToken(userToken);
+
+        // Cristi and daves code
+        Game game = gameService.getGame(gameId);
+        User user = userService.getUserByToken(userToken);
+        Player player = new Player(user);
+
+        if (game != null && user != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
+            game.getPlayers().add(player);
+
+            log.debug("Game: " + game.getName() + " - player added: " + player.getUser().getUsername());
+            return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
+        }
+
+        else {
+            log.error("Error adding player with token: " + userToken);
+        }
+
+        // end of our code
 
         if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
             game.getPlayers().add(player);
