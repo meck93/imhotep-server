@@ -24,6 +24,7 @@ public class LobbyService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
     private final GameService gameService;
 
+
     private boolean hasBeenCreated = false;
 
     @Autowired
@@ -39,8 +40,6 @@ public class LobbyService {
             Game game1 = gameService.createGame("dave","david",GameStatus.RUNNING);
             Game game2 = gameService.createGame("dave2","david2",GameStatus.PENDING);
             Game game3 = gameService.createGame("dave3","david3",GameStatus.RUNNING);
-
-            hasBeenCreated = true;
         }
 
         return gameService.listGames();
