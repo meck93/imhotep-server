@@ -36,12 +36,38 @@ public class Game implements Serializable {
 	@Column 
 	private Integer currentPlayer;
 
-    @OneToMany(mappedBy="game")
-    private List<Move> moves;
-    
-    @ManyToMany(mappedBy="games")
-    private List<User> players;
-    
+	/*@OneToMany(mappedBy= "game")
+	private List<Round> rounds;*/
+
+    // TODO Change to correct mapping into Player and not User
+    @OneToMany
+    private List<Player> players;
+
+    @Column
+	private int roundCounter;
+
+   /* @OneToOne(MappedBy= "game")
+	private MarketPlace marketPlace;*/
+
+   /* @OneToMany(MappedBy= "game")
+	private List<IRateable> buildingSites;*/
+
+   /*
+   * Amount of players exists only for providing
+   * dummy data to the client.
+   */
+
+	@Column
+	private int amountOfPlayers;
+
+	public int getAmountOfPlayers() {
+		return amountOfPlayers;
+	}
+
+	public void setAmountOfPlayers(int amountOfPlayers) {
+		this.amountOfPlayers = amountOfPlayers;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -66,22 +92,6 @@ public class Game implements Serializable {
 		this.owner = owner;
 	}
 
-	public List<Move> getMoves() {
-		return moves;
-	}
-
-	public void setMoves(List<Move> moves) {
-		this.moves = moves;
-	}
-
-	public List<User> getPlayers() {
-		return players;
-	}
-
-	public void setPlayers(List<User> players) {
-		this.players = players;
-	}
-
 	public GameStatus getStatus() {
 		return status;
 	}
@@ -97,8 +107,20 @@ public class Game implements Serializable {
 	public void setCurrentPlayer(Integer currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
-   
-	public User getNextPlayer() {
-		return getPlayers().get((getCurrentPlayer() + 1) % getPlayers().size());
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<Player> players) {
+		this.players = players;
+	}
+
+	public int getRoundCounter() {
+		return roundCounter;
+	}
+
+	public void setRoundCounter(int roundCounter) {
+		this.roundCounter = roundCounter;
 	}
 }

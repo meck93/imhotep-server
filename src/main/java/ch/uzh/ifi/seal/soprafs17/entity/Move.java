@@ -1,32 +1,40 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
+import ch.uzh.ifi.seal.soprafs17.constant.MoveType;
+
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Move implements Serializable {
-	
+	//TODO Implement the abstract class move from the class diagram - be careful the MoveRepository doesn't work with abstract classes
+
 	/**
-	 * 
+	 *  Implements the Move class
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue
 	private Long id;
+
+	@NotNull
+	@Column
+	private String name;
+
+	@NotNull
+	@Column
+	private MoveType moveType;
 	
     @ManyToOne
     @JoinColumn(name="GAME_ID")
     private Game game;
     
     @ManyToOne
-    @JoinColumn(name="USER_ID")
-    private User user;
+    @JoinColumn(name="PLAYER_ID")
+    private Player player;
 
 	public Long getId() {
 		return id;
@@ -34,6 +42,22 @@ public class Move implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public MoveType getMoveType() {
+		return moveType;
+	}
+
+	public void setMoveType(MoveType moveType) {
+		this.moveType = moveType;
 	}
 
 	public Game getGame() {
@@ -44,11 +68,11 @@ public class Move implements Serializable {
 		this.game = game;
 	}
 
-	public User getUser() {
-		return user;
+	public Player getPlayer() {
+		return player;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

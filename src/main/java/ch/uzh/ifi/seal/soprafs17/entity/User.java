@@ -3,17 +3,14 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 
 @Entity
 public class User implements Serializable {
+
+	//TODO implement the correct mapping into/from the player class
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,11 +30,8 @@ public class User implements Serializable {
 	@Column(nullable = false) 
 	private UserStatus status;
 
-    @ManyToMany
-    private List<Game> games;
-	
-    @OneToMany(mappedBy="user")
-    private List<Move> moves;
+    @OneToOne(mappedBy = "user")
+	private Player player;
 
 	public Long getId() {
 		return id;
@@ -63,22 +57,6 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	public List<Game> getGames() {
-		return games;
-	}
-
-	public void setGames(List<Game> games) {
-		this.games = games;
-	}
-
-	public List<Move> getMoves() {
-		return moves;
-	}
-
-	public void setMoves(List<Move> moves) {
-		this.moves = moves;
-	}
-
 	public String getToken() {
 		return token;
 	}
@@ -93,5 +71,13 @@ public class User implements Serializable {
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }
