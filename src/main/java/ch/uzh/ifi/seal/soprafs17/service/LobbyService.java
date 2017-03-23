@@ -28,10 +28,22 @@ public class LobbyService {
     public LobbyService(GameService gameService) {
         this.gameService = gameService;
         }
-
+    /*
+     * This method returns a list of all games
+     */
     public List<Game> listGames(){
         return gameService.listGames();
     }
+    /*
+     * Calls the gameService to create a Game
+     */
+    public Game createGame(Game game, Long userId){
+        Game newGame = gameService.createGame(game.getName(), game.getOwner());
+        //Player newPlayer = playerService.createPlayer(userId);
+        return newGame;
+    }
+
+
 
 
 }

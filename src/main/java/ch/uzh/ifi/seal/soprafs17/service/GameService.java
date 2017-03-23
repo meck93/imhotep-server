@@ -34,13 +34,16 @@ public class GameService {
         this.gameRepository = gameRepository;
         this.userService = userService;
     }
-
-    public Game createGame(String name, String owner, GameStatus status) {
+    /*
+     * Implementation of the createGame method:
+     * @Param Name - Name of the Game, Owner - Name of the User/Player
+     */
+    public Game createGame(String name, String owner) {
         // Creating the Game and saving it to the Repository
         Game newGame = new Game();
         newGame.setName(name);
         newGame.setOwner(owner);
-        newGame.setStatus(status);
+        newGame.setStatus(GameStatus.PENDING);
         gameRepository.save(newGame);
 
         log.debug("Created Information for Game: {}", newGame);
@@ -123,7 +126,7 @@ public class GameService {
     public void stopGame(Long gameId, String userToken) {
         log.debug("stopGame: " + gameId);
 
-        // TODO implement stopGame
+        /*// TODO implement stopGame
 
         Game game = gameRepository.findOne(gameId);
         // Same access question as above
@@ -131,7 +134,7 @@ public class GameService {
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
-        }
+        }*/
     }
 
     /*public List<User> getPlayers(Long gameId) {
