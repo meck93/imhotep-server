@@ -119,6 +119,8 @@ public class GameService {
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
         }*/
+
+        //TODO: Delete game after all Game has been stoped & all players have been removed
     }
 
     /*public List<User> getPlayers(Long gameId) {

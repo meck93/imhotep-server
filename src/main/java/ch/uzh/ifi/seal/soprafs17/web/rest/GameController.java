@@ -37,13 +37,10 @@ public class GameController extends GenericController {
     static final String CONTEXT = "/games";
 
     private GameService gameService;
-    private PlayerService playerService;
-
 
     @Autowired
-    public GameController(GameService gameService, PlayerService playerService){
+    public GameController(GameService gameService){
         this.gameService = gameService;
-        this.playerService = playerService;
     }
 
     // TODO Correct the implementation: Controller calls the service to do a action
@@ -59,6 +56,9 @@ public class GameController extends GenericController {
         return gameService.listGames();
     }
 
+    /*
+     * Is this function necessary? -> The games are created in the Lobby
+     */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     // TODO Rename addGame in both Controller and Service to createGame
@@ -82,5 +82,14 @@ public class GameController extends GenericController {
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         gameService.stopGame(gameId, userToken);
+    }
+    /*
+     * This request deletes a game entity. Only exists for the frontend for testing purposes.
+     * @Param
+     */
+    @RequestMapping(value = "/{gameId}/delete", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteGame(@PathVariable Long gameId) {
+        gameService.deleteGame(gameId);
     }
 }
