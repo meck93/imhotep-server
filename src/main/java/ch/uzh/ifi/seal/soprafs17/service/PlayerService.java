@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,8 @@ public class PlayerService {
             newPlayer.setUser(user);
             newPlayer.setId(user.getId());
             newPlayer.setGame(game);
-            newPlayer.setColor(Color.BLACK);
+            // Color destroys the JSON response
+            //newPlayer.setColor(Color.BLACK);
             newPlayer.setMoves(new ArrayList<>());
             newPlayer.setPoints(0);
 

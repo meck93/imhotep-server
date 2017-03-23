@@ -1,5 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
@@ -17,12 +19,14 @@ public class Player implements Serializable {
     //TODO implement the correct mapping into the User and Move entity
     @OneToOne
     @JoinColumn(name="USER_ID")
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private List<Move> moves;
 
     @ManyToOne(targetEntity = Game.class)
+    @JsonIgnore // -> Use @JsonIdenityInfo
     private Game game;
 
     @Column
