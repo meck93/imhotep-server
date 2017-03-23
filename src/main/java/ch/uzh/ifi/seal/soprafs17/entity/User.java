@@ -1,11 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
-import java.io.Serializable;
-import java.util.List;
+import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 
 import javax.persistence.*;
-
-import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
+import java.io.Serializable;
 
 @Entity
 public class User implements Serializable {

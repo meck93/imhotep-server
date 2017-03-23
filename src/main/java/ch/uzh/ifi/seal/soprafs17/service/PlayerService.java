@@ -1,9 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Player;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
 import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

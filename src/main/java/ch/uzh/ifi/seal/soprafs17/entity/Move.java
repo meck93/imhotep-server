@@ -2,10 +2,9 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.MoveType;
 
-import java.io.Serializable;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
 public class Move implements Serializable {

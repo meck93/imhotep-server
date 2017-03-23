@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Move;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.MoveRepository;

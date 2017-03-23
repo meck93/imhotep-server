@@ -1,10 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
+import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.*;
 
 @Entity
 public class Player implements Serializable {
