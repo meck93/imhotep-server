@@ -44,6 +44,7 @@ public class GameService {
         newGame.setName(name);
         newGame.setOwner(owner);
         newGame.setStatus(GameStatus.PENDING);
+        newGame.setAmountOfPlayers(0);
         gameRepository.save(newGame);
 
         log.debug("Created Information for Game: {}", newGame);
@@ -61,23 +62,6 @@ public class GameService {
 
     public List<Game> listGames() {
         log.debug("listGames");
-
-        /*
-        * This block sends just dummy data to the client.
-        * We will delete it as soon as the other functions
-        * are implemented.
-        */
-        if (!hasBeenCreated) {
-            Game game1 = createGame("dave","sepp",GameStatus.RUNNING);
-            Game game2 = createGame("hans","paul",GameStatus.PENDING);
-            Game game3 = createGame("fritz","peter",GameStatus.RUNNING);
-
-            game1.setAmountOfPlayers(2);
-            game2.setAmountOfPlayers(3);
-            game3.setAmountOfPlayers(4);
-
-            hasBeenCreated = true;
-        }
 
         List<Game> result = new ArrayList<>();
         gameRepository.findAll().forEach(result::add);
