@@ -38,11 +38,11 @@ public class LobbyService {
     /*
      * Calls the gameService to create a Game
      */
-    public Game createGame(Game game, String userToken){
+    public Game createGame(Game game, Long userId){
         // Creates a new game
         Game newGame = gameService.createGame(game.getName(), game.getOwner());
         // Creates a new player from the user who created the game
-        Player newPlayer = playerService.createPlayer(newGame.getId(), userToken);
+        Player newPlayer = playerService.createPlayer(newGame.getId(), userId);
         // Adds the new player to the game
         //String value = playerService.addPlayer(newGame.getId(), newPlayer.getId());
 

@@ -12,7 +12,7 @@ public class Player implements Serializable {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     //TODO implement the correct mapping into the User and Move entity
     @OneToOne

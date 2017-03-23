@@ -47,7 +47,7 @@ public class LobbyController {
     @RequestMapping(method = RequestMethod.POST, value = "games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public Game createGame(@RequestBody Game game, @RequestParam String userToken){
-        return lobbyService.createGame(game, userToken);
+    public Game createGame(@RequestBody Game game, @RequestParam Long userId){
+        return lobbyService.createGame(game, userId);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,28 +40,30 @@ public class PlayerService {
      * Creates a new player in the database
      * @Param gameId - to identify the correct game, userToken - so the player can be associated to a specific user
      */
-    public Player createPlayer(Long gameId, String userToken) {
-        log.debug("creating Player from User with userToken: " + userToken);
+    public Player createPlayer(Long gameId, Long userId) {
+        log.debug("creating Player from User with userId: " + userId);
 
         Game game = gameService.getGameById(gameId);
-
-        // TODO: Fix BUG #1 User cannot be found for some reason using the userToken
-        User user = userService.getUserByToken(userToken);
+        User user = userService.getUser(userId);
 
         if ((game != null) && (user != null) && (game.getPlayers().size() < GameConstants.MAX_PLAYERS)) {
             Player newPlayer = new Player();
             newPlayer.setUser(user);
+            newPlayer.setId(user.getId());
             newPlayer.setGame(game);
+            newPlayer.setColor(Color.BLACK);
+            newPlayer.setMoves(new ArrayList<>());
+            newPlayer.setPoints(0);
 
             playerRepository.save(newPlayer);
 
             return newPlayer;
         }
         else {
-            log.error("Error creating player with token: " + userToken);
+            log.error("Error creating player with userId: " + userId);
+            // TODO: Exception handling if creating a player doesn't work
+            return null;
         }
-        // TODO: Exception handling if creating a player doesn't work
-        return null;
     }
 
     /*
