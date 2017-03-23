@@ -83,7 +83,15 @@ public class UserService {
         log.debug("getUser: " + userToken);
 
         // TODO Implement check to see whether the user exists
-        return userRepository.findByToken(userToken);
+        User user = userRepository.findByToken(userToken);
+
+        if (user != null) {
+            return user;
+        }
+        else {
+            log.error("Error: user with token: " + userToken + " could not be found");
+            return null;
+        }
     }
 
     public User login(Long userId){

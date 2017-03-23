@@ -26,15 +26,19 @@ public class PlayerController extends GenericController {
         this.playerService = playerService;
     }
 
+/*    *//*
+     * This method handles the request for a new Player wanting to join a game.
+     * @Param gameId - which game to join, userToken - which user wants to join the game
+     *//*
     @RequestMapping( method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        return playerService.addPlayer(gameId, userToken);
-    }
+    public String joinGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+        return playerService.joinGame(gameId, userToken);
+    }*/
 
     @RequestMapping(value = "/{playerId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Player getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
+    public Player getPlayer(@PathVariable Long gameId, @PathVariable Long playerId) {
         return playerService.getPlayer(gameId, playerId);
     }
 

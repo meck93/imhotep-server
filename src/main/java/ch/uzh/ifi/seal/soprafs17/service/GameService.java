@@ -27,8 +27,6 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserService userService;
 
-    private boolean hasBeenCreated = false; // Just for the dummy data
-
     @Autowired
     public GameService(GameRepository gameRepository, UserService userService) {
         this.gameRepository = gameRepository;
@@ -44,7 +42,9 @@ public class GameService {
         newGame.setName(name);
         newGame.setOwner(owner);
         newGame.setStatus(GameStatus.PENDING);
+        newGame.setPlayers(new ArrayList<>());
         newGame.setAmountOfPlayers(0);
+
         gameRepository.save(newGame);
 
         log.debug("Created Information for Game: {}", newGame);
@@ -69,6 +69,12 @@ public class GameService {
         return result;
     }
 
+    public Game findById(Long gameId) {
+        // TODO: Excepetion handling if not found
+        return gameRepository.findById(gameId);
+    }
+
+    // TODO: Determine if this function is still needed
     public String addGame(Game game, String userToken) {
         // TODO Implement the function which adds a Game
         log.debug("addGame: " + game);
@@ -89,11 +95,12 @@ public class GameService {
         return null;
     }
 
-    public Game getGame(Long gameId) {
+    public Game getGameById(Long gameId) {
         log.debug("getGame: " + gameId);
-        return gameRepository.findOne(gameId);
+        return gameRepository.findById(gameId);
     }
 
+    // TODO: Change parameter to player specific not user specific
     public void startGame(Long gameId, String userToken) {
         log.debug("startGame: " + gameId);
 
@@ -107,6 +114,7 @@ public class GameService {
         }*/
     }
 
+    // TODO: Change parameter to player specific not user specific
     public void stopGame(Long gameId, String userToken) {
         log.debug("stopGame: " + gameId);
 
@@ -122,18 +130,4 @@ public class GameService {
 
         //TODO: Delete game after all Game has been stoped & all players have been removed
     }
-
-    /*public List<User> getPlayers(Long gameId) {
-        log.debug("listPlayers");
-
-        // TODO implement getPlayers in either userService or playerService
-
-        Game game = gameRepository.findOne(gameId);
-        if (game != null) {
-            // Maybe as a List
-            return game.getPlayers();
-        }
-
-        return null;
-    }*/
 }

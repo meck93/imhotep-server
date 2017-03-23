@@ -52,7 +52,7 @@ public class GameController extends GenericController {
     @RequestMapping(value = "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public Game getGame(@PathVariable Long gameId) {
-        return gameService.getGame(gameId);
+        return gameService.getGameById(gameId);
     }
 
     @RequestMapping(value = "/{gameId}/start", method = RequestMethod.POST)

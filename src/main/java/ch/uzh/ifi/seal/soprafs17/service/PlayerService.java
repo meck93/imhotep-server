@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.User;
 import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,54 +35,73 @@ public class PlayerService {
         this.gameService = gameService;
         this.userService = userService;
     }
+    /*
+     * Creates a new player in the database
+     * @Param gameId - to identify the correct game, userToken - so the player can be associated to a specific user
+     */
+    public Player createPlayer(Long gameId, String userToken) {
+        log.debug("creating Player from User with userToken: " + userToken);
 
-    // TODO check the implementation and handling of this method
-    public String addPlayer(Long gameId, String userToken) {
-       /* log.debug("addPlayer: " + userToken);
+        Game game = gameService.getGameById(gameId);
 
-        Game game = gameService.getGame(gameId);
-        User player = userService.getUserByToken(userToken);
-
-        // Cristi and daves code
-        Game game = gameService.getGame(gameId);
+        // TODO: Fix BUG #1 User cannot be found for some reason using the userToken
         User user = userService.getUserByToken(userToken);
-        Player player = new Player(user);
 
-        if (game != null && user != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-            game.getPlayers().add(player);
+        if ((game != null) && (user != null) && (game.getPlayers().size() < GameConstants.MAX_PLAYERS)) {
+            Player newPlayer = new Player();
+            newPlayer.setUser(user);
+            newPlayer.setGame(game);
 
-            log.debug("Game: " + game.getName() + " - player added: " + player.getUser().getUsername());
-            return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
+            playerRepository.save(newPlayer);
+
+            return newPlayer;
         }
-
         else {
-            log.error("Error adding player with token: " + userToken);
+            log.error("Error creating player with token: " + userToken);
         }
-
-        // end of our code
-
-        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-            game.getPlayers().add(player);
-            log.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
-            return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
-        }
-
-        else {
-            log.error("Error adding player with token: " + userToken);
-        }
-*/
+        // TODO: Exception handling if creating a player doesn't work
         return null;
     }
 
-    public Player getPlayer(Long gameId, Integer playerId) {
+    /*
+     * Adds an existing player to an existing game.
+     * @Param gameId, playerId
+     */
+    // TODO: The relation between the game and the player doesn't work yet
+    public String addPlayer(Long gameId, Long playerId){
+        Player player = playerRepository.findOne(playerId);
+
+        // This doesn't work yet. As game is not saved -> Question is the relation between game and player.
+        Game game = player.getGame();
+        game.getPlayers().add(player);
+
+        log.debug("Game: " + game.getName() + " - player added: " + player.getUser().getUsername());
+
+        return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
+    }
+
+    public Player getPlayer(Long gameId, Long playerId) {
         log.debug("getPlayer: " + gameId);
 
-        Game game = gameService.getGame(gameId);
-        // TODO implement checking if game exisits
+        Player player = playerRepository.findOne(playerId);
 
-        //TODO maybe check if player exists
-        game.getPlayers().get(playerId);
+        // Verifying that the player exists in the game
+        if (player != null && player.getGame().getId().equals(gameId)){
+            return player;
+        }
 
+        // TODO Exception handling if player doesn't exist
+        return null;
+    }
+
+    public Player findById(Long playerId){
+        Player player = playerRepository.findOne(playerId);
+
+        if (player != null){
+            return player;
+        }
+
+        //TODO: Exception handling when player doesn't exist
         return null;
     }
 

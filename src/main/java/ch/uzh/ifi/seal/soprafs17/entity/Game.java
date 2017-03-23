@@ -18,10 +18,10 @@ public class Game implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@Column(nullable = false) 
+	@Column(nullable = false, unique = true)
 	private String name;
 	
-	@Column(nullable = false) 
+	@Column(nullable = false, unique = true)
 	private String owner;
 	
 	@Column 
@@ -34,7 +34,7 @@ public class Game implements Serializable {
 	private List<Round> rounds;*/
 
     // TODO Change to correct mapping into Player and not User
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<Player> players;
 
     @Column
