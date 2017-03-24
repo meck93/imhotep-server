@@ -42,7 +42,7 @@ public class PlayerService {
     public Player createPlayer(Long gameId, Long userId) {
         log.debug("creating Player from User with userId: " + userId);
 
-        Game game = gameService.getGameById(gameId);
+        Game game = gameService.findById(gameId);
         User user = userService.getUser(userId);
 
         if ((game != null) && (user != null) && (game.getPlayers().size() < GameConstants.MAX_PLAYERS)) {
