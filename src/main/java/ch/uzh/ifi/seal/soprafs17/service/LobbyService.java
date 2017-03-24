@@ -48,8 +48,11 @@ public class LobbyService {
 
         return newGame;
     }
-
-
-
-
+    /*
+     * Implementation of a User joining a Game. User -> Player. Player -> Joins Game.
+     */
+    public String joinGame(Long gameId, Long userId){
+        Player newPlayer = playerService.createPlayer(gameId, userId);
+        return playerService.addPlayer(gameId, newPlayer.getId());
+    }
 }

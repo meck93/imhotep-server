@@ -42,12 +42,24 @@ public class LobbyController {
     /*
      * Context: /lobby/games
      * Creates a game
-     * @Param Game a game body (at least all non-nullable fields), User
+     * @Param Game a game body (at least all non-nullable fields), userId - User
      */
     @RequestMapping(method = RequestMethod.POST, value = "games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Game createGame(@RequestBody Game game, @RequestParam Long userId){
         return lobbyService.createGame(game, userId);
+    }
+
+    /*
+     * Context: /lobby/games/{gameId}
+     * Let's a user join a game / let's a user become a player
+     * @Param Game a game body (at least all non-nullable fields), userId - User
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "games/{gameId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String joinGame(@RequestParam("gameId") Long gameId, @RequestParam("userId") Long userId){
+        return lobbyService.joinGame(gameId, userId);
     }
 }
