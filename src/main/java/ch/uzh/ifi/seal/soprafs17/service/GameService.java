@@ -3,7 +3,6 @@ package ch.uzh.ifi.seal.soprafs17.service;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Player;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +76,7 @@ public class GameService {
         game.getPlayers().add(player);
         game.setAmountOfPlayers(game.getAmountOfPlayers() + 1);
         gameRepository.save(game);
+
         log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
 
         return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
@@ -84,63 +84,38 @@ public class GameService {
 
     public Game findById(Long gameId) {
         // TODO: Excepetion handling if not found
-        return gameRepository.findById(gameId);
-    }
-
-    // TODO: Determine if this function is still needed
-    public String addGame(Game game, String userToken) {
-        // TODO Implement the function which adds a Game
-        log.debug("addGame: " + game);
-
-        User owner = userService.getUserByToken(userToken);
-
-        if (owner != null) {
-            // Started a little bit
-            game.setStatus(GameStatus.PENDING);
-            game.setCurrentPlayer(1);
-
-            game = gameRepository.save(game);
-
-            return "/games" + "/" + game.getId();
-        }
-
-        // We need to change this: should not return NULL
-        return null;
-    }
-
-    public Game getGameById(Long gameId) {
         log.debug("getGame: " + gameId);
         return gameRepository.findById(gameId);
     }
 
     // TODO: Change parameter to player specific not user specific
-    public void startGame(Long gameId, String userToken) {
+    public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
 
-        // TODO figure out where the check needs to happen (Service or Controller) & implement startGame() here
+        // TODO Implement the check & implement startGame() here
+        Game game = gameRepository.findOne(gameId);
+        /*Player player = playerService.
+        // gameService cannot call the playerService -> serializable loop
 
-/*        Game game = gameRepository.findOne(gameId);
-        // Same access question as above
-        User owner = userService.getUserByToken(userToken);
+        // TODO: check that the player which started the game is the owner of the game
+        if (owner != null && game != null && game.getOwner().equals()) {
 
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-        }*/
+        }
+        */
     }
 
-    // TODO: Change parameter to player specific not user specific
-    public void stopGame(Long gameId, String userToken) {
+    public void stopGame(Long gameId, Long playerId) {
         log.debug("stopGame: " + gameId);
 
-        /*// TODO implement stopGame
-
+        // TODO implement stopGame
         Game game = gameRepository.findOne(gameId);
         // Same access question as above
-        User owner = userService.getUserByToken(userToken);
+        /*User owner = userService.getUserByToken(userToken);
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
         }*/
 
-        //TODO: Delete game after all Game has been stoped & all players have been removed
+        //TODO: Delete game after all Game has been stopped & all players have been removed
     }
 }

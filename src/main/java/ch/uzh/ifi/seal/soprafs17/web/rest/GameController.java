@@ -40,31 +40,24 @@ public class GameController extends GenericController {
     }
 
     /*
-     * Is this function necessary? -> The games are created in the Lobby
+     * Handles the request for the game with Id: {gameId}
      */
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    // TODO Rename addGame in both Controller and Service to createGame
-    public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
-        return gameService.addGame(game, userToken);
-    }
-
     @RequestMapping(value = "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public Game getGame(@PathVariable Long gameId) {
-        return gameService.getGameById(gameId);
+        return gameService.findById(gameId);
     }
 
     @RequestMapping(value = "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        gameService.startGame(gameId, userToken);
+    public void startGame(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
+        gameService.startGame(gameId, playerId);
     }
 
     @RequestMapping(value = "/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        gameService.stopGame(gameId, userToken);
+    public void stopGame(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
+        gameService.stopGame(gameId, playerId);
     }
     /*
      * This request deletes a game entity. Only exists for the frontend for testing purposes.
