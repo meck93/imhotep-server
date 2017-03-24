@@ -44,7 +44,7 @@ public class LobbyService {
         // Creates a new player from the user who created the game
         Player newPlayer = playerService.createPlayer(newGame.getId(), userId);
         // Adds the new player to the game
-        //String value = playerService.addPlayer(newGame.getId(), newPlayer.getId());
+        String value = playerService.addPlayer(newGame.getId(), newPlayer.getId());
 
         return newGame;
     }

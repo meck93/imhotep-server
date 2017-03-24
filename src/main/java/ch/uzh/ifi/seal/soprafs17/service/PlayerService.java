@@ -73,14 +73,7 @@ public class PlayerService {
     // TODO: The relation between the game and the player doesn't work yet
     public String addPlayer(Long gameId, Long playerId){
         Player player = playerRepository.findOne(playerId);
-
-        // This doesn't work yet. As game is not saved -> Question is the relation between game and player.
-        Game game = player.getGame();
-        game.getPlayers().add(player);
-
-        log.debug("Game: " + game.getName() + " - player added: " + player.getUser().getUsername());
-
-        return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
+        return gameService.addPlayer(gameId, player);
     }
 
     public Player getPlayer(Long gameId, Long playerId) {

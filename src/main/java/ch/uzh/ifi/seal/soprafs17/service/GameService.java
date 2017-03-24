@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.User;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
@@ -67,6 +68,18 @@ public class GameService {
         gameRepository.findAll().forEach(result::add);
 
         return result;
+    }
+    /*
+     * Adds an existing player to the game
+     */
+    public String addPlayer(Long gameId, Player player){
+        Game game = gameRepository.findById(gameId);
+        game.getPlayers().add(player);
+        game.setAmountOfPlayers(game.getAmountOfPlayers() + 1);
+        gameRepository.save(game);
+        log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
+
+        return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
     }
 
     public Game findById(Long gameId) {
