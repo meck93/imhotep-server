@@ -102,7 +102,7 @@ public class PlayerService {
     }
 
     public List<Player> getPlayers(Long gameId) {
-        log.debug("listPlayers of Game " + gameId);
+        log.debug("list Players of Game " + gameId);
 
         List<Player> result = new ArrayList<>();
         playerRepository.findAll().forEach(result::add);
