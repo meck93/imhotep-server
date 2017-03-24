@@ -107,6 +107,13 @@ public class PlayerService {
         List<Player> result = new ArrayList<>();
         playerRepository.findAll().forEach(result::add);
 
+        // only selecting the users associated to the game
+        for (Player player : result) {
+            if (player.getGame().getId().equals(gameId)) {
+                result.remove(player);
+            }
+        }
+
         return result;
     }
 }
