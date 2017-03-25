@@ -75,12 +75,13 @@ public class GameService {
         Game game = gameRepository.findById(gameId);
         game.getPlayers().add(player);
         // TODO: Improve the Amount of Players
-        game.setAmountOfPlayers(game.getAmountOfPlayers() + 1);
+        int amountOfPlayers = game.getAmountOfPlayers() + 1;
+        game.setAmountOfPlayers(amountOfPlayers);
         gameRepository.save(game);
 
         log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
 
-        return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
+        return "games" + "/" + gameId + "/players/" + amountOfPlayers;
     }
 
     public Game findById(Long gameId) {
