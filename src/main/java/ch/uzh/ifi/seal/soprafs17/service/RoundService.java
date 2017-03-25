@@ -4,6 +4,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
  * Created by Cristian on 25.03.2017.
  */
 
+import ch.uzh.ifi.seal.soprafs17.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,5 +22,10 @@ public class RoundService {
         @Autowired
         public RoundService(RoundRepository roundRepository) {
             this.roundRepository = roundRepository;
+        }
+
+        public Round testRound(){
+                Round testRound = new Round();
+                return testRound;
         }
 }

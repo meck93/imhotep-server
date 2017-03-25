@@ -4,6 +4,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
  * Created by Cristian on 25.03.2017.
  */
 
+import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundCardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,4 +23,10 @@ public class RoundCardService {
     public RoundCardService(RoundCardRepository roundCardRepository) {
         this.roundCardRepository = roundCardRepository;
     }
+
+    public RoundCard roundCardInfo(){
+        RoundCard roundCard = new RoundCard();
+        return roundCard;
+    }
+
 }
