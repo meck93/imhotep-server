@@ -11,7 +11,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 @Entity
-public class MarketCard implements Serializable {
+public class MarketCard extends Card implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
