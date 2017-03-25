@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity
-public class RoundCard implements Serializable {
+public class RoundCard extends Card implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
