@@ -73,8 +73,9 @@ public class GameService {
      */
     public String addPlayer(Long gameId, Player player){
         Game game = gameRepository.findById(gameId);
+        // adds player to the game
         game.getPlayers().add(player);
-        // TODO: Improve the Amount of Players
+        // sets the correct amount of players
         int amountOfPlayers = game.getAmountOfPlayers() + 1;
         game.setAmountOfPlayers(amountOfPlayers);
         gameRepository.save(game);
