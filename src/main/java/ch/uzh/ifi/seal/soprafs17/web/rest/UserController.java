@@ -71,4 +71,12 @@ public class UserController extends GenericController {
     public void logout(@PathVariable Long userId, @RequestParam("token") String userToken) {
         userService.logout(userId, userToken);
     }
+    /*
+    This method handles the request to delete all users. Only implemented for testing purposes of the frontend.
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "deleteAll")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> deleteAll(){
+        return userService.deleteAll();
+    }
 }

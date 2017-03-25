@@ -112,12 +112,12 @@ public class GameService {
 
         // TODO figure out where the check needs to happen (Service or Controller) & implement startGame() here
 
-        Game game = gameRepository.findOne(gameId);
+/*        Game game = gameRepository.findOne(gameId);
         // Same access question as above
         User owner = userService.getUserByToken(userToken);
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-        }
+        }*/
     }
 
     public void stopGame(Long gameId, String userToken) {

@@ -14,10 +14,7 @@ import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 
 @Entity
 public class Game implements Serializable {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
 	@Id
