@@ -91,6 +91,11 @@ public class GameService {
         return gameRepository.findById(gameId);
     }
 
+    public int findAmountOfPlayers(Long gameId) {
+        log.debug("getAmountOfPlayers: " + gameId);
+        return gameRepository.findAmountOfPlayers(gameId);
+    }
+
     // TODO: Change parameter to player specific not user specific
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);

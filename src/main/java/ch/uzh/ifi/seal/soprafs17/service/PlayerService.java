@@ -43,6 +43,7 @@ public class PlayerService {
         log.debug("creating Player from User with userId: " + userId);
 
         Game game = gameService.findById(gameId);
+        int playerNumber = gameService.findAmountOfPlayers(gameId) + 1;
         User user = userService.getUser(userId);
 
         if ((game != null) && (user != null) && (game.getPlayers().size() < GameConstants.MAX_PLAYERS)) {
@@ -54,6 +55,7 @@ public class PlayerService {
             //newPlayer.setColor(Color.BLACK);
             newPlayer.setMoves(new ArrayList<>());
             newPlayer.setPoints(0);
+            newPlayer.setPlayerNumber(playerNumber);
 
             playerRepository.save(newPlayer);
 
