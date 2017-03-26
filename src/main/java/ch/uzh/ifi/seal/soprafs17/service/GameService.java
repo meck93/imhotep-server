@@ -25,12 +25,10 @@ public class GameService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final GameRepository gameRepository;
-    private final UserService userService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, UserService userService) {
+    public GameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-        this.userService = userService;
     }
     /*
      * Implementation of the createGame method:

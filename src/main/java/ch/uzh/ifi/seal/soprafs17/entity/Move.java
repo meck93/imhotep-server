@@ -56,14 +56,6 @@ public class Move implements Serializable {
 		this.moveType = moveType;
 	}
 
-	public Game getGame() {
-		return game;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
-	}
-
 	public Player getPlayer() {
 		return player;
 	}

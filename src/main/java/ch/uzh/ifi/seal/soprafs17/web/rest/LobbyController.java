@@ -59,7 +59,7 @@ public class LobbyController {
     @RequestMapping(method = RequestMethod.POST, value = "games/{gameId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String joinGame(@RequestParam("gameId") Long gameId, @RequestParam("userId") Long userId){
+    public String joinGame(@PathVariable("gameId") Long gameId, @RequestParam("userId") Long userId){
         return lobbyService.joinGame(gameId, userId);
     }
 }
