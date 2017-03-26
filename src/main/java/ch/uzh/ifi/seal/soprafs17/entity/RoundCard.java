@@ -24,7 +24,7 @@ public class RoundCard implements Serializable {
     @Column
     private RoundCardType heads;
 
-    //ManyToOne
+    //@OneToMany(targetEntity= Ship.class)
     private ArrayList<Ship> ships = new ArrayList<Ship>();
 
     public Long getId() {

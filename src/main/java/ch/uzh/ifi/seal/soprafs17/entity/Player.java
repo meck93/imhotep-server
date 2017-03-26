@@ -1,10 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
+import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.*;
 
 @Entity
 public class Player implements Serializable {
@@ -35,10 +34,8 @@ public class Player implements Serializable {
     @Column
     private int playerNumber;
 
-    /*
-    @ManyToOne or something like that
+    @OneToOne(targetEntity = SupplySled.class)
     private SupplySled supplySled;
-     */
 
     public long getId() {
         return id;

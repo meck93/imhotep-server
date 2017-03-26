@@ -4,10 +4,7 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  * Created by Cristian on 25.03.2017.
  */
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -29,8 +26,11 @@ public class Ship implements Serializable{
     //@OneToMany
     private ArrayList<Stone> stones = new ArrayList<Stone>();
 
-    //@ManyToOne(targetEntity = Round.class)
-    //private Round round;
+    @ManyToOne(targetEntity = Round.class)
+    private Round round;
+
+    @ManyToOne(targetEntity = RoundCard.class)
+    private RoundCard roundCard;
 
     private void unloadStone() { //to be filled
     }

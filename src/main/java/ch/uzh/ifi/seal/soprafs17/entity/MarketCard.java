@@ -17,10 +17,11 @@ public class MarketCard implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @Column
     private Color color;
 
-    //ManyToOne
-    //private MarketPlace marketPlace;
+    @ManyToOne()
+    private MarketPlace marketPlace;
 
     private void playCard() {
         // to be filled

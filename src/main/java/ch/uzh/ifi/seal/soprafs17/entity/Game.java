@@ -1,16 +1,10 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-
-import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 
 @Entity
 public class Game implements Serializable {
@@ -32,6 +26,9 @@ public class Game implements Serializable {
 	
 	@Column 
 	private Integer currentPlayer;
+
+	@OneToOne(targetEntity= StoneQuarry.class)
+	private StoneQuarry stoneQuarry;
 
 	/*@OneToMany(mappedBy= "game")
 	private List<Round> rounds;*/

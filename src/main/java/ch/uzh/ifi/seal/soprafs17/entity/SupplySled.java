@@ -8,6 +8,7 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class SupplySled implements Serializable {
 
     private static final int MAX_STONES = 5;
 
+    @OneToOne(targetEntity= Player.class)
     private Player player;
 
     private ArrayList<Stone> stones= new ArrayList<Stone>();

@@ -7,6 +7,7 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ public class StoneQuarry implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @OneToOne(targetEntity= Game.class)
     private Game game;
 
     private ArrayList<Stone> blackStones= new ArrayList<Stone>();

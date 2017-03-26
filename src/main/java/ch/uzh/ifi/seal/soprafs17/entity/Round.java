@@ -24,6 +24,9 @@ public class Round implements Serializable{
     @OneToMany
     private List<Move> moves = new ArrayList<Move>();
 
+    @OneToMany(targetEntity= Ship.class)
+    private List<Ship> ships = new ArrayList<Ship>();
+
     public RoundCard getCard() {
         return card;
     }
