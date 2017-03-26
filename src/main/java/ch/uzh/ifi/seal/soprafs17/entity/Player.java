@@ -24,6 +24,7 @@ public class Player implements Serializable {
     private User user;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Move> moves;
 
     @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)

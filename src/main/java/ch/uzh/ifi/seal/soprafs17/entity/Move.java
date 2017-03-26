@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.MoveType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,12 +23,13 @@ public class Move implements Serializable {
 	private MoveType moveType;
 	
     // TODO: Needs to be changed to Rounds?
-	@ManyToOne
+	/*@ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
     @JoinColumn(name="GAME_ID")
-    private Game game;
-    
-    @ManyToOne
+    private Round round;*/
+
+	@ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
     @JoinColumn(name="PLAYER_ID")
+	@JsonBackReference
     private Player player;
 
 	public Long getId() {
