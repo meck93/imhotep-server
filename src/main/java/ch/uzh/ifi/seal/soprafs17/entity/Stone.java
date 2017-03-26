@@ -1,15 +1,17 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
 /**
- * Created by Cristian on 25.03.2017.
+ * Created by Cristian on 26.03.2017.
  */
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.awt.*;
-import java.io.Serializable;
 
 @Entity
-public class MarketCard implements Serializable {
+public class Stone {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,14 +19,8 @@ public class MarketCard implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @Column
     private Color color;
-
-    //ManyToOne
-    //private MarketPlace marketPlace;
-
-    private void playCard() {
-        // to be filled
-    }
 
     public Long getId() {
         return id;

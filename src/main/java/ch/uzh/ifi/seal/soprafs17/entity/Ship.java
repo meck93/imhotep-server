@@ -4,10 +4,12 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  * Created by Cristian on 25.03.2017.
  */
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @Entity
 public class Ship implements Serializable{
@@ -18,6 +20,39 @@ public class Ship implements Serializable{
     @GeneratedValue
     private Long id;
 
+    @Column
+    private static final int MIN_STONES = 1;
+
+    @Column
+    public static int MAX_STONES; // add final and value
+
+    //@OneToMany
+    private ArrayList<Stone> stones = new ArrayList<Stone>();
+
     //@ManyToOne(targetEntity = Round.class)
     //private Round round;
+
+    private void unloadStone() { //to be filled
+    }
+
+    private void addStone(){
+        //to be filled
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public ArrayList<Stone> getStones() {
+        return stones;
+    }
+
+    public void setStones(ArrayList<Stone> stones) {
+        this.stones = stones;
+    }
+
 }
