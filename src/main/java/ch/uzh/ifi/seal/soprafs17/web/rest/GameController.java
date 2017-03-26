@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping(GameController.CONTEXT)
 public class GameController extends GenericController {
 
-    Logger log  = LoggerFactory.getLogger(GameController.class);
+    Logger log = LoggerFactory.getLogger(GameController.class);
 
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games";
@@ -27,13 +27,16 @@ public class GameController extends GenericController {
     private MarketPlaceService marketPlaceService;
     private ShipService shipService;
     private StoneService stoneService;
-
+    private StoneQuarryService stoneQuarryService;
+    private SupplySledService supplySledService;
 
     @Autowired
     public GameController(GameService gameService, PlayerService playerService,
                           MarketCardService marketCardService, RoundCardService roundCardService,
                           RoundService roundService, MarketPlaceService marketPlaceService,
-                          ShipService shipService, StoneService stoneService){
+                          ShipService shipService, StoneService stoneService,
+                          StoneQuarryService stoneQuarryService, SupplySledService supplySledService
+    ) {
         this.gameService = gameService;
         this.playerService = playerService;
         this.marketCardService = marketCardService;
@@ -42,6 +45,8 @@ public class GameController extends GenericController {
         this.marketPlaceService = marketPlaceService;
         this.shipService = shipService;
         this.stoneService = stoneService;
+        this.stoneQuarryService = stoneQuarryService;
+        this.supplySledService = supplySledService;
     }
 
     // TODO Correct the implementation: Controller calls the service to do a action
@@ -83,45 +88,58 @@ public class GameController extends GenericController {
     }
 
     // /MarketCard
-    @RequestMapping(value="/MarketCard", method = RequestMethod.GET)
+    @RequestMapping(value = "/MarketCard", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public MarketCard triggerMarketCard() {
         return marketCardService.marketCardInfo();
     }
 
     // /RoundCard
-    @RequestMapping(value="/RoundCard", method = RequestMethod.GET)
+    @RequestMapping(value = "/RoundCard", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public RoundCard triggerRoundCard() {
         return roundCardService.roundCardInfo();
     }
 
     // /Round
-    @RequestMapping(value="/Round", method = RequestMethod.GET)
+    @RequestMapping(value = "/Round", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Round triggerRound() {
         return roundService.testRound();
     }
 
     // /MarketPlace
-    @RequestMapping(value="/MarketPlace", method = RequestMethod.GET)
+    @RequestMapping(value = "/MarketPlace", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public MarketPlace triggerMarketPlace() {
         return marketPlaceService.marketPlaceInfo();
     }
 
     // /Ship
-    @RequestMapping(value="/Ship", method = RequestMethod.GET)
+    @RequestMapping(value = "/Ship", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Ship triggerShip() {
         return shipService.shipInfo();
     }
 
     // /Stone (FOR TESTING PURPOSES ONLY)
-    @RequestMapping(value="/Stone", method = RequestMethod.GET)
+    @RequestMapping(value = "/Stone", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Stone triggerStone() {
         return stoneService.stoneInfo();
     }
 
+    // /StoneQuarry (FOR TESTING PURPOSES ONLY)
+    @RequestMapping(value = "/StoneQuarry", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public StoneQuarry triggerStoneQuarry() {
+        return stoneQuarryService.stoneQuarryInfo();
+    }
+
+    // /SupplySled (FOR TESTING PURPOSES ONLY)
+    @RequestMapping(value = "/SupplySled", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public SupplySled triggerSupplySled() {
+        return supplySledService.supplySledInfo();
+    }
 }
