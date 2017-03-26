@@ -1,31 +1,17 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.Player;
-import ch.uzh.ifi.seal.soprafs17.service.GameService;
-import ch.uzh.ifi.seal.soprafs17.service.PlayerService;
-import ch.uzh.ifi.seal.soprafs17.service.UserService;
+import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
+import ch.uzh.ifi.seal.soprafs17.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.Move;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
-import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
+import java.util.List;
 
 @RestController
 @RequestMapping(GameController.CONTEXT)
@@ -38,12 +24,20 @@ public class GameController extends GenericController {
 
     private GameService gameService;
     private PlayerService playerService;
+    private MarketCardService marketCardService;
+    private RoundCardService roundCardService;
+    private RoundService roundService;
 
 
     @Autowired
-    public GameController(GameService gameService, PlayerService playerService){
+    public GameController(GameService gameService, PlayerService playerService,
+                          MarketCardService marketCardService, RoundCardService roundCardService,
+                          RoundService roundService){
         this.gameService = gameService;
         this.playerService = playerService;
+        this.marketCardService = marketCardService;
+        this.roundCardService = roundCardService;
+        this.roundService = roundService;
     }
 
     // TODO Correct the implementation: Controller calls the service to do a action
@@ -82,5 +76,23 @@ public class GameController extends GenericController {
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         gameService.stopGame(gameId, userToken);
+    }
+
+    @RequestMapping(value="/MarketCard", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public MarketCard triggerMarketCard() {
+        return marketCardService.marketCardInfo();
+    }
+
+    @RequestMapping(value="/RoundCard", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public RoundCard triggerRoundCard() {
+        return roundCardService.roundCardInfo();
+    }
+
+    @RequestMapping(value="/Round", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Round triggerRound() {
+        return roundService.testRound();
     }
 }
