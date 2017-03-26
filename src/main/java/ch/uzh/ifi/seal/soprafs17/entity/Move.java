@@ -3,31 +3,26 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 import ch.uzh.ifi.seal.soprafs17.constant.MoveType;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 public class Move implements Serializable {
 	//TODO Implement the abstract class move from the class diagram - be careful the MoveRepository doesn't work with abstract classes
 
-	/**
-	 *  Implements the Move class
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	@NotNull
-	@Column
+	@Column(nullable = false)
 	private String name;
 
-	@NotNull
-	@Column
+	@Column(nullable = false)
 	private MoveType moveType;
 	
-    @ManyToOne
+    // TODO: Needs to be changed to Rounds?
+	@ManyToOne
     @JoinColumn(name="GAME_ID")
     private Game game;
     

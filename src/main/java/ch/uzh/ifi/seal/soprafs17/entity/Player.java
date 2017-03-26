@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -19,14 +20,15 @@ public class Player implements Serializable {
     //TODO implement the correct mapping into the User and Move entity
     @OneToOne
     @JoinColumn(name="USER_ID")
-    @JsonIgnore
+    @JsonManagedReference
     private User user;
 
-    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Move> moves;
 
-    @ManyToOne(targetEntity = Game.class)
-    @JsonIgnore // -> Use @JsonIdenityInfo
+    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id", foreignKey = @ForeignKey(name ="GAME_ID_FK"))
+    @JsonBackReference
     private Game game;
 
     @Column
