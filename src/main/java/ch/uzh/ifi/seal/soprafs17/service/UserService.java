@@ -44,10 +44,12 @@ public class UserService {
         return newUser;
     }
 
-    public void deleteUser(Long userId) {
+    public String deleteUser(Long userId) {
         User user = userRepository.findById(userId); //TODO check if user exists
         userRepository.delete(userId);
         log.debug("Deleted User: {}", user);
+
+        return "Deleted user with userId: " + userId;
     }
 
     /*
