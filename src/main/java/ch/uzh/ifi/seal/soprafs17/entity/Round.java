@@ -6,7 +6,6 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,10 +21,10 @@ public class Round implements Serializable{
     private RoundCard card;
 
     @OneToMany
-    private List<Move> moves = new ArrayList<Move>();
+    private List<Move> moves;
 
     @OneToMany(targetEntity= Ship.class)
-    private List<Ship> ships = new ArrayList<Ship>();
+    private List<Ship> ships;
 
     public RoundCard getCard() {
         return card;

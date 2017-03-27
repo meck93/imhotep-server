@@ -4,12 +4,9 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  * Created by Cristian on 26.03.2017.
  */
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class StoneQuarry implements Serializable {
@@ -20,13 +17,20 @@ public class StoneQuarry implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(targetEntity= Game.class)
+    @OneToOne(targetEntity = Game.class)
     private Game game;
 
-    private ArrayList<Stone> blackStones= new ArrayList<Stone>();
-    private ArrayList<Stone> whiteStones= new ArrayList<Stone>();
-    private ArrayList<Stone> brownStones= new ArrayList<Stone>();
-    private ArrayList<Stone> grayStones= new ArrayList<Stone>();
+    @OneToMany
+    private List<Stone> blackStones;
+
+    @OneToMany
+    private List<Stone> whiteStones;
+
+    @OneToMany
+    private List<Stone> brownStones;
+
+    @OneToMany
+    private List<Stone> grayStones;
 
     public Long getId() {
         return id;
@@ -44,35 +48,35 @@ public class StoneQuarry implements Serializable {
         this.game = game;
     }
 
-    public ArrayList<Stone> getBlackStones() {
+    public List<Stone> getBlackStones() {
         return blackStones;
     }
 
-    public void setBlackStones(ArrayList<Stone> blackStones) {
+    public void setBlackStones(List<Stone> blackStones) {
         this.blackStones = blackStones;
     }
 
-    public ArrayList<Stone> getWhiteStones() {
+    public List<Stone> getWhiteStones() {
         return whiteStones;
     }
 
-    public void setWhiteStones(ArrayList<Stone> whiteStones) {
+    public void setWhiteStones(List<Stone> whiteStones) {
         this.whiteStones = whiteStones;
     }
 
-    public ArrayList<Stone> getBrownStones() {
+    public List<Stone> getBrownStones() {
         return brownStones;
     }
 
-    public void setBrownStones(ArrayList<Stone> brownStones) {
+    public void setBrownStones(List<Stone> brownStones) {
         this.brownStones = brownStones;
     }
 
-    public ArrayList<Stone> getGrayStones() {
+    public List<Stone> getGrayStones() {
         return grayStones;
     }
 
-    public void setGrayStones(ArrayList<Stone> grayStones) {
+    public void setGrayStones(List<Stone> grayStones) {
         this.grayStones = grayStones;
     }
 }
