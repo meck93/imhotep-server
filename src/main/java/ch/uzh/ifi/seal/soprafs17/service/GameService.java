@@ -1,14 +1,14 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
+import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.yaml.snakeyaml.error.Mark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,10 +105,14 @@ public class GameService {
     public Game getGame(Long gameId) {
         log.debug("getGame: " + gameId);
         return gameRepository.findOne(gameId);
+
     }
 
-    public void startGame(Long gameId, String userToken) {
+    public void startGame(Long gameId/*, String userToken*/) {
         log.debug("startGame: " + gameId);
+        Game game = getGame(gameId);
+        game.setStatus(GameStatus.RUNNING);
+        gameInit(game);
 
         // TODO figure out where the check needs to happen (Service or Controller) & implement startGame() here
 
@@ -134,8 +138,43 @@ public class GameService {
         }
     }
 
-    /*public List<User> getPlayers(Long gameId) {
-        log.debug("listPlayers");
+
+        public void gameInit(Game game){
+
+        BuildingSite obelisk = new BuildingSite();
+        BuildingSite temple = new BuildingSite();
+        BuildingSite burialChamber = new BuildingSite();
+        BuildingSite pyramid = new BuildingSite();
+        MarketPlace market = new MarketPlace();
+        /*StoneQuarry stoneQuarry = new StoneQuarry();*/
+
+        /*test msgs*/
+        obelisk.setMsg("Obelisk not null");
+        temple.setMsg("Temple not null");
+        burialChamber.setMsg("Burial Chamber not null");
+        pyramid.setMsg("Pyramid not null");
+
+
+        game.setBurialChamber(burialChamber);
+        game.setObelisk(obelisk);
+        game.setPyramid(pyramid);
+        game.setTemple(temple);
+        game.setMarket(market);
+
+        game.setRoundCounter(1);
+        /*game.setStoneQuarry(stoneQuarry);*/
+        // maybe implement a roundcard deck, so we can address this here?
+
+        // game.getRoundCardDeck.dealcards();
+
+        //game.getMarket().dealCards;
+
+        /*for (Player:game.getPlayers()
+             ) {
+            create supply sled for player
+        }*/
+    }
+    /*public List<User> getPlayers(Long gameId        log.debug("listPlayers");
 
         // TODO implement getPlayers in either userService or playerService
 
