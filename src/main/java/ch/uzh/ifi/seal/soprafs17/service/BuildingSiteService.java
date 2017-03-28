@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
+import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.repository.BuildingSiteRepository;
 import org.slf4j.Logger;
@@ -26,28 +27,12 @@ public class BuildingSiteService {
         this.buildingSiteRepository = buildingSiteRepository;
     }
 
-    public BuildingSite obeliskEvent(){
-        BuildingSite obelisk = new BuildingSite();
-        obelisk.setMsg("I am Obelisk and I received your request.");
-        return obelisk;
-    }
+    public BuildingSite createBuildingSite(SiteType siteType, Long gameId){
+        BuildingSite buildingSite = new BuildingSite();
+        buildingSite.setSiteType(siteType);
+        buildingSiteRepository.save(buildingSite);
 
-    public BuildingSite burrialChamberEvent(){
-        BuildingSite burrialChamber = new BuildingSite();
-        burrialChamber.setMsg("I am the burrial chamber and I received your request.");
-        return burrialChamber;
-    }
-
-    public BuildingSite templeEvent(){
-        BuildingSite temple = new BuildingSite();
-        temple.setMsg("I am the temple and I received your request.");
-        return temple;
-    }
-
-    public BuildingSite pyramidEvent(){
-        BuildingSite pyramid = new BuildingSite();
-        pyramid.setMsg("I am the pyramid and I received your request.");
-        return pyramid;
+        return buildingSite;
     }
 
 

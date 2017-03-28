@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class RoundCardService {
@@ -24,9 +26,21 @@ public class RoundCardService {
         this.roundCardRepository = roundCardRepository;
     }
 
-    public RoundCard roundCardInfo(){
-        RoundCard roundCard = new RoundCard();
-        return roundCard;
+    public void createRoundCards(int amountOfPlayers, Long gameId) {
+        // TODO: Create roundCards according to the amount of players in a game
+        // TODO: save roundsCards to roundCardRepo
+
+        // Create each roundCard and set all variables -> save to repo
+    }
+
+    public RoundCard getRoundCard(Long gameId) {
+        // TODO: return RoundCard from the Repo
+        // 1. Get all RoundCards associated with gameId
+        // 2. Check which one doesn't have a RoundId
+        // 3. Choose one of the remaining
+        // OR make it with delete RoundCard from Repo
+
+        return null;
     }
 
 }

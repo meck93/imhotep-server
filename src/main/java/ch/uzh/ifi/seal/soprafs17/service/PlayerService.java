@@ -57,6 +57,8 @@ public class PlayerService {
             newPlayer.setPoints(0);
             newPlayer.setPlayerNumber(playerNumber);
 
+            // TODO: Create SupplySled
+
             playerRepository.save(newPlayer);
 
             return newPlayer;

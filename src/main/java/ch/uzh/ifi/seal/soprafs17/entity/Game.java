@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -11,38 +12,39 @@ import java.util.List;
 public class Game implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	@Column(nullable = false, unique = true)
 	private String name;
-	
+
 	@Column(nullable = false, unique = true)
 	private String owner;
-	
-	@Column 
+
+	@Column
 	private GameStatus status;
-	
-	@Column 
+
+	@Column
 	private Integer currentPlayer;
 
-	@OneToOne(targetEntity= StoneQuarry.class)
+	@OneToOne(targetEntity = StoneQuarry.class)
 	private StoneQuarry stoneQuarry;
 
-	/*@OneToMany(mappedBy= "game")
-	private List<Round> rounds;*/
+	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference
+	private List<Round> rounds;
 
-    // TODO Change to correct mapping into Player and not User
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
+	// TODO Change to correct mapping into Player and not User
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
 	@JsonManagedReference
 	private List<Player> players;
 
-    @Column
+	@Column
 	private int roundCounter;
 
-    @Column
+	@Column
 	private BuildingSite Obelisk;
 
 	@Column
@@ -60,13 +62,79 @@ public class Game implements Serializable {
 	@Column
 	private int amountOfPlayers;
 
-	@Column
+	@OneToOne
+	private MarketPlace marketPlace;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public GameStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(GameStatus status) {
+		this.status = status;
+	}
+
+	public Integer getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(Integer currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
 	public StoneQuarry getStoneQuarry() {
 		return stoneQuarry;
 	}
 
 	public void setStoneQuarry(StoneQuarry stoneQuarry) {
 		this.stoneQuarry = stoneQuarry;
+	}
+
+	public List<Round> getRounds() {
+		return rounds;
+	}
+
+	public void setRounds(List<Round> rounds) {
+		this.rounds = rounds;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<Player> players) {
+		this.players = players;
+	}
+
+	public int getRoundCounter() {
+		return roundCounter;
+	}
+
+	public void setRoundCounter(int roundCounter) {
+		this.roundCounter = roundCounter;
 	}
 
 	public BuildingSite getObelisk() {
@@ -109,18 +177,6 @@ public class Game implements Serializable {
 		Market = market;
 	}
 
-   /* @OneToOne(MappedBy= "game")
-	private MarketPlace marketPlace;*/
-
-   /* @OneToMany(MappedBy= "game")
-	private List<IRateable> buildingSites;*/
-
-   /*
-   * Amount of players exists only for providing
-   * dummy data to the client.
-   */
-
-
 	public int getAmountOfPlayers() {
 		return amountOfPlayers;
 	}
@@ -129,59 +185,11 @@ public class Game implements Serializable {
 		this.amountOfPlayers = amountOfPlayers;
 	}
 
-	public Long getId() {
-		return id;
+	public MarketPlace getMarketPlace() {
+		return marketPlace;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-
-	public GameStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(GameStatus status) {
-		this.status = status;
-	}
-
-	public Integer getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	public void setCurrentPlayer(Integer currentPlayer) {
-		this.currentPlayer = currentPlayer;
-	}
-
-	public List<Player> getPlayers() {
-		return players;
-	}
-
-	public void setPlayers(List<Player> players) {
-		this.players = players;
-	}
-
-	public int getRoundCounter() {
-		return roundCounter;
-	}
-
-	public void setRoundCounter(int roundCounter) {
-		this.roundCounter = roundCounter;
+	public void setMarketPlace(MarketPlace marketPlace) {
+		this.marketPlace = marketPlace;
 	}
 }

@@ -24,8 +24,14 @@ public class RoundService {
             this.roundRepository = roundRepository;
         }
 
-        public Round testRound(){
-                Round testRound = new Round();
-                return testRound;
+        public Round createRound(Long gameId){
+                // HERE EVERYTHING NEEDS TO BE DONE BEFORE A NEW ROUND CAN START
+                log.debug("creating new round: ");
+                Round newRound = new Round();
+                //TODO Implement the creation of a round - including whatever
+
+                roundRepository.save(newRound);
+
+                return newRound;
         }
 }

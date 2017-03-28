@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +26,16 @@ public class GameService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final GameRepository gameRepository;
+    private final BuildingSiteService buildingSiteService;
+    private final RoundService roundService;
+    private final RoundCardService roundCardService;
 
     @Autowired
-    public GameService(GameRepository gameRepository) {
+    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService) {
         this.gameRepository = gameRepository;
+        this.buildingSiteService = buildingSiteService;
+        this.roundService = roundService;
+        this.roundCardService = roundCardService;
     }
     /*
      * Implementation of the createGame method:
@@ -41,6 +49,7 @@ public class GameService {
         newGame.setStatus(GameStatus.PENDING);
         newGame.setPlayers(new ArrayList<>());
         newGame.setAmountOfPlayers(0);
+        newGame.setRounds(new ArrayList<>());
 
         gameRepository.save(newGame);
 
@@ -101,10 +110,19 @@ public class GameService {
     // TODO: Change parameter to player specific not user specific
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
-        Game game = gameRepository.findOne(gameId);
-        game.setStatus(GameStatus.RUNNING);
-        gameInit(game);
+        // check if game exists and then call init and the player is allowd to start it ===> throw 412 or access denied
+        gameInit(gameId);
+
+        Game game = gameRepository.findById(gameId);
+
+        Round round = roundService.createRound(gameId);
+        List<Round> rounds = game.getRounds();
+        rounds.add(round);
+        game.setRounds(rounds);
+
         gameRepository.save(game);
+
+
 
         // TODO Implement the check & implement startGame() here
         /*Player player = playerService.
@@ -132,40 +150,24 @@ public class GameService {
         }*/
     }
       
-    public void gameInit(Game game){
+    public void gameInit(Long gameId){
 
-        BuildingSite obelisk = new BuildingSite();
-        BuildingSite temple = new BuildingSite();
-        BuildingSite burialChamber = new BuildingSite();
-        BuildingSite pyramid = new BuildingSite();
+        Game game = gameRepository.findById(gameId);
+        int amountOfPlayers = game.getAmountOfPlayers();
+
+        /*
         MarketPlace market = new MarketPlace();
         StoneQuarry stoneQuarry = new StoneQuarry();
-
-        /*test msgs*/
-        obelisk.setMsg("Obelisk not null");
-        temple.setMsg("Temple not null");
-        burialChamber.setMsg("Burial Chamber not null");
-        pyramid.setMsg("Pyramid not null");
-
-
-        game.setBurialChamber(burialChamber);
-        game.setObelisk(obelisk);
-        game.setPyramid(pyramid);
-        game.setTemple(temple);
-        game.setMarket(market);
+        */
+        // implement this for every site
+        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
 
         game.setRoundCounter(1);
+        game.setStatus(GameStatus.RUNNING);
+        gameRepository.save(game);
+
+        // TODO: Tell roundCardService to create roundCards for this game
+        roundCardService.createRoundCards(amountOfPlayers, gameId);
         /*game.setStoneQuarry(stoneQuarry);*/
-        // maybe implement a roundcard deck, so we can address this here?
-
-        // game.getRoundCardDeck.dealcards();
-
-        //game.getMarket().dealCards;
-
-        /*for (Player:game.getPlayers()
-             ) {
-            create supply sled for player
-        }*/
     }
-        //TODO: Delete game after all Game has been stopped & all players have been removed
 }

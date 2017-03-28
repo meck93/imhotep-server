@@ -20,9 +20,11 @@ public class RoundCard implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @NotNull
-    @Column
+    @Column(nullable = false)
     private RoundCardType heads;
+
+    @Column
+    private Long gameId;
 
     //@OneToMany(targetEntity= Ship.class)
     private ArrayList<Ship> ships = new ArrayList<Ship>();

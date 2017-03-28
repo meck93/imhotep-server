@@ -34,31 +34,6 @@ public class BuildingSiteController {
         this.buildingSiteService = buildingSiteService;
     }
 
-    @RequestMapping(value="/Obelisk", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public BuildingSite triggerObelisk() {
-       return buildingSiteService.obeliskEvent();
-    }
-
-    @RequestMapping(value="/BurrialChamber", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public BuildingSite triggerBurrialChamber() {
-        return buildingSiteService.burrialChamberEvent();
-    }
-
-    @RequestMapping(value="/Temple", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public BuildingSite triggerTemple() {
-        return buildingSiteService.templeEvent();
-    }
-
-    @RequestMapping(value="/Pyramid/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public BuildingSite triggerPyramid(@PathVariable("id") int a) {
-        if (a<2) throw new OrderNotFoundException();
-        return buildingSiteService.pyramidEvent();
-    }
-
     /*
     HttpStatus Exceptions
      */

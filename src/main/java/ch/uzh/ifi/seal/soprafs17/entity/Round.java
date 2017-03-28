@@ -4,6 +4,8 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  * Created by Cristian on 25.03.2017.
  */
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -22,6 +24,10 @@ public class Round implements Serializable{
 
     @OneToMany
     private List<Move> moves;
+
+    @ManyToOne
+    @JsonBackReference
+    private Game game;
 
     @OneToMany(targetEntity= Ship.class)
     private List<Ship> ships;
