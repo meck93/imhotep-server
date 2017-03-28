@@ -25,7 +25,8 @@ public class Player implements Serializable {
     @Column
     private int playerNumber;
 
-    @OneToOne(targetEntity = SupplySled.class)
+    @OneToOne(mappedBy = "player", targetEntity = SupplySled.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference(value = "player")
     private SupplySled supplySled;
 
     @OneToOne

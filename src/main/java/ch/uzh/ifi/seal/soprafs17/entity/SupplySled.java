@@ -5,15 +5,14 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  * Created by Cristian on 26.03.2017.
  */
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-// Service?
+
 @Entity
 public class SupplySled implements Serializable {
 
@@ -21,20 +20,16 @@ public class SupplySled implements Serializable {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
-    private static final int MAX_STONES = 5;
-
-    @OneToOne(targetEntity= Player.class)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Player_ID")
+    @JsonBackReference(value = "player")
     private Player player;
 
-    private ArrayList<Stone> stones= new ArrayList<Stone>();
-
-    public void initialize(){}
-
-    public void addStone(){}
-
-    public void removeStone(){}
+    @OneToMany(targetEntity = Stone.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Stone> stones;
 
     public Long getId() {
         return id;
@@ -44,8 +39,12 @@ public class SupplySled implements Serializable {
         this.id = id;
     }
 
-    public static int getMaxStones() {
-        return MAX_STONES;
+    public List<Stone> getStones() {
+        return stones;
+    }
+
+    public void setStones(List<Stone> stones) {
+        this.stones = stones;
     }
 
     public Player getPlayer() {
@@ -54,13 +53,5 @@ public class SupplySled implements Serializable {
 
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    public List<Stone> getStones() {
-        return stones;
-    }
-
-    public void setStones(ArrayList<Stone> stones) {
-        this.stones = stones;
     }
 }

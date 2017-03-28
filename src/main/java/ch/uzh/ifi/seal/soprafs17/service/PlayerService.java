@@ -29,12 +29,14 @@ public class PlayerService {
 
     private final GameService gameService;
     private final UserService userService;
+    private final SupplySledService supplySledService;
 
     @Autowired
-    public PlayerService(PlayerRepository playerRepository, GameService gameService, UserService userService) {
+    public PlayerService(PlayerRepository playerRepository, GameService gameService, UserService userService, SupplySledService supplySledService) {
         this.playerRepository = playerRepository;
         this.gameService = gameService;
         this.userService = userService;
+        this.supplySledService = supplySledService;
     }
     /*
      * Creates a new player in the database
@@ -46,13 +48,19 @@ public class PlayerService {
         Game game = gameService.findById(gameId);
         int playerNumber = gameService.findAmountOfPlayers(gameId) + 1;
         User user = userService.getUser(userId);
+        Long playerId = user.getId();
 
         if ((game != null) && (user != null) && (game.getPlayers().size() < GameConstants.MAX_PLAYERS)) {
+            // create a new player entity
             Player newPlayer = new Player();
             newPlayer.setUser(user);
-            newPlayer.setId(user.getId());
+            newPlayer.setId(playerId);
             newPlayer.setGame(game);
+            newPlayer.setMoves(new ArrayList<>());
+            newPlayer.setPoints(START_POINTS);
+            newPlayer.setPlayerNumber(playerNumber);
 
+            // assign the color according to the playerNumber
             switch (playerNumber) {
                 case 1: newPlayer.setColor(GameConstants.BLACK); break;
                 case 2: newPlayer.setColor(GameConstants.WHITE); break;
@@ -60,12 +68,13 @@ public class PlayerService {
                 case 4: newPlayer.setColor(GameConstants.GRAY); break;
             }
 
-            newPlayer.setMoves(new ArrayList<>());
-            newPlayer.setPoints(START_POINTS);
-            newPlayer.setPlayerNumber(playerNumber);
-            // TODO: Create SupplySled
-            //newPlayer.setSupplySled(SupplySledService.createSupplySled());
+            // save the new entity in the database
+            playerRepository.save(newPlayer);
 
+            //add the SupplySled to the player
+            newPlayer.setSupplySled(supplySledService.createSupplySled(newPlayer));
+
+            // save the same player again after adding the SupplySled
             playerRepository.save(newPlayer);
 
             return newPlayer;
@@ -91,6 +100,7 @@ public class PlayerService {
         log.debug("getPlayer: " + playerNr + "of Game: " + gameId);
 
         List<Player> players = gameService.findPlayersByGameId(gameId);
+        // Getting the Player at position of playerNr
         Player player = players.get(playerNr.intValue() - 1);
 
         // Verifying that the player exists in the game
@@ -99,17 +109,6 @@ public class PlayerService {
         }
 
         // TODO Exception handling if player doesn't exist
-        return null;
-    }
-
-    public Player findById(Long playerId){
-        Player player = playerRepository.findOne(playerId);
-
-        if (player != null){
-            return player;
-        }
-
-        //TODO: Exception handling when player doesn't exist
         return null;
     }
 
