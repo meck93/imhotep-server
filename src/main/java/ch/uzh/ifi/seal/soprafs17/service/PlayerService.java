@@ -80,10 +80,11 @@ public class PlayerService {
         return gameService.addPlayer(gameId, player);
     }
 
-    public Player getPlayer(Long gameId, Long playerId) {
-        log.debug("getPlayer: " + gameId);
+    public Player getPlayer(Long gameId, Long playerNr) {
+        log.debug("getPlayer: " + playerNr + "of Game: " + gameId);
 
-        Player player = playerRepository.findOne(playerId);
+        List<Player> players = gameService.findPlayersByGameId(gameId);
+        Player player = players.get(playerNr.intValue() - 1);
 
         // Verifying that the player exists in the game
         if (player != null && player.getGame().getId().equals(gameId)){

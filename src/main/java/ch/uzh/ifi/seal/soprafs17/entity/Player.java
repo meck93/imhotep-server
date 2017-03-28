@@ -16,21 +16,6 @@ public class Player implements Serializable {
     @GeneratedValue
     private Long id;
 
-    //TODO implement the correct mapping into the User and Move entity
-    @OneToOne
-    @JoinColumn(name="USER_ID")
-    @JsonManagedReference
-    private User user;
-
-    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Move> moves;
-
-    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id", foreignKey = @ForeignKey(name ="GAME_ID_FK"))
-    @JsonBackReference
-    private Game game;
-
     @Column
     private int points;
 
@@ -42,6 +27,24 @@ public class Player implements Serializable {
 
     @OneToOne(targetEntity = SupplySled.class)
     private SupplySled supplySled;
+
+    @OneToOne
+    @JoinColumn(name="USER_ID")
+    @JsonBackReference(value = "user")
+    private User user;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Move> moves;
+
+    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id", foreignKey = @ForeignKey(name ="GAME_ID_FK"))
+    @JsonBackReference
+    private Game game;
+
+    public Long getGameId(){
+        return game.getId();
+    }
 
     public long getId() {
         return id;

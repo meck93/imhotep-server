@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -30,7 +30,7 @@ public class User implements Serializable {
 	private UserStatus status;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@JsonBackReference
+	@JsonManagedReference(value = "user")
 	private Player player;
 
 	public Long getId() {
