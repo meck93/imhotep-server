@@ -1,15 +1,13 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.yaml.snakeyaml.error.Mark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,12 +101,12 @@ public class GameService {
     // TODO: Change parameter to player specific not user specific
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
-        Game game = getGame(gameId);
+        Game game = gameRepository.findOne(gameId);
         game.setStatus(GameStatus.RUNNING);
         gameInit(game);
+        gameRepository.save(game);
 
         // TODO Implement the check & implement startGame() here
-        Game game = gameRepository.findOne(gameId);
         /*Player player = playerService.
         // gameService cannot call the playerService -> serializable loop
 
@@ -124,12 +122,14 @@ public class GameService {
 
         // TODO implement stopGame
         Game game = gameRepository.findOne(gameId);
+        /*String owner = game.getOwner();
+
         // Same access question as above
-        User owner = userService.getUserByToken(userToken);
+        // User owner = userService.getUserByToken(userToken);
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
-        }
+        }*/
     }
       
     public void gameInit(Game game){

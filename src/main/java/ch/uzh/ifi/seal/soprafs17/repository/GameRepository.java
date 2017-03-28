@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -14,7 +15,8 @@ import java.util.List;
 public interface GameRepository extends CrudRepository<Game, Long> {
 	User findByName(String name);
 
-	Game findById(Long id);
+	@Query("SELECT g FROM Game g WHERE g.id = :gameId")
+	Game findById(@Param("gameId") Long id);
 
 	@Query("SELECT g.amountOfPlayers FROM Game g WHERE g.id = :gameId")
 	int findAmountOfPlayers(@Param("gameId") Long gameId);
