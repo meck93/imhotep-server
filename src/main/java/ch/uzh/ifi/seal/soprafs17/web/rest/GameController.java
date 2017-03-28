@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
+
 import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.service.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,9 @@ public class GameController extends GenericController {
 
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games";
-
+    
     private GameService gameService;
+    // This is not a good idea. The GameController should only have the GameService.
     private PlayerService playerService;
     private MarketCardService marketCardService;
     private RoundCardService roundCardService;
@@ -62,29 +65,34 @@ public class GameController extends GenericController {
         return gameService.listGames();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    // TODO Rename addGame in both Controller and Service to createGame
-    public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
-        return gameService.addGame(game, userToken);
-    }
-
+    /*
+     * Handles the request for the game with Id: {gameId}
+     */
     @RequestMapping(value = "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public Game getGame(@PathVariable Long gameId) {
-        return gameService.getGame(gameId);
+        return gameService.findById(gameId);
     }
 
     @RequestMapping(value = "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        gameService.startGame(gameId, userToken);
+    public void startGame(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
+        gameService.startGame(gameId, playerId);
     }
 
     @RequestMapping(value = "/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        gameService.stopGame(gameId, userToken);
+    public void stopGame(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
+        gameService.stopGame(gameId, playerId);
+    }
+    /*
+     * This request deletes a game entity. Only exists for the frontend for testing purposes.
+     * @Param
+     */
+    @RequestMapping(value = "/{gameId}/delete", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteGame(@PathVariable Long gameId) {
+        gameService.deleteGame(gameId);
     }
 
     // /MarketCard

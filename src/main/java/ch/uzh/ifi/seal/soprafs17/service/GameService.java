@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
+import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,22 +25,24 @@ public class GameService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final GameRepository gameRepository;
-    private final UserService userService;
-
-    private boolean hasBeenCreated = false; // Just for the dummy data
 
     @Autowired
-    public GameService(GameRepository gameRepository, UserService userService) {
+    public GameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-        this.userService = userService;
     }
-
-    public Game createGame(String name, String owner, GameStatus status) {
+    /*
+     * Implementation of the createGame method:
+     * @Param Name - Name of the Game, Owner - Name of the User/Player
+     */
+    public Game createGame(String name, String owner) {
         // Creating the Game and saving it to the Repository
         Game newGame = new Game();
         newGame.setName(name);
         newGame.setOwner(owner);
-        newGame.setStatus(status);
+        newGame.setStatus(GameStatus.PENDING);
+        newGame.setPlayers(new ArrayList<>());
+        newGame.setAmountOfPlayers(0);
+
         gameRepository.save(newGame);
 
         log.debug("Created Information for Game: {}", newGame);
@@ -59,92 +61,72 @@ public class GameService {
     public List<Game> listGames() {
         log.debug("listGames");
 
-        /*
-        * This block sends just dummy data to the client.
-        * We will delete it as soon as the other functions
-        * are implemented.
-        */
-        if (!hasBeenCreated) {
-            Game game1 = createGame("dave","sepp",GameStatus.RUNNING);
-            Game game2 = createGame("hans","paul",GameStatus.PENDING);
-            Game game3 = createGame("fritz","peter",GameStatus.RUNNING);
-
-            game1.setAmountOfPlayers(2);
-            game2.setAmountOfPlayers(3);
-            game3.setAmountOfPlayers(4);
-
-            hasBeenCreated = true;
-        }
-
         List<Game> result = new ArrayList<>();
         gameRepository.findAll().forEach(result::add);
 
         return result;
     }
+    /*
+     * Adds an existing player to the game
+     */
+    public String addPlayer(Long gameId, Player player){
+        Game game = gameRepository.findById(gameId);
+        // adds player to the game
+        game.getPlayers().add(player);
+        // sets the correct amount of players
+        int amountOfPlayers = game.getAmountOfPlayers() + 1;
+        game.setAmountOfPlayers(amountOfPlayers);
+        gameRepository.save(game);
 
-    public String addGame(Game game, String userToken) {
-        // TODO Implement the function which adds a Game
-        log.debug("addGame: " + game);
+        log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
 
-        User owner = userService.getUserByToken(userToken);
-
-        if (owner != null) {
-            // Started a little bit
-            game.setStatus(GameStatus.PENDING);
-            game.setCurrentPlayer(1);
-
-            game = gameRepository.save(game);
-
-            return "/games" + "/" + game.getId();
-        }
-
-        // We need to change this: should not return NULL
-        return null;
+        return "games" + "/" + gameId + "/players/" + amountOfPlayers;
     }
 
-    public Game getGame(Long gameId) {
+    public Game findById(Long gameId) {
+        // TODO: Excepetion handling if not found
         log.debug("getGame: " + gameId);
-        return gameRepository.findOne(gameId);
+        return gameRepository.findById(gameId);
     }
 
-    public void startGame(Long gameId, String userToken) {
+    public int findAmountOfPlayers(Long gameId) {
+        log.debug("getAmountOfPlayers: " + gameId);
+        return gameRepository.findAmountOfPlayers(gameId);
+    }
+
+    public List<Player> findPlayersByGameId(Long gameId) {
+        log.debug("getPlayersByGameId: " + gameId);
+        return gameRepository.findPlayersByGameId(gameId);
+    }
+
+    // TODO: Change parameter to player specific not user specific
+    public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
 
-        // TODO figure out where the check needs to happen (Service or Controller) & implement startGame() here
+        // TODO Implement the check & implement startGame() here
+        Game game = gameRepository.findOne(gameId);
+        /*Player player = playerService.
+        // gameService cannot call the playerService -> serializable loop
 
-/*        Game game = gameRepository.findOne(gameId);
-        // Same access question as above
-        User owner = userService.getUserByToken(userToken);
+        // TODO: check that the player which started the game is the owner of the game
+        if (owner != null && game != null && game.getOwner().equals()) {
 
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-        }*/
+        }
+        */
     }
 
-    public void stopGame(Long gameId, String userToken) {
+    public void stopGame(Long gameId, Long playerId) {
         log.debug("stopGame: " + gameId);
 
         // TODO implement stopGame
-
         Game game = gameRepository.findOne(gameId);
         // Same access question as above
-        User owner = userService.getUserByToken(userToken);
+        /*User owner = userService.getUserByToken(userToken);
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
-        }
+        }*/
+
+        //TODO: Delete game after all Game has been stopped & all players have been removed
     }
-
-    /*public List<User> getPlayers(Long gameId) {
-        log.debug("listPlayers");
-
-        // TODO implement getPlayers in either userService or playerService
-
-        Game game = gameRepository.findOne(gameId);
-        if (game != null) {
-            // Maybe as a List
-            return game.getPlayers();
-        }
-
-        return null;
-    }*/
 }

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,10 +16,10 @@ public class Game implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@Column(nullable = false) 
+	@Column(nullable = false, unique = true)
 	private String name;
 	
-	@Column(nullable = false) 
+	@Column(nullable = false, unique = true)
 	private String owner;
 	
 	@Column 
@@ -34,8 +35,9 @@ public class Game implements Serializable {
 	private List<Round> rounds;*/
 
     // TODO Change to correct mapping into Player and not User
-    @OneToMany
-    private List<Player> players;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
+	@JsonManagedReference
+	private List<Player> players;
 
     @Column
 	private int roundCounter;

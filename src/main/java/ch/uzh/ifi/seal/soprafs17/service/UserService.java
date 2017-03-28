@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.User;
 import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 import org.slf4j.Logger;
@@ -45,10 +44,12 @@ public class UserService {
         return newUser;
     }
 
-    public void deleteUser(Long userId) {
+    public String deleteUser(Long userId) {
         User user = userRepository.findById(userId); //TODO check if user exists
         userRepository.delete(userId);
         log.debug("Deleted User: {}", user);
+
+        return "Deleted user with userId: " + userId;
     }
 
     /*
@@ -84,7 +85,15 @@ public class UserService {
         log.debug("getUser: " + userToken);
 
         // TODO Implement check to see whether the user exists
-        return userRepository.findByToken(userToken);
+        User user = userRepository.findByToken(userToken);
+
+        if (user != null) {
+            return user;
+        }
+        else {
+            log.error("Error: user with token: " + userToken + " could not be found");
+            return null;
+        }
     }
 
     public User login(Long userId){
