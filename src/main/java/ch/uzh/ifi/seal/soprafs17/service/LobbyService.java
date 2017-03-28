@@ -4,6 +4,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
  * Created by Dave on 21.03.2017.
  */
 
+
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import org.slf4j.Logger;
@@ -11,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -35,6 +35,7 @@ public class LobbyService {
     public List<Game> listGames(){
         return gameService.listGames();
     }
+
     /*
      * Calls the gameService to create a Game
      */

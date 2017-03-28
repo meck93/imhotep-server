@@ -19,11 +19,10 @@ import java.util.List;
 public class LobbyController {
 
     Logger log  = LoggerFactory.getLogger(GameController.class);
+    private LobbyService lobbyService;
 
     // Standard URI Mapping of this class
     static final String CONTEXT = "/lobby";
-
-    private LobbyService lobbyService;
 
     @Autowired
     public LobbyController(LobbyService lobbyService){
@@ -39,6 +38,7 @@ public class LobbyController {
     public List<Game> listGames() {
         return lobbyService.listGames();
     }
+
     /*
      * Context: /lobby/games
      * Creates a game

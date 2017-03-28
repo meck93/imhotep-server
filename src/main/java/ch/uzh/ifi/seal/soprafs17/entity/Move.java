@@ -2,7 +2,6 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.MoveType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -31,6 +30,9 @@ public class Move implements Serializable {
     @JoinColumn(name="PLAYER_ID")
 	@JsonBackReference
     private Player player;
+
+    @ManyToOne(targetEntity = Round.class)
+    private Round round;
 
 	public Long getId() {
 		return id;

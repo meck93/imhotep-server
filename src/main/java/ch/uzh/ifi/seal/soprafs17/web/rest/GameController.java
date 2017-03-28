@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.service.GameService;
+
+import ch.uzh.ifi.seal.soprafs17.entity.*;
+import ch.uzh.ifi.seal.soprafs17.service.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +16,40 @@ import java.util.List;
 @RequestMapping(GameController.CONTEXT)
 public class GameController extends GenericController {
 
-    Logger log  = LoggerFactory.getLogger(GameController.class);
+    Logger log = LoggerFactory.getLogger(GameController.class);
 
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games";
-
+    
     private GameService gameService;
+    // This is not a good idea. The GameController should only have the GameService.
+    private PlayerService playerService;
+    private MarketCardService marketCardService;
+    private RoundCardService roundCardService;
+    private RoundService roundService;
+    private MarketPlaceService marketPlaceService;
+    private ShipService shipService;
+    private StoneService stoneService;
+    private StoneQuarryService stoneQuarryService;
+    private SupplySledService supplySledService;
 
     @Autowired
-    public GameController(GameService gameService){
+    public GameController(GameService gameService, PlayerService playerService,
+                          MarketCardService marketCardService, RoundCardService roundCardService,
+                          RoundService roundService, MarketPlaceService marketPlaceService,
+                          ShipService shipService, StoneService stoneService,
+                          StoneQuarryService stoneQuarryService, SupplySledService supplySledService
+    ) {
         this.gameService = gameService;
+        this.playerService = playerService;
+        this.marketCardService = marketCardService;
+        this.roundCardService = roundCardService;
+        this.roundService = roundService;
+        this.marketPlaceService = marketPlaceService;
+        this.shipService = shipService;
+        this.stoneService = stoneService;
+        this.stoneQuarryService = stoneQuarryService;
+        this.supplySledService = supplySledService;
     }
 
     // TODO Correct the implementation: Controller calls the service to do a action
@@ -67,5 +93,61 @@ public class GameController extends GenericController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteGame(@PathVariable Long gameId) {
         gameService.deleteGame(gameId);
+    }
+
+    // /MarketCard
+    @RequestMapping(value = "/MarketCard", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public MarketCard triggerMarketCard() {
+        return marketCardService.marketCardInfo();
+    }
+
+    // /RoundCard
+    @RequestMapping(value = "/RoundCard", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public RoundCard triggerRoundCard() {
+        return roundCardService.roundCardInfo();
+    }
+
+    // /Round
+    @RequestMapping(value = "/Round", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Round triggerRound() {
+        return roundService.testRound();
+    }
+
+    // /MarketPlace
+    @RequestMapping(value = "/MarketPlace", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public MarketPlace triggerMarketPlace() {
+        return marketPlaceService.marketPlaceInfo();
+    }
+
+    // /Ship
+    @RequestMapping(value = "/Ship", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Ship triggerShip() {
+        return shipService.shipInfo();
+    }
+
+    // /Stone (FOR TESTING PURPOSES ONLY)
+    @RequestMapping(value = "/Stone", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Stone triggerStone() {
+        return stoneService.stoneInfo();
+    }
+
+    // /StoneQuarry (FOR TESTING PURPOSES ONLY)
+    @RequestMapping(value = "/StoneQuarry", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public StoneQuarry triggerStoneQuarry() {
+        return stoneQuarryService.stoneQuarryInfo();
+    }
+
+    // /SupplySled (FOR TESTING PURPOSES ONLY)
+    @RequestMapping(value = "/SupplySled", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public SupplySled triggerSupplySled() {
+        return supplySledService.supplySledInfo();
     }
 }

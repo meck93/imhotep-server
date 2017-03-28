@@ -2,7 +2,6 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
@@ -41,10 +40,8 @@ public class Player implements Serializable {
     @Column
     private int playerNumber;
 
-    /*
-    @ManyToOne or something like that
+    @OneToOne(targetEntity = SupplySled.class)
     private SupplySled supplySled;
-     */
 
     public long getId() {
         return id;

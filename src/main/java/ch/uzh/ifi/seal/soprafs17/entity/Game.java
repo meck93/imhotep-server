@@ -28,6 +28,9 @@ public class Game implements Serializable {
 	@Column 
 	private Integer currentPlayer;
 
+	@OneToOne(targetEntity= StoneQuarry.class)
+	private StoneQuarry stoneQuarry;
+
 	/*@OneToMany(mappedBy= "game")
 	private List<Round> rounds;*/
 
