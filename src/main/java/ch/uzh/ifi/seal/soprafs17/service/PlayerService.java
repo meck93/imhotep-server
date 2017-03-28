@@ -35,62 +35,79 @@ public class PlayerService {
         this.gameService = gameService;
         this.userService = userService;
     }
+    /*
+     * Creates a new player in the database
+     * @Param gameId - to identify the correct game, userToken - so the player can be associated to a specific user
+     */
+    public Player createPlayer(Long gameId, Long userId) {
+        log.debug("creating Player from User with userId: " + userId);
 
-    // TODO check the implementation and handling of this method
-    public String addPlayer(Long gameId, String userToken) {
-       /* log.debug("addPlayer: " + userToken);
+        Game game = gameService.findById(gameId);
+        int playerNumber = gameService.findAmountOfPlayers(gameId) + 1;
+        User user = userService.getUser(userId);
 
-        Game game = gameService.getGame(gameId);
-        User player = userService.getUserByToken(userToken);
+        if ((game != null) && (user != null) && (game.getPlayers().size() < GameConstants.MAX_PLAYERS)) {
+            Player newPlayer = new Player();
+            newPlayer.setUser(user);
+            newPlayer.setId(user.getId());
+            newPlayer.setGame(game);
+            // Color destroys the JSON response
+            //newPlayer.setColor(Color.BLACK);
+            newPlayer.setMoves(new ArrayList<>());
+            newPlayer.setPoints(0);
+            newPlayer.setPlayerNumber(playerNumber);
 
-        // Cristi and daves code
-        Game game = gameService.getGame(gameId);
-        User user = userService.getUserByToken(userToken);
-        Player player = new Player(user);
+            playerRepository.save(newPlayer);
 
-        if (game != null && user != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-            game.getPlayers().add(player);
-
-            log.debug("Game: " + game.getName() + " - player added: " + player.getUser().getUsername());
-            return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
+            return newPlayer;
         }
-
         else {
-            log.error("Error adding player with token: " + userToken);
+            log.error("Error creating player with userId: " + userId);
+            // TODO: Exception handling if creating a player doesn't work
+            return null;
+        }
+    }
+
+    /*
+     * Adds an existing player to an existing game.
+     * @Param gameId, playerId
+     */
+    // TODO: The relation between the game and the player doesn't work yet
+    public String addPlayer(Long gameId, Long playerId){
+        Player player = playerRepository.findOne(playerId);
+        return gameService.addPlayer(gameId, player);
+    }
+
+    public Player getPlayer(Long gameId, Long playerId) {
+        log.debug("getPlayer: " + gameId);
+
+        Player player = playerRepository.findOne(playerId);
+
+        // Verifying that the player exists in the game
+        if (player != null && player.getGame().getId().equals(gameId)){
+            return player;
         }
 
-        // end of our code
-
-        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-            game.getPlayers().add(player);
-            log.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
-            return "games" + "/" + gameId + "/players/" + (game.getPlayers().size() - 1);
-        }
-
-        else {
-            log.error("Error adding player with token: " + userToken);
-        }
-*/
+        // TODO Exception handling if player doesn't exist
         return null;
     }
 
-    public Player getPlayer(Long gameId, Integer playerId) {
-        log.debug("getPlayer: " + gameId);
+    public Player findById(Long playerId){
+        Player player = playerRepository.findOne(playerId);
 
-        Game game = gameService.getGame(gameId);
-        // TODO implement checking if game exisits
+        if (player != null){
+            return player;
+        }
 
-        //TODO maybe check if player exists
-        game.getPlayers().get(playerId);
-
+        //TODO: Exception handling when player doesn't exist
         return null;
     }
 
     public List<Player> getPlayers(Long gameId) {
-        log.debug("listPlayers of Game " + gameId);
+        log.debug("list Players of Game " + gameId);
 
         List<Player> result = new ArrayList<>();
-        playerRepository.findAll().forEach(result::add);
+        gameService.findPlayersByGameId(gameId).forEach(result::add);
 
         return result;
     }
