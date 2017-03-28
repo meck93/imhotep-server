@@ -24,8 +24,9 @@ public class StoneService {
         this.stoneRepository = stoneRepository;
     }
 
-    public Stone stoneInfo(){
-        Stone stone = new Stone();
-        return stone;
+    public Stone createStone() {
+        //TODO: Create a Stone
+        return null;
     }
+
 }

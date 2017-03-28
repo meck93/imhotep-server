@@ -24,8 +24,8 @@ public class MarketPlaceService {
         this.marketPlaceRepository = marketPlaceRepository;
     }
 
-    public MarketPlace marketPlaceInfo(){
-        MarketPlace marketPlace = new MarketPlace();
-        return marketPlace;
+    public MarketPlace createMarketPlace() {
+        //TODO: Create a marketPlace for a Game
+        return null;
     }
 }
