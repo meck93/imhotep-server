@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -29,18 +28,6 @@ public class Game implements Serializable {
 	@Column
 	private Integer currentPlayer;
 
-	@OneToOne(targetEntity = StoneQuarry.class)
-	private StoneQuarry stoneQuarry;
-
-	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonManagedReference
-	private List<Round> rounds;
-
-	// TODO Change to correct mapping into Player and not User
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
-	@JsonManagedReference
-	private List<Player> players;
-
 	@Column
 	private int roundCounter;
 
@@ -62,8 +49,20 @@ public class Game implements Serializable {
 	@Column
 	private int amountOfPlayers;
 
-	@OneToOne
+	@OneToOne(targetEntity = MarketPlace.class)
 	private MarketPlace marketPlace;
+
+	@OneToOne(targetEntity = StoneQuarry.class)
+	private StoneQuarry stoneQuarry;
+
+	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference
+	private List<Round> rounds;
+
+	// TODO Change to correct mapping into Player and not User
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
+	@JsonManagedReference
+	private List<Player> players;
 
 	public Long getId() {
 		return id;
