@@ -2,24 +2,36 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 public class Player implements Serializable {
-    // TODO Implementation of the Player Entity
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
     private Long id;
 
-    //TODO implement the correct mapping into the User and Move entity
+    @Column
+    private int points;
+
+    @Column
+    private String color;
+
+    @Column
+    private int playerNumber;
+
+    @OneToOne(mappedBy = "player", targetEntity = SupplySled.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference(value = "player")
+    private SupplySled supplySled;
+
     @OneToOne
     @JoinColumn(name="USER_ID")
-    @JsonManagedReference
+    @JsonBackReference(value = "user")
     private User user;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -31,24 +43,48 @@ public class Player implements Serializable {
     @JsonBackReference
     private Game game;
 
-    @Column
-    private int points;
+    public Long getGameId(){
+        return game.getId();
+    }
 
-    @Column
-    private Color color;
-
-    @Column
-    private int playerNumber;
-
-    @OneToOne(targetEntity = SupplySled.class)
-    private SupplySled supplySled;
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    public SupplySled getSupplySled() {
+        return supplySled;
+    }
+
+    public void setSupplySled(SupplySled supplySled) {
+        this.supplySled = supplySled;
     }
 
     public User getUser() {
@@ -73,29 +109,5 @@ public class Player implements Serializable {
 
     public void setGame(Game game) {
         this.game = game;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public int getPlayerNumber() {
-        return playerNumber;
-    }
-
-    public void setPlayerNumber(int playerNumber) {
-        this.playerNumber = playerNumber;
     }
 }

@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.awt.*;
 
 @Entity
 public class Stone {
@@ -20,7 +19,7 @@ public class Stone {
     private Long id;
 
     @Column
-    private Color color;
+    private String color;
 
     public Long getId() {
         return id;
@@ -30,11 +29,11 @@ public class Stone {
         this.id = id;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 }

@@ -24,9 +24,9 @@ public class StoneQuarryService {
         this.stoneQuarryRepository = stoneQuarryRepository;
     }
 
-    public StoneQuarry stoneQuarryInfo(){
-        StoneQuarry stoneQuarry = new StoneQuarry();
-        return stoneQuarry;
+    public StoneQuarry createStoneQuarry(){
+        // TODO: Create StoneQuarry for a Game
+        return null;
     }
 
 }

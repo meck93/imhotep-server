@@ -30,10 +30,10 @@ public class PlayerController extends GenericController {
      * This requests the player with the specified playerId in the game with the specified gameId
      * @Param gameId, playerId
      */
-    @RequestMapping(value = "/{playerId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{playerNr}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Player getPlayer(@PathVariable Long gameId, @PathVariable Long playerId) {
-        return playerService.getPlayer(gameId, playerId);
+    public Player getPlayer(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr) {
+        return playerService.getPlayer(gameId, playerNr);
     }
 
     /*
@@ -42,7 +42,7 @@ public class PlayerController extends GenericController {
      */
     @RequestMapping( method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Player> listPlayers(@PathVariable Long gameId) {
+    public List<Player> listPlayers(@PathVariable("gameId") Long gameId) {
         return playerService.getPlayers(gameId);
     }
 }

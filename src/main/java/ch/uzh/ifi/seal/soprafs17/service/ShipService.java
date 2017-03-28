@@ -23,7 +23,8 @@ public class ShipService {
         this.shipRepository = shipRepository;
     }
 
-    public Ship shipInfo(){
-        Ship ship = new Ship();
-        return ship;
-    }}
+    public Ship createShip(){
+        //TODO: Implement create Ship
+        return null;
+    }
+}

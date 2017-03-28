@@ -24,9 +24,9 @@ public class MarketCardService {
         this.marketCardRepository = marketCardRepository;
     }
 
-    public MarketCard marketCardInfo(){
-        MarketCard marketCard = new MarketCard();
-        return marketCard;
+    public MarketCard createMarketCard(){
+        //TODO: Creating a specific MarketCard
+        return null;
     }
 
 }
