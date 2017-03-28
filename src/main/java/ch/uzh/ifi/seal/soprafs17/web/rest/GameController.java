@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-
 import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.service.*;
 
@@ -74,7 +73,7 @@ public class GameController extends GenericController {
         return gameService.findById(gameId);
     }
 
-    @RequestMapping(value = "/{gameId}/start", method = RequestMethod.POST)
+    @RequestMapping(value = "/{gameId}/start", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
         gameService.startGame(gameId, playerId);
@@ -150,4 +149,5 @@ public class GameController extends GenericController {
     public SupplySled triggerSupplySled() {
         return supplySledService.supplySledInfo();
     }
+
 }

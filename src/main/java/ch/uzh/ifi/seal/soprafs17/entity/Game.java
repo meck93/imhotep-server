@@ -42,6 +42,73 @@ public class Game implements Serializable {
     @Column
 	private int roundCounter;
 
+    @Column
+	private BuildingSite Obelisk;
+
+	@Column
+	private BuildingSite BurialChamber;
+
+	@Column
+	private BuildingSite Pyramid;
+
+	@Column
+	private BuildingSite Temple;
+
+	@Column
+	private MarketPlace Market;
+
+	@Column
+	private int amountOfPlayers;
+
+	@Column
+	public StoneQuarry getStoneQuarry() {
+		return stoneQuarry;
+	}
+
+	public void setStoneQuarry(StoneQuarry stoneQuarry) {
+		this.stoneQuarry = stoneQuarry;
+	}
+
+	public BuildingSite getObelisk() {
+		return Obelisk;
+	}
+
+	public void setObelisk(BuildingSite obelisk) {
+		Obelisk = obelisk;
+	}
+
+	public BuildingSite getBurialChamber() {
+		return BurialChamber;
+	}
+
+	public void setBurialChamber(BuildingSite burialChamber) {
+		BurialChamber = burialChamber;
+	}
+
+	public BuildingSite getPyramid() {
+		return Pyramid;
+	}
+
+	public void setPyramid(BuildingSite pyramid) {
+		Pyramid = pyramid;
+	}
+
+	public BuildingSite getTemple() {
+		return Temple;
+	}
+
+	public void setTemple(BuildingSite temple) {
+		Temple = temple;
+	}
+
+	public MarketPlace getMarket() {
+		return Market;
+	}
+
+	public void setMarket(MarketPlace market) {
+		Market = market;
+	}
+
    /* @OneToOne(MappedBy= "game")
 	private MarketPlace marketPlace;*/
 
@@ -53,8 +120,6 @@ public class Game implements Serializable {
    * dummy data to the client.
    */
 
-	@Column
-	private int amountOfPlayers;
 
 	public int getAmountOfPlayers() {
 		return amountOfPlayers;

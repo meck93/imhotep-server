@@ -52,10 +52,18 @@ public class BuildingSiteController {
         return buildingSiteService.templeEvent();
     }
 
-    @RequestMapping(value="/Pyramid", method = RequestMethod.GET)
+    @RequestMapping(value="/Pyramid/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public BuildingSite triggerPyramid() {
+    public BuildingSite triggerPyramid(@PathVariable("id") int a) {
+        if (a<2) throw new OrderNotFoundException();
         return buildingSiteService.pyramidEvent();
+    }
+
+    /*
+    HttpStatus Exceptions
+     */
+    @ResponseStatus(value=HttpStatus.PRECONDITION_FAILED, reason="Dont be stupid. written by daif")
+    public class OrderNotFoundException extends RuntimeException {
     }
 
 

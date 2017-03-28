@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.yaml.snakeyaml.error.Mark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +103,9 @@ public class GameService {
     // TODO: Change parameter to player specific not user specific
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
+        Game game = getGame(gameId);
+        game.setStatus(GameStatus.RUNNING);
+        gameInit(game);
 
         // TODO Implement the check & implement startGame() here
         Game game = gameRepository.findOne(gameId);
@@ -121,12 +125,47 @@ public class GameService {
         // TODO implement stopGame
         Game game = gameRepository.findOne(gameId);
         // Same access question as above
-        /*User owner = userService.getUserByToken(userToken);
+        User owner = userService.getUserByToken(userToken);
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
-        }*/
-
-        //TODO: Delete game after all Game has been stopped & all players have been removed
+        }
     }
+      
+    public void gameInit(Game game){
+
+        BuildingSite obelisk = new BuildingSite();
+        BuildingSite temple = new BuildingSite();
+        BuildingSite burialChamber = new BuildingSite();
+        BuildingSite pyramid = new BuildingSite();
+        MarketPlace market = new MarketPlace();
+        StoneQuarry stoneQuarry = new StoneQuarry();
+
+        /*test msgs*/
+        obelisk.setMsg("Obelisk not null");
+        temple.setMsg("Temple not null");
+        burialChamber.setMsg("Burial Chamber not null");
+        pyramid.setMsg("Pyramid not null");
+
+
+        game.setBurialChamber(burialChamber);
+        game.setObelisk(obelisk);
+        game.setPyramid(pyramid);
+        game.setTemple(temple);
+        game.setMarket(market);
+
+        game.setRoundCounter(1);
+        /*game.setStoneQuarry(stoneQuarry);*/
+        // maybe implement a roundcard deck, so we can address this here?
+
+        // game.getRoundCardDeck.dealcards();
+
+        //game.getMarket().dealCards;
+
+        /*for (Player:game.getPlayers()
+             ) {
+            create supply sled for player
+        }*/
+    }
+        //TODO: Delete game after all Game has been stopped & all players have been removed
 }
