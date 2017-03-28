@@ -23,6 +23,7 @@ import java.util.List;
 public class PlayerService {
 
     private final Logger log = LoggerFactory.getLogger(PlayerService.class);
+    private final int START_POINTS = 0;
 
     private final PlayerRepository playerRepository;
 
@@ -51,13 +52,19 @@ public class PlayerService {
             newPlayer.setUser(user);
             newPlayer.setId(user.getId());
             newPlayer.setGame(game);
-            // Color destroys the JSON response
-            //newPlayer.setColor(Color.BLACK);
-            newPlayer.setMoves(new ArrayList<>());
-            newPlayer.setPoints(0);
-            newPlayer.setPlayerNumber(playerNumber);
 
+            switch (playerNumber) {
+                case 1: newPlayer.setColor(GameConstants.BLACK); break;
+                case 2: newPlayer.setColor(GameConstants.WHITE); break;
+                case 3: newPlayer.setColor(GameConstants.BROWN); break;
+                case 4: newPlayer.setColor(GameConstants.GRAY); break;
+            }
+
+            newPlayer.setMoves(new ArrayList<>());
+            newPlayer.setPoints(START_POINTS);
+            newPlayer.setPlayerNumber(playerNumber);
             // TODO: Create SupplySled
+            //newPlayer.setSupplySled(SupplySledService.createSupplySled());
 
             playerRepository.save(newPlayer);
 

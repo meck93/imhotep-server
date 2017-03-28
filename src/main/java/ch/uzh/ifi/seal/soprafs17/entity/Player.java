@@ -2,14 +2,14 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 public class Player implements Serializable {
-    // TODO Implementation of the Player Entity
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -20,7 +20,7 @@ public class Player implements Serializable {
     private int points;
 
     @Column
-    private Color color;
+    private String color;
 
     @Column
     private int playerNumber;
@@ -46,12 +46,44 @@ public class Player implements Serializable {
         return game.getId();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    public SupplySled getSupplySled() {
+        return supplySled;
+    }
+
+    public void setSupplySled(SupplySled supplySled) {
+        this.supplySled = supplySled;
     }
 
     public User getUser() {
@@ -76,29 +108,5 @@ public class Player implements Serializable {
 
     public void setGame(Game game) {
         this.game = game;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public int getPlayerNumber() {
-        return playerNumber;
-    }
-
-    public void setPlayerNumber(int playerNumber) {
-        this.playerNumber = playerNumber;
     }
 }
