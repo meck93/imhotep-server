@@ -15,6 +15,12 @@ import java.util.List;
 @Repository("roundCardRepository")
 public interface RoundCardRepository extends CrudRepository<RoundCard, Long> {
 
+    /**
+     * Selects all roundcards who are associated with the gameId
+     * @param gameId
+     * @pre game =/= NULL   => gameId from cards must be initialized
+     * @return
+     */
     @Query("SELECT r FROM RoundCard r WHERE r.gameId = :gameId")
     List<RoundCard> findAllRoundCards(@Param("gameId")Long gameId);
 }

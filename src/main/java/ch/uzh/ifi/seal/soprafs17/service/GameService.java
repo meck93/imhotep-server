@@ -110,34 +110,32 @@ public class GameService {
     }
 
     // TODO: Change parameter to player specific not user specific
+
+    /**
+     * Handles the initialisation of the game board. Requires an already created but not
+     * running game with more than 1 player
+     * @param gameId
+     * @param playerId
+     * @pre game, player =/= NULL && state of game =/= RUNNING && game.amountOfPlayers =g= 2
+     * @post For all round specific attributes of a game and round: attribute =/= NULL
+     */
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
-        // TODO: check if game exists and then call init and the player is allowd to start it ===> throw 412 or access denied
-        // Create the starting game settings
-        gameInit(gameId);
 
+        // Check for preconditions reserved => is the player the owner? etc.
+
+        gameInit(gameId);
         Game game = gameRepository.findById(gameId);
         int amountOfPlayers = game.getAmountOfPlayers();
         // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
 
-        // Creates the initial round
         Round round = roundService.createRound(gameId, game);
         List<Round> rounds = game.getRounds();
         rounds.add(round);
         game.setRounds(rounds);
 
         gameRepository.save(game);
-
-        // TODO Implement the check & implement startGame() here
-        /*Player player = playerService.
-        // gameService cannot call the playerService -> serializable loop
-
-        // TODO: check that the player which started the game is the owner of the game
-        if (owner != null && game != null && game.getOwner().equals()) {
-
-        }
-        */
     }
 
     public void stopGame(Long gameId, Long playerId) {
@@ -154,11 +152,15 @@ public class GameService {
             // TODO: Stop game in GameService
         }*/
     }
-      
+
+
+    /**
+     * @param gameId
+     * @post For all game specific attributes:  attribute =/= NULL
+     */
     public void gameInit(Long gameId){
         // Initiates the game
         Game game = gameRepository.findById(gameId);
-        int amountOfPlayers = game.getAmountOfPlayers();
 
         /*
         // Create the marketPlace

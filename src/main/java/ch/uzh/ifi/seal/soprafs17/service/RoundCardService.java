@@ -31,18 +31,24 @@ public class RoundCardService {
         this.roundCardRepository = roundCardRepository;
     }
 
+    /**
+     * Calls the appropriate method for creating a deck of cards according to the rules.
+     * @param amountOfPlayers
+     * @param gameId
+     */
     public void createRoundCards(int amountOfPlayers, Long gameId) {
-        // TODO: Create roundCards according to the amount of players in a game
-        // TODO: save roundsCards to roundCardRepo
 
-        // Create each roundCard and set all variables -> save to repo
         if (amountOfPlayers == 2){createSevenTwoHeadCards(gameId);}
         if (amountOfPlayers == 3){createSevenThreeHeadCards();}
         if (amountOfPlayers == 4){createSevenFourHeadCards();}
-
-
     }
 
+    /**
+     * Creates a deck of seven roundcards with two heads.
+     * @param gameId
+     * @pre game =/= NULL
+     * @post seven roundcards are stored under the game id
+     */
     public void createSevenTwoHeadCards(Long gameId){
 
         ArrayList<ShipSize> shipsR1 = new ArrayList<>();
@@ -119,13 +125,13 @@ public class RoundCardService {
     public void createSevenThreeHeadCards(){};
     public void createSevenFourHeadCards(){};
 
-
+    /**
+     * Deals a random card from the currently available roundcards.
+     * @param gameId
+     * @pre game =/= NULL && game.roundCounter =l= 6
+     * @return RoundCard roundcard
+     */
     public RoundCard getRoundCard(Long gameId) {
-        // TODO: return RoundCard from the Repo
-        // 1. Get all RoundCards associated with gameId
-        // 2. Check which one doesn't have a RoundId
-        // 3. Choose one of the remaining
-        // OR make it with delete RoundCard from Repo
 
         List<RoundCard> deck = roundCardRepository.findAllRoundCards(gameId);
         Random rnd = new Random();
