@@ -17,6 +17,9 @@ public class Player implements Serializable {
     private Long id;
 
     @Column
+    private String username;
+
+    @Column
     private int points;
 
     @Column
@@ -109,5 +112,13 @@ public class Player implements Serializable {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

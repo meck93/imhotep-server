@@ -54,6 +54,7 @@ public class PlayerService {
             // create a new player entity
             Player newPlayer = new Player();
             newPlayer.setUser(user);
+            newPlayer.setUsername(user.getUsername());
             newPlayer.setId(playerId);
             newPlayer.setGame(game);
             newPlayer.setMoves(new ArrayList<>());
