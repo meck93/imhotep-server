@@ -50,7 +50,7 @@ public class GameService {
         newGame.setOwner(owner);
         newGame.setStatus(GameStatus.PENDING);
         newGame.setPlayers(new ArrayList<>());
-        newGame.setAmountOfPlayers(2);
+        newGame.setAmountOfPlayers(0);
         newGame.setRounds(new ArrayList<>());
 
         gameRepository.save(newGame);
