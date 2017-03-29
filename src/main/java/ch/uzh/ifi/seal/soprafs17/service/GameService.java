@@ -2,7 +2,9 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.*;
+import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,24 +112,22 @@ public class GameService {
     // TODO: Change parameter to player specific not user specific
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
-        // check if game exists and then call init and the player is allowd to start it ===> throw 412 or access denied
+        // TODO: check if game exists and then call init and the player is allowd to start it ===> throw 412 or access denied
+        // Create the starting game settings
         gameInit(gameId);
 
         Game game = gameRepository.findById(gameId);
-
         int amountOfPlayers = game.getAmountOfPlayers();
+        // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
 
-
+        // Creates the initial round
         Round round = roundService.createRound(gameId, game);
         List<Round> rounds = game.getRounds();
         rounds.add(round);
         game.setRounds(rounds);
 
-
         gameRepository.save(game);
-
-
 
         // TODO Implement the check & implement startGame() here
         /*Player player = playerService.
@@ -157,23 +156,25 @@ public class GameService {
     }
       
     public void gameInit(Long gameId){
-
+        // Initiates the game
         Game game = gameRepository.findById(gameId);
         int amountOfPlayers = game.getAmountOfPlayers();
 
         /*
+        // Create the marketPlace
         MarketPlace market = new MarketPlace();
+        // Create the supplySled
         StoneQuarry stoneQuarry = new StoneQuarry();
         */
-        // implement this for every site
+        // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
+        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
+        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
+        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
 
+        // settings for the initial round
         game.setRoundCounter(0);
         game.setStatus(GameStatus.RUNNING);
         gameRepository.save(game);
-
-        // TODO: Tell roundCardService to create roundCards for this game
-        roundCardService.createRoundCards(amountOfPlayers, gameId);
-        /*game.setStoneQuarry(stoneQuarry);*/
     }
 }

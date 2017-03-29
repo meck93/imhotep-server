@@ -32,19 +32,16 @@ public class Game implements Serializable {
 	private int roundCounter;
 
 	@Column
-	private BuildingSite Obelisk;
+	private BuildingSite obelisk;
 
 	@Column
-	private BuildingSite BurialChamber;
+	private BuildingSite burialChamber;
 
 	@Column
-	private BuildingSite Pyramid;
+	private BuildingSite pyramid;
 
 	@Column
-	private BuildingSite Temple;
-
-	@Column
-	private MarketPlace Market;
+	private BuildingSite temple;
 
 	@Column
 	private int amountOfPlayers;
@@ -104,6 +101,62 @@ public class Game implements Serializable {
 		this.currentPlayer = currentPlayer;
 	}
 
+	public int getRoundCounter() {
+		return roundCounter;
+	}
+
+	public void setRoundCounter(int roundCounter) {
+		this.roundCounter = roundCounter;
+	}
+
+	public BuildingSite getObelisk() {
+		return obelisk;
+	}
+
+	public void setObelisk(BuildingSite obelisk) {
+		this.obelisk = obelisk;
+	}
+
+	public BuildingSite getBurialChamber() {
+		return burialChamber;
+	}
+
+	public void setBurialChamber(BuildingSite burialChamber) {
+		this.burialChamber = burialChamber;
+	}
+
+	public BuildingSite getPyramid() {
+		return pyramid;
+	}
+
+	public void setPyramid(BuildingSite pyramid) {
+		this.pyramid = pyramid;
+	}
+
+	public BuildingSite getTemple() {
+		return temple;
+	}
+
+	public void setTemple(BuildingSite temple) {
+		this.temple = temple;
+	}
+
+	public int getAmountOfPlayers() {
+		return amountOfPlayers;
+	}
+
+	public void setAmountOfPlayers(int amountOfPlayers) {
+		this.amountOfPlayers = amountOfPlayers;
+	}
+
+	public MarketPlace getMarketPlace() {
+		return marketPlace;
+	}
+
+	public void setMarketPlace(MarketPlace marketPlace) {
+		this.marketPlace = marketPlace;
+	}
+
 	public StoneQuarry getStoneQuarry() {
 		return stoneQuarry;
 	}
@@ -126,69 +179,5 @@ public class Game implements Serializable {
 
 	public void setPlayers(List<Player> players) {
 		this.players = players;
-	}
-
-	public int getRoundCounter() {
-		return roundCounter;
-	}
-
-	public void setRoundCounter(int roundCounter) {
-		this.roundCounter = roundCounter;
-	}
-
-	public BuildingSite getObelisk() {
-		return Obelisk;
-	}
-
-	public void setObelisk(BuildingSite obelisk) {
-		Obelisk = obelisk;
-	}
-
-	public BuildingSite getBurialChamber() {
-		return BurialChamber;
-	}
-
-	public void setBurialChamber(BuildingSite burialChamber) {
-		BurialChamber = burialChamber;
-	}
-
-	public BuildingSite getPyramid() {
-		return Pyramid;
-	}
-
-	public void setPyramid(BuildingSite pyramid) {
-		Pyramid = pyramid;
-	}
-
-	public BuildingSite getTemple() {
-		return Temple;
-	}
-
-	public void setTemple(BuildingSite temple) {
-		Temple = temple;
-	}
-
-	public MarketPlace getMarket() {
-		return Market;
-	}
-
-	public void setMarket(MarketPlace market) {
-		Market = market;
-	}
-
-	public int getAmountOfPlayers() {
-		return amountOfPlayers;
-	}
-
-	public void setAmountOfPlayers(int amountOfPlayers) {
-		this.amountOfPlayers = amountOfPlayers;
-	}
-
-	public MarketPlace getMarketPlace() {
-		return marketPlace;
-	}
-
-	public void setMarketPlace(MarketPlace marketPlace) {
-		this.marketPlace = marketPlace;
 	}
 }

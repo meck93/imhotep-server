@@ -40,6 +40,7 @@ public class LobbyService {
      * Calls the gameService to create a Game
      */
     public Game createGame(Game game, Long userId){
+        // TODO: Add check whether the user exists, whether the user is already in game
         // Creates a new game
         Game newGame = gameService.createGame(game.getName(), game.getOwner());
         // Creates a new player from the user who created the game
@@ -53,6 +54,7 @@ public class LobbyService {
      * Implementation of a User joining a Game. User -> Player. Player -> Joins Game.
      */
     public String joinGame(Long gameId, Long userId){
+        // TODO: Check that the user exists, check that the game is not full, check that the user is not already in a game
         Player newPlayer = playerService.createPlayer(gameId, userId);
         return playerService.addPlayer(gameId, newPlayer.getId());
     }
