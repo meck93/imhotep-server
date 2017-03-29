@@ -24,7 +24,7 @@ public class BuildingSite implements Serializable{
 
     @Enumerated
     @Column(nullable = false)
-    SiteType siteType;
+    private SiteType siteType;
 
 
     @Column
