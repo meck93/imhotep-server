@@ -31,11 +31,12 @@ public class GameService {
     private final RoundCardService roundCardService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService) {
+    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService, ShipService shipService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
         this.roundCardService = roundCardService;
+
     }
     /*
      * Implementation of the createGame method:
@@ -115,10 +116,15 @@ public class GameService {
 
         Game game = gameRepository.findById(gameId);
 
-        Round round = roundService.createRound(gameId);
+        int amountOfPlayers = game.getAmountOfPlayers();
+        roundCardService.createRoundCards(amountOfPlayers, gameId);
+
+
+        Round round = roundService.createRound(gameId, game);
         List<Round> rounds = game.getRounds();
         rounds.add(round);
         game.setRounds(rounds);
+
 
         gameRepository.save(game);
 
@@ -162,7 +168,7 @@ public class GameService {
         // implement this for every site
         game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
 
-        game.setRoundCounter(1);
+        game.setRoundCounter(0);
         game.setStatus(GameStatus.RUNNING);
         gameRepository.save(game);
 

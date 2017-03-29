@@ -29,8 +29,9 @@ public class Round implements Serializable{
     @JsonBackReference
     private Game game;
 
-    @OneToMany(targetEntity= Ship.class)
-    private List<Ship> ships;
+    //@OneToMany(targetEntity= Ship.class)
+    @Column
+    private Ship[] ships;
 
     public RoundCard getCard() {
         return card;
@@ -54,5 +55,14 @@ public class Round implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    public Ship[] getShips() {
+        return ships;
+    }
+
+    public void setShips(Ship[] ships) {
+        this.ships = ships;
     }
 }

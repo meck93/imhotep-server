@@ -5,11 +5,13 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  */
 
 import ch.uzh.ifi.seal.soprafs17.constant.RoundCardType;
+import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class RoundCard implements Serializable {
@@ -23,15 +25,20 @@ public class RoundCard implements Serializable {
     @Column(nullable = false)
     private RoundCardType heads;
 
+    @Column(nullable = false)
+    private ArrayList<ShipSize> sizes;
+
     @Column
     private Long gameId;
 
     //@OneToMany(targetEntity= Ship.class)
-    private ArrayList<Ship> ships = new ArrayList<Ship>();
+    //private ArrayList<Ship> ships;
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() {return id;}
+
+    public ArrayList<ShipSize> getSizes() {return sizes;}
+
+    public void setSizes(ArrayList<ShipSize> sizes) {this.sizes = sizes;}
 
     public void setId(Long id) {
         this.id = id;

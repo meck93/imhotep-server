@@ -18,10 +18,10 @@ public class Ship implements Serializable{
     private Long id;
 
     @Column
-    private static final int MIN_STONES = 1;
+    private int minStone;
 
     @Column
-    public static int MAX_STONES; // add final and value
+    private int maxStone;
 
     //@OneToMany
     private ArrayList<Stone> stones = new ArrayList<Stone>();
@@ -31,6 +31,11 @@ public class Ship implements Serializable{
 
     @ManyToOne(targetEntity = RoundCard.class)
     private RoundCard roundCard;
+
+    public Ship(int min, int max){
+        this.setMaxStone(max);
+        this.setMinStone(min);
+    }
 
     private void unloadStone() { //to be filled
     }
@@ -55,4 +60,19 @@ public class Ship implements Serializable{
         this.stones = stones;
     }
 
+    public int getMinStone() {
+        return minStone;
+    }
+
+    public void setMinStone(int minStone) {
+        this.minStone = minStone;
+    }
+
+    public int getMaxStone() {
+        return maxStone;
+    }
+
+    public void setMaxStone(int maxStone) {
+        this.maxStone = maxStone;
+    }
 }
