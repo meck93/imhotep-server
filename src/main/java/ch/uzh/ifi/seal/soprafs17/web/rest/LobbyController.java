@@ -5,7 +5,6 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
  */
 
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.service.LobbyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +59,7 @@ public class LobbyController {
     @RequestMapping(method = RequestMethod.POST, value = "games/{gameId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String joinGame(@PathVariable("gameId") Long gameId, @RequestParam("userId") Long userId){
+    public String joinGame(@PathVariable Long gameId, @RequestParam Long userId){
         return lobbyService.joinGame(gameId, userId);
     }
 }

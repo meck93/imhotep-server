@@ -2,7 +2,9 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.*;
+import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,17 +121,27 @@ public class GameService {
      */
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
+<<<<<<< HEAD
+=======
+        // TODO: check if game exists and then call init and the player is allowd to start it ===> throw 412 or access denied
+        // Create the starting game settings
+        gameInit(gameId);
+>>>>>>> c245f026cf463d8a6ccb6fc3fdef21966619a109
 
         // Check for preconditions reserved => is the player the owner? etc.
 
         gameInit(gameId);
         Game game = gameRepository.findById(gameId);
-
         int amountOfPlayers = game.getAmountOfPlayers();
+        // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
 
+<<<<<<< HEAD
         // More refactoring required
 
+=======
+        // Creates the initial round
+>>>>>>> c245f026cf463d8a6ccb6fc3fdef21966619a109
         Round round = roundService.createRound(gameId, game);
         List<Round> rounds = game.getRounds();
         rounds.add(round);
@@ -138,6 +149,18 @@ public class GameService {
 
         gameRepository.save(game);
 
+<<<<<<< HEAD
+=======
+        // TODO Implement the check & implement startGame() here
+        /*Player player = playerService.
+        // gameService cannot call the playerService -> serializable loop
+
+        // TODO: check that the player which started the game is the owner of the game
+        if (owner != null && game != null && game.getOwner().equals()) {
+
+        }
+        */
+>>>>>>> c245f026cf463d8a6ccb6fc3fdef21966619a109
     }
 
     public void stopGame(Long gameId, Long playerId) {
@@ -161,21 +184,30 @@ public class GameService {
      * @post For all game specific attributes:  attribute =/= NULL
      */
     public void gameInit(Long gameId){
-
+        // Initiates the game
         Game game = gameRepository.findById(gameId);
 
         /*
+        // Create the marketPlace
         MarketPlace market = new MarketPlace();
+        // Create the supplySled
         StoneQuarry stoneQuarry = new StoneQuarry();
         */
-        // implement this for every site
+        // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
+        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
+        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
+        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
 
+        // settings for the initial round
         game.setRoundCounter(0);
         game.setStatus(GameStatus.RUNNING);
         gameRepository.save(game);
+<<<<<<< HEAD
 
         // TODO: Tell roundCardService to create roundCards for this game
         /*game.setStoneQuarry(stoneQuarry);*/
+=======
+>>>>>>> c245f026cf463d8a6ccb6fc3fdef21966619a109
     }
 }

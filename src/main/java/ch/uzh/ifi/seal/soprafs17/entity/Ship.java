@@ -24,7 +24,8 @@ public class Ship implements Serializable{
     private int maxStone;
 
     //@OneToMany
-    private ArrayList<Stone> stones = new ArrayList<Stone>();
+    // YOU ARE NOT ALLOWED TO DO  new ArrayList() here
+    private ArrayList<Stone> stones;
 
     @ManyToOne(targetEntity = Round.class)
     private Round round;
