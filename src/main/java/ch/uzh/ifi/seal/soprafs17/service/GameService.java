@@ -121,12 +121,6 @@ public class GameService {
      */
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
-<<<<<<< HEAD
-=======
-        // TODO: check if game exists and then call init and the player is allowd to start it ===> throw 412 or access denied
-        // Create the starting game settings
-        gameInit(gameId);
->>>>>>> c245f026cf463d8a6ccb6fc3fdef21966619a109
 
         // Check for preconditions reserved => is the player the owner? etc.
 
@@ -136,31 +130,12 @@ public class GameService {
         // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
 
-<<<<<<< HEAD
-        // More refactoring required
-
-=======
-        // Creates the initial round
->>>>>>> c245f026cf463d8a6ccb6fc3fdef21966619a109
         Round round = roundService.createRound(gameId, game);
         List<Round> rounds = game.getRounds();
         rounds.add(round);
         game.setRounds(rounds);
 
         gameRepository.save(game);
-
-<<<<<<< HEAD
-=======
-        // TODO Implement the check & implement startGame() here
-        /*Player player = playerService.
-        // gameService cannot call the playerService -> serializable loop
-
-        // TODO: check that the player which started the game is the owner of the game
-        if (owner != null && game != null && game.getOwner().equals()) {
-
-        }
-        */
->>>>>>> c245f026cf463d8a6ccb6fc3fdef21966619a109
     }
 
     public void stopGame(Long gameId, Long playerId) {
@@ -203,11 +178,5 @@ public class GameService {
         game.setRoundCounter(0);
         game.setStatus(GameStatus.RUNNING);
         gameRepository.save(game);
-<<<<<<< HEAD
-
-        // TODO: Tell roundCardService to create roundCards for this game
-        /*game.setStoneQuarry(stoneQuarry);*/
-=======
->>>>>>> c245f026cf463d8a6ccb6fc3fdef21966619a109
     }
 }
