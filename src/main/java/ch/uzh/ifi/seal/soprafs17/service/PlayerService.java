@@ -23,7 +23,6 @@ import java.util.List;
 public class PlayerService {
 
     private final Logger log = LoggerFactory.getLogger(PlayerService.class);
-    private final int START_POINTS = 0;
 
     private final PlayerRepository playerRepository;
 
@@ -58,7 +57,7 @@ public class PlayerService {
             newPlayer.setId(playerId);
             newPlayer.setGame(game);
             newPlayer.setMoves(new ArrayList<>());
-            newPlayer.setPoints(START_POINTS);
+            newPlayer.setPoints(GameConstants.START_POINTS);
             newPlayer.setPlayerNumber(playerNumber);
 
             // assign the color according to the playerNumber

@@ -13,10 +13,13 @@ public class GameConstants {
 	public final static String BLACK = "BLACK";
 
 	// size of the different ships
-	private final static int XL_SHIP = 4;
-	private final static int L_SHIP = 3;
-	private final static int M_SHIP = 2;
-	private final static int S_SHIP = 1;
+	public final static int XL_SHIP = 4;
+	public final static int L_SHIP = 3;
+	public final static int M_SHIP = 2;
+	public final static int S_SHIP = 1;
+
+	// starting points
+	public final static int START_POINTS = 0;
 
 	// sonarquabe suggested to add a private constructor instead of the implicit public one
 	private GameConstants() {};
