@@ -168,9 +168,9 @@ public class GameService {
         */
         // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
+        game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
+        game.setTemple(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
+        game.setBurialChamber(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
 
         // settings for the initial round
         game.setRoundCounter(0);
