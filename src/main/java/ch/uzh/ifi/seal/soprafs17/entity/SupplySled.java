@@ -24,7 +24,7 @@ public class SupplySled implements Serializable {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Player_ID")
+    //@JoinColumn(name = "Player_ID")
     @JsonBackReference(value = "player")
     private Player player;
 
