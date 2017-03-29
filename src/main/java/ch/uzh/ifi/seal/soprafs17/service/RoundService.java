@@ -30,14 +30,22 @@ public class RoundService {
             this.shipService = shipService;
         }
 
+        /**
+         * Calls the roundCardService and gets one roundcard which belongs to the game
+         * and deltes the dealt card from the repository.
+         * @param gameId
+         * @param game
+         * @pre game =/= NULL
+         * @post round.getRounds.get(old_index+1) > round.getRounds.get(old_index)
+         * @return RoundCard
+         */
         public Round createRound(Long gameId, Game game){
-                // HERE EVERYTHING NEEDS TO BE DONE BEFORE A NEW ROUND CAN START
+
                 log.debug("creating new round: ");
                 Round newRound = new Round();
-                RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
-                roundCardService.deleteCard(newRoundCard);
-                //TODO Implement the creation of a round - including whatever
-                newRound.setShips(shipService.createShips(game,game.getRoundCounter()));
+                RoundCard newRoundCard = roundCardService.getRoundCard(gameId);                 // getting a new card
+                roundCardService.deleteCard(newRoundCard);                                      // delete the dealt card
+                newRound.setShips(shipService.createShips(game,game.getRoundCounter()));        // adding ships to a round
                 roundRepository.save(newRound);
 
                 return newRound;

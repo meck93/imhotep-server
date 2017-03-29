@@ -49,7 +49,7 @@ public class GameService {
         newGame.setOwner(owner);
         newGame.setStatus(GameStatus.PENDING);
         newGame.setPlayers(new ArrayList<>());
-        newGame.setAmountOfPlayers(0);
+        newGame.setAmountOfPlayers(2);
         newGame.setRounds(new ArrayList<>());
 
         gameRepository.save(newGame);
@@ -109,36 +109,35 @@ public class GameService {
     }
 
     // TODO: Change parameter to player specific not user specific
+
+    /**
+     * Handles the initialisation of the game board. Requires an already created but not
+     * running game with more than 1 player
+     * @param gameId
+     * @param playerId
+     * @pre game, player =/= NULL && state of game =/= RUNNING && game.amountOfPlayers =g= 2
+     * @post For all round specific attributes of a game and round: attribute =/= NULL
+     */
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
-        // check if game exists and then call init and the player is allowd to start it ===> throw 412 or access denied
-        gameInit(gameId);
 
+        // Check for preconditions reserved => is the player the owner? etc.
+
+        gameInit(gameId);
         Game game = gameRepository.findById(gameId);
 
         int amountOfPlayers = game.getAmountOfPlayers();
         roundCardService.createRoundCards(amountOfPlayers, gameId);
 
+        // More refactoring required
 
         Round round = roundService.createRound(gameId, game);
         List<Round> rounds = game.getRounds();
         rounds.add(round);
         game.setRounds(rounds);
 
-
         gameRepository.save(game);
 
-
-
-        // TODO Implement the check & implement startGame() here
-        /*Player player = playerService.
-        // gameService cannot call the playerService -> serializable loop
-
-        // TODO: check that the player which started the game is the owner of the game
-        if (owner != null && game != null && game.getOwner().equals()) {
-
-        }
-        */
     }
 
     public void stopGame(Long gameId, Long playerId) {
@@ -155,11 +154,15 @@ public class GameService {
             // TODO: Stop game in GameService
         }*/
     }
-      
+
+
+    /**
+     * @param gameId
+     * @post For all game specific attributes:  attribute =/= NULL
+     */
     public void gameInit(Long gameId){
 
         Game game = gameRepository.findById(gameId);
-        int amountOfPlayers = game.getAmountOfPlayers();
 
         /*
         MarketPlace market = new MarketPlace();
@@ -173,7 +176,6 @@ public class GameService {
         gameRepository.save(game);
 
         // TODO: Tell roundCardService to create roundCards for this game
-        roundCardService.createRoundCards(amountOfPlayers, gameId);
         /*game.setStoneQuarry(stoneQuarry);*/
     }
 }

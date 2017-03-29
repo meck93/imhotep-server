@@ -28,10 +28,19 @@ public class ShipService {
         this.shipRepository = shipRepository;
     }
 
+    /**
+     * Creates for ships of the corresponding size value from a roundCard
+     * @param game
+     * @param roundCounter
+     * @return
+     */
     public Ship[] createShips(Game game, int roundCounter){
-        RoundCard currCard = game.getRounds().get(roundCounter).getCard();
-        ArrayList<ShipSize> ships = new ArrayList<>();
+        RoundCard currCard = game.getRounds().get(roundCounter).getCard();  // set current card to the newest card
+
+        ArrayList<ShipSize> ships = currCard.getSizes();                    // copying the list of size enumerators from the current card
         Ship[] shipArr = new Ship[4];
+
+        //create the ships
         for(int i = 0; i<3; i++){
             if(ships.get(i)== ShipSize.XL){shipArr[i]= new Ship(3,4); shipRepository.save(shipArr[i]);}
             if(ships.get(i)== ShipSize.L){shipArr[i]= new Ship(2,3);  shipRepository.save(shipArr[i]);}
