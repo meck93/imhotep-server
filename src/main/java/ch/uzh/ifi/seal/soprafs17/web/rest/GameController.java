@@ -69,4 +69,5 @@ public class GameController extends GenericController {
     public void deleteGame(@PathVariable Long gameId) {
         gameService.deleteGame(gameId);
     }
+
 }

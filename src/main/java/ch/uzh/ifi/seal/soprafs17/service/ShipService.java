@@ -1,5 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
+import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
+import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.Ship;
 import ch.uzh.ifi.seal.soprafs17.repository.ShipRepository;
 import org.slf4j.Logger;
@@ -7,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 /**
  * Created by Cristian on 26.03.2017.
@@ -23,8 +28,16 @@ public class ShipService {
         this.shipRepository = shipRepository;
     }
 
-    public Ship createShip(){
-        //TODO: Implement create Ship
-        return null;
+    public Ship[] createShips(Game game, int roundCounter){
+        RoundCard currCard = game.getRounds().get(roundCounter).getCard();
+        ArrayList<ShipSize> ships = new ArrayList<>();
+        Ship[] shipArr = new Ship[4];
+        for(int i = 0; i<3; i++){
+            if(ships.get(i)== ShipSize.XL){shipArr[i]= new Ship(3,4); shipRepository.save(shipArr[i]);}
+            if(ships.get(i)== ShipSize.L){shipArr[i]= new Ship(2,3);  shipRepository.save(shipArr[i]);}
+            if(ships.get(i)== ShipSize.M){shipArr[i]= new Ship(1,2);  shipRepository.save(shipArr[i]);}
+            if(ships.get(i)== ShipSize.S){shipArr[i]= new Ship(1,1);  shipRepository.save(shipArr[i]);}
+        }
+        return shipArr;
     }
 }

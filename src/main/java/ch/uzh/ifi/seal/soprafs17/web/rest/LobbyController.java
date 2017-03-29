@@ -5,6 +5,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
  */
 
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.service.LobbyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
