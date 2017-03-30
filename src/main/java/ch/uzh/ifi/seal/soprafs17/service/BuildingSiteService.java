@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @Transactional
 public class BuildingSiteService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(BuildingSiteService.class);
     private final BuildingSiteRepository buildingSiteRepository;
 
     @Autowired
@@ -27,7 +27,13 @@ public class BuildingSiteService {
         this.buildingSiteRepository = buildingSiteRepository;
     }
 
+    /*
+     * Creating a building site and returning it
+     * @param SiteType siteType the type of building site to be created
+     */
     public BuildingSite createBuildingSite(SiteType siteType){
+        log.debug("Creating a building site of type: " + siteType);
+
         BuildingSite buildingSite = new BuildingSite();
         buildingSite.setSiteType(siteType);
         buildingSite.setStones(new ArrayList<>());
