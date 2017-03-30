@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.Ship;
 import ch.uzh.ifi.seal.soprafs17.repository.ShipRepository;
@@ -30,23 +29,33 @@ public class ShipService {
 
     /**
      * Creates for ships of the corresponding size value from a roundCard
-     * @param game
-     * @param roundCounter
+     * @param roundCard
      * @return
      */
-    public Ship[] createShips(Game game, int roundCounter){
-        RoundCard currCard = game.getRounds().get(roundCounter).getCard();  // set current card to the newest card
+    public Ship[] createShips(RoundCard roundCard){
 
-        ArrayList<ShipSize> ships = currCard.getSizes();                    // copying the list of size enumerators from the current card
-        Ship[] shipArr = new Ship[4];
+        ArrayList<ShipSize> ships = roundCard.getShipSizes();                   // copying the list of size enumerators from the current card
+        Ship[] shipArray = new Ship[4];
 
         //create the ships
         for(int i = 0; i<3; i++){
-            if(ships.get(i)== ShipSize.XL){shipArr[i]= new Ship(3,4); shipRepository.save(shipArr[i]);}
-            if(ships.get(i)== ShipSize.L){shipArr[i]= new Ship(2,3);  shipRepository.save(shipArr[i]);}
-            if(ships.get(i)== ShipSize.M){shipArr[i]= new Ship(1,2);  shipRepository.save(shipArr[i]);}
-            if(ships.get(i)== ShipSize.S){shipArr[i]= new Ship(1,1);  shipRepository.save(shipArr[i]);}
+            if(ships.get(i)== ShipSize.XL){
+                shipArray[i]= new Ship(3,4);
+                shipRepository.save(shipArray[i]);
+            }
+            if(ships.get(i)== ShipSize.L){
+                shipArray[i]= new Ship(2,3);
+                shipRepository.save(shipArray[i]);
+            }
+            if(ships.get(i)== ShipSize.M){
+                shipArray[i]= new Ship(1,2);
+                shipRepository.save(shipArray[i]);
+            }
+            if(ships.get(i)== ShipSize.S){
+                shipArray[i]= new Ship(1,1);
+                shipRepository.save(shipArray[i]);
+            }
         }
-        return shipArr;
+        return shipArray;
     }
 }

@@ -22,14 +22,21 @@ public class BuildingSite implements Serializable{
     @GeneratedValue
     private Long id;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    SiteType siteType;
-
+    private SiteType siteType;
 
     @Column
     @JsonIgnore
     private Game game;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public SiteType getSiteType() {
         return siteType;
@@ -37,5 +44,13 @@ public class BuildingSite implements Serializable{
 
     public void setSiteType(SiteType siteType) {
         this.siteType = siteType;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

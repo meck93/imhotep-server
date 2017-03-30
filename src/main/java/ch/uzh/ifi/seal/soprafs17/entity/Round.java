@@ -33,6 +33,14 @@ public class Round implements Serializable{
     @Column
     private Ship[] ships;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public RoundCard getCard() {
         return card;
     }
@@ -49,14 +57,13 @@ public class Round implements Serializable{
         this.moves = moves;
     }
 
-    public Long getId() {
-        return id;
+    public Game getGame() {
+        return game;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setGame(Game game) {
+        this.game = game;
     }
-
 
     public Ship[] getShips() {
         return ships;

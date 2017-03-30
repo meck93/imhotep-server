@@ -38,12 +38,7 @@ public class Ship implements Serializable{
         this.setMinStone(min);
     }
 
-    private void unloadStone() { //to be filled
-    }
-
-    private void addStone(){
-        //to be filled
-    }
+    public Ship() {}
 
     public Long getId() {
         return id;

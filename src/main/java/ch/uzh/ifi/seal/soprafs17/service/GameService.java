@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.Round;
@@ -123,17 +122,15 @@ public class GameService {
         log.debug("startGame: " + gameId);
 
         // Check for preconditions reserved => is the player the owner? etc.
-
-        gameInit(gameId);
         Game game = gameRepository.findById(gameId);
-        int amountOfPlayers = game.getAmountOfPlayers();
-        // Creates all roundCards required for the Game
-        roundCardService.createRoundCards(amountOfPlayers, gameId);
+        gameInit(gameId);
 
         Round round = roundService.createRound(gameId, game);
         List<Round> rounds = game.getRounds();
         rounds.add(round);
         game.setRounds(rounds);
+
+        //roundService.initializeRound()
 
         gameRepository.save(game);
     }
@@ -161,6 +158,10 @@ public class GameService {
     public void gameInit(Long gameId){
         // Initiates the game
         Game game = gameRepository.findById(gameId);
+        int amountOfPlayers = gameRepository.findAmountOfPlayers(gameId);
+
+        // Creates all roundCards required for the Game
+        roundCardService.createRoundCards(amountOfPlayers, gameId);
 
         /*
         // Create the marketPlace
@@ -169,10 +170,10 @@ public class GameService {
         StoneQuarry stoneQuarry = new StoneQuarry();
         */
         // Create the four BuildingSites for the game
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
-        game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
-        game.setTemple(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
-        game.setBurialChamber(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
+        //game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
+        //game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
+        //game.setTemple(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
+        //game.setBurialChamber(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
 
         // settings for the initial round
         game.setRoundCounter(0);
