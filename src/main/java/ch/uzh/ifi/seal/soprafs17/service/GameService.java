@@ -69,14 +69,6 @@ public class GameService {
         log.debug("Deleted Game: {}", game);
     }
 
-    public List<Game> listGames() {
-        log.debug("listGames");
-
-        List<Game> result = new ArrayList<>();
-        gameRepository.findAll().forEach(result::add);
-
-        return result;
-    }
     /*
      * Adds an existing player to the game
      */
@@ -92,6 +84,15 @@ public class GameService {
         log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
 
         return "games" + "/" + gameId + "/players/" + amountOfPlayers;
+    }
+
+    public List<Game> listGames() {
+        log.debug("listGames");
+
+        List<Game> result = new ArrayList<>();
+        gameRepository.findAll().forEach(result::add);
+
+        return result;
     }
 
     public Game findById(Long gameId) {
@@ -135,22 +136,6 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public void stopGame(Long gameId, Long playerId) {
-        log.debug("stopGame: " + gameId);
-
-        // TODO implement stopGame
-        Game game = gameRepository.findOne(gameId);
-        /*String owner = game.getOwner();
-
-        // Same access question as above
-        // User owner = userService.getUserByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Stop game in GameService
-        }*/
-    }
-
-
     /**
      * @param gameId
      * @post For all game specific attributes:  attribute =/= NULL
@@ -183,5 +168,20 @@ public class GameService {
         game.setRoundCounter(1);
         game.setStatus(GameStatus.RUNNING);
         gameRepository.save(game);
+    }
+
+    public void stopGame(Long gameId, Long playerId) {
+        log.debug("stopGame: " + gameId);
+
+        // TODO implement stopGame
+        Game game = gameRepository.findOne(gameId);
+        /*String owner = game.getOwner();
+
+        // Same access question as above
+        // User owner = userService.getUserByToken(userToken);
+
+        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
+            // TODO: Stop game in GameService
+        }*/
     }
 }
