@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Service
 @Transactional
 public class StoneQuarryService {
@@ -25,8 +27,18 @@ public class StoneQuarryService {
     }
 
     public StoneQuarry createStoneQuarry(){
-        // TODO: Create StoneQuarry for a Game
-        return null;
+        log.debug("Creating a StoneQuarry");
+
+        StoneQuarry stoneQuarry = new StoneQuarry();
+
+        stoneQuarry.setBlackStones(new ArrayList<>());
+        stoneQuarry.setWhiteStones(new ArrayList<>());
+        stoneQuarry.setBrownStones(new ArrayList<>());
+        stoneQuarry.setGrayStones(new ArrayList<>());
+
+        stoneQuarryRepository.save(stoneQuarry);
+
+        return stoneQuarry;
     }
 
 }

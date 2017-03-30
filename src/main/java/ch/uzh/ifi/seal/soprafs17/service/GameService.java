@@ -2,10 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.MarketPlace;
-import ch.uzh.ifi.seal.soprafs17.entity.Player;
-import ch.uzh.ifi.seal.soprafs17.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,12 +163,16 @@ public class GameService {
         // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
 
-
         // Create the marketPlace
         MarketPlace marketPlace = marketPlaceService.createMarketPlace();
         game.setMarketPlace(marketPlace);
+
         // Create the supplySled
-        //StoneQuarry stoneQuarry = new StoneQuarry();
+        StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry();
+        game.setStoneQuarry(stoneQuarry);
+
+        // Fill StoneQuarry with Stones
+
 
         // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK));
