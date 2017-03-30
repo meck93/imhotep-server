@@ -24,7 +24,7 @@ import java.util.List;
 @Transactional
 public class GameService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(GameService.class);
 
     private final GameRepository gameRepository;
     private final BuildingSiteService buildingSiteService;

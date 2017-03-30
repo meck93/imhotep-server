@@ -56,7 +56,6 @@ public class Game implements Serializable {
 	@JsonManagedReference
 	private List<Round> rounds;
 
-	// TODO Change to correct mapping into Player and not User
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
 	@JsonManagedReference
 	private List<Player> players;

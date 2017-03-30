@@ -6,7 +6,7 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class MarketPlace implements Serializable{
@@ -17,20 +17,8 @@ public class MarketPlace implements Serializable{
     @GeneratedValue
     private Long id;
 
-    //OneToMany
-    private ArrayList<MarketCard> marketCards = new ArrayList<MarketCard>();
-
-    private void initialize() {
-
-    }
-
-    private void removeCard() {
-
-    }
-
-    private void chooseCard() {
-
-    }
+    @OneToMany(targetEntity = MarketCard.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MarketCard> marketCards;
 
     public Long getId() {
         return id;
@@ -40,11 +28,11 @@ public class MarketPlace implements Serializable{
         this.id = id;
     }
 
-    public ArrayList<MarketCard> getMarketCards() {
+    public List<MarketCard> getMarketCards() {
         return marketCards;
     }
 
-    public void setMarketCards(ArrayList<MarketCard> marketCards) {
+    public void setMarketCards(List<MarketCard> marketCards) {
         this.marketCards = marketCards;
     }
 }
