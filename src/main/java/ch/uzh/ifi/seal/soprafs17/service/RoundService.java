@@ -21,7 +21,7 @@ import java.util.ArrayList;
 @Transactional
 public class RoundService {
 
-        private final Logger log = LoggerFactory.getLogger(UserService.class);
+        private final Logger log = LoggerFactory.getLogger(RoundService.class);
         private final RoundRepository roundRepository;
         private final RoundCardService roundCardService;
         private final ShipService shipService;

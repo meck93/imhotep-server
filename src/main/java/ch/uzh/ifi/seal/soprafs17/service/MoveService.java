@@ -20,7 +20,7 @@ import java.util.List;
 @Transactional
 public class MoveService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(MoveService.class);
 
     private final MoveRepository moveRepository;
     private final UserRepository userRepository;

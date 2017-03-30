@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class MarketPlaceService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(MarketPlaceService.class);
     private final MarketPlaceRepository marketPlaceRepository;
 
     @Autowired

@@ -21,7 +21,7 @@ import java.util.List;
 @Transactional
 public class SupplySledService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(SupplySledService.class);
 
     private static final int MAX_STONES = 5;
 

@@ -22,7 +22,7 @@ import java.util.Random;
 @Transactional
 public class RoundCardService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(RoundCardService.class);
     private final RoundCardRepository roundCardRepository;
 
     @Autowired

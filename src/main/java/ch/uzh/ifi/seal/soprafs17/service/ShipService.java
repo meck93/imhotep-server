@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @Service
 @Transactional
 public class ShipService {
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(ShipService.class);
     private final ShipRepository shipRepository;
 
     @Autowired

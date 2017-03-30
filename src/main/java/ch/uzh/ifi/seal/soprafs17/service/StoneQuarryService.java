@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StoneQuarryService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(StoneQuarryService.class);
     private final StoneQuarryRepository stoneQuarryRepository;
 
     @Autowired

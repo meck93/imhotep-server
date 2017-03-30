@@ -31,16 +31,16 @@ public class Game implements Serializable {
 	@Column
 	private int roundCounter;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private BuildingSite obelisk;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private BuildingSite burialChamber;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private BuildingSite pyramid;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private BuildingSite temple;
 
 	@Column
