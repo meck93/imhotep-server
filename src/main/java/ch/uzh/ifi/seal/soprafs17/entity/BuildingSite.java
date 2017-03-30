@@ -22,7 +22,6 @@ public class BuildingSite implements Serializable{
     @GeneratedValue
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SiteType siteType;
 

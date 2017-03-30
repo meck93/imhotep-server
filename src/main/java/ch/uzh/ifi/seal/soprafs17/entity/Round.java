@@ -19,7 +19,7 @@ public class Round implements Serializable{
     @GeneratedValue
     private Long id;
 
-    @Column
+    @OneToOne(targetEntity = RoundCard.class)
     private RoundCard card;
 
     @OneToMany

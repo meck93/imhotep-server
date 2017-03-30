@@ -145,7 +145,7 @@ public class RoundCardService {
         roundCardRepository.findAllRoundCards(gameId).forEach(deck::add);
 
         Random rnd = new Random();
-        RoundCard currentCard = deck.get(rnd.nextInt(deck.size()));
+        RoundCard currentCard = deck.get(rnd.nextInt(deck.size()-1));
 
         return currentCard;
     }

@@ -166,7 +166,6 @@ public class GameService {
         /*
         // Create the marketPlace
         MarketPlace market = new MarketPlace();
-
         // Create the supplySled
         StoneQuarry stoneQuarry = new StoneQuarry();
         */
