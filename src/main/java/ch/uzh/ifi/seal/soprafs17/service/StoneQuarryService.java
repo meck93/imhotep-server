@@ -24,9 +24,11 @@ public class StoneQuarryService {
         this.stoneQuarryRepository = stoneQuarryRepository;
     }
 
-    public StoneQuarry createStoneQuarry(){
-        // TODO: Create StoneQuarry for a Game
-        return null;
+    public StoneQuarry createStoneQuarry(Long gameId, int amountOfPlayer){
+        log.debug("creating new stone quarry: ");
+        StoneQuarry stoneQuarry = new StoneQuarry();
+        stoneQuarryRepository.save(stoneQuarry);
+        return stoneQuarry;
     }
 
 }

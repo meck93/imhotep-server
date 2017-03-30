@@ -30,14 +30,19 @@ public class GameService {
     private final BuildingSiteService buildingSiteService;
     private final RoundService roundService;
     private final RoundCardService roundCardService;
+    private final StoneQuarryService stoneQuarryService;
+    private final MarketPlaceService marketPlaceService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService, ShipService shipService) {
+    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService,
+                       RoundService roundService, RoundCardService roundCardService,
+                       StoneQuarryService stoneQuarryService, MarketPlaceService marketPlaceService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
         this.roundCardService = roundCardService;
-
+        this.stoneQuarryService = stoneQuarryService;
+        this.marketPlaceService = marketPlaceService;
     }
     /*
      * Implementation of the createGame method:
@@ -158,16 +163,12 @@ public class GameService {
         // Initiates the game
         Game game = gameRepository.findById(gameId);
         int amountOfPlayers = gameRepository.findAmountOfPlayers(gameId);
-
         // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
-
-        /*
         // Create the marketPlace
-        MarketPlace market = new MarketPlace();
+        game.setMarketPlace(marketPlaceService.createMarketPlace(gameId));
         // Create the supplySled
-        StoneQuarry stoneQuarry = new StoneQuarry();
-        */
+        game.setStoneQuarry(stoneQuarryService.createStoneQuarry(gameId,amountOfPlayers));
         // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK));
         game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID));

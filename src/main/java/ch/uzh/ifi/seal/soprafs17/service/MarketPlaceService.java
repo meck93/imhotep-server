@@ -24,8 +24,11 @@ public class MarketPlaceService {
         this.marketPlaceRepository = marketPlaceRepository;
     }
 
-    public MarketPlace createMarketPlace() {
+    public MarketPlace createMarketPlace(Long gameId) {
         //TODO: Create a marketPlace for a Game
-        return null;
+        log.debug("creating new market place: ");
+        MarketPlace marketPlace = new MarketPlace();
+        marketPlaceRepository.save(marketPlace);
+        return marketPlace;
     }
 }
