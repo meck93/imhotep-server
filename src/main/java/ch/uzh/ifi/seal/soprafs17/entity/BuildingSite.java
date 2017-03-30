@@ -3,11 +3,9 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -27,6 +25,9 @@ public class BuildingSite implements Serializable{
     @Column(nullable = false)
     private SiteType siteType;
 
+    @OneToMany(targetEntity = Stone.class)
+    private List<Stone> stones;
+
     public Long getId() {
         return id;
     }
@@ -41,5 +42,13 @@ public class BuildingSite implements Serializable{
 
     public void setSiteType(SiteType siteType) {
         this.siteType = siteType;
+    }
+
+    public List<Stone> getStones() {
+        return stones;
+    }
+
+    public void setStones(List<Stone> stones) {
+        this.stones = stones;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 /**
  * Created by Cristi and Dave on 24.03.2017.
  */
@@ -25,9 +27,10 @@ public class BuildingSiteService {
         this.buildingSiteRepository = buildingSiteRepository;
     }
 
-    public BuildingSite createBuildingSite(SiteType siteType, Long gameId){
+    public BuildingSite createBuildingSite(SiteType siteType){
         BuildingSite buildingSite = new BuildingSite();
         buildingSite.setSiteType(siteType);
+        buildingSite.setStones(new ArrayList<>());
         buildingSiteRepository.save(buildingSite);
 
         return buildingSite;

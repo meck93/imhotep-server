@@ -171,13 +171,13 @@ public class GameService {
         StoneQuarry stoneQuarry = new StoneQuarry();
         */
         // Create the four BuildingSites for the game
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
-        game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
-        game.setTemple(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
-        game.setBurialChamber(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
+        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK));
+        game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID));
+        game.setTemple(buildingSiteService.createBuildingSite(SiteType.TEMPLE));
+        game.setBurialChamber(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER));
 
         // settings for the initial round
-        game.setRoundCounter(0);
+        game.setRoundCounter(1);
         game.setStatus(GameStatus.RUNNING);
         gameRepository.save(game);
     }
