@@ -20,12 +20,8 @@ public class MarketCard implements Serializable {
     @Column
     private Color color;
 
-    @ManyToOne()
+    @ManyToOne(targetEntity = MarketPlace.class, fetch = FetchType.LAZY)
     private MarketPlace marketPlace;
-
-    private void playCard() {
-        // to be filled
-    }
 
     public Long getId() {
         return id;

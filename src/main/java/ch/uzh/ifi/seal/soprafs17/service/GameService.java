@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
@@ -30,14 +31,17 @@ public class GameService {
     private final BuildingSiteService buildingSiteService;
     private final RoundService roundService;
     private final RoundCardService roundCardService;
+    private final MarketPlaceService marketPlaceService;
+    private final StoneQuarryService stoneQuarryService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService, ShipService shipService) {
+    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService, ShipService shipService, MarketPlaceService marketPlaceService, StoneQuarryService stoneQuarryService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
         this.roundCardService = roundCardService;
-
+        this.marketPlaceService = marketPlaceService;
+        this.stoneQuarryService = stoneQuarryService;
     }
     /*
      * Implementation of the createGame method:
@@ -162,12 +166,13 @@ public class GameService {
         // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
 
-        /*
+
         // Create the marketPlace
-        MarketPlace market = new MarketPlace();
+        MarketPlace marketPlace = marketPlaceService.createMarketPlace();
+        game.setMarketPlace(marketPlace);
         // Create the supplySled
-        StoneQuarry stoneQuarry = new StoneQuarry();
-        */
+        //StoneQuarry stoneQuarry = new StoneQuarry();
+
         // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK));
         game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID));

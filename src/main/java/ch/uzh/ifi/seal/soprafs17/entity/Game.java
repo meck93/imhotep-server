@@ -46,10 +46,10 @@ public class Game implements Serializable {
 	@Column
 	private int amountOfPlayers;
 
-	@OneToOne(targetEntity = MarketPlace.class)
+	@OneToOne(targetEntity = MarketPlace.class, cascade = CascadeType.ALL)
 	private MarketPlace marketPlace;
 
-	@OneToOne(targetEntity = StoneQuarry.class)
+	@OneToOne(targetEntity = StoneQuarry.class, cascade = CascadeType.ALL)
 	private StoneQuarry stoneQuarry;
 
 	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)

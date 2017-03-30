@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Service
 @Transactional
 public class MarketPlaceService {
@@ -25,7 +27,13 @@ public class MarketPlaceService {
     }
 
     public MarketPlace createMarketPlace() {
-        //TODO: Create a marketPlace for a Game
-        return null;
+        log.debug("Creating a MarketPlace");
+
+        MarketPlace marketPlace = new MarketPlace();
+        marketPlace.setMarketCards(new ArrayList<>());
+
+        marketPlaceRepository.save(marketPlace);
+
+        return marketPlace;
     }
 }
