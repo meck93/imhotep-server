@@ -169,10 +169,9 @@ public class GameService {
 
         // Create the supplySled
         StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry();
+        // Fill StoneQuarry with Stone
+        stoneQuarryService.fillQuarry(stoneQuarry);
         game.setStoneQuarry(stoneQuarry);
-
-        // Fill StoneQuarry with Stones
-
 
         // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK));
