@@ -23,6 +23,9 @@ public class Ship implements Serializable{
     @Column
     private int maxStone;
 
+    @Column
+    private Long gameId;
+
     @OneToMany(targetEntity = Stone.class)
     private List<Stone> stones;
 
@@ -63,5 +66,13 @@ public class Ship implements Serializable{
 
     public void setStones(List<Stone> stones) {
         this.stones = stones;
+    }
+
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
     }
 }

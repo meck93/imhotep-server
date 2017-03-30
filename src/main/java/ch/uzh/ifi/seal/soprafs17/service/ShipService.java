@@ -34,28 +34,34 @@ public class ShipService {
      */
     public ArrayList<Ship> createShips(RoundCard roundCard){
 
-        ArrayList<ShipSize> ships = roundCard.getShipSizes();                   // copying the list of size enumerators from the current card
-        ArrayList<Ship> shipArray = new ArrayList<>(4);
+        // copying the list of size enumerators from the current card
+        ArrayList<ShipSize> shipSizes = roundCard.getShipSizes();
+        // Retrive the gameId from the roundCard
+        Long gameId = roundCard.getGameId();
+        // Initialize return List
+        ArrayList<Ship> ships = new ArrayList<>(4);
 
-        //create the ships
-        for(int i = 0; i<3; i++){
-            if(ships.get(i)== ShipSize.XL){
-                shipArray.add(new Ship(3,4));
-                shipRepository.save(shipArray.get(i));
-            }
-            if(ships.get(i)== ShipSize.L){
-                shipArray.add(new Ship(2,3));
-                shipRepository.save(shipArray.get(i));
-            }
-            if(ships.get(i)== ShipSize.M){
-                shipArray.add(new Ship(1,2));
-                shipRepository.save(shipArray.get(i));
-            }
-            if(ships.get(i)== ShipSize.S){
-                shipArray.add(new Ship(1,1));
-                shipRepository.save(shipArray.get(i));
+        // create the required ships according to the shipSizes of the roundCard
+        for (ShipSize size : shipSizes){
+            switch (size){
+                case XL: ships.add(createShip(4, 3, gameId)); break;
+                case L: ships.add(createShip(3, 2, gameId)); break;
+                case M: ships.add(createShip(2, 1, gameId)); break;
+                case S: ships.add(createShip(1, 1, gameId)); break;
             }
         }
-        return shipArray;
+        return ships;
+    }
+
+    public Ship createShip(int maxSize, int minSize, Long gameId) {
+        Ship ship = new Ship();
+        ship.setMaxStone(maxSize);
+        ship.setMinStone(minSize);
+        ship.setGameId(gameId);
+        ship.setStones(new ArrayList<>());
+
+        shipRepository.save(ship);
+
+        return ship;
     }
 }
