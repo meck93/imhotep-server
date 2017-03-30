@@ -6,7 +6,7 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Ship implements Serializable{
@@ -23,14 +23,8 @@ public class Ship implements Serializable{
     @Column
     private int maxStone;
 
-    //@OneToMany
-    private ArrayList<Stone> stones;
-
-    @ManyToOne(targetEntity = Round.class)
-    private Round round;
-
-    @ManyToOne(targetEntity = RoundCard.class)
-    private RoundCard roundCard;
+    @OneToMany(targetEntity = Stone.class)
+    private List<Stone> stones;
 
     public Ship(int min, int max){
         this.setMaxStone(max);
@@ -47,14 +41,6 @@ public class Ship implements Serializable{
         this.id = id;
     }
 
-    public ArrayList<Stone> getStones() {
-        return stones;
-    }
-
-    public void setStones(ArrayList<Stone> stones) {
-        this.stones = stones;
-    }
-
     public int getMinStone() {
         return minStone;
     }
@@ -69,5 +55,13 @@ public class Ship implements Serializable{
 
     public void setMaxStone(int maxStone) {
         this.maxStone = maxStone;
+    }
+
+    public List<Stone> getStones() {
+        return stones;
+    }
+
+    public void setStones(List<Stone> stones) {
+        this.stones = stones;
     }
 }

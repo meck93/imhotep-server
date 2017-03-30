@@ -7,6 +7,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
+import ch.uzh.ifi.seal.soprafs17.entity.Ship;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +56,8 @@ public class RoundService {
             newRound.setMoves(new ArrayList<>());
 
             // adding ships to a round
-            //Ship[] currentShips = shipService.createShips(newRoundCard);
-            //newRound.setShips(currentShips);
+            ArrayList<Ship> currentShips = shipService.createShips(newRoundCard);
+            newRound.setShips(currentShips);
             roundRepository.save(newRound);
 
             return newRound;

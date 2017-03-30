@@ -32,28 +32,28 @@ public class ShipService {
      * @param roundCard
      * @return
      */
-    public Ship[] createShips(RoundCard roundCard){
+    public ArrayList<Ship> createShips(RoundCard roundCard){
 
         ArrayList<ShipSize> ships = roundCard.getShipSizes();                   // copying the list of size enumerators from the current card
-        Ship[] shipArray = new Ship[4];
+        ArrayList<Ship> shipArray = new ArrayList<>(4);
 
         //create the ships
         for(int i = 0; i<3; i++){
             if(ships.get(i)== ShipSize.XL){
-                shipArray[i]= new Ship(3,4);
-                shipRepository.save(shipArray[i]);
+                shipArray.add(new Ship(3,4));
+                shipRepository.save(shipArray.get(i));
             }
             if(ships.get(i)== ShipSize.L){
-                shipArray[i]= new Ship(2,3);
-                shipRepository.save(shipArray[i]);
+                shipArray.add(new Ship(2,3));
+                shipRepository.save(shipArray.get(i));
             }
             if(ships.get(i)== ShipSize.M){
-                shipArray[i]= new Ship(1,2);
-                shipRepository.save(shipArray[i]);
+                shipArray.add(new Ship(1,2));
+                shipRepository.save(shipArray.get(i));
             }
             if(ships.get(i)== ShipSize.S){
-                shipArray[i]= new Ship(1,1);
-                shipRepository.save(shipArray[i]);
+                shipArray.add(new Ship(1,1));
+                shipRepository.save(shipArray.get(i));
             }
         }
         return shipArray;

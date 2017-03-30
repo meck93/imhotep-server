@@ -109,8 +109,6 @@ public class GameService {
         return gameRepository.findPlayersByGameId(gameId);
     }
 
-    // TODO: Change parameter to player specific not user specific
-
     /**
      * Handles the initialisation of the game board. Requires an already created but not
      * running game with more than 1 player
