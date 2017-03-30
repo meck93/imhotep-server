@@ -141,15 +141,8 @@ public class RoundCardService {
      */
     public RoundCard getRoundCard(Long gameId) {
 
-        List<RoundCard> allRoundCards = new ArrayList<>();
         List<RoundCard> deck = new ArrayList<>();
-        roundCardRepository.findAll().forEach(allRoundCards::add);
-
-        for (RoundCard roundCard : allRoundCards) {
-            if(roundCard.getGameId().equals(gameId))  {
-                deck.add(roundCard);
-            }
-        }
+        roundCardRepository.findAllRoundCards(gameId).forEach(deck::add);
 
         Random rnd = new Random();
         RoundCard currentCard = deck.get(rnd.nextInt(deck.size()));

@@ -21,7 +21,6 @@ public class RoundCard implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
     private RoundCardType heads;
 
     @Column(nullable = false)
