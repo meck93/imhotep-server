@@ -52,12 +52,14 @@ public class RoundCardService {
 
 
     /**
-     * Creates a deck of seven roundcards with two heads.
+     * Creates a deck of seven roundCards with the specified HeadType.
      * @param gameId
-     * @pre game =/= NULL
-     * @post seven roundcards are stored under the game id
+     * @pre game != NULL
+     * @post seven roundCards are stored under the game id
      */
     public void createRoundCardSet(Long gameId, RoundCardType roundCardType){
+        log.debug("Creating seven roundCards for Type: " + roundCardType + " associated to gameId: " + gameId);
+
         createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.M, ShipSize.M);
         createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.L, ShipSize.S);
         createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.M, ShipSize.M, ShipSize.S);
@@ -67,11 +69,16 @@ public class RoundCardService {
         createRoundCard(gameId, roundCardType, ShipSize.L, ShipSize.L, ShipSize.M, ShipSize.S);
     }
 
+    /*
+     * Creating an individual roundCard
+     */
     public void createRoundCard(Long gameId, RoundCardType roundCardType, ShipSize sizeOne, ShipSize sizeTwo, ShipSize sizeThree, ShipSize sizeFour) {
+        log.debug("Creating a roundCard of Type: " + roundCardType);
 
         RoundCard roundCard = new RoundCard();
         roundCard.setGameId(gameId);
         roundCard.setHeads(roundCardType);
+        roundCard.setAlreadyChosen(false);
 
         ArrayList<ShipSize> shipSizes = new ArrayList<>();
         shipSizes.add(sizeOne);
@@ -84,18 +91,31 @@ public class RoundCardService {
     }
 
     /**
-     * Deals a random card from the currently available roundcards.
+     * Deals a random card from the currently available roundCards.
      * @param gameId
      * @pre game =/= NULL && game.roundCounter =l= 6
-     * @return RoundCard roundcard
+     * @return RoundCard roundCard
      */
     public RoundCard getRoundCard(Long gameId) {
+        log.debug("Picking a roundCard by random from all roundCards associated with gameId: " + gameId);
 
         List<RoundCard> deck = new ArrayList<>();
         roundCardRepository.findAllRoundCards(gameId).forEach(deck::add);
 
+        // Removing all alreadyChosen roundCards from the deck
+        for (RoundCard roundCard : deck) {
+            if (roundCard.isAlreadyChosen()) {
+                deck.remove(roundCard);
+            }
+        }
+
+        // Choosing one of the new roundCards by random
         Random rnd = new Random();
         RoundCard currentCard = deck.get(rnd.nextInt(deck.size()-1));
+
+        // Marking the chosen card as used in a Round
+        currentCard.setAlreadyChosen(true);
+        roundCardRepository.save(currentCard);
 
         return currentCard;
     }

@@ -6,10 +6,11 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.RoundCardType;
 import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class RoundCard implements Serializable {
@@ -21,17 +22,17 @@ public class RoundCard implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private RoundCardType heads;
+    @JsonIgnore
+    private boolean alreadyChosen;
 
     @Column(nullable = false)
-    private ArrayList<ShipSize> shipSizes;
+    private RoundCardType heads;
+
+    @ElementCollection(targetClass = ShipSize.class)
+    private List<ShipSize> shipSizes;
 
     @Column
     private Long gameId;
-
-    //@OneToMany(targetEntity= Ship.class)
-    //private ArrayList<Ship> ships;
-
 
     public Long getId() {
         return id;
@@ -39,6 +40,14 @@ public class RoundCard implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isAlreadyChosen() {
+        return alreadyChosen;
+    }
+
+    public void setAlreadyChosen(boolean alreadyChosen) {
+        this.alreadyChosen = alreadyChosen;
     }
 
     public RoundCardType getHeads() {
@@ -49,11 +58,11 @@ public class RoundCard implements Serializable {
         this.heads = heads;
     }
 
-    public ArrayList<ShipSize> getShipSizes() {
+    public List<ShipSize> getShipSizes() {
         return shipSizes;
     }
 
-    public void setShipSizes(ArrayList<ShipSize> shipSizes) {
+    public void setShipSizes(List<ShipSize> shipSizes) {
         this.shipSizes = shipSizes;
     }
 
