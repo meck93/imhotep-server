@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -47,16 +48,15 @@ public class RoundService {
 
             // getting a new roundCard
             RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
-            //delete the dealt card
-            //roundCardService.deleteCard(newRoundCard);
 
+            // Creating a new Round
             Round newRound = new Round();
             newRound.setGame(game);
             newRound.setCard(newRoundCard);
             newRound.setMoves(new ArrayList<>());
 
-            // adding ships to a round
-            ArrayList<Ship> currentShips = shipService.createShips(newRoundCard);
+            // adding ships to the round
+            List<Ship> currentShips = shipService.createShips(newRoundCard);
             newRound.setShips(currentShips);
             roundRepository.save(newRound);
 
