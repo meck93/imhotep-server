@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Cristian on 26.03.2017.
@@ -32,10 +34,11 @@ public class ShipService {
      * @param roundCard
      * @return
      */
-    public ArrayList<Ship> createShips(RoundCard roundCard){
+    public List<Ship> createShips(RoundCard roundCard){
+        log.debug("Creating all the ships described by the roundCardId: " + roundCard.getId());
 
         // copying the list of size enumerators from the current card
-        ArrayList<ShipSize> shipSizes = roundCard.getShipSizes();
+        List<ShipSize> shipSizes = roundCard.getShipSizes();
         // Retrive the gameId from the roundCard
         Long gameId = roundCard.getGameId();
         // Initialize return List
@@ -50,10 +53,19 @@ public class ShipService {
                 case S: ships.add(createShip(1, 1, gameId)); break;
             }
         }
-        return ships;
+        if (ships.size() == 4) {
+            return ships;
+        }
+        else {
+            log.error("Unable to add the ships of the roundCardId: " + roundCard.getId());
+            return null;
+        }
+
     }
 
     public Ship createShip(int maxSize, int minSize, Long gameId) {
+        log.debug("Creating a ship for gameId: " + gameId);
+
         Ship ship = new Ship();
         ship.setMaxStone(maxSize);
         ship.setMinStone(minSize);
