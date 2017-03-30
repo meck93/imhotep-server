@@ -2,9 +2,11 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 
 
 import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 
@@ -25,10 +27,6 @@ public class BuildingSite implements Serializable{
     @Column(nullable = false)
     private SiteType siteType;
 
-    @Column
-    @JsonIgnore
-    private Game game;
-
     public Long getId() {
         return id;
     }
@@ -43,13 +41,5 @@ public class BuildingSite implements Serializable{
 
     public void setSiteType(SiteType siteType) {
         this.siteType = siteType;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 }

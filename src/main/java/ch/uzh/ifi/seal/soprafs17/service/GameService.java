@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.Round;
@@ -170,10 +171,10 @@ public class GameService {
         StoneQuarry stoneQuarry = new StoneQuarry();
         */
         // Create the four BuildingSites for the game
-        //game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
-        //game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
-        //game.setTemple(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
-        //game.setBurialChamber(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
+        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
+        game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
+        game.setTemple(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
+        game.setBurialChamber(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
 
         // settings for the initial round
         game.setRoundCounter(0);

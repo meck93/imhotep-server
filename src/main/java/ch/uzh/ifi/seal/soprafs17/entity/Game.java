@@ -31,16 +31,16 @@ public class Game implements Serializable {
 	@Column
 	private int roundCounter;
 
-	@Column
+	@OneToOne
 	private BuildingSite obelisk;
 
-	@Column
+	@OneToOne
 	private BuildingSite burialChamber;
 
-	@Column
+	@OneToOne
 	private BuildingSite pyramid;
 
-	@Column
+	@OneToOne
 	private BuildingSite temple;
 
 	@Column
