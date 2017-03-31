@@ -176,8 +176,15 @@ public class GameService {
         // TODO implement stopGame
         Game game = gameRepository.findOne(gameId);
         /*String owner = game.getOwner();
+<<<<<<< HEAD
         // Same access question as above
         // User owner = userService.getUserByToken(userToken);
+=======
+
+        // Same access question as above
+        // User owner = userService.getUserByToken(userToken);
+
+>>>>>>> refs/remotes/origin/development
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
         }*/
