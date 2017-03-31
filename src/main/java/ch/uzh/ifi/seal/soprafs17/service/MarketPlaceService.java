@@ -1,11 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-/**
- * Created by Cristian on 26.03.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.entity.MarketPlace;
-import ch.uzh.ifi.seal.soprafs17.repository.MarketPlaceRepository;
+import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +15,35 @@ import java.util.ArrayList;
 public class MarketPlaceService {
 
     private final Logger log = LoggerFactory.getLogger(MarketPlaceService.class);
-    private final MarketPlaceRepository marketPlaceRepository;
+    private final ASiteRepository aSiteRepository;
 
     @Autowired
-    public MarketPlaceService(MarketPlaceRepository marketPlaceRepository) {
-        this.marketPlaceRepository = marketPlaceRepository;
+    public MarketPlaceService(ASiteRepository aSiteRepository) {
+        this.aSiteRepository = aSiteRepository;
     }
 
-    public MarketPlace createMarketPlace() {
+    public MarketPlace createMarketPlace(Long gameId) {
         log.debug("Creating a MarketPlace");
 
-        MarketPlace marketPlace = new MarketPlace();
+        MarketPlace marketPlace = new MarketPlace(gameId);
         marketPlace.setMarketCards(new ArrayList<>());
 
-        marketPlaceRepository.save(marketPlace);
+        aSiteRepository.save(marketPlace);
 
         return marketPlace;
+    }
+
+    public MarketPlace getMarketPlace(Long gameId){
+        log.debug("Retrieving Market Place for: " + gameId);
+
+        MarketPlace result = aSiteRepository.findMarketPlace(gameId);
+
+        if (result != null){
+            return result;
+        }
+        else {
+            log.error("Not able to retrieve the MarketPlace for: " + gameId);
+            return null;
+        }
     }
 }

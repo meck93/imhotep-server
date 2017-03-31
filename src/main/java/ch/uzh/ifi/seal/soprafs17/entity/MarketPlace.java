@@ -4,29 +4,26 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  * Created by Cristian on 26.03.2017.
  */
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-public class MarketPlace implements Serializable{
+@Entity(name = "MarketPlace")
+@DiscriminatorValue("MARKET_PLACE")
+public class MarketPlace extends ASite implements Serializable{
 
-    private static final long serialVersionUID = 1L;
+    public MarketPlace(){};
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    public MarketPlace(Long gameId){
+        super.setGameId(gameId);
+        super.setSiteType("MARKET_PLACE");
+    }
 
     @OneToMany(targetEntity = MarketCard.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MarketCard> marketCards;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public List<MarketCard> getMarketCards() {
         return marketCards;
