@@ -1,9 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
-/**
- * Created by Cristian on 25.03.2017.
- */
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -18,16 +14,33 @@ public class Ship implements Serializable{
     private Long id;
 
     @Column
-    private int minStone;
+    private final int MIN_STONES;
 
     @Column
-    private int maxStone;
+    private final int MAX_STONES;
 
     @Column
     private Long gameId;
 
+    @Column
+    private boolean hasSailed;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BuildingSite_ID")
+    private BuildingSite targetSite;
+
     @OneToMany(targetEntity = Stone.class)
     private List<Stone> stones;
+
+    public Ship() {
+        this.MIN_STONES = 0;
+        this.MAX_STONES = 0;
+    }
+
+    public Ship(int minStone, int maxStone){
+        this.MIN_STONES = minStone;
+        this.MAX_STONES = maxStone;
+    }
 
     public Long getId() {
         return id;
@@ -35,22 +48,6 @@ public class Ship implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getMinStone() {
-        return minStone;
-    }
-
-    public void setMinStone(int minStone) {
-        this.minStone = minStone;
-    }
-
-    public int getMaxStone() {
-        return maxStone;
-    }
-
-    public void setMaxStone(int maxStone) {
-        this.maxStone = maxStone;
     }
 
     public List<Stone> getStones() {
@@ -67,5 +64,29 @@ public class Ship implements Serializable{
 
     public void setGameId(Long gameId) {
         this.gameId = gameId;
+    }
+
+    public int getMIN_STONE() {
+        return MIN_STONES;
+    }
+
+    public int getMAX_STONES() {
+        return MAX_STONES;
+    }
+
+    public boolean isHasSailed() {
+        return hasSailed;
+    }
+
+    public void setHasSailed(boolean hasSailed) {
+        this.hasSailed = hasSailed;
+    }
+
+    public BuildingSite getTargetSite() {
+        return targetSite;
+    }
+
+    public void setTargetSite(BuildingSite targetSite) {
+        this.targetSite = targetSite;
     }
 }

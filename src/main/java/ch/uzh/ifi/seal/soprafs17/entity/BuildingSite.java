@@ -7,13 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-
-/**
- * Created by Dave and Cristi on 24.03.2017.
- */
-
-
-@Entity
+@Entity(name = "BuildingSite")
 public class BuildingSite implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -24,6 +18,9 @@ public class BuildingSite implements Serializable{
 
     @Column(nullable = false)
     private SiteType siteType;
+
+    @OneToOne(mappedBy = "", targetEntity = Ship.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Ship dockedShip;
 
     @OneToMany(targetEntity = Stone.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Stone> stones;
@@ -50,5 +47,13 @@ public class BuildingSite implements Serializable{
 
     public void setStones(List<Stone> stones) {
         this.stones = stones;
+    }
+
+    public Ship getDockedShip() {
+        return dockedShip;
+    }
+
+    public void setDockedShip(Ship dockedShip) {
+        this.dockedShip = dockedShip;
     }
 }
