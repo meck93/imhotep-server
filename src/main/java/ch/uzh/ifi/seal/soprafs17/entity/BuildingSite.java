@@ -1,48 +1,32 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
 
-import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
+import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-public class BuildingSite implements Serializable{
+@Entity(name = "BuildingSite")
+@DiscriminatorValue(value = "BUILDING_SITE")
+public class BuildingSite extends ASite implements Serializable{
 
-    private static final long serialVersionUID = 1L;
+    public BuildingSite(){};
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    public BuildingSite(BuildingSiteType buildingSiteType, Long gameId){
+        super.setGameId(gameId);
+        super.setSiteType("BUILDING_SITE");
+        this.buildingSiteType = buildingSiteType;
+    }
 
-    @Column(nullable = false)
-    private Long gameId;
-
-    @Column(nullable = false)
-    private SiteType siteType;
+    @Column
+    private BuildingSiteType buildingSiteType;
 
     @OneToOne(targetEntity = Ship.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Ship dockedShip;
 
     @OneToMany(targetEntity = Stone.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Stone> stones;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public SiteType getSiteType() {
-        return siteType;
-    }
-
-    public void setSiteType(SiteType siteType) {
-        this.siteType = siteType;
-    }
 
     public List<Stone> getStones() {
         return stones;
@@ -60,11 +44,11 @@ public class BuildingSite implements Serializable{
         this.dockedShip = dockedShip;
     }
 
-    public Long getGameId() {
-        return gameId;
+    public BuildingSiteType getBuildingSiteType() {
+        return buildingSiteType;
     }
 
-    public void setGameId(Long gameId) {
-        this.gameId = gameId;
+    public void setBuildingSiteType(BuildingSiteType buildingSiteType) {
+        this.buildingSiteType = buildingSiteType;
     }
 }
