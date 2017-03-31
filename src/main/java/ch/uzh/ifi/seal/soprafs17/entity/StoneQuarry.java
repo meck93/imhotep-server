@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
+@Entity(name = "StoneQuarry")
 public class StoneQuarry implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -17,19 +17,16 @@ public class StoneQuarry implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(targetEntity = Game.class)
-    private Game game;
-
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stone> blackStones;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stone> whiteStones;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stone> brownStones;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stone> grayStones;
 
     public Long getId() {
@@ -38,14 +35,6 @@ public class StoneQuarry implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     public List<Stone> getBlackStones() {

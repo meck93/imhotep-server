@@ -29,13 +29,6 @@ public class Ship implements Serializable{
     @OneToMany(targetEntity = Stone.class)
     private List<Stone> stones;
 
-    public Ship(int min, int max){
-        this.setMaxStone(max);
-        this.setMinStone(min);
-    }
-
-    public Ship() {}
-
     public Long getId() {
         return id;
     }

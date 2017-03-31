@@ -21,6 +21,9 @@ public class GameConstants {
 	// starting points
 	public final static int START_POINTS = 0;
 
+	// amount of starting stones
+	public final static int START_STONES = 30;
+
 	// sonarquabe suggested to add a private constructor instead of the implicit public one
 	private GameConstants() {};
 }

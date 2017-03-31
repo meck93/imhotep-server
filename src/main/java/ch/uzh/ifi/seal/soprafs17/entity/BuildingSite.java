@@ -25,7 +25,7 @@ public class BuildingSite implements Serializable{
     @Column(nullable = false)
     private SiteType siteType;
 
-    @OneToMany(targetEntity = Stone.class)
+    @OneToMany(targetEntity = Stone.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Stone> stones;
 
     public Long getId() {

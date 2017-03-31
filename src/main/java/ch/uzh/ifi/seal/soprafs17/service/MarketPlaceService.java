@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Service
 @Transactional
 public class MarketPlaceService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(MarketPlaceService.class);
     private final MarketPlaceRepository marketPlaceRepository;
 
     @Autowired
@@ -24,11 +26,14 @@ public class MarketPlaceService {
         this.marketPlaceRepository = marketPlaceRepository;
     }
 
-    public MarketPlace createMarketPlace(Long gameId) {
-        //TODO: Create a marketPlace for a Game
-        log.debug("creating new market place: ");
+    public MarketPlace createMarketPlace() {
+        log.debug("Creating a MarketPlace");
+
         MarketPlace marketPlace = new MarketPlace();
+        marketPlace.setMarketCards(new ArrayList<>());
+
         marketPlaceRepository.save(marketPlace);
+
         return marketPlace;
     }
 }

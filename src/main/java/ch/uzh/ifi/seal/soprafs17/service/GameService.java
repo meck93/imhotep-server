@@ -2,9 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.Player;
-import ch.uzh.ifi.seal.soprafs17.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,25 +22,23 @@ import java.util.List;
 @Transactional
 public class GameService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(GameService.class);
 
     private final GameRepository gameRepository;
     private final BuildingSiteService buildingSiteService;
     private final RoundService roundService;
     private final RoundCardService roundCardService;
-    private final StoneQuarryService stoneQuarryService;
     private final MarketPlaceService marketPlaceService;
+    private final StoneQuarryService stoneQuarryService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService,
-                       RoundService roundService, RoundCardService roundCardService,
-                       StoneQuarryService stoneQuarryService, MarketPlaceService marketPlaceService) {
+    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService, ShipService shipService, MarketPlaceService marketPlaceService, StoneQuarryService stoneQuarryService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
         this.roundCardService = roundCardService;
-        this.stoneQuarryService = stoneQuarryService;
         this.marketPlaceService = marketPlaceService;
+        this.stoneQuarryService = stoneQuarryService;
     }
     /*
      * Implementation of the createGame method:
@@ -73,14 +69,6 @@ public class GameService {
         log.debug("Deleted Game: {}", game);
     }
 
-    public List<Game> listGames() {
-        log.debug("listGames");
-
-        List<Game> result = new ArrayList<>();
-        gameRepository.findAll().forEach(result::add);
-
-        return result;
-    }
     /*
      * Adds an existing player to the game
      */
@@ -96,6 +84,15 @@ public class GameService {
         log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
 
         return "games" + "/" + gameId + "/players/" + amountOfPlayers;
+    }
+
+    public List<Game> listGames() {
+        log.debug("listGames");
+
+        List<Game> result = new ArrayList<>();
+        gameRepository.findAll().forEach(result::add);
+
+        return result;
     }
 
     public Game findById(Long gameId) {
@@ -139,22 +136,6 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public void stopGame(Long gameId, Long playerId) {
-        log.debug("stopGame: " + gameId);
-
-        // TODO implement stopGame
-        Game game = gameRepository.findOne(gameId);
-        /*String owner = game.getOwner();
-
-        // Same access question as above
-        // User owner = userService.getUserByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Stop game in GameService
-        }*/
-    }
-
-
     /**
      * @param gameId
      * @post For all game specific attributes:  attribute =/= NULL
@@ -163,12 +144,20 @@ public class GameService {
         // Initiates the game
         Game game = gameRepository.findById(gameId);
         int amountOfPlayers = gameRepository.findAmountOfPlayers(gameId);
+
         // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
+
         // Create the marketPlace
-        game.setMarketPlace(marketPlaceService.createMarketPlace(gameId));
+        MarketPlace marketPlace = marketPlaceService.createMarketPlace();
+        game.setMarketPlace(marketPlace);
+
         // Create the supplySled
-        game.setStoneQuarry(stoneQuarryService.createStoneQuarry(gameId,amountOfPlayers));
+        StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry();
+        // Fill StoneQuarry with Stone
+        stoneQuarryService.fillQuarry(stoneQuarry);
+        game.setStoneQuarry(stoneQuarry);
+
         // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK));
         game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID));
@@ -179,5 +168,18 @@ public class GameService {
         game.setRoundCounter(1);
         game.setStatus(GameStatus.RUNNING);
         gameRepository.save(game);
+    }
+
+    public void stopGame(Long gameId, Long playerId) {
+        log.debug("stopGame: " + gameId);
+
+        // TODO implement stopGame
+        Game game = gameRepository.findOne(gameId);
+        /*String owner = game.getOwner();
+        // Same access question as above
+        // User owner = userService.getUserByToken(userToken);
+        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
+            // TODO: Stop game in GameService
+        }*/
     }
 }
