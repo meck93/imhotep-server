@@ -12,9 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 
-@RestController(value = BuildingSiteController.CONTEXT)
-@RequestMapping(BuildingSiteController.CONTEXT)
-public class BuildingSiteController {
+@RestController
+@RequestMapping(SiteController.CONTEXT)
+public class SiteController {
 
     Logger log  = LoggerFactory.getLogger(GameController.class);
     private final BuildingSiteService buildingSiteService;
@@ -24,7 +24,7 @@ public class BuildingSiteController {
     static final String CONTEXT = "games/{gameId}";
 
     @Autowired
-    public BuildingSiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService){
+    public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService){
         this.buildingSiteService = buildingSiteService;
         this.marketPlaceService = marketPlaceService;
     }
@@ -39,6 +39,15 @@ public class BuildingSiteController {
     @ResponseStatus(HttpStatus.OK)
     public MarketPlace getObelisk(@PathVariable("gameId") Long gameId) {
         return marketPlaceService.getMarketPlace(gameId);
+    }
+    /*
+     * Creates a Dummy-Stone on each Site of the Game for the Front-End Mapping/Modelling Purposes
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/dummy")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createDummyData(@PathVariable("gameId") Long gameId){
+        buildingSiteService.createDummyData(gameId);
+        return "DummyData created!";
     }
 
     /*

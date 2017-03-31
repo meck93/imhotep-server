@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -17,10 +19,12 @@ public class BuildingSiteService {
 
     private final Logger log = LoggerFactory.getLogger(BuildingSiteService.class);
     private final ASiteRepository aSiteRepository;
+    private final StoneService stoneService;
 
     @Autowired
-    public BuildingSiteService(ASiteRepository aSiteRepository) {
+    public BuildingSiteService(ASiteRepository aSiteRepository, StoneService stoneService) {
         this.aSiteRepository = aSiteRepository;
+        this.stoneService = stoneService;
     }
 
     /*
@@ -57,6 +61,16 @@ public class BuildingSiteService {
         }
 
     }
+    /*
+     * Creates a Dummy-Stone on each Site of the Game for the Front-End Mapping/Modelling Purposes
+     */
+    public void createDummyData(Long gameId){
+        List<BuildingSite> result = aSiteRepository.findAllBuildingSites(gameId);
 
-
+        for (BuildingSite site : result){
+            Stone stone = stoneService.createStone("BLACK");
+            site.addStone(stone);
+            aSiteRepository.save(site);
+        }
+    }
 }
