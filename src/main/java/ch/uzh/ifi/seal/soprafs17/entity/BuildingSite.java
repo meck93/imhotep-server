@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(name = "BuildingSite")
+@Entity
 public class BuildingSite implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -17,9 +17,12 @@ public class BuildingSite implements Serializable{
     private Long id;
 
     @Column(nullable = false)
+    private Long gameId;
+
+    @Column(nullable = false)
     private SiteType siteType;
 
-    @OneToOne(mappedBy = "", targetEntity = Ship.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Ship.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Ship dockedShip;
 
     @OneToMany(targetEntity = Stone.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -55,5 +58,13 @@ public class BuildingSite implements Serializable{
 
     public void setDockedShip(Ship dockedShip) {
         this.dockedShip = dockedShip;
+    }
+
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
     }
 }
