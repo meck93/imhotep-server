@@ -1,9 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
-/**
- * Created by Cristian on 25.03.2017.
- */
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -25,7 +21,8 @@ public class Round implements Serializable{
     @OneToMany
     private List<Move> moves;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id", foreignKey = @ForeignKey(name ="GAME_ID_FK"))
     @JsonBackReference
     private Game game;
 
