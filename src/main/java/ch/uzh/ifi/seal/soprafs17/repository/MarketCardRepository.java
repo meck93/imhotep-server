@@ -19,9 +19,17 @@ public interface MarketCardRepository extends CrudRepository<MarketCard, Long> {
      * Selects all marketCards associated with the gameId
      * @param   gameId
      * @pre     game =/= NULL   => gameId from marketCards must be initialized
-     * @return  list of marketCards
+     * @return  list of red marketCards
      */
-    @Query("SELECT r FROM MarketCard r WHERE r.gameId = :gameId")
-    List<MarketCard> findAllMarketCards(@Param("gameId")Long gameId);
+    @Query("SELECT r FROM MarketCard r WHERE r.gameId = :gameId AND r.color = red")
+    List<MarketCard> findAllRedMarketCards(@Param("gameId")Long gameId);
 
+    @Query("SELECT r FROM MarketCard r WHERE r.gameId = :gameId AND r.color = blue")
+    List<MarketCard> findAllBlueMarketCards(@Param("gameId")Long gameId);
+
+    @Query("SELECT r FROM MarketCard r WHERE r.gameId = :gameId AND r.color = green")
+    List<MarketCard> findAllGreenMarketCards(@Param("gameId")Long gameId);
+
+    @Query("SELECT r FROM MarketCard r WHERE r.gameId = :gameId AND r.color = violet")
+    List<MarketCard> findAllVioletMarketCards(@Param("gameId")Long gameId);
 }
