@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static ch.uzh.ifi.seal.soprafs17.constant.MarketCardType.*;
@@ -36,7 +35,7 @@ public class MarketCardService {
      * @pre     game != NULL
      * @post    marketCard is created and saved in the MarketCardRepository
      */
-    public MarketCard createMarketCard(Long gameId, Color color, MarketCardType marketCardType){
+    public MarketCard createMarketCard(Long gameId, String color, MarketCardType marketCardType){
         log.debug("Creating a marketCard" + gameId);
         MarketCard marketCard = new MarketCard();
         marketCard.setGameId(gameId);
@@ -84,43 +83,43 @@ public class MarketCardService {
 
         ArrayList<MarketCard> marketCardDeck= new ArrayList<>();
 
-        marketCardDeck.add(createMarketCard(gameId, Color.red, PAVED_PATH));
-        marketCardDeck.add(createMarketCard(gameId, Color.red, PAVED_PATH));
-        marketCardDeck.add(createMarketCard(gameId, Color.red, SARCOPHAGUS));
-        marketCardDeck.add(createMarketCard(gameId, Color.red, SARCOPHAGUS));
-        marketCardDeck.add(createMarketCard(gameId, Color.red, ENTRANCE));
-        marketCardDeck.add(createMarketCard(gameId, Color.red, ENTRANCE));
+        marketCardDeck.add(createMarketCard(gameId, "red", PAVED_PATH));
+        marketCardDeck.add(createMarketCard(gameId, "red", PAVED_PATH));
+        marketCardDeck.add(createMarketCard(gameId, "red", SARCOPHAGUS));
+        marketCardDeck.add(createMarketCard(gameId, "red", SARCOPHAGUS));
+        marketCardDeck.add(createMarketCard(gameId, "red", ENTRANCE));
+        marketCardDeck.add(createMarketCard(gameId, "red", ENTRANCE));
 
-        marketCardDeck.add(createMarketCard(gameId, Color.green, PYRAMID_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, Color.green, PYRAMID_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, Color.green, TEMPLE_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, Color.green, TEMPLE_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, Color.green, BURIAL_CHAMBER_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, Color.green, BURIAL_CHAMBER_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, Color.green, OBELISK_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, Color.green, OBELISK_DECORATION));
+        marketCardDeck.add(createMarketCard(gameId, "green", PYRAMID_DECORATION));
+        marketCardDeck.add(createMarketCard(gameId, "green", PYRAMID_DECORATION));
+        marketCardDeck.add(createMarketCard(gameId, "green", TEMPLE_DECORATION));
+        marketCardDeck.add(createMarketCard(gameId, "green", TEMPLE_DECORATION));
+        marketCardDeck.add(createMarketCard(gameId, "green", BURIAL_CHAMBER_DECORATION));
+        marketCardDeck.add(createMarketCard(gameId, "green", BURIAL_CHAMBER_DECORATION));
+        marketCardDeck.add(createMarketCard(gameId, "green", OBELISK_DECORATION));
+        marketCardDeck.add(createMarketCard(gameId, "green", OBELISK_DECORATION));
 
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
-        marketCardDeck.add(createMarketCard(gameId, Color.magenta, STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
+        marketCardDeck.add(createMarketCard(gameId, "magenta", STATUE));
 
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, CHISEL));
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, CHISEL));
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, CHISEL));
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, LEVER));
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, LEVER));
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, HAMMER));
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, HAMMER));
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, SAIL));
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, SAIL));
-        marketCardDeck.add(createMarketCard(gameId, Color.blue, SAIL));
+        marketCardDeck.add(createMarketCard(gameId, "blue", CHISEL));
+        marketCardDeck.add(createMarketCard(gameId, "blue", CHISEL));
+        marketCardDeck.add(createMarketCard(gameId, "blue", CHISEL));
+        marketCardDeck.add(createMarketCard(gameId, "blue", LEVER));
+        marketCardDeck.add(createMarketCard(gameId, "blue", LEVER));
+        marketCardDeck.add(createMarketCard(gameId, "blue", HAMMER));
+        marketCardDeck.add(createMarketCard(gameId, "blue", HAMMER));
+        marketCardDeck.add(createMarketCard(gameId, "blue", SAIL));
+        marketCardDeck.add(createMarketCard(gameId, "blue", SAIL));
+        marketCardDeck.add(createMarketCard(gameId, "blue", SAIL));
 
         return marketCardDeck;
     }

@@ -8,7 +8,6 @@ import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.io.Serializable;
 
 @Entity
@@ -21,7 +20,7 @@ public class MarketCard implements Serializable {
     private Long id;
 
     @Column
-    private Color color;
+    private String color;
 
     @Column
     private Long gameId;
@@ -68,11 +67,11 @@ public class MarketCard implements Serializable {
         this.id = id;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 }
