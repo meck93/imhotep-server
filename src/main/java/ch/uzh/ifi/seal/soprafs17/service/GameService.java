@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
+import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
@@ -149,7 +149,7 @@ public class GameService {
         roundCardService.createRoundCards(amountOfPlayers, gameId);
 
         // Create the marketPlace
-        MarketPlace marketPlace = marketPlaceService.createMarketPlace();
+        MarketPlace marketPlace = marketPlaceService.createMarketPlace(gameId);
         game.setMarketPlace(marketPlace);
 
         // Create the supplySled
@@ -159,10 +159,10 @@ public class GameService {
         game.setStoneQuarry(stoneQuarry);
 
         // Create the four BuildingSites for the game
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK));
-        game.setPyramid(buildingSiteService.createBuildingSite(SiteType.PYRAMID));
-        game.setTemple(buildingSiteService.createBuildingSite(SiteType.TEMPLE));
-        game.setBurialChamber(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER));
+        game.setObelisk(buildingSiteService.createBuildingSite(BuildingSiteType.OBELISK, gameId));
+        game.setPyramid(buildingSiteService.createBuildingSite(BuildingSiteType.PYRAMID, gameId));
+        game.setTemple(buildingSiteService.createBuildingSite(BuildingSiteType.TEMPLE, gameId));
+        game.setBurialChamber(buildingSiteService.createBuildingSite(BuildingSiteType.BURIAL_CHAMBER, gameId));
 
         // settings for the initial round
         game.setRoundCounter(1);

@@ -1,48 +1,32 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
 
-import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
+import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Entity(name = "BuildingSite")
+@DiscriminatorValue(value = "BUILDING_SITE")
+public class BuildingSite extends ASite implements Serializable{
 
-/**
- * Created by Dave and Cristi on 24.03.2017.
- */
+    public BuildingSite(){};
 
+    public BuildingSite(BuildingSiteType buildingSiteType, Long gameId){
+        super.setGameId(gameId);
+        super.setSiteType("BUILDING_SITE");
+        this.buildingSiteType = buildingSiteType;
+    }
 
-@Entity
-public class BuildingSite implements Serializable{
+    @Column
+    private BuildingSiteType buildingSiteType;
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(nullable = false)
-    private SiteType siteType;
+    @OneToOne(targetEntity = Ship.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Ship dockedShip;
 
     @OneToMany(targetEntity = Stone.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Stone> stones;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public SiteType getSiteType() {
-        return siteType;
-    }
-
-    public void setSiteType(SiteType siteType) {
-        this.siteType = siteType;
-    }
 
     public List<Stone> getStones() {
         return stones;
@@ -50,5 +34,21 @@ public class BuildingSite implements Serializable{
 
     public void setStones(List<Stone> stones) {
         this.stones = stones;
+    }
+
+    public Ship getDockedShip() {
+        return dockedShip;
+    }
+
+    public void setDockedShip(Ship dockedShip) {
+        this.dockedShip = dockedShip;
+    }
+
+    public BuildingSiteType getBuildingSiteType() {
+        return buildingSiteType;
+    }
+
+    public void setBuildingSiteType(BuildingSiteType buildingSiteType) {
+        this.buildingSiteType = buildingSiteType;
     }
 }

@@ -39,7 +39,7 @@ public class ShipService {
 
         // copying the list of size enumerators from the current card
         List<ShipSize> shipSizes = roundCard.getShipSizes();
-        // Retrive the gameId from the roundCard
+        // Retrieve the gameId from the roundCard
         Long gameId = roundCard.getGameId();
         // Initialize return List
         ArrayList<Ship> ships = new ArrayList<>(4);
@@ -66,9 +66,9 @@ public class ShipService {
     public Ship createShip(int maxSize, int minSize, Long gameId) {
         log.debug("Creating a ship for gameId: " + gameId);
 
-        Ship ship = new Ship();
-        ship.setMaxStone(maxSize);
-        ship.setMinStone(minSize);
+        Ship ship = new Ship(minSize, maxSize);
+        ship.setHasSailed(false);
+        ship.setTargetSite(null);
         ship.setGameId(gameId);
         ship.setStones(new ArrayList<>());
 
