@@ -30,15 +30,20 @@ public class GameService {
     private final RoundCardService roundCardService;
     private final MarketPlaceService marketPlaceService;
     private final StoneQuarryService stoneQuarryService;
+    private final MarketCardService marketCardService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService, ShipService shipService, MarketPlaceService marketPlaceService, StoneQuarryService stoneQuarryService) {
+    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService,
+                       RoundService roundService, RoundCardService roundCardService,
+                       ShipService shipService, MarketPlaceService marketPlaceService,
+                       StoneQuarryService stoneQuarryService, MarketCardService marketCardService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
         this.roundCardService = roundCardService;
         this.marketPlaceService = marketPlaceService;
         this.stoneQuarryService = stoneQuarryService;
+        this.marketCardService = marketCardService;
     }
     /*
      * Implementation of the createGame method:
@@ -152,7 +157,10 @@ public class GameService {
         MarketPlace marketPlace = marketPlaceService.createMarketPlace(gameId);
         game.setMarketPlace(marketPlace);
 
-        // Create the supplySled
+        // Create the marketCardDeck
+        marketPlace.setMarketCards(marketCardService.createMarketCardDeck(gameId));
+
+        // Create the stoneQuarry
         StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry();
         // Fill StoneQuarry with Stone
         stoneQuarryService.fillQuarry(stoneQuarry);

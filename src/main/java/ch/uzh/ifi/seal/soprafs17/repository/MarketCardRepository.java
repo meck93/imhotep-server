@@ -5,12 +5,23 @@ package ch.uzh.ifi.seal.soprafs17.repository;
  */
 
 import ch.uzh.ifi.seal.soprafs17.entity.MarketCard;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("marketCardRepository")
 public interface MarketCardRepository extends CrudRepository<MarketCard, Long> {
 
-
+    /**
+     * Selects all marketCards associated with the gameId
+     * @param   gameId
+     * @pre     game =/= NULL   => gameId from marketCards must be initialized
+     * @return  list of marketCards
+     */
+    @Query("SELECT r FROM MarketCard r WHERE r.gameId = :gameId")
+    List<MarketCard> findAllMarketCards(@Param("gameId")Long gameId);
 
 }

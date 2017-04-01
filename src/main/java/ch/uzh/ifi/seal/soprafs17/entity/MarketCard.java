@@ -4,6 +4,9 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  * Created by Cristian on 25.03.2017.
  */
 
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
@@ -20,8 +23,42 @@ public class MarketCard implements Serializable {
     @Column
     private Color color;
 
+    @Column
+    private Long gameId;
+
+    @Column(nullable = false)
+    @JsonIgnore
+    private boolean alreadyChosen;
+
+    @Column(nullable = false)
+    private MarketCardType marketCardType;
+
     @ManyToOne(targetEntity = MarketPlace.class, fetch = FetchType.LAZY)
     private MarketPlace marketPlace;
+
+    public MarketCardType getMarketCardType() {
+        return marketCardType;
+    }
+
+    public void setMarketCardType(MarketCardType marketCardType) {
+        this.marketCardType = marketCardType;
+    }
+
+    public boolean isAlreadyChosen() {
+        return alreadyChosen;
+    }
+
+    public void setAlreadyChosen(boolean alreadyChosen) {
+        this.alreadyChosen = alreadyChosen;
+    }
+
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
+    }
 
     public Long getId() {
         return id;

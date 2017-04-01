@@ -1,0 +1,8 @@
+package ch.uzh.ifi.seal.soprafs17.constant;
+
+/**
+ * Created by Cristian on 01.04.2017.
+ */
+public enum MarketCardType {
+    PAVED_PATH, SARCOPHAGUS, ENTRANCE, PYRAMID_DECORATION, TEMPLE_DECORATION, BURIAL_CHAMBER_DECORATION, OBELISK_DECORATION, STATUE, CHISEL, LEVER, HAMMER, SAIL
+}
