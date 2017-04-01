@@ -1,9 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
-/**
- * Created by Cristian on 25.03.2017.
- */
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -19,19 +15,27 @@ public class Round implements Serializable{
     @GeneratedValue
     private Long id;
 
-    @Column
+    @OneToOne(targetEntity = RoundCard.class)
     private RoundCard card;
 
     @OneToMany
     private List<Move> moves;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id", foreignKey = @ForeignKey(name ="GAME_ID_FK"))
     @JsonBackReference
     private Game game;
 
-    //@OneToMany(targetEntity= Ship.class)
-    @Column
-    private Ship[] ships;
+    @OneToMany(targetEntity= Ship.class)
+    private List<Ship> ships;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public RoundCard getCard() {
         return card;
@@ -49,20 +53,19 @@ public class Round implements Serializable{
         this.moves = moves;
     }
 
-    public Long getId() {
-        return id;
+    public Game getGame() {
+        return game;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
-
-    public Ship[] getShips() {
+    public List<Ship> getShips() {
         return ships;
     }
 
-    public void setShips(Ship[] ships) {
+    public void setShips(List<Ship> ships) {
         this.ships = ships;
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 @Transactional
 public class LobbyService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(LobbyService.class);
     private final GameService gameService;
     private final PlayerService playerService;
     private final UserService userService;

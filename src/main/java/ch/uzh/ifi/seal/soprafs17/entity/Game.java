@@ -31,32 +31,31 @@ public class Game implements Serializable {
 	@Column
 	private int roundCounter;
 
-	@Column
+	@OneToOne(cascade = CascadeType.ALL)
 	private BuildingSite obelisk;
 
-	@Column
+	@OneToOne(cascade = CascadeType.ALL)
 	private BuildingSite burialChamber;
 
-	@Column
+	@OneToOne(cascade = CascadeType.ALL)
 	private BuildingSite pyramid;
 
-	@Column
+	@OneToOne(cascade = CascadeType.ALL)
 	private BuildingSite temple;
 
 	@Column
 	private int amountOfPlayers;
 
-	@OneToOne(targetEntity = MarketPlace.class)
+	@OneToOne(targetEntity = MarketPlace.class, cascade = CascadeType.ALL)
 	private MarketPlace marketPlace;
 
-	@OneToOne(targetEntity = StoneQuarry.class)
+	@OneToOne(targetEntity = StoneQuarry.class, cascade = CascadeType.ALL)
 	private StoneQuarry stoneQuarry;
 
 	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
 	private List<Round> rounds;
 
-	// TODO Change to correct mapping into Player and not User
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
 	@JsonManagedReference
 	private List<Player> players;

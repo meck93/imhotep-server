@@ -1,10 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
+import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.constant.SiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.Player;
-import ch.uzh.ifi.seal.soprafs17.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,20 +22,23 @@ import java.util.List;
 @Transactional
 public class GameService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(GameService.class);
 
     private final GameRepository gameRepository;
     private final BuildingSiteService buildingSiteService;
     private final RoundService roundService;
     private final RoundCardService roundCardService;
+    private final MarketPlaceService marketPlaceService;
+    private final StoneQuarryService stoneQuarryService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService, ShipService shipService) {
+    public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService, RoundService roundService, RoundCardService roundCardService, ShipService shipService, MarketPlaceService marketPlaceService, StoneQuarryService stoneQuarryService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
         this.roundCardService = roundCardService;
-
+        this.marketPlaceService = marketPlaceService;
+        this.stoneQuarryService = stoneQuarryService;
     }
     /*
      * Implementation of the createGame method:
@@ -68,14 +69,6 @@ public class GameService {
         log.debug("Deleted Game: {}", game);
     }
 
-    public List<Game> listGames() {
-        log.debug("listGames");
-
-        List<Game> result = new ArrayList<>();
-        gameRepository.findAll().forEach(result::add);
-
-        return result;
-    }
     /*
      * Adds an existing player to the game
      */
@@ -91,6 +84,15 @@ public class GameService {
         log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
 
         return "games" + "/" + gameId + "/players/" + amountOfPlayers;
+    }
+
+    public List<Game> listGames() {
+        log.debug("listGames");
+
+        List<Game> result = new ArrayList<>();
+        gameRepository.findAll().forEach(result::add);
+
+        return result;
     }
 
     public Game findById(Long gameId) {
@@ -109,8 +111,6 @@ public class GameService {
         return gameRepository.findPlayersByGameId(gameId);
     }
 
-    // TODO: Change parameter to player specific not user specific
-
     /**
      * Handles the initialisation of the game board. Requires an already created but not
      * running game with more than 1 player
@@ -123,18 +123,50 @@ public class GameService {
         log.debug("startGame: " + gameId);
 
         // Check for preconditions reserved => is the player the owner? etc.
-
-        gameInit(gameId);
         Game game = gameRepository.findById(gameId);
-        int amountOfPlayers = game.getAmountOfPlayers();
-        // Creates all roundCards required for the Game
-        roundCardService.createRoundCards(amountOfPlayers, gameId);
+        gameInit(gameId);
 
         Round round = roundService.createRound(gameId, game);
         List<Round> rounds = game.getRounds();
         rounds.add(round);
         game.setRounds(rounds);
 
+        //roundService.initializeRound()
+
+        gameRepository.save(game);
+    }
+
+    /**
+     * @param gameId
+     * @post For all game specific attributes:  attribute =/= NULL
+     */
+    public void gameInit(Long gameId){
+        // Initiates the game
+        Game game = gameRepository.findById(gameId);
+        int amountOfPlayers = gameRepository.findAmountOfPlayers(gameId);
+
+        // Creates all roundCards required for the Game
+        roundCardService.createRoundCards(amountOfPlayers, gameId);
+
+        // Create the marketPlace
+        MarketPlace marketPlace = marketPlaceService.createMarketPlace(gameId);
+        game.setMarketPlace(marketPlace);
+
+        // Create the supplySled
+        StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry();
+        // Fill StoneQuarry with Stone
+        stoneQuarryService.fillQuarry(stoneQuarry);
+        game.setStoneQuarry(stoneQuarry);
+
+        // Create the four BuildingSites for the game
+        game.setObelisk(buildingSiteService.createBuildingSite(BuildingSiteType.OBELISK, gameId));
+        game.setPyramid(buildingSiteService.createBuildingSite(BuildingSiteType.PYRAMID, gameId));
+        game.setTemple(buildingSiteService.createBuildingSite(BuildingSiteType.TEMPLE, gameId));
+        game.setBurialChamber(buildingSiteService.createBuildingSite(BuildingSiteType.BURIAL_CHAMBER, gameId));
+
+        // settings for the initial round
+        game.setRoundCounter(1);
+        game.setStatus(GameStatus.RUNNING);
         gameRepository.save(game);
     }
 
@@ -151,32 +183,5 @@ public class GameService {
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
         }*/
-    }
-
-
-    /**
-     * @param gameId
-     * @post For all game specific attributes:  attribute =/= NULL
-     */
-    public void gameInit(Long gameId){
-        // Initiates the game
-        Game game = gameRepository.findById(gameId);
-
-        /*
-        // Create the marketPlace
-        MarketPlace market = new MarketPlace();
-        // Create the supplySled
-        StoneQuarry stoneQuarry = new StoneQuarry();
-        */
-        // Create the four BuildingSites for the game
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.OBELISK, gameId));
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.PYRAMID, gameId));
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.TEMPLE, gameId));
-        game.setObelisk(buildingSiteService.createBuildingSite(SiteType.BURIAL_CHAMBER, gameId));
-
-        // settings for the initial round
-        game.setRoundCounter(0);
-        game.setStatus(GameStatus.RUNNING);
-        gameRepository.save(game);
     }
 }

@@ -28,23 +28,25 @@ public class Player implements Serializable {
     @Column
     private int playerNumber;
 
-    @OneToOne(mappedBy = "player", targetEntity = SupplySled.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JsonManagedReference(value = "player")
-    private SupplySled supplySled;
-
     @OneToOne
     @JoinColumn(name="USER_ID")
     @JsonBackReference(value = "user")
     private User user;
 
-    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Move> moves;
-
     @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id", foreignKey = @ForeignKey(name ="GAME_ID_FK"))
     @JsonBackReference
     private Game game;
+
+    @OneToOne(mappedBy = "player", targetEntity = SupplySled.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference(value = "player")
+    private SupplySled supplySled;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<MarketCard> handCards;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Move> moves;
 
     public Long getGameId(){
         return game.getId();
@@ -120,5 +122,13 @@ public class Player implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<MarketCard> getHandCards() {
+        return handCards;
+    }
+
+    public void setHandCards(List<MarketCard> handCards) {
+        this.handCards = handCards;
     }
 }

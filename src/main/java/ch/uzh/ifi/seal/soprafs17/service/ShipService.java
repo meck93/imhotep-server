@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.Ship;
 import ch.uzh.ifi.seal.soprafs17.repository.ShipRepository;
@@ -12,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Cristian on 26.03.2017.
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 @Service
 @Transactional
 public class ShipService {
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(ShipService.class);
     private final ShipRepository shipRepository;
 
     @Autowired
@@ -30,23 +31,49 @@ public class ShipService {
 
     /**
      * Creates for ships of the corresponding size value from a roundCard
-     * @param game
-     * @param roundCounter
+     * @param roundCard
      * @return
      */
-    public Ship[] createShips(Game game, int roundCounter){
-        RoundCard currCard = game.getRounds().get(roundCounter).getCard();  // set current card to the newest card
+    public List<Ship> createShips(RoundCard roundCard){
+        log.debug("Creating all the ships described by the roundCardId: " + roundCard.getId());
 
-        ArrayList<ShipSize> ships = currCard.getSizes();                    // copying the list of size enumerators from the current card
-        Ship[] shipArr = new Ship[4];
+        // copying the list of size enumerators from the current card
+        List<ShipSize> shipSizes = roundCard.getShipSizes();
+        // Retrieve the gameId from the roundCard
+        Long gameId = roundCard.getGameId();
+        // Initialize return List
+        ArrayList<Ship> ships = new ArrayList<>(4);
 
-        //create the ships
-        for(int i = 0; i<3; i++){
-            if(ships.get(i)== ShipSize.XL){shipArr[i]= new Ship(3,4); shipRepository.save(shipArr[i]);}
-            if(ships.get(i)== ShipSize.L){shipArr[i]= new Ship(2,3);  shipRepository.save(shipArr[i]);}
-            if(ships.get(i)== ShipSize.M){shipArr[i]= new Ship(1,2);  shipRepository.save(shipArr[i]);}
-            if(ships.get(i)== ShipSize.S){shipArr[i]= new Ship(1,1);  shipRepository.save(shipArr[i]);}
+        // create the required ships according to the shipSizes of the roundCard
+        for (ShipSize size : shipSizes){
+            switch (size){
+                case XL: ships.add(createShip(4, 3, gameId)); break;
+                case L: ships.add(createShip(3, 2, gameId)); break;
+                case M: ships.add(createShip(2, 1, gameId)); break;
+                case S: ships.add(createShip(1, 1, gameId)); break;
+            }
         }
-        return shipArr;
+        if (ships.size() == 4) {
+            return ships;
+        }
+        else {
+            log.error("Unable to add the ships of the roundCardId: " + roundCard.getId());
+            return null;
+        }
+
+    }
+
+    public Ship createShip(int maxSize, int minSize, Long gameId) {
+        log.debug("Creating a ship for gameId: " + gameId);
+
+        Ship ship = new Ship(minSize, maxSize);
+        ship.setHasSailed(false);
+        ship.setTargetSite(null);
+        ship.setGameId(gameId);
+        ship.setStones(new ArrayList<>());
+
+        shipRepository.save(ship);
+
+        return ship;
     }
 }

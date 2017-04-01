@@ -1,12 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
-/**
- * Created by Cristian on 25.03.2017.
- */
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Ship implements Serializable{
@@ -18,31 +14,32 @@ public class Ship implements Serializable{
     private Long id;
 
     @Column
-    private int minStone;
+    private final int MIN_STONES;
 
     @Column
-    private int maxStone;
+    private final int MAX_STONES;
 
-    //@OneToMany
-    // YOU ARE NOT ALLOWED TO DO  new ArrayList() here
-    private ArrayList<Stone> stones;
+    @Column
+    private Long gameId;
 
-    @ManyToOne(targetEntity = Round.class)
-    private Round round;
+    @Column
+    private boolean hasSailed;
 
-    @ManyToOne(targetEntity = RoundCard.class)
-    private RoundCard roundCard;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BuildingSite_ID")
+    private BuildingSite targetSite;
 
-    public Ship(int min, int max){
-        this.setMaxStone(max);
-        this.setMinStone(min);
+    @OneToMany(targetEntity = Stone.class)
+    private List<Stone> stones;
+
+    public Ship() {
+        this.MIN_STONES = 0;
+        this.MAX_STONES = 0;
     }
 
-    private void unloadStone() { //to be filled
-    }
-
-    private void addStone(){
-        //to be filled
+    public Ship(int minStone, int maxStone){
+        this.MIN_STONES = minStone;
+        this.MAX_STONES = maxStone;
     }
 
     public Long getId() {
@@ -53,27 +50,43 @@ public class Ship implements Serializable{
         this.id = id;
     }
 
-    public ArrayList<Stone> getStones() {
+    public List<Stone> getStones() {
         return stones;
     }
 
-    public void setStones(ArrayList<Stone> stones) {
+    public void setStones(List<Stone> stones) {
         this.stones = stones;
     }
 
-    public int getMinStone() {
-        return minStone;
+    public Long getGameId() {
+        return gameId;
     }
 
-    public void setMinStone(int minStone) {
-        this.minStone = minStone;
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
     }
 
-    public int getMaxStone() {
-        return maxStone;
+    public int getMIN_STONE() {
+        return MIN_STONES;
     }
 
-    public void setMaxStone(int maxStone) {
-        this.maxStone = maxStone;
+    public int getMAX_STONES() {
+        return MAX_STONES;
+    }
+
+    public boolean isHasSailed() {
+        return hasSailed;
+    }
+
+    public void setHasSailed(boolean hasSailed) {
+        this.hasSailed = hasSailed;
+    }
+
+    public BuildingSite getTargetSite() {
+        return targetSite;
+    }
+
+    public void setTargetSite(BuildingSite targetSite) {
+        this.targetSite = targetSite;
     }
 }
