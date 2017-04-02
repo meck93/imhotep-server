@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static ch.uzh.ifi.seal.soprafs17.constant.MarketCardType.*;
@@ -47,25 +48,12 @@ public class MarketCardService {
     }
 
 
-    public MarketCard getMarketCard(Long gameId, String color) {
+    public MarketCard getMarketCard(Long gameId) {
         log.debug("Picking a random marketCard out of the marketCardDeck associated with gameId: " + gameId);
 
-        ArrayList<MarketCard> marketCardDeck = new ArrayList<>();
+        List<MarketCard> marketCardDeck = new ArrayList<>();
+        marketCardRepository.findAllMarketCards(gameId).forEach(marketCardDeck::add);
 
-        switch (color) {
-            case "red":
-                marketCardRepository.findAllRedMarketCards(gameId).forEach(marketCardDeck::add);
-                break;
-            case "blue":
-                marketCardRepository.findAllBlueMarketCards(gameId).forEach(marketCardDeck::add);
-                break;
-            case "green":
-                marketCardRepository.findAllGreenMarketCards(gameId).forEach(marketCardDeck::add);
-                break;
-            case "violet":
-                marketCardRepository.findAllVioletMarketCards(gameId).forEach(marketCardDeck::add);
-                break;
-        }
         // Removing all alreadyChosen roundCards from the deck
         for (MarketCard marketCard : marketCardDeck) {
             if (marketCard.isAlreadyChosen()) {
@@ -84,56 +72,39 @@ public class MarketCardService {
         return chosenMarketCard;
     }
 
+
     /**
      * Creates the marketCardDeck
      * @param   gameId
-     * @pre     game != NULL
-     * @post    34 marketCards of the different marketCardTypes
+     * @pre     game =/= NULL
+     * @post    34 marketCards of the different marketCardTypes are created
      */
-    public ArrayList<MarketCard> createMarketCardDeck(Long gameId) {
+    public void createMarketCardSet(Long gameId) {
         log.debug("Creating a marketCardDeck");
 
-        ArrayList<MarketCard> marketCardDeck= new ArrayList<>();
+        // create all the marketCards that occur two times
+        for(int i=0; i<2; i++) {
+            createMarketCard(gameId, "red", PAVED_PATH);
+            createMarketCard(gameId, "red", SARCOPHAGUS);
+            createMarketCard(gameId, "red", ENTRANCE);
+            createMarketCard(gameId, "green", PYRAMID_DECORATION);
+            createMarketCard(gameId, "green", TEMPLE_DECORATION);
+            createMarketCard(gameId, "green", BURIAL_CHAMBER_DECORATION);
+            createMarketCard(gameId, "green", OBELISK_DECORATION);
+            createMarketCard(gameId, "blue", LEVER);
+            createMarketCard(gameId, "blue", HAMMER);
+        }
 
-        marketCardDeck.add(createMarketCard(gameId, "red", PAVED_PATH));
-        marketCardDeck.add(createMarketCard(gameId, "red", PAVED_PATH));
-        marketCardDeck.add(createMarketCard(gameId, "red", SARCOPHAGUS));
-        marketCardDeck.add(createMarketCard(gameId, "red", SARCOPHAGUS));
-        marketCardDeck.add(createMarketCard(gameId, "red", ENTRANCE));
-        marketCardDeck.add(createMarketCard(gameId, "red", ENTRANCE));
+        // create all the marketCards that occur three times
+        for(int i=0; i<3; i++) {
+            createMarketCard(gameId, "blue", CHISEL);
+            createMarketCard(gameId, "blue", SAIL);
+        }
 
-        marketCardDeck.add(createMarketCard(gameId, "green", PYRAMID_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, "green", PYRAMID_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, "green", TEMPLE_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, "green", TEMPLE_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, "green", BURIAL_CHAMBER_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, "green", BURIAL_CHAMBER_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, "green", OBELISK_DECORATION));
-        marketCardDeck.add(createMarketCard(gameId, "green", OBELISK_DECORATION));
-
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-        marketCardDeck.add(createMarketCard(gameId, "violet", STATUE));
-
-        marketCardDeck.add(createMarketCard(gameId, "blue", CHISEL));
-        marketCardDeck.add(createMarketCard(gameId, "blue", CHISEL));
-        marketCardDeck.add(createMarketCard(gameId, "blue", CHISEL));
-        marketCardDeck.add(createMarketCard(gameId, "blue", LEVER));
-        marketCardDeck.add(createMarketCard(gameId, "blue", LEVER));
-        marketCardDeck.add(createMarketCard(gameId, "blue", HAMMER));
-        marketCardDeck.add(createMarketCard(gameId, "blue", HAMMER));
-        marketCardDeck.add(createMarketCard(gameId, "blue", SAIL));
-        marketCardDeck.add(createMarketCard(gameId, "blue", SAIL));
-        marketCardDeck.add(createMarketCard(gameId, "blue", SAIL));
-
-        return marketCardDeck;
+        // create STATUE marketCards
+        for(int i=0; i<10;i++) {
+            createMarketCard(gameId, "violet", STATUE);
+        }
     }
 
 
