@@ -1,9 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-/**
- * Created by Cristian on 25.03.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
@@ -44,22 +40,34 @@ public class RoundService {
          * @return RoundCard
          */
         public Round createRound(Long gameId, Game game){
-            log.debug("Creating new round for game: " + gameId);
-
-            // getting a new roundCard
-            RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
+            log.debug("Creating new round for Game: " + gameId);
 
             // Creating a new Round
             Round newRound = new Round();
             newRound.setGame(game);
-            newRound.setCard(newRoundCard);
+            newRound.setShips(new ArrayList<>());
             newRound.setMoves(new ArrayList<>());
 
-            // adding ships to the round
-            List<Ship> currentShips = shipService.createShips(newRoundCard);
-            newRound.setShips(currentShips);
+            // getting a new roundCard
+            RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
+            newRound.setCard(newRoundCard);
+
             roundRepository.save(newRound);
 
             return newRound;
+        }
+
+        public Round initializeRound(Long roundId) {
+            log.debug("Initializing Round: " + roundId);
+
+            Round round = roundRepository.findById(roundId);
+
+            // adding ships to the round
+            List<Ship> currentShips = shipService.createShips(round.getCard());
+            round.setShips(currentShips);
+
+            roundRepository.save(round);
+
+            return round;
         }
 }
