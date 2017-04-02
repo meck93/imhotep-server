@@ -1,10 +1,6 @@
-package ch.uzh.ifi.seal.soprafs17.Exceptions;
+package ch.uzh.ifi.seal.soprafs17.exceptions;
 
 import org.springframework.stereotype.Component;
-
-/**
- * Created by User on 01.04.2017.
- */
 
 @Component
 public class ExceptionResponse {
