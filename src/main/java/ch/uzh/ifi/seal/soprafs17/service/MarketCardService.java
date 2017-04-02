@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -55,9 +56,16 @@ public class MarketCardService {
         marketCardRepository.findAllMarketCards(gameId).forEach(marketCardDeck::add);
 
         // Removing all alreadyChosen roundCards from the deck
-        for (MarketCard marketCard : marketCardDeck) {
+       /*for (MarketCard marketCard : marketCardDeck) {
             if (marketCard.isAlreadyChosen()) {
                 marketCardDeck.remove(marketCard);
+            }
+        }*/
+
+        for(Iterator<MarketCard> it = marketCardDeck.iterator(); it.hasNext();){
+            MarketCard marketCard = it.next();
+            if (marketCard.isAlreadyChosen()) {
+                it.remove();
             }
         }
 

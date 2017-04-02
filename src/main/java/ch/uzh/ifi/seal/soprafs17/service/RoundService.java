@@ -55,6 +55,12 @@ public class RoundService {
             ArrayList<MarketCard> marketCards = new ArrayList<>();
             MarketCard m1 = marketCardService.getMarketCard(gameId);
             marketCards.add(m1);
+            MarketCard m2 = marketCardService.getMarketCard(gameId);
+            marketCards.add(m2);
+            MarketCard m3 = marketCardService.getMarketCard(gameId);
+            marketCards.add(m3);
+            MarketCard m4 = marketCardService.getMarketCard(gameId);
+            marketCards.add(m4);
 
             // Creating a new Round
             Round newRound = new Round();
