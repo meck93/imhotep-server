@@ -39,4 +39,14 @@ public class RoundController extends GenericController {
     public Round getRound(@PathVariable("gameId") Long gameId, @PathVariable("roundNr") int roundNumber) {
         return roundService.getRoundByNr(gameId, roundNumber);
     }
+
+    /*
+     * Creates a Dummy-Stone on each Ship of the Round for the Front-End Mapping/Modelling Purposes
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/{roundNr}/dummy")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createDummyData(@PathVariable("gameId") Long gameId, @PathVariable("roundNr") int roundNr){
+        roundService.createDummyData(gameId, roundNr);
+        return "DummyData created!";
+    }
 }

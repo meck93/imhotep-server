@@ -1,9 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.Round;
-import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
-import ch.uzh.ifi.seal.soprafs17.entity.Ship;
+import ch.uzh.ifi.seal.soprafs17.entity.*;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +19,14 @@ public class RoundService {
         private final RoundRepository roundRepository;
         private final RoundCardService roundCardService;
         private final ShipService shipService;
+        private final StoneService stoneService;
 
         @Autowired
-        public RoundService(RoundRepository roundRepository, RoundCardService roundCardService, ShipService shipService) {
+        public RoundService(RoundRepository roundRepository, RoundCardService roundCardService, ShipService shipService, StoneService stoneService) {
             this.roundRepository = roundRepository;
             this.roundCardService = roundCardService;
             this.shipService = shipService;
+            this.stoneService = stoneService;
         }
 
         /**
@@ -101,5 +100,22 @@ public class RoundService {
 
             log.error("Round: " + roundNumber + " in Game: " + gameId + " not found!");
             return null;
+        }
+
+        public void createDummyData(Long gameId, int roundNr) {
+            Round round = this.getRoundByNr(gameId, roundNr);
+            List<Ship> ships = round.getShips();
+
+            for (Ship ship : ships) {
+                ArrayList<Stone> testStones = new ArrayList<>();
+                switch (ship.getMAX_STONES()) {
+                    case 1: testStones.add(stoneService.createStone("BLACK")); ship.setStones(testStones); break;
+                    case 2: testStones.add(stoneService.createStone("GRAY")); testStones.add(stoneService.createStone("GRAY")); ship.setStones(testStones); break;
+                    case 3: testStones.add(stoneService.createStone("BROWN")); testStones.add(stoneService.createStone("BROWN")); testStones.add(stoneService.createStone("BROWN")); ship.setStones(testStones); break;
+                    case 4: testStones.add(stoneService.createStone("WHITE")); testStones.add(stoneService.createStone("WHITE")); testStones.add(stoneService.createStone("WHITE")); ship.setStones(testStones); break;
+                }
+            }
+
+            roundRepository.save(round);
         }
 }
