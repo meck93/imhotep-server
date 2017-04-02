@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(SiteController.CONTEXT)
-public class SiteController {
+public class SiteController extends GenericController {
 
-    Logger log  = LoggerFactory.getLogger(GameController.class);
+    Logger log  = LoggerFactory.getLogger(SiteController.class);
     private final BuildingSiteService buildingSiteService;
     private final MarketPlaceService marketPlaceService;
 
