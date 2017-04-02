@@ -73,15 +73,16 @@ public class GameService {
      * Adds an existing player to the game
      */
     public String addPlayer(Long gameId, Player player){
+        log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
+
         Game game = gameRepository.findById(gameId);
-        // adds player to the game
-        game.getPlayers().add(player);
         // sets the correct amount of players
         int amountOfPlayers = game.getAmountOfPlayers() + 1;
         game.setAmountOfPlayers(amountOfPlayers);
-        gameRepository.save(game);
+        // adds player to the game
+        game.getPlayers().add(player);
 
-        log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
+        gameRepository.save(game);
 
         return "games" + "/" + gameId + "/players/" + amountOfPlayers;
     }
