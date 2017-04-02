@@ -157,9 +157,18 @@ public class GameService {
         MarketPlace marketPlace = marketPlaceService.createMarketPlace(gameId);
         game.setMarketPlace(marketPlace);
 
+
+
         // Create the marketCardDeck
         marketPlace.setMarketCards(marketCardService.createMarketCardDeck(gameId));
-
+        // replace this for
+        // Create the marketCardDeck
+        marketCardService.createMarketCardDeck(gameId);
+        //marketPlace.setMarketCards(marketCardService.getMarketCard(gameId,"red"));
+        //marketPlace.setMarketCards(marketCardService.getMarketCard(gameId,"blue"));
+        //marketPlace.setMarketCards(marketCardService.getMarketCard(gameId,"green"));
+        //marketPlace.setMarketCards(marketCardService.getMarketCard(gameId,"violet"));
+        
         // Create the stoneQuarry
         StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry();
         // Fill StoneQuarry with Stone

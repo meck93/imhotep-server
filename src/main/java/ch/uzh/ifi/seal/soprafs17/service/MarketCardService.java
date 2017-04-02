@@ -51,8 +51,21 @@ public class MarketCardService {
         log.debug("Picking a random marketCard out of the marketCardDeck associated with gameId: " + gameId);
 
         ArrayList<MarketCard> marketCardDeck = new ArrayList<>();
-        marketCardRepository.findAllRedMarketCards(gameId).forEach(marketCardDeck::add);
 
+        switch (color) {
+            case "red":
+                marketCardRepository.findAllRedMarketCards(gameId).forEach(marketCardDeck::add);
+                break;
+            case "blue":
+                marketCardRepository.findAllBlueMarketCards(gameId).forEach(marketCardDeck::add);
+                break;
+            case "green":
+                marketCardRepository.findAllGreenMarketCards(gameId).forEach(marketCardDeck::add);
+                break;
+            case "violet":
+                marketCardRepository.findAllVioletMarketCards(gameId).forEach(marketCardDeck::add);
+                break;
+        }
         // Removing all alreadyChosen roundCards from the deck
         for (MarketCard marketCard : marketCardDeck) {
             if (marketCard.isAlreadyChosen()) {
@@ -60,17 +73,16 @@ public class MarketCardService {
             }
         }
 
-        // Choosing one of the new roundCards by random
+        // Choosing one of the new marketCards by random
         Random rnd = new Random();
         MarketCard chosenMarketCard = marketCardDeck.get(rnd.nextInt(marketCardDeck.size()-1));
 
-        // Marking the chosen card as used in a Round
+        // Marking the chosen card as used
         chosenMarketCard.setAlreadyChosen(true);
         marketCardRepository.save(chosenMarketCard);
 
         return chosenMarketCard;
     }
-
 
     /**
      * Creates the marketCardDeck
