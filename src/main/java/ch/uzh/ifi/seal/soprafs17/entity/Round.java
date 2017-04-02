@@ -15,6 +15,9 @@ public class Round implements Serializable{
     @GeneratedValue
     private Long id;
 
+    @Column
+    private int roundNumber;
+
     @OneToOne(targetEntity = RoundCard.class)
     private RoundCard card;
 
@@ -67,5 +70,13 @@ public class Round implements Serializable{
 
     public void setShips(List<Ship> ships) {
         this.ships = ships;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public void setRoundNumber(int roundNumber) {
+        this.roundNumber = roundNumber;
     }
 }

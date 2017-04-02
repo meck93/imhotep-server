@@ -47,6 +47,7 @@ public class RoundService {
             newRound.setGame(game);
             newRound.setShips(new ArrayList<>());
             newRound.setMoves(new ArrayList<>());
+            newRound.setRoundNumber(0);
 
             // getting a new roundCard
             RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
@@ -57,11 +58,13 @@ public class RoundService {
             return newRound;
         }
 
-        public Round initializeRound(Long roundId) {
+        public Round initializeRound(Long roundId, int roundNumber) {
             log.debug("Initializing Round: " + roundId);
 
             Round round = roundRepository.findById(roundId);
 
+            // setting the correct round number
+            round.setRoundNumber(roundNumber);
             // adding ships to the round
             List<Ship> currentShips = shipService.createShips(round.getCard());
             round.setShips(currentShips);
@@ -69,5 +72,34 @@ public class RoundService {
             roundRepository.save(round);
 
             return round;
+        }
+
+        public List<Round> listRounds(Long gameId) {
+            log.debug("List all Rounds of Game: " + gameId);
+
+            List<Round> allRounds = (List<Round>) roundRepository.findAll();
+            ArrayList<Round> result = new ArrayList<>();
+
+            for (Round round : allRounds) {
+                if (round.getGame().getId().equals(gameId)){
+                    result.add(round);
+                }
+            }
+            return result;
+        }
+
+        public Round getRoundByNr(Long gameId, int roundNumber) {
+            log.debug("Round: " + roundNumber + " of Game: " + gameId);
+
+            List<Round> allRounds = this.listRounds(gameId);
+
+            for (Round round : allRounds) {
+                if (round.getRoundNumber() == roundNumber) {
+                    return round;
+                }
+            }
+
+            log.error("Round: " + roundNumber + " in Game: " + gameId + " not found!");
+            return null;
         }
 }
