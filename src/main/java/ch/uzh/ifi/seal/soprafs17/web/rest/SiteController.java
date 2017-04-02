@@ -49,11 +49,4 @@ public class SiteController extends GenericController {
         buildingSiteService.createDummyData(gameId);
         return "DummyData created!";
     }
-
-    /*
-     * HttpStatus Exceptions
-     */
-    @ResponseStatus(value=HttpStatus.PRECONDITION_FAILED, reason="Don't be stupid. written by daif")
-    public class OrderNotFoundException extends RuntimeException {
-    }
 }
