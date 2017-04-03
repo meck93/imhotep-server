@@ -48,7 +48,6 @@ public class MarketCardService {
         return marketCard;
     }
 
-
     public MarketCard getMarketCard(Long gameId) {
         log.debug("Picking a random marketCard out of the marketCardDeck associated with gameId: " + gameId);
 
@@ -56,16 +55,10 @@ public class MarketCardService {
         marketCardRepository.findAllMarketCards(gameId).forEach(marketCardDeck::add);
 
         // Removing all alreadyChosen roundCards from the deck
-       /*for (MarketCard marketCard : marketCardDeck) {
+        for(Iterator<MarketCard> iterator = marketCardDeck.iterator(); iterator.hasNext();){
+            MarketCard marketCard = iterator.next();
             if (marketCard.isAlreadyChosen()) {
-                marketCardDeck.remove(marketCard);
-            }
-        }*/
-
-        for(Iterator<MarketCard> it = marketCardDeck.iterator(); it.hasNext();){
-            MarketCard marketCard = it.next();
-            if (marketCard.isAlreadyChosen()) {
-                it.remove();
+                iterator.remove();
             }
         }
 
