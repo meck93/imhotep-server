@@ -94,7 +94,6 @@ public class GameService {
     }
 
     public Game findById(Long gameId) {
-        // TODO: Excepetion handling if not found
         log.debug("getGame: " + gameId);
         return gameRepository.findById(gameId);
     }
@@ -119,7 +118,6 @@ public class GameService {
      */
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
-        // TODO: Check if player is the owner
 
         // Initializing the game
         initializeGame(gameId);
@@ -161,6 +159,7 @@ public class GameService {
 
         // Setting the Status to Running
         game.setStatus(GameStatus.RUNNING);
+
         gameRepository.save(game);
     }
 
@@ -174,9 +173,9 @@ public class GameService {
 
         // Initializing the first round
         roundService.initializeRound(round.getId(), game.getRounds().size());
+
         // Setting the roundCounter to the correct value
         game.setRoundCounter(game.getRounds().size());
-        log.info("Round Counter: " + game.getRoundCounter());
 
         // adding marketCards to the marketPlace
         List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);

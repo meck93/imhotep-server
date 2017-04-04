@@ -25,7 +25,7 @@ public class Round implements Serializable{
     private List<Move> moves;
 
     @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id", foreignKey = @ForeignKey(name ="GAME_ID_FK"))
+    @JoinColumn(name = "GAME_ID")
     @JsonBackReference
     private Game game;
 
