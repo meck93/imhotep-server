@@ -51,4 +51,9 @@ public class BuildingSite extends ASite implements Serializable{
     public void setBuildingSiteType(BuildingSiteType buildingSiteType) {
         this.buildingSiteType = buildingSiteType;
     }
+
+    //Do not delete
+    public void addStone(Stone stone){
+        this.stones.add(stone);
+    }
 }

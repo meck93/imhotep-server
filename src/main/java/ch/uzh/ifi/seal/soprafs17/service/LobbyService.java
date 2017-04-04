@@ -6,12 +6,12 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -44,9 +44,7 @@ public class LobbyService {
         // Creates a new game
         Game newGame = gameService.createGame(game.getName(), game.getOwner());
         // Creates a new player from the user who created the game
-        Player newPlayer = playerService.createPlayer(newGame.getId(), userId);
-        // Adds the new player to the game
-        String value = playerService.addPlayer(newGame.getId(), newPlayer.getId());
+        String newPlayer = playerService.initializePlayer(newGame.getId(), userId);
 
         return newGame;
     }
@@ -54,8 +52,6 @@ public class LobbyService {
      * Implementation of a User joining a Game. User -> Player. Player -> Joins Game.
      */
     public String joinGame(Long gameId, Long userId){
-        // TODO: Check that the user exists, check that the game is not full, check that the user is not already in a game
-        Player newPlayer = playerService.createPlayer(gameId, userId);
-        return playerService.addPlayer(gameId, newPlayer.getId());
+        return playerService.initializePlayer(gameId, userId);
     }
 }

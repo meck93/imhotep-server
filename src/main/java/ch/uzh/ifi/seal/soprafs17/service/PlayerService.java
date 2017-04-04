@@ -45,36 +45,21 @@ public class PlayerService {
         log.debug("creating Player from User with userId: " + userId);
 
         Game game = gameService.findById(gameId);
-        int playerNumber = gameService.findAmountOfPlayers(gameId) + 1;
+        int playerNumber = gameService.findNrOfPlayers(gameId) + 1;
+
         User user = userService.getUser(userId);
         Long playerId = user.getId();
 
-        if ((game != null) && (user != null) && (game.getPlayers().size() < GameConstants.MAX_PLAYERS)) {
+        if (game != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
             // create a new player entity
             Player newPlayer = new Player();
             newPlayer.setUser(user);
             newPlayer.setUsername(user.getUsername());
             newPlayer.setId(playerId);
             newPlayer.setGame(game);
-            newPlayer.setMoves(new ArrayList<>());
-            newPlayer.setPoints(GameConstants.START_POINTS);
             newPlayer.setPlayerNumber(playerNumber);
 
-            // assign the color according to the playerNumber
-            switch (playerNumber) {
-                case 1: newPlayer.setColor(GameConstants.BLACK); break;
-                case 2: newPlayer.setColor(GameConstants.WHITE); break;
-                case 3: newPlayer.setColor(GameConstants.BROWN); break;
-                case 4: newPlayer.setColor(GameConstants.GRAY); break;
-            }
-
             // save the new entity in the database
-            playerRepository.save(newPlayer);
-
-            //add the SupplySled to the player
-            newPlayer.setSupplySled(supplySledService.createSupplySled(newPlayer));
-
-            // save the same player again after adding the SupplySled
             playerRepository.save(newPlayer);
 
             return newPlayer;
@@ -86,14 +71,33 @@ public class PlayerService {
         }
     }
 
-    /*
-     * Adds an existing player to an existing game.
-     * @Param gameId, playerId
-     */
-    // TODO: The relation between the game and the player doesn't work yet
-    public String addPlayer(Long gameId, Long playerId){
-        Player player = playerRepository.findOne(playerId);
-        return gameService.addPlayer(gameId, player);
+    public String initializePlayer(Long gameId, Long userId) {
+        log.debug("creating Player from User with userId: " + userId);
+
+        Player player = createPlayer(gameId, userId);
+
+        // Initializing the Move List and the StartPoints
+        player.setMoves(new ArrayList<>());
+        player.setPoints(GameConstants.START_POINTS);
+
+        // assign the color according to the playerNumber
+        switch (player.getPlayerNumber()) {
+            case 1: player.setColor(GameConstants.BLACK); break;
+            case 2: player.setColor(GameConstants.WHITE); break;
+            case 3: player.setColor(GameConstants.BROWN); break;
+            case 4: player.setColor(GameConstants.GRAY); break;
+        }
+
+        // Saving the changes to the DB
+        playerRepository.save(player);
+
+        //add the SupplySled to the player
+        supplySledService.createSupplySled(player);
+
+        // Set the correct amountOfPlayers
+        gameService.setNrOfPlayers(gameId, player.getPlayerNumber());
+
+        return "games" + "/" + gameId + "/players/" + player.getPlayerNumber();
     }
 
     public Player getPlayer(Long gameId, Long playerNr) {
@@ -109,6 +113,7 @@ public class PlayerService {
         }
 
         // TODO Exception handling if player doesn't exist
+        log.error("Couldn't find PlayerNr: " + playerNr + " in Game: " + gameId);
         return null;
     }
 

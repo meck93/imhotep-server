@@ -54,10 +54,11 @@ public class GameService {
         Game newGame = new Game();
         newGame.setName(name);
         newGame.setOwner(owner);
-        newGame.setStatus(GameStatus.PENDING);
+        newGame.setNumberOfPlayers(0);
+        newGame.setRoundCounter(0);
         newGame.setPlayers(new ArrayList<>());
-        newGame.setAmountOfPlayers(0);
         newGame.setRounds(new ArrayList<>());
+        newGame.setStatus(GameStatus.PENDING);
 
         gameRepository.save(newGame);
 
@@ -74,21 +75,13 @@ public class GameService {
         log.debug("Deleted Game: {}", game);
     }
 
-    /*
-     * Adds an existing player to the game
-     */
-    public String addPlayer(Long gameId, Player player){
+    public void setNrOfPlayers(Long gameId, int nrOfPlayers) {
+        log.debug("Nr of Players: " + nrOfPlayers + " of Game: " + gameId);
+
         Game game = gameRepository.findById(gameId);
-        // adds player to the game
-        game.getPlayers().add(player);
-        // sets the correct amount of players
-        int amountOfPlayers = game.getAmountOfPlayers() + 1;
-        game.setAmountOfPlayers(amountOfPlayers);
+        game.setNumberOfPlayers(nrOfPlayers);
+
         gameRepository.save(game);
-
-        log.debug("Added Player with playerId: " + player.getId() + " to the game with gameId: " + gameId);
-
-        return "games" + "/" + gameId + "/players/" + amountOfPlayers;
     }
 
     public List<Game> listGames() {
@@ -106,9 +99,9 @@ public class GameService {
         return gameRepository.findById(gameId);
     }
 
-    public int findAmountOfPlayers(Long gameId) {
+    public int findNrOfPlayers(Long gameId) {
         log.debug("getAmountOfPlayers: " + gameId);
-        return gameRepository.findAmountOfPlayers(gameId);
+        return gameRepository.findNrOfPlayers(gameId);
     }
 
     public List<Player> findPlayersByGameId(Long gameId) {
@@ -126,29 +119,24 @@ public class GameService {
      */
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
+        // TODO: Check if player is the owner
 
-        // Check for preconditions reserved => is the player the owner? etc.
-        Game game = gameRepository.findById(gameId);
-        gameInit(gameId);
-
-        Round round = roundService.createRound(gameId, game);
-        List<Round> rounds = game.getRounds();
-        rounds.add(round);
-        game.setRounds(rounds);
-
-        //roundService.initializeRound()
-
-        gameRepository.save(game);
+        // Initializing the game
+        initializeGame(gameId);
+        // Initializing the first round
+        initializeRound(gameId);
     }
 
     /**
      * @param gameId
      * @post For all game specific attributes:  attribute =/= NULL
      */
-    public void gameInit(Long gameId){
+    public void initializeGame(Long gameId){
+        log.debug("Initializes the Game: " + gameId);
+
         // Initiates the game
         Game game = gameRepository.findById(gameId);
-        int amountOfPlayers = gameRepository.findAmountOfPlayers(gameId);
+        int amountOfPlayers = gameRepository.findNrOfPlayers(gameId);
 
         // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
@@ -159,10 +147,9 @@ public class GameService {
         // Create the marketPlace
         MarketPlace marketPlace = marketPlaceService.createMarketPlace(gameId);
         game.setMarketPlace(marketPlace);
-        
-        // Create the stoneQuarry
+
+        // Create the stoneQuarry & fill it with Stones
         StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry();
-        // Fill StoneQuarry with Stone
         stoneQuarryService.fillQuarry(stoneQuarry);
         game.setStoneQuarry(stoneQuarry);
 
@@ -172,27 +159,33 @@ public class GameService {
         game.setTemple(buildingSiteService.createBuildingSite(BuildingSiteType.TEMPLE, gameId));
         game.setBurialChamber(buildingSiteService.createBuildingSite(BuildingSiteType.BURIAL_CHAMBER, gameId));
 
-        // settings for the initial round
-        game.setRoundCounter(1);
+        // Setting the Status to Running
         game.setStatus(GameStatus.RUNNING);
+        gameRepository.save(game);
+    }
+
+    public void initializeRound(Long gameId) {
+        log.debug("Initializes Round for Game: " + gameId);
+
+        Game game = gameRepository.findById(gameId);
+
+        // Creating the first round of the game
+        Round round = roundService.createRound(gameId, game);
+
+        // Initializing the first round
+        roundService.initializeRound(round.getId(), game.getRounds().size());
+
         gameRepository.save(game);
     }
 
     public void stopGame(Long gameId, Long playerId) {
         log.debug("stopGame: " + gameId);
 
-        // TODO implement stopGame
-        Game game = gameRepository.findOne(gameId);
-        /*String owner = game.getOwner();
-
-        // Same access question as above
-        // User owner = userService.getUserByToken(userToken);
-
         // Same access question as above
         // User owner = userService.getUserByToken(userToken);
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Stop game in GameService
-        }*/
+        }
     }
 }

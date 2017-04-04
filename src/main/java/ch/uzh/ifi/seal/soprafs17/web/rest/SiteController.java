@@ -12,11 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 
-@RestController(value = BuildingSiteController.CONTEXT)
-@RequestMapping(BuildingSiteController.CONTEXT)
-public class BuildingSiteController {
+@RestController
+@RequestMapping(SiteController.CONTEXT)
+public class SiteController extends GenericController {
 
-    Logger log  = LoggerFactory.getLogger(GameController.class);
+    Logger log  = LoggerFactory.getLogger(SiteController.class);
     private final BuildingSiteService buildingSiteService;
     private final MarketPlaceService marketPlaceService;
 
@@ -24,7 +24,7 @@ public class BuildingSiteController {
     static final String CONTEXT = "games/{gameId}";
 
     @Autowired
-    public BuildingSiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService){
+    public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService){
         this.buildingSiteService = buildingSiteService;
         this.marketPlaceService = marketPlaceService;
     }
@@ -40,11 +40,13 @@ public class BuildingSiteController {
     public MarketPlace getObelisk(@PathVariable("gameId") Long gameId) {
         return marketPlaceService.getMarketPlace(gameId);
     }
-
     /*
-     * HttpStatus Exceptions
+     * Creates a Dummy-Stone on each Site of the Game for the Front-End Mapping/Modelling Purposes
      */
-    @ResponseStatus(value=HttpStatus.PRECONDITION_FAILED, reason="Don't be stupid. written by daif")
-    public class OrderNotFoundException extends RuntimeException {
+    @RequestMapping(method = RequestMethod.POST, value = "/dummy")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createDummyData(@PathVariable("gameId") Long gameId){
+        buildingSiteService.createDummyData(gameId);
+        return "DummyData created!";
     }
 }

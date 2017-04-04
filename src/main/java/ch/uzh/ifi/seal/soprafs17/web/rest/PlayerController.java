@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping(PlayerController.CONTEXT)
 public class PlayerController extends GenericController {
 
-    Logger log  = LoggerFactory.getLogger(GameController.class);
+    Logger log  = LoggerFactory.getLogger(PlayerController.class);
 
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games/{gameId}/players";
