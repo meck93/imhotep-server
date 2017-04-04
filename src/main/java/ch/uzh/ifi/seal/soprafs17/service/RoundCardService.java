@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -125,12 +124,7 @@ public class RoundCardService {
         roundCardRepository.findAllRoundCards(gameId).forEach(roundCardDeck::add);
 
         // Removing all alreadyChosen roundCards from the deck
-        for(Iterator<RoundCard> iterator = roundCardDeck.iterator(); iterator.hasNext();){
-            RoundCard roundCard = iterator.next();
-            if (roundCard.isAlreadyChosen()) {
-                iterator.remove();
-            }
-        }
+        roundCardDeck.removeIf(RoundCard::isAlreadyChosen);
 
         // Choosing one of the new roundCards by random
         Random rnd = new Random();
