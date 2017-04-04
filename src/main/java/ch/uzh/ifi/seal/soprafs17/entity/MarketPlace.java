@@ -22,7 +22,7 @@ public class MarketPlace extends ASite implements Serializable{
         super.setSiteType("MARKET_PLACE");
     }
 
-    @OneToMany(targetEntity = MarketCard.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = MarketCard.class/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
     private List<MarketCard> marketCards;
 
     public List<MarketCard> getMarketCards() {
