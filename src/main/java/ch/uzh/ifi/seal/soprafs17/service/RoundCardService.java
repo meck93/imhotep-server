@@ -1,9 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-/**
- * Created by Cristian on 25.03.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.constant.RoundCardType;
 import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
 import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
@@ -39,13 +35,13 @@ public class RoundCardService {
         // decide which card set to create
         switch (amountOfPlayers) {
             case 2:
-                createRoundCardSet(gameId, RoundCardType.TWO_HEADS);
+                createTwoHeadRoundCardSet(gameId, RoundCardType.TWO_HEADS);
                 break;
             case 3:
-                createRoundCardSet(gameId, RoundCardType.THREE_HEADS);
+                createThreeHeadRoundCardSet(gameId, RoundCardType.THREE_HEADS);
                 break;
             case 4:
-                createRoundCardSet(gameId, RoundCardType.FOUR_HEADS);
+                createFourHeadRoundCardSet(gameId, RoundCardType.FOUR_HEADS);
                 break;
         }
     }
@@ -57,7 +53,7 @@ public class RoundCardService {
      * @pre game != NULL
      * @post seven roundCards are stored under the game id
      */
-    public void createRoundCardSet(Long gameId, RoundCardType roundCardType){
+    public void createTwoHeadRoundCardSet(Long gameId, RoundCardType roundCardType){
         log.debug("Creating seven roundCards for Type: " + roundCardType + " associated to gameId: " + gameId);
 
         createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.M, ShipSize.M);
@@ -67,6 +63,31 @@ public class RoundCardService {
         createRoundCard(gameId, roundCardType, ShipSize.L, ShipSize.M, ShipSize.M, ShipSize.S);
         createRoundCard(gameId, roundCardType, ShipSize.L, ShipSize.L, ShipSize.M, ShipSize.M);
         createRoundCard(gameId, roundCardType, ShipSize.L, ShipSize.L, ShipSize.M, ShipSize.S);
+    }
+
+    public void createThreeHeadRoundCardSet(Long gameId, RoundCardType roundCardType) {
+        log.debug("Creating seven roundCards for Type: " + roundCardType + " associated to gameId: " + gameId);
+
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.M, ShipSize.M, ShipSize.S);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.L, ShipSize.M);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.M, ShipSize.M);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.XL, ShipSize.M, ShipSize.S);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.M, ShipSize.M);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.M, ShipSize.S);
+        createRoundCard(gameId, roundCardType, ShipSize.L, ShipSize.L, ShipSize.M, ShipSize.S);
+        createRoundCard(gameId, roundCardType, ShipSize.L, ShipSize.L, ShipSize.L, ShipSize.M);
+    }
+
+    public void createFourHeadRoundCardSet(Long gameId, RoundCardType roundCardType) {
+        log.debug("Creating seven roundCards for Type: " + roundCardType + " associated to gameId: " + gameId);
+
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.XL, ShipSize.M, ShipSize.S);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.L, ShipSize.M);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.L, ShipSize.L);
+        createRoundCard(gameId, roundCardType, ShipSize.L, ShipSize.L, ShipSize.L, ShipSize.M);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.XL, ShipSize.L, ShipSize.M);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.XL, ShipSize.M, ShipSize.M);
+        createRoundCard(gameId, roundCardType, ShipSize.XL, ShipSize.L, ShipSize.M, ShipSize.M);
     }
 
     /*
@@ -99,19 +120,15 @@ public class RoundCardService {
     public RoundCard getRoundCard(Long gameId) {
         log.debug("Picking a roundCard by random from all roundCards associated with gameId: " + gameId);
 
-        List<RoundCard> deck = new ArrayList<>();
-        roundCardRepository.findAllRoundCards(gameId).forEach(deck::add);
+        List<RoundCard> roundCardDeck = new ArrayList<>();
+        roundCardRepository.findAllRoundCards(gameId).forEach(roundCardDeck::add);
 
         // Removing all alreadyChosen roundCards from the deck
-        for (RoundCard roundCard : deck) {
-            if (roundCard.isAlreadyChosen()) {
-                deck.remove(roundCard);
-            }
-        }
+        roundCardDeck.removeIf(RoundCard::isAlreadyChosen);
 
         // Choosing one of the new roundCards by random
         Random rnd = new Random();
-        RoundCard currentCard = deck.get(rnd.nextInt(deck.size()-1));
+        RoundCard currentCard = roundCardDeck.get(rnd.nextInt(roundCardDeck.size()-1));
 
         // Marking the chosen card as used in a Round
         currentCard.setAlreadyChosen(true);

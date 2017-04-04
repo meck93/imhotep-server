@@ -1,9 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-/**
- * Created by Dave on 21.03.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.service.LobbyService;
 import org.slf4j.Logger;
@@ -16,9 +12,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping(LobbyController.CONTEXT)
-public class LobbyController {
+public class LobbyController extends GenericController {
 
-    Logger log  = LoggerFactory.getLogger(GameController.class);
+    Logger log  = LoggerFactory.getLogger(LobbyController.class);
     private LobbyService lobbyService;
 
     // Standard URI Mapping of this class

@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(SiteController.CONTEXT)
-public class SiteController {
+public class SiteController extends GenericController {
 
-    Logger log  = LoggerFactory.getLogger(GameController.class);
+    Logger log  = LoggerFactory.getLogger(SiteController.class);
     private final BuildingSiteService buildingSiteService;
     private final MarketPlaceService marketPlaceService;
 
@@ -48,12 +48,5 @@ public class SiteController {
     public String createDummyData(@PathVariable("gameId") Long gameId){
         buildingSiteService.createDummyData(gameId);
         return "DummyData created!";
-    }
-
-    /*
-     * HttpStatus Exceptions
-     */
-    @ResponseStatus(value=HttpStatus.PRECONDITION_FAILED, reason="Don't be stupid. written by daif")
-    public class OrderNotFoundException extends RuntimeException {
     }
 }

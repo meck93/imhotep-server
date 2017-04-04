@@ -44,7 +44,7 @@ public class Game implements Serializable {
 	private BuildingSite temple;
 
 	@Column
-	private int amountOfPlayers;
+	private int numberOfPlayers;
 
 	@OneToOne(targetEntity = MarketPlace.class, cascade = CascadeType.ALL)
 	private MarketPlace marketPlace;
@@ -140,12 +140,12 @@ public class Game implements Serializable {
 		this.temple = temple;
 	}
 
-	public int getAmountOfPlayers() {
-		return amountOfPlayers;
+	public int getNumberOfPlayers() {
+		return numberOfPlayers;
 	}
 
-	public void setAmountOfPlayers(int amountOfPlayers) {
-		this.amountOfPlayers = amountOfPlayers;
+	public void setNumberOfPlayers(int numberOfPlayers) {
+		this.numberOfPlayers = numberOfPlayers;
 	}
 
 	public MarketPlace getMarketPlace() {

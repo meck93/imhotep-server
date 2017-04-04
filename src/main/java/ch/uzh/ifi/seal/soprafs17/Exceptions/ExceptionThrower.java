@@ -1,10 +1,7 @@
-package ch.uzh.ifi.seal.soprafs17.Exceptions;
+package ch.uzh.ifi.seal.soprafs17.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-/**
- * Created by User on 01.04.2017.
- */
 public class ExceptionThrower {
 
     public void customExceptionThrow(String errorMessage, HttpStatus httpStatus) throws CustomException{

@@ -1,10 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-import ch.uzh.ifi.seal.soprafs17.entity.*;
-import ch.uzh.ifi.seal.soprafs17.service.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +12,6 @@ import java.util.List;
 @RequestMapping(GameController.CONTEXT)
 public class GameController extends GenericController {
 
-    Logger log = LoggerFactory.getLogger(GameController.class);
-
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games";
     
@@ -26,9 +21,6 @@ public class GameController extends GenericController {
     public GameController(GameService gameService) {
         this.gameService = gameService;
     }
-
-    // TODO Correct the implementation: Controller calls the service to do a action
-    // TODO Correct the implementation: Service handles the request in service
 
     /*
      * Context: /game
@@ -43,7 +35,7 @@ public class GameController extends GenericController {
     /*
      * Handles the request for the game with Id: {gameId}
      */
-    @RequestMapping(value = "/{gameId}")
+    @RequestMapping(value = "/{gameId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Game getGame(@PathVariable Long gameId) {
         return gameService.findById(gameId);

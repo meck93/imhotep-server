@@ -23,8 +23,8 @@ public class SupplySled implements Serializable {
     @JsonIgnore
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Player_ID")
+    @OneToOne(targetEntity = Player.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "Player_ID", foreignKey = @ForeignKey(name ="PLAYER_ID_FK"))
     @JsonBackReference(value = "player")
     private Player player;
 

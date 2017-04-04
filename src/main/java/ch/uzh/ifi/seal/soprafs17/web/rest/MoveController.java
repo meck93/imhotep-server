@@ -18,7 +18,7 @@ public class MoveController extends GenericController {
     Logger log = LoggerFactory.getLogger(MoveController.class);
 
     // Standard URI Mapping of this class
-    static final String CONTEXT = "/games/{gameId}/players/{playersId}/moves";
+    static final String CONTEXT = "/games/{gameId}/players/{playerNr}/moves";
 
     private MoveService moveService;
 
@@ -27,26 +27,23 @@ public class MoveController extends GenericController {
         this.moveService = moveService;
     }
 
-    // TODO Correct the implementation: Controller calls the service to do a action
-    // TODO Correct the implemenation: Service handles the request in service
-
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Move> listMoves(@PathVariable Long gameId, @PathVariable Long playerId) {
+    public List<Move> listMoves(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr) {
         //TODO getMoves must be implemented in the MoveService
-        return moveService.getMoves(gameId, playerId);
+        return moveService.getMoves(gameId, playerNr);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void addMove(@RequestBody Move move) {
+    public void addMove(@RequestBody Move move, @PathVariable("gameId") Long gameId) {
         // TODO Execution of addMove in moveService
         moveService.addMove(move);
     }
 
-    @RequestMapping(value = "/{moveId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{moveNr}",method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Move getMove(@PathVariable Long gameId, @PathVariable Long moveId) {
+    public Move getMove(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr, @PathVariable Long moveId) {
         // TODO Execution of getMove in moveService
         return moveService.getMove(moveId);
     }
