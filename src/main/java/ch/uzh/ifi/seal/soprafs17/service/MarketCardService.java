@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static ch.uzh.ifi.seal.soprafs17.constant.MarketCardType.*;
 
@@ -25,6 +22,14 @@ import static ch.uzh.ifi.seal.soprafs17.constant.MarketCardType.*;
 public class MarketCardService {
 
     private final Logger log = LoggerFactory.getLogger(MarketCardService.class);
+
+    // Constants for the MarketCard Creation
+    private static final int OCCUR_TWICE = 2;
+    private static final int OCCUR_THREE_TIMES = 3;
+    private static final int OCCUR_TEN_TIMES = 10;
+
+    private static final int MARKET_CARD_DECK_SIZE = 4;
+
     private final MarketCardRepository marketCardRepository;
 
     @Autowired
@@ -54,13 +59,8 @@ public class MarketCardService {
         List<MarketCard> marketCardDeck = new ArrayList<>();
         marketCardRepository.findAllMarketCards(gameId).forEach(marketCardDeck::add);
 
-        // Removing all alreadyChosen roundCards from the deck
-        for(Iterator<MarketCard> iterator = marketCardDeck.iterator(); iterator.hasNext();){
-            MarketCard marketCard = iterator.next();
-            if (marketCard.isAlreadyChosen()) {
-                iterator.remove();
-            }
-        }
+        // Removing all alreadyChosen marketCards from the deck
+        marketCardDeck.removeIf(MarketCard::isAlreadyChosen);
 
         // Choosing one of the new marketCards by random
         Random rnd = new Random();
@@ -71,6 +71,17 @@ public class MarketCardService {
         marketCardRepository.save(chosenMarketCard);
 
         return chosenMarketCard;
+    }
+
+    public List<MarketCard> getMarketCardDeck(Long gameId) {
+        log.debug("Get the next four Market Cards by random for the Game: " + gameId);
+
+        List<MarketCard> result = new ArrayList<>();
+        for (int i = 0; i < MARKET_CARD_DECK_SIZE; i++){
+            result.add(getMarketCard(gameId));
+        }
+
+        return result;
     }
 
 
@@ -84,7 +95,7 @@ public class MarketCardService {
         log.debug("Creating a marketCardDeck");
 
         // create all the marketCards that occur two times
-        for(int i=0; i<2; i++) {
+        for(int i=0; i<OCCUR_TWICE; i++) {
             createMarketCard(gameId, "red", PAVED_PATH);
             createMarketCard(gameId, "red", SARCOPHAGUS);
             createMarketCard(gameId, "red", ENTRANCE);
@@ -97,13 +108,13 @@ public class MarketCardService {
         }
 
         // create all the marketCards that occur three times
-        for(int i=0; i<3; i++) {
+        for(int i=0; i<OCCUR_THREE_TIMES; i++) {
             createMarketCard(gameId, "blue", CHISEL);
             createMarketCard(gameId, "blue", SAIL);
         }
 
-        // create STATUE marketCards
-        for(int i=0; i<10;i++) {
+        // create STATUE marketCards (10 times)
+        for(int i=0; i<OCCUR_TEN_TIMES;i++) {
             createMarketCard(gameId, "violet", STATUE);
         }
     }

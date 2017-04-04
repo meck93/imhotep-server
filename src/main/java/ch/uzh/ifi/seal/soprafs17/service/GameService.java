@@ -175,17 +175,16 @@ public class GameService {
         // Initializing the first round
         roundService.initializeRound(round.getId(), game.getRounds().size());
 
+        // adding marketCards to the marketPlace
+        List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);
+        game.getMarketPlace().setMarketCards(fourCards);
+
         gameRepository.save(game);
     }
 
     public void stopGame(Long gameId, Long playerId) {
         log.debug("stopGame: " + gameId);
 
-        // Same access question as above
-        // User owner = userService.getUserByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Stop game in GameService
-        }
+        // TODO: Stop game in GameService
     }
 }
