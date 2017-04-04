@@ -174,6 +174,9 @@ public class GameService {
 
         // Initializing the first round
         roundService.initializeRound(round.getId(), game.getRounds().size());
+        // Setting the roundCounter to the correct value
+        game.setRoundCounter(game.getRounds().size());
+        log.info("Round Counter: " + game.getRoundCounter());
 
         // adding marketCards to the marketPlace
         List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);
