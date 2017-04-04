@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Move;
+import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,6 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(MoveController.CONTEXT)
 public class MoveController extends GenericController {
 
     Logger log = LoggerFactory.getLogger(MoveController.class);
@@ -27,24 +26,23 @@ public class MoveController extends GenericController {
         this.moveService = moveService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = CONTEXT, method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Move> listMoves(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr) {
+    public List<AMove> listMoves(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr) {
         //TODO getMoves must be implemented in the MoveService
         return moveService.getMoves(gameId, playerNr);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{moveNr}",method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public void addMove(@RequestBody Move move, @PathVariable("gameId") Long gameId) {
-        // TODO Execution of addMove in moveService
-        moveService.addMove(move);
-    }
-
-    @RequestMapping(value = "/{moveNr}",method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public Move getMove(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr, @PathVariable Long moveId) {
+    public AMove getMove(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr, @PathVariable Long moveId) {
         // TODO Execution of getMove in moveService
         return moveService.getMove(moveId);
+    }
+
+    @RequestMapping(value = "/games/{gameId}/rounds/{roundId}/moves", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public AMove addMove(@RequestParam String moveType, @PathVariable("gameId") Long gameId, @PathVariable("roundId") Long roundId) {
+        return moveService.addMove(moveType, gameId, roundId);
     }
 }

@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
+import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -46,7 +47,7 @@ public class Player implements Serializable {
     private List<MarketCard> handCards;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Move> moves;
+    private List<AMove> moves;
 
     public Long getGameId(){
         return game.getId();
@@ -100,11 +101,11 @@ public class Player implements Serializable {
         this.user = user;
     }
 
-    public List<Move> getMoves() {
+    public List<AMove> getMoves() {
         return moves;
     }
 
-    public void setMoves(List<Move> moves) {
+    public void setMoves(List<AMove> moves) {
         this.moves = moves;
     }
 

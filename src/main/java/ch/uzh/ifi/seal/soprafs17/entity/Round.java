@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
+import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -21,8 +22,8 @@ public class Round implements Serializable{
     @OneToOne(targetEntity = RoundCard.class)
     private RoundCard card;
 
-    @OneToMany
-    private List<Move> moves;
+    @OneToMany(targetEntity = AMove.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AMove> moves;
 
     @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "GAME_ID")
@@ -48,11 +49,11 @@ public class Round implements Serializable{
         this.card = card;
     }
 
-    public List<Move> getMoves() {
+    public List<AMove> getMoves() {
         return moves;
     }
 
-    public void setMoves(List<Move> moves) {
+    public void setMoves(List<AMove> moves) {
         this.moves = moves;
     }
 

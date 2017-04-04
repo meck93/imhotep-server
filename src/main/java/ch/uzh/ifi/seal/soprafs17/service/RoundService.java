@@ -46,7 +46,6 @@ public class RoundService {
             Round newRound = new Round();
             newRound.setGame(game);
             newRound.setShips(new ArrayList<>());
-            newRound.setMoves(new ArrayList<>());
             newRound.setRoundNumber(0);
 
             // getting a new roundCard

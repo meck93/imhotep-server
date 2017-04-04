@@ -1,9 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Move;
-import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.MoveRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.entity.move.*;
+import ch.uzh.ifi.seal.soprafs17.repository.AMoveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static ch.uzh.ifi.seal.soprafs17.GameConstants.*;
 
 /**
  * Service class for managing moves.
@@ -22,30 +22,57 @@ public class MoveService {
 
     private final Logger log = LoggerFactory.getLogger(MoveService.class);
 
-    private final MoveRepository moveRepository;
-    private final UserRepository userRepository;
-    private final GameRepository gameRepository;
+    private final AMoveRepository aMoveRepository;
 
     @Autowired
-    public MoveService(MoveRepository moveRepository, GameRepository gameRepository, UserRepository userRepository) {
-        this.moveRepository = moveRepository;
-        this.gameRepository = gameRepository;
-        this.userRepository = userRepository;
+    public MoveService(AMoveRepository aMoveRepository) {
+        this.aMoveRepository = aMoveRepository;
     }
 
-    public Move createMove(){
-        // TODO add everything that contains to a move
-        Move newMove = null;
+    public AMove createMove(String moveType){
+        // TODO: check that moveType is actually a correct moveType -> otherwise throw exception
 
-        log.debug("Created Information for User: {}", newMove);
+        AMove newMove = null;
+
+        // Creating the move depending on the type
+        switch (moveType) {
+            case GET_STONES: newMove = new GetStonesMove(moveType); break;
+            case PLACE_STONE: newMove = new PlaceStoneMove(moveType); break;
+            case SAIL_SHIP: newMove = new SailShipMove(moveType); break;
+            case PLAY_CARD: newMove = new PlayCardMove(moveType); break;
+        }
+
+        // Saving the newly created Move to the DB
+        aMoveRepository.save(newMove);
+
+        if (newMove == null){
+            log.error("Failed to create a Move of Type: " + moveType);
+            return null;
+        } else {
+            log.debug("Created Move of Type: " + moveType + " with ID: " + newMove.getId());
+            return newMove;
+        }
+    }
+
+    public AMove addMove(String moveType, Long gameId, Long roundId){
+        log.debug("addMove: " + moveType);
+
+        // Creating a newMove
+        AMove newMove = createMove(moveType);
+
+        // Setting the correct values
+        newMove.setRoundId(roundId);
+
+        aMoveRepository.save(newMove);
+
         return newMove;
     }
 
-    public List<Move> getMoves(Long gameId, Long playerId) {
+    public List<AMove> getMoves(Long gameId, Long playerId) {
         log.debug("list Moves of player: {}", playerId);
 
         // TODO find game, then find user, then return the list of all moves
-        List<Move> result = new ArrayList<>();
+        List<AMove> result = new ArrayList<>();
 
         // TODO change to find for user in game and then add
         //moveRepository.findAll().forEach(result::add);
@@ -53,15 +80,7 @@ public class MoveService {
         return result;
     }
 
-    public Move addMove(Move move){
-        log.debug("addMove: " + move);
-
-        // TODO implementation of addMove()
-
-        return null;
-    }
-
-    public Move getMove(Long moveId) {
+    public AMove getMove(Long moveId) {
         log.debug("getMove: " + moveId);
 
         // Find the move in the DB
