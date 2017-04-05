@@ -20,8 +20,7 @@ public class RoundService {
         private final RoundRepository roundRepository;
         private final RoundCardService roundCardService;
         private final ShipService shipService;
-        private final MarketCardService marketCardService;
-        private final StoneService stoneService;
+    private final StoneService stoneService;
 
         @Autowired
         public RoundService(RoundRepository roundRepository, RoundCardService roundCardService, ShipService shipService, StoneService stoneService, MarketCardService marketCardService) {
@@ -29,7 +28,6 @@ public class RoundService {
             this.roundCardService = roundCardService;
             this.shipService = shipService;
             this.stoneService = stoneService;
-            this.marketCardService = marketCardService;
         }
 
         /**
@@ -44,18 +42,6 @@ public class RoundService {
         public Round createRound(Long gameId, Game game){
             log.debug("Creating new round for Game: " + gameId);
 
-            // getting four new marketCards
-            // TODO: Please make this more beautiful
-            ArrayList<MarketCard> marketCards = new ArrayList<>();
-            MarketCard m1 = marketCardService.getMarketCard(gameId);
-            marketCards.add(m1);
-            MarketCard m2 = marketCardService.getMarketCard(gameId);
-            marketCards.add(m2);
-            MarketCard m3 = marketCardService.getMarketCard(gameId);
-            marketCards.add(m3);
-            MarketCard m4 = marketCardService.getMarketCard(gameId);
-            marketCards.add(m4);
-
             // Creating a new Round
             Round newRound = new Round();
             newRound.setGame(game);
@@ -68,10 +54,6 @@ public class RoundService {
             newRound.setCard(newRoundCard);
 
             roundRepository.save(newRound);
-
-            // adding marketCards to the marketPlace
-            // TODO: maybe do this in the GameService
-            game.getMarketPlace().setMarketCards(marketCards);
 
             return newRound;
         }

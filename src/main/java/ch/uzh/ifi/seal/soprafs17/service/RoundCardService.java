@@ -1,9 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-/**
- * Created by Cristian on 25.03.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.constant.RoundCardType;
 import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
 import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
@@ -124,19 +120,15 @@ public class RoundCardService {
     public RoundCard getRoundCard(Long gameId) {
         log.debug("Picking a roundCard by random from all roundCards associated with gameId: " + gameId);
 
-        List<RoundCard> deck = new ArrayList<>();
-        roundCardRepository.findAllRoundCards(gameId).forEach(deck::add);
+        List<RoundCard> roundCardDeck = new ArrayList<>();
+        roundCardRepository.findAllRoundCards(gameId).forEach(roundCardDeck::add);
 
         // Removing all alreadyChosen roundCards from the deck
-        for (RoundCard roundCard : deck) {
-            if (roundCard.isAlreadyChosen()) {
-                deck.remove(roundCard);
-            }
-        }
+        roundCardDeck.removeIf(RoundCard::isAlreadyChosen);
 
         // Choosing one of the new roundCards by random
         Random rnd = new Random();
-        RoundCard currentCard = deck.get(rnd.nextInt(deck.size()-1));
+        RoundCard currentCard = roundCardDeck.get(rnd.nextInt(roundCardDeck.size()-1));
 
         // Marking the chosen card as used in a Round
         currentCard.setAlreadyChosen(true);
