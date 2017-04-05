@@ -1,5 +1,6 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.game;
 
+import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 

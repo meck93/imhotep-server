@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.service.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

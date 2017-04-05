@@ -54,7 +54,7 @@ public class MoveService {
         }
     }
 
-    public AMove addMove(String moveType, Long gameId, Long roundId){
+    public AMove addMove(String moveType, int playerNr, Long gameId, Long roundId){
         log.debug("addMove: " + moveType);
 
         // Creating a newMove

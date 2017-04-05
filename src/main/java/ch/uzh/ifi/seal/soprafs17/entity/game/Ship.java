@@ -1,5 +1,6 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.game;
 
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

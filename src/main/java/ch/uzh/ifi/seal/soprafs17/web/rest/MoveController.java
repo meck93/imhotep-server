@@ -42,7 +42,7 @@ public class MoveController extends GenericController {
 
     @RequestMapping(value = "/games/{gameId}/rounds/{roundId}/moves", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public AMove addMove(@RequestParam String moveType, @PathVariable("gameId") Long gameId, @PathVariable("roundId") Long roundId) {
-        return moveService.addMove(moveType, gameId, roundId);
+    public AMove addMove(@RequestParam("moveType") String moveType, @RequestParam("playerNr") int playerNr, @PathVariable("gameId") Long gameId, @PathVariable("roundId") Long roundId) throws Exception {
+        return moveService.addMove(moveType, playerNr, gameId, roundId);
     }
 }

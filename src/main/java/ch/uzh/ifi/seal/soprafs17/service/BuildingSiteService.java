@@ -1,8 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.BuildingSite;
-import ch.uzh.ifi.seal.soprafs17.entity.Stone;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

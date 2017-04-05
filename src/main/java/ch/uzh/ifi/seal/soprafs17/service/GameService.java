@@ -2,7 +2,12 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.*;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
+import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

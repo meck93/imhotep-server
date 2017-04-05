@@ -1,10 +1,11 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.card;
 
 /**
  * Created by Cristian on 25.03.2017.
  */
 
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

@@ -1,7 +1,9 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.site;
 
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 
 import javax.persistence.*;
 import java.io.Serializable;

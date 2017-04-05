@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.user;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

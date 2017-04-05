@@ -1,9 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.repository;
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.ASite;
-import ch.uzh.ifi.seal.soprafs17.entity.BuildingSite;
-import ch.uzh.ifi.seal.soprafs17.entity.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.site.ASite;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

@@ -19,10 +19,13 @@ public abstract class AMove implements Serializable {
 	private Long id;
 
 	@Column
+	private Long gameId;
+
+	@Column
 	private Long roundId;
 
 	@Column
-	private Long playerId;
+	private int playerNr;
 
 	@Column(name = "MOVE_TYPE", nullable = false, insertable = false, updatable = false)
 	private String moveType;
@@ -43,19 +46,27 @@ public abstract class AMove implements Serializable {
 		this.roundId = roundId;
 	}
 
-	public Long getPlayerId() {
-		return playerId;
-	}
-
-	public void setPlayerId(Long playerId) {
-		this.playerId = playerId;
-	}
-
 	public String getMoveType() {
 		return moveType;
 	}
 
 	public void setMoveType(String moveType) {
 		this.moveType = moveType;
+	}
+
+	public Long getGameId() {
+		return gameId;
+	}
+
+	public void setGameId(Long gameId) {
+		this.gameId = gameId;
+	}
+
+	public int getPlayerNr() {
+		return playerNr;
+	}
+
+	public void setPlayerNr(int playerNr) {
+		this.playerNr = playerNr;
 	}
 }

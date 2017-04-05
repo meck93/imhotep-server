@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.Stone;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 
 import javax.persistence.*;
 

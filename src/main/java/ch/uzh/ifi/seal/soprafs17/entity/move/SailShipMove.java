@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 
 import javax.persistence.*;
 
