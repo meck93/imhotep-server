@@ -1,9 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Move;
-import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.MoveRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.entity.move.*;
+import ch.uzh.ifi.seal.soprafs17.repository.AMoveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static ch.uzh.ifi.seal.soprafs17.GameConstants.*;
 
 /**
  * Service class for managing moves.
@@ -22,56 +22,94 @@ public class MoveService {
 
     private final Logger log = LoggerFactory.getLogger(MoveService.class);
 
-    private final MoveRepository moveRepository;
-    private final UserRepository userRepository;
-    private final GameRepository gameRepository;
+    private final AMoveRepository aMoveRepository;
 
     @Autowired
-    public MoveService(MoveRepository moveRepository, GameRepository gameRepository, UserRepository userRepository) {
-        this.moveRepository = moveRepository;
-        this.gameRepository = gameRepository;
-        this.userRepository = userRepository;
+    public MoveService(AMoveRepository aMoveRepository) {
+        this.aMoveRepository = aMoveRepository;
     }
 
-    public Move createMove(){
-        // TODO add everything that contains to a move
-        Move newMove = null;
+    public AMove createMove(AMove move){
+        AMove newMove = null;
+        // Creating the move depending on the type
+        switch (move.getMoveType()) {
+            case GET_STONES: newMove = new GetStonesMove(move.getMoveType()); break;
+            case PLACE_STONE: newMove = new PlaceStoneMove(move.getMoveType()); break;
+            case SAIL_SHIP: newMove = new SailShipMove(move.getMoveType()); break;
+            case PLAY_CARD: newMove = new PlayCardMove(move.getMoveType()); break;
+        }
+        newMove.setGameId(move.getGameId());
+        newMove.setRoundNr(move.getRoundNr());
+        newMove.setPlayerNr(move.getPlayerNr());
 
-        log.debug("Created Information for User: {}", newMove);
+        aMoveRepository.save(newMove);
+
+        log.debug("Created Move of Type: " + newMove.getMoveType() + " with ID: " + newMove.getId());
+
         return newMove;
     }
 
-    public List<Move> getMoves(Long gameId, Long playerId) {
-        log.debug("list Moves of player: {}", playerId);
+    public AMove initializeMove(AMove newMove) {
 
-        // TODO find game, then find user, then return the list of all moves
-        List<Move> result = new ArrayList<>();
+        // Creating the move depending on the type
+        switch (newMove.getMoveType()) {
+            case GET_STONES: break;
+            case PLACE_STONE: break;
+            case SAIL_SHIP:  break;
+            case PLAY_CARD: break;
+        }
 
-        // TODO change to find for user in game and then add
-        //moveRepository.findAll().forEach(result::add);
+        aMoveRepository.save(newMove);
+
+        return newMove;
+
+    }
+
+    public AMove addMove(AMove move){
+        // TODO: check that moveType is actually a correct moveType -> otherwise throw exception
+        log.debug("addMove: " + move.getMoveType());
+
+        // Creating a newMove
+        AMove newMove = createMove(move);
+
+        // Setting Move specific values
+        //initializeMove(newMove);
+
+        aMoveRepository.save(newMove);
+
+        return newMove;
+    }
+
+    public List<AMove> getGameMoves(Long gameId) {
+        log.debug("list Moves of Game: {}", gameId);
+
+        List<AMove> result = new ArrayList<>();
+        //aMoveRepository.findAllGameMoves(gameId).forEach(result::add);
 
         return result;
     }
 
-    public Move addMove(Move move){
-        log.debug("addMove: " + move);
+    public List<AMove> getRoundMoves(Long gameId, int roundNr) {
+        log.debug("list Moves of Round: {0} in Game: {1}", roundNr, gameId);
 
-        // TODO implementation of addMove()
+        List<AMove> result = new ArrayList<>();
+        //aMoveRepository.findAllRoundMoves(gameId, roundNr).forEach(result::add);
 
-        return null;
+        return result;
     }
 
-    public Move getMove(Long moveId) {
+    public AMove getMove(Long moveId) {
         log.debug("getMove: " + moveId);
 
         // Find the move in the DB
-        /*Move move = moveRepository.findOne(moveId);
+        AMove move = aMoveRepository.findOne(moveId);
 
         if (move != null) {
             return move;
         }
-        */
-        // TODO Not return null instead something more meaning full
-        return null;
+        else {
+            log.error("Couldn't find the Move: {}", moveId);
+            return null;
+        }
     }
 }

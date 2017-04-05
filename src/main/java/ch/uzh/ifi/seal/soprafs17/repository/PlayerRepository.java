@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.repository;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

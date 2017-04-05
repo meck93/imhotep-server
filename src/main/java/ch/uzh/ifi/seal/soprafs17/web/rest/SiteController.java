@@ -1,8 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.BuildingSite;
-import ch.uzh.ifi.seal.soprafs17.entity.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.service.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.MarketPlaceService;
 import org.slf4j.Logger;

@@ -2,7 +2,12 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.*;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
+import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +99,6 @@ public class GameService {
     }
 
     public Game findById(Long gameId) {
-        // TODO: Excepetion handling if not found
         log.debug("getGame: " + gameId);
         return gameRepository.findById(gameId);
     }
@@ -119,7 +123,6 @@ public class GameService {
      */
     public void startGame(Long gameId, Long playerId) {
         log.debug("startGame: " + gameId);
-        // TODO: Check if player is the owner
 
         // Initializing the game
         initializeGame(gameId);
@@ -161,6 +164,7 @@ public class GameService {
 
         // Setting the Status to Running
         game.setStatus(GameStatus.RUNNING);
+
         gameRepository.save(game);
     }
 
@@ -174,6 +178,9 @@ public class GameService {
 
         // Initializing the first round
         roundService.initializeRound(round.getId(), game.getRounds().size());
+
+        // Setting the roundCounter to the correct value
+        game.setRoundCounter(game.getRounds().size());
 
         // adding marketCards to the marketPlace
         List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);

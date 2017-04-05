@@ -1,10 +1,11 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.site;
 
 /**
  * Created by Cristian on 26.03.2017.
  */
 
-import javax.persistence.CascadeType;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;

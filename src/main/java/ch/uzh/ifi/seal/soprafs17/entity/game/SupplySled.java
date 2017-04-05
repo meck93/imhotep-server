@@ -1,10 +1,11 @@
 
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.game;
 
 /**
  * Created by Cristian on 26.03.2017.
  */
 
+import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
