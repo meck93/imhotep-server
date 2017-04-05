@@ -17,7 +17,7 @@ public class MoveController extends GenericController {
     Logger log = LoggerFactory.getLogger(MoveController.class);
 
     // Standard URI Mapping of this class
-    static final String CONTEXT = "/games/{gameId}/players/{playerNr}/moves";
+    static final String CONTEXT = "/games/{gameId}";
 
     private MoveService moveService;
 
@@ -26,23 +26,28 @@ public class MoveController extends GenericController {
         this.moveService = moveService;
     }
 
-    @RequestMapping(value = CONTEXT, method = RequestMethod.GET)
+    @RequestMapping(value = CONTEXT + "/moves", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<AMove> listMoves(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr) {
-        //TODO getMoves must be implemented in the MoveService
-        return moveService.getMoves(gameId, playerNr);
+    public List<AMove> listMoves(@PathVariable("gameId") Long gameId) {
+        return moveService.getGameMoves(gameId);
     }
 
-    @RequestMapping(value = CONTEXT + "/{moveNr}",method = RequestMethod.GET)
+    @RequestMapping(value = CONTEXT + "/rounds/{roundId}/moves", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public AMove getMove(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr, @PathVariable Long moveId) {
-        // TODO Execution of getMove in moveService
+    public List<AMove> listMoves(@PathVariable("gameId") Long gameId, @PathVariable("roundNr") int roundNr) {
+        return moveService.getRoundMoves(gameId, roundNr);
+    }
+
+    @RequestMapping(value = CONTEXT + "/rounds/{roundId}/moves/{moveId}",method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public AMove getMove(@PathVariable("moveId") Long moveId) {
         return moveService.getMove(moveId);
     }
 
-    @RequestMapping(value = "/games/{gameId}/rounds/{roundId}/moves", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/rounds/{roundId}/moves", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public AMove addMove(@RequestParam("moveType") String moveType, @RequestParam("playerNr") int playerNr, @PathVariable("gameId") Long gameId, @PathVariable("roundId") Long roundId) throws Exception {
-        return moveService.addMove(moveType, playerNr, gameId, roundId);
+    public AMove addMove(@RequestBody AMove move) {
+        // TODO: MUST THROW EXCEPTION!
+        return moveService.addMove(move);
     }
 }

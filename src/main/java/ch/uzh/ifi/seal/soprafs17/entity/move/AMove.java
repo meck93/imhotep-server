@@ -1,14 +1,25 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "MOVE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "MOVE_TYPE", discriminatorType = DiscriminatorType.STRING)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = GetStonesMove.class, name = "GET_STONES"),
+		@JsonSubTypes.Type(value = PlaceStoneMove.class, name = "PLACE_STONE"),
+		@JsonSubTypes.Type(value = SailShipMove.class, name = "SAIL_SHIP"),
+		@JsonSubTypes.Type(value = PlayCardMove.class, name = "PLAY_CARD")})
 public abstract class AMove implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public AMove(){}
 
 	public AMove(String moveType){
 		this.moveType = moveType;
@@ -22,7 +33,7 @@ public abstract class AMove implements Serializable {
 	private Long gameId;
 
 	@Column
-	private Long roundId;
+	private int roundNr;
 
 	@Column
 	private int playerNr;
@@ -36,14 +47,6 @@ public abstract class AMove implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getRoundId() {
-		return roundId;
-	}
-
-	public void setRoundId(Long roundId) {
-		this.roundId = roundId;
 	}
 
 	public String getMoveType() {
@@ -68,5 +71,13 @@ public abstract class AMove implements Serializable {
 
 	public void setPlayerNr(int playerNr) {
 		this.playerNr = playerNr;
+	}
+
+	public int getRoundNr() {
+		return roundNr;
+	}
+
+	public void setRoundNr(int roundNr) {
+		this.roundNr = roundNr;
 	}
 }

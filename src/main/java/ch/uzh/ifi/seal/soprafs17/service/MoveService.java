@@ -29,53 +29,71 @@ public class MoveService {
         this.aMoveRepository = aMoveRepository;
     }
 
-    public AMove createMove(String moveType){
-        // TODO: check that moveType is actually a correct moveType -> otherwise throw exception
-
+    public AMove createMove(AMove move){
         AMove newMove = null;
-
         // Creating the move depending on the type
-        switch (moveType) {
-            case GET_STONES: newMove = new GetStonesMove(moveType); break;
-            case PLACE_STONE: newMove = new PlaceStoneMove(moveType); break;
-            case SAIL_SHIP: newMove = new SailShipMove(moveType); break;
-            case PLAY_CARD: newMove = new PlayCardMove(moveType); break;
+        switch (move.getMoveType()) {
+            case GET_STONES: newMove = new GetStonesMove(move.getMoveType()); break;
+            case PLACE_STONE: newMove = new PlaceStoneMove(move.getMoveType()); break;
+            case SAIL_SHIP: newMove = new SailShipMove(move.getMoveType()); break;
+            case PLAY_CARD: newMove = new PlayCardMove(move.getMoveType()); break;
         }
+        newMove.setGameId(move.getGameId());
+        newMove.setRoundNr(move.getRoundNr());
+        newMove.setPlayerNr(move.getPlayerNr());
 
-        // Saving the newly created Move to the DB
         aMoveRepository.save(newMove);
 
-        if (newMove == null){
-            log.error("Failed to create a Move of Type: " + moveType);
-            return null;
-        } else {
-            log.debug("Created Move of Type: " + moveType + " with ID: " + newMove.getId());
-            return newMove;
-        }
+        log.debug("Created Move of Type: " + newMove.getMoveType() + " with ID: " + newMove.getId());
+
+        return newMove;
     }
 
-    public AMove addMove(String moveType, int playerNr, Long gameId, Long roundId){
-        log.debug("addMove: " + moveType);
+    public AMove initializeMove(AMove newMove) {
+
+        // Creating the move depending on the type
+        switch (newMove.getMoveType()) {
+            case GET_STONES: break;
+            case PLACE_STONE: break;
+            case SAIL_SHIP:  break;
+            case PLAY_CARD: break;
+        }
+
+        aMoveRepository.save(newMove);
+
+        return newMove;
+
+    }
+
+    public AMove addMove(AMove move){
+        // TODO: check that moveType is actually a correct moveType -> otherwise throw exception
+        log.debug("addMove: " + move.getMoveType());
 
         // Creating a newMove
-        AMove newMove = createMove(moveType);
+        AMove newMove = createMove(move);
 
-        // Setting the correct values
-        newMove.setRoundId(roundId);
+        // Setting Move specific values
+        //initializeMove(newMove);
 
         aMoveRepository.save(newMove);
 
         return newMove;
     }
 
-    public List<AMove> getMoves(Long gameId, Long playerId) {
-        log.debug("list Moves of player: {}", playerId);
+    public List<AMove> getGameMoves(Long gameId) {
+        log.debug("list Moves of Game: {}", gameId);
 
-        // TODO find game, then find user, then return the list of all moves
         List<AMove> result = new ArrayList<>();
+        //aMoveRepository.findAllGameMoves(gameId).forEach(result::add);
 
-        // TODO change to find for user in game and then add
-        //moveRepository.findAll().forEach(result::add);
+        return result;
+    }
+
+    public List<AMove> getRoundMoves(Long gameId, int roundNr) {
+        log.debug("list Moves of Round: {0} in Game: {1}", roundNr, gameId);
+
+        List<AMove> result = new ArrayList<>();
+        //aMoveRepository.findAllRoundMoves(gameId, roundNr).forEach(result::add);
 
         return result;
     }
@@ -84,13 +102,14 @@ public class MoveService {
         log.debug("getMove: " + moveId);
 
         // Find the move in the DB
-        /*Move move = moveRepository.findOne(moveId);
+        AMove move = aMoveRepository.findOne(moveId);
 
         if (move != null) {
             return move;
         }
-        */
-        // TODO Not return null instead something more meaning full
-        return null;
+        else {
+            log.error("Couldn't find the Move: {}", moveId);
+            return null;
+        }
     }
 }

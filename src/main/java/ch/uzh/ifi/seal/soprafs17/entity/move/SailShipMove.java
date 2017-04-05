@@ -3,12 +3,16 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.*;
 
 @Entity(name = "SAIL_SHIP")
 @DiscriminatorValue(value = GameConstants.SAIL_SHIP)
+@JsonTypeName(value = "SAIL_SHIP")
 public class SailShipMove extends AMove {
+
+    public SailShipMove(){}
 
     public SailShipMove(String moveType){
         super(moveType);
