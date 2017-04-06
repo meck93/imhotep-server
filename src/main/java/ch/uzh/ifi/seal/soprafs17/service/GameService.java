@@ -164,6 +164,8 @@ public class GameService {
 
         // Setting the Status to Running
         game.setStatus(GameStatus.RUNNING);
+        // Setting the CurrentPlayer value to the playerNr of the 1. Player in the List of Players
+        game.setCurrentPlayer(game.getPlayers().get(0).getPlayerNumber());
 
         gameRepository.save(game);
     }
