@@ -10,7 +10,7 @@ public class BaseHttpException extends RuntimeException {
 
     public BaseHttpException() {
         super();
-        this.httpStatus = null;
+        this.httpStatus = HttpStatus.BAD_REQUEST;
     }
 
     public BaseHttpException(HttpStatus httpStatus, String msg) {
