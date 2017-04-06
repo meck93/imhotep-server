@@ -21,7 +21,7 @@ public class SiteController extends GenericController {
     private final MarketPlaceService marketPlaceService;
 
     // Standard URI Mapping of this class
-    static final String CONTEXT = "games/{gameId}";
+    static final String CONTEXT = "games/{gameId}/sites";
 
     @Autowired
     public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService){
