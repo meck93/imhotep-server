@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 /**
- * Test class for the UserResource REST resource.
+ * Test class for the BuildingSiteResource REST resource.
  *
  * @see BuildingSiteService
  */
