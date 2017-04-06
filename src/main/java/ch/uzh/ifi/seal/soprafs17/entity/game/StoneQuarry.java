@@ -68,4 +68,17 @@ public class StoneQuarry implements Serializable {
     public void setGrayStones(List<Stone> grayStones) {
         this.grayStones = grayStones;
     }
+
+    public List<Stone> getStonesByPlayerNr(int playerNr) {
+
+        List<Stone> result = null;
+
+        switch (playerNr){
+            case 1: result = getBlackStones(); break;
+            case 2: result = getWhiteStones(); break;
+            case 3: result = getBrownStones(); break;
+            case 4: result = getGrayStones(); break;
+        }
+        return result;
+    }
 }

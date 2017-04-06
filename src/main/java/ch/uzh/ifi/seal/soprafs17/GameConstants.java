@@ -24,6 +24,9 @@ public class GameConstants {
 	// amount of starting stones
 	public final static int START_STONES = 30;
 
+	// max stones on StoneQuarry
+	public final static int MAX_STONES_SUPPLY_SLED = 5;
+
 	// sonarquabe suggested to add a private constructor instead of the implicit public one
 	private GameConstants() {};
 }

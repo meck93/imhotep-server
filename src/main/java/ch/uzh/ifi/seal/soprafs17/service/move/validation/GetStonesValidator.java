@@ -31,5 +31,15 @@ public class GetStonesValidator implements IValidator {
             String msg = "Validation for Move: " + move + " failed. PlayerNr of Move <> CurrentPlayer of Game";
             throw new MoveValidationException(msg);
         }
+        // Stones on the SupplySled must be less than the Maximum
+        else if (game.getPlayers().get(game.getCurrentPlayer()).getSupplySled().getStones().size() == GameConstants.MAX_STONES_SUPPLY_SLED){
+            String msg = "Validation for Move: " + move + " failed. SupplySled is already full!";
+            throw new MoveValidationException(msg);
+        }
+        // Stones taken from StoneQuarry must be less than the maximal allowed amount
+        else if (game.getStoneQuarry().getStonesByPlayerNr(game.getCurrentPlayer()).size() == 0){
+            String msg = "Validation for Move: " + move + " failed. The Player: " + game.getCurrentPlayer() + " has already used the maximal amount of stones allowed!";
+            throw new MoveValidationException(msg);
+        }
     }
 }

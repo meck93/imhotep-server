@@ -116,8 +116,11 @@ public class MoveService {
             this.validationManager.validate(move, game);
         }
         catch (MoveValidationException moveValException) {
+            log.error("Service was not able to validate Move: {0} on Game: {1}", move, game);
             throw new BadRequestHttpException(moveValException);
         }
+
+        log.info("SHIT IS FUCKING WORKING! - bzw. ich habe validiert!");
 
         try {
             // Applying the Move to the Game
