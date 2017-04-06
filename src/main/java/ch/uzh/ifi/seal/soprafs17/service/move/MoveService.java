@@ -1,15 +1,20 @@
-package ch.uzh.ifi.seal.soprafs17.service;
+package ch.uzh.ifi.seal.soprafs17.service.move;
 
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.*;
+import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
+import ch.uzh.ifi.seal.soprafs17.exceptions.BadRequestHttpException;
+import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
+import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import ch.uzh.ifi.seal.soprafs17.repository.AMoveRepository;
+import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.service.move.rule.RuleManager;
+import ch.uzh.ifi.seal.soprafs17.service.move.validation.ValidationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static ch.uzh.ifi.seal.soprafs17.GameConstants.*;
 
@@ -23,10 +28,16 @@ public class MoveService {
     private final Logger log = LoggerFactory.getLogger(MoveService.class);
 
     private final AMoveRepository aMoveRepository;
+    private final GameRepository gameRepository;
+    private final ValidationManager validationManager;
+    private final RuleManager ruleManager;
 
     @Autowired
-    public MoveService(AMoveRepository aMoveRepository) {
+    public MoveService(AMoveRepository aMoveRepository, GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager) {
         this.aMoveRepository = aMoveRepository;
+        this.gameRepository = gameRepository;
+        this.validationManager = validationManager;
+        this.ruleManager = ruleManager;
     }
 
     public AMove createMove(AMove move){
@@ -80,24 +91,6 @@ public class MoveService {
         return newMove;
     }
 
-    public List<AMove> getGameMoves(Long gameId) {
-        log.debug("list Moves of Game: {}", gameId);
-
-        List<AMove> result = new ArrayList<>();
-        //aMoveRepository.findAllGameMoves(gameId).forEach(result::add);
-
-        return result;
-    }
-
-    public List<AMove> getRoundMoves(Long gameId, int roundNr) {
-        log.debug("list Moves of Round: {0} in Game: {1}", roundNr, gameId);
-
-        List<AMove> result = new ArrayList<>();
-        //aMoveRepository.findAllRoundMoves(gameId, roundNr).forEach(result::add);
-
-        return result;
-    }
-
     public AMove getMove(Long moveId) {
         log.debug("getMove: " + moveId);
 
@@ -111,5 +104,32 @@ public class MoveService {
             log.error("Couldn't find the Move: {}", moveId);
             return null;
         }
+    }
+
+    public synchronized void validateAndApply(AMove move) throws BadRequestHttpException, InternalServerException {
+        log.debug("Validates and applies the Move: {}", move);
+
+        Game game = gameRepository.findById(move.getGameId());
+
+        try {
+            // Validate the move if it can be applied
+            this.validationManager.validate(move, game);
+        }
+        catch (MoveValidationException moveValException) {
+            log.error("Service was not able to validate Move: {0} on Game: {1}", move, game);
+            throw new BadRequestHttpException(moveValException);
+        }
+
+        try {
+            // Applying the Move to the Game
+            game = ruleManager.applyRules(move, game);
+        }
+        catch (ApplyMoveException applyMoveException) {
+            log.error("Service was not able to apply Move: {0} on Game: {1}", move, game);
+            throw new InternalServerException(applyMoveException);
+        }
+
+        // Saving the changed Game state into the DB
+        this.gameRepository.save(game);
     }
 }

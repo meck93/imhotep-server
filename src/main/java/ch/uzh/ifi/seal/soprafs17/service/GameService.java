@@ -152,9 +152,8 @@ public class GameService {
         game.setMarketPlace(marketPlace);
 
         // Create the stoneQuarry & fill it with Stones
-        StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry();
+        StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry(game);
         stoneQuarryService.fillQuarry(stoneQuarry);
-        game.setStoneQuarry(stoneQuarry);
 
         // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(BuildingSiteType.OBELISK, gameId));

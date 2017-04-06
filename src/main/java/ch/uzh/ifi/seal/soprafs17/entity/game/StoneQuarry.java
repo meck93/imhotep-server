@@ -1,8 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.entity.game;
 
-/**
- * Created by Cristian on 26.03.2017.
- */
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,17 +15,33 @@ public class StoneQuarry implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @OneToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Game game;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Stone> blackStones;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Stone> whiteStones;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Stone> brownStones;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Stone> grayStones;
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
     public Long getId() {
         return id;
@@ -67,5 +81,18 @@ public class StoneQuarry implements Serializable {
 
     public void setGrayStones(List<Stone> grayStones) {
         this.grayStones = grayStones;
+    }
+
+    public List<Stone> getStonesByPlayerNr(int playerNr) {
+
+        List<Stone> result = null;
+
+        switch (playerNr){
+            case 1: result = getBlackStones(); break;
+            case 2: result = getWhiteStones(); break;
+            case 3: result = getBrownStones(); break;
+            case 4: result = getGrayStones(); break;
+        }
+        return result;
     }
 }
