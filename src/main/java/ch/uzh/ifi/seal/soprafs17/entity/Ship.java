@@ -66,7 +66,7 @@ public class Ship implements Serializable{
         this.gameId = gameId;
     }
 
-    public int getMIN_STONE() {
+    public int getMIN_STONES() {
         return MIN_STONES;
     }
 
