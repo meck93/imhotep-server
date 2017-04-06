@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,12 @@ public class RuleManager {
     }
 
     @PostConstruct
-    public void addRule(){};
+    public void addRule(){
+        this.rules = new ArrayList<>();
+
+        rules.add(new GetStonesRule());
+
+    }
 
     public synchronized Game applyRules(AMove move, Game game) {
         log.debug("Applying Move: {0} in Game: {1}", move, game.getId());

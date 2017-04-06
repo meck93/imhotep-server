@@ -120,8 +120,6 @@ public class MoveService {
             throw new BadRequestHttpException(moveValException);
         }
 
-        log.info("SHIT IS FUCKING WORKING! - bzw. ich habe validiert!");
-
         try {
             // Applying the Move to the Game
             game = ruleManager.applyRules(move, game);
