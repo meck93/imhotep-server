@@ -128,7 +128,6 @@ public class MoveService {
             throw new InternalServerException(applyMoveException);
         }
 
-
         // Saving the changed Game state into the DB
         this.gameRepository.save(game);
     }
