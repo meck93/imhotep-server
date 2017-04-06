@@ -1,10 +1,15 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.game;
+
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, creatorVisibility = JsonAutoDetect.Visibility.NONE)
 public class Ship implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -14,22 +19,25 @@ public class Ship implements Serializable{
     private Long id;
 
     @Column
-    private final int MIN_STONES;
-
-    @Column
-    private final int MAX_STONES;
-
-    @Column
     private Long gameId;
 
     @Column
     private boolean hasSailed;
+
+    @Column
+    @JsonProperty(value = "MIN_STONES")
+    private final int MIN_STONES;
+
+    @Column
+    @JsonProperty(value = "MAX_STONES")
+    private final int MAX_STONES;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BuildingSite_ID")
     private BuildingSite targetSite;
 
     @OneToMany(targetEntity = Stone.class)
+    // Maybe add @OrderBy(position ASC) again -> but then Stone.class needs a variable position
     private List<Stone> stones;
 
     public Ship() {

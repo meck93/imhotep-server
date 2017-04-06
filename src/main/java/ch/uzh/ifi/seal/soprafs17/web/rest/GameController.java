@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

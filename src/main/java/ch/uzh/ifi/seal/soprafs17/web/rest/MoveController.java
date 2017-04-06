@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Move;
+import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +12,12 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(MoveController.CONTEXT)
 public class MoveController extends GenericController {
 
     Logger log = LoggerFactory.getLogger(MoveController.class);
 
     // Standard URI Mapping of this class
-    static final String CONTEXT = "/games/{gameId}/players/{playerNr}/moves";
+    static final String CONTEXT = "/games/{gameId}";
 
     private MoveService moveService;
 
@@ -27,24 +26,28 @@ public class MoveController extends GenericController {
         this.moveService = moveService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = CONTEXT + "/moves", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Move> listMoves(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr) {
-        //TODO getMoves must be implemented in the MoveService
-        return moveService.getMoves(gameId, playerNr);
+    public List<AMove> listMoves(@PathVariable("gameId") Long gameId) {
+        return moveService.getGameMoves(gameId);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/rounds/{roundId}/moves", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public void addMove(@RequestBody Move move, @PathVariable("gameId") Long gameId) {
-        // TODO Execution of addMove in moveService
-        moveService.addMove(move);
+    public List<AMove> listMoves(@PathVariable("gameId") Long gameId, @PathVariable("roundNr") int roundNr) {
+        return moveService.getRoundMoves(gameId, roundNr);
     }
 
-    @RequestMapping(value = "/{moveNr}",method = RequestMethod.GET)
+    @RequestMapping(value = CONTEXT + "/rounds/{roundId}/moves/{moveId}",method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Move getMove(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr, @PathVariable Long moveId) {
-        // TODO Execution of getMove in moveService
+    public AMove getMove(@PathVariable("moveId") Long moveId) {
         return moveService.getMove(moveId);
+    }
+
+    @RequestMapping(value = CONTEXT + "/rounds/{roundId}/moves", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public AMove addMove(@RequestBody AMove move) {
+        // TODO: MUST THROW EXCEPTION!
+        return moveService.addMove(move);
     }
 }

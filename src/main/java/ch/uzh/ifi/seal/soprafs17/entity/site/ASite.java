@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.site;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

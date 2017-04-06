@@ -5,7 +5,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
  */
 
 
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

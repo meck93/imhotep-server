@@ -5,7 +5,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
  */
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.Stone;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
