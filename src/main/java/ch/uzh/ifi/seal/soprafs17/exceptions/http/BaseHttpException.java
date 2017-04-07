@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.exceptions;
+package ch.uzh.ifi.seal.soprafs17.exceptions.http;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

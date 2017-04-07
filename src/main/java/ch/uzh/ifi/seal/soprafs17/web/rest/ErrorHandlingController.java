@@ -1,7 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-import org.springframework.web.bind.annotation.ControllerAdvice;
-
 /**
  * This controller implements the exception handling at the controller layer.
  * To throw an exception one has to add the "throws Exception" to the function
@@ -11,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
  * exceptionThrower.customExceptionThrow("YOUR MSG", HttpStatus.CHOOSE_YOUR_STATUS);
  */
 
-@ControllerAdvice
+//@ControllerAdvice
 public class ErrorHandlingController extends GenericController {
 
 /*    @ExceptionHandler(value = CustomException.class)

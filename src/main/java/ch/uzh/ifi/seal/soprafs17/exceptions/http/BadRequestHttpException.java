@@ -1,5 +1,6 @@
-package ch.uzh.ifi.seal.soprafs17.exceptions;
+package ch.uzh.ifi.seal.soprafs17.exceptions.http;
 
+import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
