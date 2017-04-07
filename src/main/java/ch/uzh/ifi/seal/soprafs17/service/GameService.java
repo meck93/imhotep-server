@@ -35,8 +35,8 @@ public class GameService {
     @Autowired
     public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService,
                        RoundService roundService, RoundCardService roundCardService,
-                       ShipService shipService, MarketPlaceService marketPlaceService,
-                       StoneQuarryService stoneQuarryService, MarketCardService marketCardService) {
+                       MarketPlaceService marketPlaceService, StoneQuarryService stoneQuarryService,
+                       MarketCardService marketCardService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
