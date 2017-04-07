@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,24 +25,15 @@ public abstract class GenericController {
 
 	@ExceptionHandler(BaseHttpException.class)
 	public ResponseEntity<Object> handleHttpStatusCodeExceptions(BaseHttpException baseHttpException) {
-		log.error("{}", baseHttpException);
-
-		// TODO: transform exception into JSON and return something useful to the client
-		// TODO: instead of using the ResponseStatus as annotation for this method
-		// TODO: create a normal response object and set the status code along the message of the exception there
+		log.error("Request raised " + baseHttpException);
 
 		return new ResponseEntity<>(baseHttpException.getMessage(), baseHttpException.getHttpStatus());
 	}
 
 	@ExceptionHandler(value = NotFoundException.class)
+	@ResponseBody
 	public ResponseEntity<Object> handleNotFoundException(NotFoundException notFoundException) {
 		log.error("Request raised " + notFoundException);
-
-		/*ModelAndView mav = new ModelAndView();
-		mav.addObject("exception", notFoundException);
-		//mav.addObject("url", request.getRequestURL());
-		mav.setStatus(notFoundException.getHttpStatus());
-		mav.setViewName("error");*/
 
 		return new ResponseEntity<>(notFoundException.getMessage(), notFoundException.getHttpStatus());
 	}
