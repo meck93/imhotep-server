@@ -1,8 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
-import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneRepository;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -23,10 +23,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoneServiceTest {
 
     @Autowired
-    StoneService stoneService;
+    private StoneService stoneService;
 
     @Autowired
-    StoneRepository stoneRepository;
+    private StoneRepository stoneRepository;
 
+    @Test
+    public void createStone() {
+        // TODO: test stoneService.createStone()
+    }
 
+    @Test
+    public void createStones() {
+        // TODO: test stoneService.createStones()
+    }
 }

@@ -3,10 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.repository.MarketCardRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,9 +12,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -32,13 +26,13 @@ import java.util.List;
 public class MarketCardServiceTest {
 
     @Autowired
-    MarketCardService marketCardService;
+    private MarketCardService marketCardService;
 
     @Autowired
-    GameService gameService;
+    private GameService gameService;
 
     @Autowired
-    MarketCardRepository marketCardRepository;
+    private MarketCardRepository marketCardRepository;
 
     @Test
     public void createMarketCard() {
@@ -46,9 +40,10 @@ public class MarketCardServiceTest {
         Assert.assertEquals(testMarketCard, marketCardRepository.findOne(1L));
     }
 
-    /*
     @Test
     public void getMarketCard() {
+        // TODO: test marketCardService.getMarketCard()
+         /*
         Game testGame = gameService.createGame("testName", "testName");
         testGame.setId(1L);
         MarketCard testMarketCard = new MarketCard();
@@ -58,8 +53,16 @@ public class MarketCardServiceTest {
         testMarketCards.add(testMarketCard);
         testMarketPlace.setMarketCards(testMarketCards);
         Assert.assertEquals(testMarketCards, marketCardService.getMarketCard(1L));
-
-    }
     */
+    }
 
+    @Test
+    public void getMarketCardDeck() {
+        // TODO: test marketCardService.getMarketCardDeck()
+    }
+
+    @Test
+    public void getMarketCardSet() {
+        // TODO: test marketCardService.getMarketCardSet()
+    }
 }

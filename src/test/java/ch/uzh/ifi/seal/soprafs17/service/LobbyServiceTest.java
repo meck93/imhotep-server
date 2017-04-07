@@ -1,8 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +8,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -27,20 +22,20 @@ import java.util.List;
 public class LobbyServiceTest {
 
     @Autowired
-    LobbyService lobbyService;
+    private LobbyService lobbyService;
 
     @Test
     public void listGames() {
-
+        // TODO: test lobbyService.listGames()
     }
 
     @Test
     public void createGame() {
-
+        // TODO: test lobbyService.createGame()
     }
 
     @Test
     public void joinGame() {
-
+        // TODO: test lobbyService.joinGame()
     }
 }

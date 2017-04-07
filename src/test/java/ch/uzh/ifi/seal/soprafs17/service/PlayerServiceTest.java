@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -22,9 +23,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlayerServiceTest {
 
     @Autowired
-    PlayerService playerService;
+    private PlayerService playerService;
 
     @Autowired
-    PlayerRepository playerRepository;
-    
+    private PlayerRepository playerRepository;
+
+    @Test
+    public void createPlayer() {
+        // TODO: test playerService.createPlayer()
+    }
+
+    @Test
+    public void initializePlayer() {
+        // TODO: test playerService.initializePlayer()
+    }
+
+    @Test
+    public void getPlayer() {
+        // TODO: test playerService.getPlayer()
+    }
+
+    @Test
+    public void getPlayers() {
+        // TODO: test playerService.getPlayers()
+    }
 }

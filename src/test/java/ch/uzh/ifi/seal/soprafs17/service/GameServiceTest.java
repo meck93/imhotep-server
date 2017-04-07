@@ -29,10 +29,10 @@ import java.util.List;
 public class GameServiceTest {
 
     @Autowired
-    GameService gameService;
+    private GameService gameService;
 
     @Autowired
-    GameRepository gameRepository;
+    private GameRepository gameRepository;
 
     @Test
     public void createGame() {

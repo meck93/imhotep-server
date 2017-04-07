@@ -4,7 +4,6 @@ import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,13 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class MarketPlaceServiceTest {
 
     @Autowired
-    MarketPlaceService marketPlaceService;
+    private MarketPlaceService marketPlaceService;
 
     @Autowired
-    GameService gameService;
+    private GameService gameService;
 
     @Autowired
-    ASiteRepository aSiteRepository;
+    private ASiteRepository aSiteRepository;
 
     @Test
     public void createMarketPlace() {

@@ -1,8 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
-import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.ShipRepository;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -23,10 +23,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShipServiceTest {
 
     @Autowired
-    ShipService shipService;
+    private ShipService shipService;
 
     @Autowired
-    ShipRepository shipRepository;
+    private ShipRepository shipRepository;
 
+    @Test
+    public void createShips() {
+        // TODO: test shipService.createShips()
+    }
 
+    @Test
+    public void createShip() {
+        // TODO: test shipService.createShip()
+    }
 }

@@ -23,13 +23,30 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoundServiceTest {
 
     @Autowired
-    RoundService roundService;
+    private RoundService roundService;
 
     @Autowired
-    RoundRepository roundRepository;
+    private RoundRepository roundRepository;
 
     @Test
     public void createRound() {
-
+        // TODO: test roundService.createRound()
     }
+
+    @Test
+    public void initializeRound() {
+        // TODO: test roundService.initializeRound()
+    }
+
+    @Test
+    public void listRounds() {
+        // TODO: test roundService.listRounds()
+    }
+
+    @Test
+    public void getRoundByNr() {
+        // TODO: test roundService.getRoundByNr()
+    }
+
+
 }
