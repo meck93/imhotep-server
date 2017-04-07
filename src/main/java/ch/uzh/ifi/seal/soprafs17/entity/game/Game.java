@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -62,6 +63,15 @@ public class Game implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
 	@JsonManagedReference
 	private List<Player> players;
+
+	public Player getPlayerByPlayerNr(int playerNr){
+		for (Player player : players){
+			if (player.getPlayerNumber() == playerNr){
+				return player;
+			}
+		}
+		throw new NotFoundException("game");
+	}
 
 	public Long getId() {
 		return id;
