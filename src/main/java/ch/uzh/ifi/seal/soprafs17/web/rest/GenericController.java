@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BaseHttpException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import org.slf4j.Logger;
@@ -25,25 +26,31 @@ public abstract class GenericController {
 
 	@ExceptionHandler(BaseHttpException.class)
 	public ResponseEntity<Object> handleHttpStatusCodeExceptions(BaseHttpException baseHttpException) {
-		log.error("Request raised " + baseHttpException);
+		log.error("Exception raised " + baseHttpException);
 
 		return new ResponseEntity<>(baseHttpException.getMessage(), baseHttpException.getHttpStatus());
+	}
+
+	@ExceptionHandler(BadRequestHttpException.class)
+	public ResponseEntity<Object> handleHttpStatusCodeExceptions(BadRequestHttpException badRequest) {
+		log.error("Exception raised " + badRequest);
+
+		return new ResponseEntity<>(badRequest.getMessage(), badRequest.getHttpStatus());
 	}
 
 	@ExceptionHandler(value = NotFoundException.class)
 	@ResponseBody
 	public ResponseEntity<Object> handleNotFoundException(NotFoundException notFoundException) {
-		log.error("Request raised " + notFoundException);
+		log.error("Exception raised " + notFoundException);
 
 		return new ResponseEntity<>(notFoundException.getMessage(), notFoundException.getHttpStatus());
 	}
 
-	@ExceptionHandler(Exception.class)
+	// Keep this one disable for all testing purposes -> it shows more detail with this one disabled
+	/*@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public void handleException(Exception exception) {
-		log.error("Request raised " + exception);
-		// TODO: return always internal server error as status code and the corresponding message
-		// TODO: from the exception for any other exception which has not been caught along the requests handling...
+		log.error("Exception raised " + exception);
 	}
-
+*/
 }
