@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest.move;
 
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.exceptions.BadRequestHttpException;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.service.move.MoveService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
 import org.slf4j.Logger;

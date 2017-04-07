@@ -3,7 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.move;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.*;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
-import ch.uzh.ifi.seal.soprafs17.exceptions.BadRequestHttpException;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import ch.uzh.ifi.seal.soprafs17.repository.AMoveRepository;
