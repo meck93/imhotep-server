@@ -5,6 +5,9 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

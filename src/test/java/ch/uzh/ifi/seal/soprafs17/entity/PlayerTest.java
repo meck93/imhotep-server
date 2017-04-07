@@ -5,6 +5,12 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.SupplySled;
+import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,7 +73,7 @@ public class PlayerTest {
     @Test
     public void setMoves() {
         Player testPlayer = new Player();
-        List<Move> testMoves = new ArrayList<>();
+        List<AMove> testMoves = new ArrayList<>();
         testPlayer.setMoves(testMoves);
         Assert.assertEquals(testPlayer.getMoves(),testMoves);
     }

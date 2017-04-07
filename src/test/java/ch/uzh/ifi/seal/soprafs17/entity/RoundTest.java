@@ -5,6 +5,11 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
+import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +43,7 @@ public class RoundTest {
     @Test
     public void setMoves() {
         Round testRound = new Round();
-        List<Move> testMoves = new ArrayList<>();
+        List<AMove> testMoves = new ArrayList<>();
         testRound.setMoves(testMoves);
         Assert.assertEquals(testRound.getMoves(),testMoves);
     }

@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
 import org.junit.Assert;
 import org.junit.Test;

@@ -7,6 +7,7 @@ package ch.uzh.ifi.seal.soprafs17.entity;
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.constant.RoundCardType;
 import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
+import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

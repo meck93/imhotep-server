@@ -5,6 +5,8 @@ package ch.uzh.ifi.seal.soprafs17.entity;
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
