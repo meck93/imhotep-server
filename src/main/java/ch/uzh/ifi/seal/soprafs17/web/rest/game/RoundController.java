@@ -1,7 +1,8 @@
-package ch.uzh.ifi.seal.soprafs17.web.rest;
+package ch.uzh.ifi.seal.soprafs17.web.rest.game;
 
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
-import ch.uzh.ifi.seal.soprafs17.service.RoundService;
+import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
+import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

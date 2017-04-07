@@ -1,10 +1,11 @@
-package ch.uzh.ifi.seal.soprafs17.web.rest;
+package ch.uzh.ifi.seal.soprafs17.web.rest.site;
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
-import ch.uzh.ifi.seal.soprafs17.service.BuildingSiteService;
-import ch.uzh.ifi.seal.soprafs17.service.MarketPlaceService;
+import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
+import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
+import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
-import ch.uzh.ifi.seal.soprafs17.entity.game.SupplySled;
+import ch.uzh.ifi.seal.soprafs17.entity.user.SupplySled;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;

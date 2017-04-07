@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.entity.user;
 
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.game.SupplySled;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import com.fasterxml.jackson.annotation.JsonBackReference;

@@ -1,6 +1,6 @@
-package ch.uzh.ifi.seal.soprafs17.entity.game;
+package ch.uzh.ifi.seal.soprafs17.entity.user;
 
-import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
