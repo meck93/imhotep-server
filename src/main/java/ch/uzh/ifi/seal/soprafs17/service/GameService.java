@@ -4,16 +4,17 @@ import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
+import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
 import ch.uzh.ifi.seal.soprafs17.service.game.ShipService;
 import ch.uzh.ifi.seal.soprafs17.service.game.StoneQuarryService;
-import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
-import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
 import org.slf4j.Logger;
@@ -79,10 +80,12 @@ public class GameService {
         return newGame;
     }
 
-    public void deleteGame(Long id) {
-        //TODO check if game exists and then delete it
-        Game game = gameRepository.findById(id);
-        gameRepository.delete(id);
+    public void deleteGame(Long gameId) {
+        Game game = gameRepository.findById(gameId);
+
+        if (game == null) throw new NotFoundException(gameId, "Game");
+
+        gameRepository.delete(game);
 
         log.debug("Deleted Game: {}", game);
     }
@@ -102,12 +105,20 @@ public class GameService {
         List<Game> result = new ArrayList<>();
         gameRepository.findAll().forEach(result::add);
 
+        if (result.isEmpty()) throw new NotFoundException("Games");
+
         return result;
     }
 
     public Game findById(Long gameId) {
         log.debug("getGame: " + gameId);
-        return gameRepository.findById(gameId);
+
+        Game game = gameRepository.findById(gameId);
+
+        // Testing whether this game actually exists or not
+        if (game == null) throw new NotFoundException(gameId, "Game");
+
+        return game;
     }
 
     public int findNrOfPlayers(Long gameId) {
@@ -115,9 +126,17 @@ public class GameService {
         return gameRepository.findNrOfPlayers(gameId);
     }
 
+    /*
+     * Returns the list of all players associated with Game: {GameId}
+     */
     public List<Player> findPlayersByGameId(Long gameId) {
         log.debug("getPlayersByGameId: " + gameId);
-        return gameRepository.findPlayersByGameId(gameId);
+
+        List<Player> result = gameRepository.findPlayersByGameId(gameId);
+
+        if (result.isEmpty()) throw new NotFoundException(gameId, "Players in Game");
+
+        return result;
     }
 
     /**
