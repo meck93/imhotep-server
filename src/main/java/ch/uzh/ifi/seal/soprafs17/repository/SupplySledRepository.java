@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository("supplySledRepository")
 public interface SupplySledRepository extends CrudRepository<SupplySled, Long> {
+
 }

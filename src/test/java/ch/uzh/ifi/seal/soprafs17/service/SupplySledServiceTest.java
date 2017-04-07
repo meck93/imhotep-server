@@ -1,8 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
-import ch.uzh.ifi.seal.soprafs17.entity.game.SupplySled;
-import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.repository.SupplySledRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,10 +29,11 @@ public class SupplySledServiceTest {
     private SupplySledRepository supplySledRepository;
 
     public void createSupplySled() {
-        SupplySled testSupplySled = new SupplySled();
-        Player testPlayer = new Player();
-        supplySledService.createSupplySled(testPlayer);
-
+        // TODO: test supplySledService.createSupplySled()
+        /* Player testPlayer = new Player();
+        *  SupplySled testSupplySled = supplySledService.createSupplySled(testPlayer);
+        *   Assert.assertEquals(testSupplySled, supplySledRepository.findOne(1L));
+        */
     }
 
     @Test
@@ -42,6 +41,4 @@ public class SupplySledServiceTest {
         //Stone testStone = new Stone();
         // TODO: test supplySledService.addStone()
     }
-
-
 }
