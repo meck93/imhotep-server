@@ -35,21 +35,21 @@ public class RuleManager {
     public void addRule(){
         this.rules = new ArrayList<>();
 
+        // Add new Application-Rules to the Service
         rules.add(new GetStonesRule());
-
     }
 
     public synchronized Game applyRules(AMove move, Game game) {
-        log.debug("Applying Move: {0} in Game: {1}", move, game.getId());
+        log.debug("Applying Move: {} in Game: {}", move, game.getId());
 
         for (IRule rule : rules){
             // Check if Validation-Rule supports the MoveType
             if (rule.supports(move)) {
                 // Validate the Move -> if allowed to apply
                 game = rule.apply(move, game);
+                gameRepository.save(game);
             }
         }
-        gameRepository.save(game);
 
         return game;
     }
