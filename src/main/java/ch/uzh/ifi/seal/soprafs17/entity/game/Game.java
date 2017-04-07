@@ -1,6 +1,9 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.game;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -49,7 +52,7 @@ public class Game implements Serializable {
 	@OneToOne(targetEntity = MarketPlace.class, cascade = CascadeType.ALL)
 	private MarketPlace marketPlace;
 
-	@OneToOne(targetEntity = StoneQuarry.class, cascade = CascadeType.ALL)
+	@OneToOne(targetEntity = StoneQuarry.class, mappedBy = "game", cascade = CascadeType.ALL)
 	private StoneQuarry stoneQuarry;
 
 	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -5,7 +5,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
  */
 
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
-import ch.uzh.ifi.seal.soprafs17.entity.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.repository.MarketCardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

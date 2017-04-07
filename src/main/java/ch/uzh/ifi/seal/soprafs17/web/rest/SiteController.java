@@ -1,8 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.BuildingSite;
-import ch.uzh.ifi.seal.soprafs17.entity.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.service.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.MarketPlaceService;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class SiteController extends GenericController {
     private final MarketPlaceService marketPlaceService;
 
     // Standard URI Mapping of this class
-    static final String CONTEXT = "games/{gameId}";
+    static final String CONTEXT = "games/{gameId}/sites";
 
     @Autowired
     public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService){

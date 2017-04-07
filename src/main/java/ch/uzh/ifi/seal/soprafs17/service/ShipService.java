@@ -1,8 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
-import ch.uzh.ifi.seal.soprafs17.entity.RoundCard;
-import ch.uzh.ifi.seal.soprafs17.entity.Ship;
+import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.repository.ShipRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

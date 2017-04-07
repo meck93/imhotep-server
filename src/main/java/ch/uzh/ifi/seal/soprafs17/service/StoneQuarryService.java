@@ -1,11 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-/**
- * Created by Cristian on 26.03.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.StoneQuarry;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +17,7 @@ import java.util.ArrayList;
 public class StoneQuarryService {
 
     private final Logger log = LoggerFactory.getLogger(StoneQuarryService.class);
+
     private final StoneQuarryRepository stoneQuarryRepository;
     private final StoneService stoneService;
 
@@ -29,10 +27,11 @@ public class StoneQuarryService {
         this.stoneService = stoneService;
     }
 
-    public StoneQuarry createStoneQuarry(){
+    public StoneQuarry createStoneQuarry(Game game){
         log.debug("Creating a StoneQuarry");
 
         StoneQuarry stoneQuarry = new StoneQuarry();
+        stoneQuarry.setGame(game);
 
         stoneQuarry.setBlackStones(new ArrayList<>());
         stoneQuarry.setWhiteStones(new ArrayList<>());

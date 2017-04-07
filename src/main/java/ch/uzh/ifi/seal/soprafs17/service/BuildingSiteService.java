@@ -1,8 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.BuildingSite;
-import ch.uzh.ifi.seal.soprafs17.entity.Stone;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,8 +68,14 @@ public class BuildingSiteService {
         List<BuildingSite> result = aSiteRepository.findAllBuildingSites(gameId);
 
         for (BuildingSite site : result){
-            Stone stone = stoneService.createStone("BLACK");
-            site.addStone(stone);
+            if (site.getId().intValue() % 2 == 0){
+                Stone stone = stoneService.createStone("BLACK");
+                site.addStone(stone);
+            }
+            else {
+                Stone stone = stoneService.createStone("WHITE");
+                site.addStone(stone);
+            }
             aSiteRepository.save(site);
         }
     }
