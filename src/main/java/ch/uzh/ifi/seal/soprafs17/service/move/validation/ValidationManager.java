@@ -31,7 +31,7 @@ public class ValidationManager {
     }
 
     public void validate(final AMove move, final Game game) {
-        log.debug("Validating Move: {0} in Game: {1}", move, game.getId());
+        log.debug("Validating Move: {} in Game: {}", move.getMoveType(), game.getId());
 
         for (IValidator validator : validators){
             // Check if Validation-Rule supports the MoveType
