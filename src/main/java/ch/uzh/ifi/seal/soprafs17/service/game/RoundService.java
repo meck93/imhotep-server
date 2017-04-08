@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
 import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
 import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
@@ -26,7 +27,7 @@ public class RoundService {
         private final RoundRepository roundRepository;
         private final RoundCardService roundCardService;
         private final ShipService shipService;
-    private final StoneService stoneService;
+        private final StoneService stoneService;
 
         @Autowired
         public RoundService(RoundRepository roundRepository, RoundCardService roundCardService, ShipService shipService, StoneService stoneService, MarketCardService marketCardService) {
@@ -79,33 +80,66 @@ public class RoundService {
             return round;
         }
 
+        /*
+         * Finding all the rounds associated with a specific Game
+         */
         public List<Round> listRounds(Long gameId) {
             log.debug("List all Rounds of Game: " + gameId);
 
             List<Round> allRounds = (List<Round>) roundRepository.findAll();
             ArrayList<Round> result = new ArrayList<>();
 
+            // Adding all the required Rounds to the returnList
             for (Round round : allRounds) {
                 if (round.getGame().getId().equals(gameId)){
                     result.add(round);
                 }
             }
+
+            // If the list is empty -> no rounds exist -> throw exception
+            if (result.isEmpty()) throw new NotFoundException(gameId, "Rounds");
+
             return result;
         }
 
+        /*
+         * Finding a specific Round in a Game
+         */
         public Round getRoundByNr(Long gameId, int roundNumber) {
             log.debug("Round: " + roundNumber + " of Game: " + gameId);
 
             List<Round> allRounds = this.listRounds(gameId);
+            Round resultRound = null;
 
             for (Round round : allRounds) {
                 if (round.getRoundNumber() == roundNumber) {
-                    return round;
+                    resultRound = round;
                 }
             }
 
-            log.error("Round: " + roundNumber + " in Game: " + gameId + " not found!");
-            return null;
+            if (resultRound == null) throw new NotFoundException(gameId, "Round");
+
+            return resultRound;
+        }
+
+        /*
+         * Finding all the Ships in a Round
+         */
+        public List<Ship> getShips(Long gameId, int roundNumber){
+            log.debug("Extracting the Ships of Round: " + roundNumber + " of Game: " + gameId);
+
+            Round round = this.getRoundByNr(gameId, roundNumber);
+
+            if (round.getShips().isEmpty()) throw new NotFoundException(gameId, "Ships");
+
+            return round.getShips();
+        }
+
+        /*
+         * Finding a specific ship in a Round
+         */
+        public Ship getShip(Long shipId){
+            return shipService.findShip(shipId);
         }
 
         public void createDummyData(Long gameId, int roundNr) {
