@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest.user;
 
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.user.SupplySled;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class PlayerController extends GenericController {
      */
     @RequestMapping(value = "/{playerNr}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Player getPlayer(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") Long playerNr) {
+    public Player getPlayer(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") int playerNr) {
         return playerService.getPlayer(gameId, playerNr);
     }
 
@@ -45,5 +46,11 @@ public class PlayerController extends GenericController {
     @ResponseStatus(HttpStatus.OK)
     public List<Player> listPlayers(@PathVariable("gameId") Long gameId) {
         return playerService.getPlayers(gameId);
+    }
+
+    @RequestMapping(value = "/{playerNr}/supplysled", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public SupplySled getSupplySled(@PathVariable("gameId") Long gameId, @PathVariable("playerNr") int playerNr) {
+        return playerService.getPlayerSupplySled(gameId, playerNr);
     }
 }
