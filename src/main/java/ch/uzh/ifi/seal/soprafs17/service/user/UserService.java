@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service.user;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +40,17 @@ public class UserService {
         newUser.setToken(UUID.randomUUID().toString());
 
         userRepository.save(newUser);
+
         log.debug("Created Information for User: {}", newUser);
 
         return newUser;
     }
 
     public String deleteUser(Long userId) {
-        User user = userRepository.findById(userId); //TODO check if user exists
+        User user = userRepository.findById(userId);
+
         userRepository.delete(userId);
+
         log.debug("Deleted User: {}", user);
 
         return "Deleted user with userId: " + userId;
@@ -71,45 +75,31 @@ public class UserService {
         List<User> result = new ArrayList<>();
         userRepository.findAll().forEach(result::add);
 
+        if (result.isEmpty()) throw new NotFoundException("All Users");
+
         return result;
     }
 
     public User getUser(Long userId){
         log.debug("getUser: " + userId);
 
-        // TODO Implement check to see whether the user exists
-        return userRepository.findOne(userId);
-    }
+        User user = userRepository.findOne(userId);
 
-    public User getUserByToken(String userToken) {
-        log.debug("getUser: " + userToken);
+        if (user == null) throw new NotFoundException(userId, "User");
 
-        // TODO Implement check to see whether the user exists
-        User user = userRepository.findByToken(userToken);
-
-        if (user != null) {
-            return user;
-        }
-        else {
-            log.error("Error: user with token: " + userToken + " could not be found");
-            return null;
-        }
+        return user;
     }
 
     public User login(Long userId){
         log.debug("login: " + userId);
 
-        User user = userRepository.findOne(userId);
-        if (user != null) {
-            user.setToken(UUID.randomUUID().toString());
-            user.setStatus(UserStatus.ONLINE);
-            user = userRepository.save(user);
+        User user = this.getUser(userId);
 
-            return user;
-        }
+        user.setToken(UUID.randomUUID().toString());
+        user.setStatus(UserStatus.ONLINE);
+        user = userRepository.save(user);
 
-        // TODO This situation needs to be handle in a better way: Should not return null if user cannot be found
-        return null;
+        return user;
     }
 
     public void logout(Long userId, String userToken){
