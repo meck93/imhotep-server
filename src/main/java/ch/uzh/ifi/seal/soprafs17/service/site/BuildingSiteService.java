@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.site;
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
 import ch.uzh.ifi.seal.soprafs17.service.game.StoneService;
 import org.slf4j.Logger;
@@ -52,15 +53,9 @@ public class BuildingSiteService {
 
         BuildingSite result = aSiteRepository.findBuildingSite(gameId, buildingSiteType);
 
-        if (!result.equals(null)){
-            return result;
-        }
-        else {
-            log.error("Couldn't find the requested BuildingSite for Game: " + gameId);
-            return null;
-            // TODO: Throw a proper exception with HTTP Response
-        }
+        if (result == null) throw new NotFoundException(buildingSiteType.toString());
 
+        return result;
     }
     /*
      * Creates a Dummy-Stone on each Site of the Game for the Front-End Mapping/Modelling Purposes
