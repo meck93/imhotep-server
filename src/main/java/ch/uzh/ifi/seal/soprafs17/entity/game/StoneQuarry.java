@@ -19,19 +19,19 @@ public class StoneQuarry implements Serializable {
     @JsonIgnore
     private Game game;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     @JsonIgnore
     private List<Stone> blackStones;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     @JsonIgnore
     private List<Stone> whiteStones;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     @JsonIgnore
     private List<Stone> brownStones;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     @JsonIgnore
     private List<Stone> grayStones;
 

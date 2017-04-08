@@ -24,7 +24,7 @@ public class SupplySled implements Serializable {
     @JsonBackReference(value = "player")
     private Player player;
 
-    @OneToMany(targetEntity = Stone.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany
     private List<Stone> stones;
 
     public Long getId() {
