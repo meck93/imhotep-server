@@ -9,13 +9,8 @@ import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.SupplySled;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
 
-import java.util.FormatFlagsConversionMismatchException;
 import java.util.List;
 
-
-/**
- * Created by Dave and Cristi on 09.04.2017.
- */
 public class PlaceStoneRule implements IRule {
 
     @Override
@@ -26,9 +21,12 @@ public class PlaceStoneRule implements IRule {
     /*
      * Apply the changes to the game in regards to the Place_Stone move
      */
-
     @Override
     public Game apply(AMove move, Game game) throws ApplyMoveException {
+
+        // Typecasting the AbstractMove to a PlaceStoneMove
+        PlaceStoneMove newMove = (PlaceStoneMove) move;
+
         // List of all current players
         List<Player> players = game.getPlayers();
 
@@ -48,14 +46,15 @@ public class PlaceStoneRule implements IRule {
 
         // removing one stone from players' sled
         List<Stone> updatedStones = supplySled.getStones();
-        updatedStones.remove(0);
+        Stone stone = updatedStones.remove(0);
         supplySled.setStones(updatedStones);
 
         // List of all current ships
-        List<Ship> ships = game.getRounds().get(game.getRoundCounter()).getShips();
+        List<Ship> ships = game.getRoundByRoundCounter(game.getRoundCounter()).getShips();
 
         // Find the assigned ship
-        Ship assignedShip;
+        // TODO: Implement a new Getter in class Ship -> so you can directly access the ship, so you don't need the whole part below
+        //Ship assignedShip = ships.getShipById()
 
         // Remove the current ship
 
@@ -86,8 +85,8 @@ public class PlaceStoneRule implements IRule {
 
         // Adding the updated ship back to the game
         /*
-        ships.add(assignedShip)
-        game.getRounds.get(game.getRoundCounter()).setShips(ships)
+        ships.add(assignedShip);
+        game.getRoundByRoundCounter(game.getRoundCounter()).setShips(ships);
          */
 
         return game;
