@@ -73,6 +73,19 @@ public class Game implements Serializable {
 		throw new NotFoundException("game");
 	}
 
+	public Round getRoundByRoundCounter(int roundCounter){
+		Round result = null;
+		for (Round round : this.getRounds()){
+			if (round.getRoundNumber() == this.getRoundCounter()){
+				result = round;
+			}
+		}
+
+		if (result == null) throw new NotFoundException("Round");
+
+		return result;
+	}
+
 	public Long getId() {
 		return id;
 	}
