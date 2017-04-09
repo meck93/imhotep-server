@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundCardRepository;
+import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 /**
- * Test class for the PlayerResource REST resource.
+ * Test class for the RoundCardResource REST resource.
  *
- * @see PlayerService
+ * @see RoundCardService
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)

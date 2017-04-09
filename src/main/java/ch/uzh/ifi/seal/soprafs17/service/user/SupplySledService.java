@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.service;
+package ch.uzh.ifi.seal.soprafs17.service.user;
 
 /**
  * Created by Cristian on 26.03.2017.
@@ -6,7 +6,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
-import ch.uzh.ifi.seal.soprafs17.entity.game.SupplySled;
+import ch.uzh.ifi.seal.soprafs17.entity.user.SupplySled;
 import ch.uzh.ifi.seal.soprafs17.repository.SupplySledRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

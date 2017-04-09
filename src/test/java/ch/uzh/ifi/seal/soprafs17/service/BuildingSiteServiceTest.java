@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
+import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,8 @@
-package ch.uzh.ifi.seal.soprafs17.web.rest;
+package ch.uzh.ifi.seal.soprafs17.web.rest.user;
 
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
-import ch.uzh.ifi.seal.soprafs17.service.PlayerService;
+import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
+import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

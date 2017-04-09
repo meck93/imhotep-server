@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.repository.MarketCardRepository;
+import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.service;
+package ch.uzh.ifi.seal.soprafs17.service.game;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
@@ -33,10 +33,16 @@ public class StoneQuarryService {
         StoneQuarry stoneQuarry = new StoneQuarry();
         stoneQuarry.setGame(game);
 
+        // Creating the StoneQuarry for the minimum Nr of Players
         stoneQuarry.setBlackStones(new ArrayList<>());
         stoneQuarry.setWhiteStones(new ArrayList<>());
-        stoneQuarry.setBrownStones(new ArrayList<>());
-        stoneQuarry.setGrayStones(new ArrayList<>());
+
+        switch (game.getPlayers().size()) {
+            // Creating 1 additional StoneQuarry for Player Nr 3
+            case 3: stoneQuarry.setBrownStones(new ArrayList<>()); break;
+            // Creating 2 additional StoneQuarry for Player Nr 3 & 4
+            case 4: stoneQuarry.setBrownStones(new ArrayList<>()); stoneQuarry.setGrayStones(new ArrayList<>()); break;
+        }
 
         stoneQuarryRepository.save(stoneQuarry);
 
@@ -46,10 +52,19 @@ public class StoneQuarryService {
     public void fillQuarry(StoneQuarry stoneQuarry){
         log.debug("Filling the StoneQuarry with the initial stones of each color");
 
+        // Filling the first two StoneQuarrys with the amount of Starting-Stones
         stoneQuarry.setBlackStones(stoneService.createStones(GameConstants.BLACK));
         stoneQuarry.setWhiteStones(stoneService.createStones(GameConstants.WHITE));
-        stoneQuarry.setBrownStones(stoneService.createStones(GameConstants.BROWN));
-        stoneQuarry.setGrayStones(stoneService.createStones(GameConstants.GRAY));
+
+        switch (stoneQuarry.getGame().getPlayers().size()) {
+            // Creating 1 additional StoneQuarry for Player Nr 3
+            case 3:
+                stoneQuarry.setBrownStones(stoneService.createStones(GameConstants.BROWN)); break;
+            // Creating 2 additional StoneQuarry for Player Nr 3 & 4
+            case 4:
+                stoneQuarry.setBrownStones(stoneService.createStones(GameConstants.BROWN));
+                stoneQuarry.setGrayStones(stoneService.createStones(GameConstants.GRAY)); break;
+        }
 
         stoneQuarryRepository.save(stoneQuarry);
     }

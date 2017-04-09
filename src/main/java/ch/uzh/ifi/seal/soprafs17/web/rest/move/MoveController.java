@@ -1,8 +1,8 @@
-package ch.uzh.ifi.seal.soprafs17.web.rest;
+package ch.uzh.ifi.seal.soprafs17.web.rest.move;
 
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.exceptions.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.service.move.MoveService;
+import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,24 +25,10 @@ public class MoveController extends GenericController {
         this.moveService = moveService;
     }
 
-    @RequestMapping(value = CONTEXT + "/rounds/{roundId}/moves/{moveId}",method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public AMove getMove(@PathVariable("moveId") Long moveId) {
-        return moveService.getMove(moveId);
-    }
-
     @RequestMapping(value = CONTEXT + "/rounds/{roundId}/moves", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody AMove move) {
         // Validating and applying the Move
-        try {
-            moveService.validateAndApply(move);
-        }
-        catch (BadRequestHttpException httpRequestException) {
-            handleHttpStatusCodeExceptions(httpRequestException);
-        }
-        catch (Exception exception) {
-            handleException(exception);
-        }
+        moveService.validateAndApply(move);
     }
 }
