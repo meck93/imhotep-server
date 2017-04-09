@@ -4,11 +4,20 @@ import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
+import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
+import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
+import ch.uzh.ifi.seal.soprafs17.service.game.ShipService;
+import ch.uzh.ifi.seal.soprafs17.service.game.StoneQuarryService;
+import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
+import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
+import ch.uzh.ifi.seal.soprafs17.service.user.SupplySledService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +45,14 @@ public class GameService {
     private final MarketPlaceService marketPlaceService;
     private final StoneQuarryService stoneQuarryService;
     private final MarketCardService marketCardService;
+    private final SupplySledService supplySledService;
 
     @Autowired
     public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService,
                        RoundService roundService, RoundCardService roundCardService,
                        ShipService shipService, MarketPlaceService marketPlaceService,
-                       StoneQuarryService stoneQuarryService, MarketCardService marketCardService) {
+                       StoneQuarryService stoneQuarryService, MarketCardService marketCardService,
+                       SupplySledService supplySledService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
@@ -49,6 +60,7 @@ public class GameService {
         this.marketPlaceService = marketPlaceService;
         this.stoneQuarryService = stoneQuarryService;
         this.marketCardService = marketCardService;
+        this.supplySledService = supplySledService;
     }
     /*
      * Implementation of the createGame method:
@@ -72,10 +84,12 @@ public class GameService {
         return newGame;
     }
 
-    public void deleteGame(Long id) {
-        //TODO check if game exists and then delete it
-        Game game = gameRepository.findById(id);
-        gameRepository.delete(id);
+    public void deleteGame(Long gameId) {
+        Game game = gameRepository.findById(gameId);
+
+        if (game == null) throw new NotFoundException(gameId, "Game");
+
+        gameRepository.delete(game);
 
         log.debug("Deleted Game: {}", game);
     }
@@ -95,12 +109,20 @@ public class GameService {
         List<Game> result = new ArrayList<>();
         gameRepository.findAll().forEach(result::add);
 
+        if (result.isEmpty()) throw new NotFoundException("Games");
+
         return result;
     }
 
     public Game findById(Long gameId) {
         log.debug("getGame: " + gameId);
-        return gameRepository.findById(gameId);
+
+        Game game = gameRepository.findById(gameId);
+
+        // Testing whether this game actually exists or not
+        if (game == null) throw new NotFoundException(gameId, "Game");
+
+        return game;
     }
 
     public int findNrOfPlayers(Long gameId) {
@@ -108,9 +130,17 @@ public class GameService {
         return gameRepository.findNrOfPlayers(gameId);
     }
 
+    /*
+     * Returns the list of all players associated with Game: {GameId}
+     */
     public List<Player> findPlayersByGameId(Long gameId) {
         log.debug("getPlayersByGameId: " + gameId);
-        return gameRepository.findPlayersByGameId(gameId);
+
+        List<Player> result = gameRepository.findPlayersByGameId(gameId);
+
+        if (result.isEmpty()) throw new NotFoundException(gameId, "Players in Game");
+
+        return result;
     }
 
     /**
@@ -151,19 +181,24 @@ public class GameService {
         MarketPlace marketPlace = marketPlaceService.createMarketPlace(gameId);
         game.setMarketPlace(marketPlace);
 
-        // Create the stoneQuarry & fill it with Stones
-        StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry();
-        stoneQuarryService.fillQuarry(stoneQuarry);
-        game.setStoneQuarry(stoneQuarry);
-
         // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(BuildingSiteType.OBELISK, gameId));
         game.setPyramid(buildingSiteService.createBuildingSite(BuildingSiteType.PYRAMID, gameId));
         game.setTemple(buildingSiteService.createBuildingSite(BuildingSiteType.TEMPLE, gameId));
         game.setBurialChamber(buildingSiteService.createBuildingSite(BuildingSiteType.BURIAL_CHAMBER, gameId));
 
+        // Create the stoneQuarry & fill it with Stones
+        StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry(game);
+        stoneQuarryService.fillQuarry(stoneQuarry);
+
+        // Filling the SupplySled
+        supplySledService.fillSupplySleds(game);
+
         // Setting the Status to Running
         game.setStatus(GameStatus.RUNNING);
+
+        // Setting the CurrentPlayer value to the playerNr of the 1. Player in the List of Players
+        game.setCurrentPlayer(game.getPlayers().get(0).getPlayerNumber());
 
         gameRepository.save(game);
     }

@@ -29,13 +29,13 @@ public abstract class AMove implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-	@Column
+	@Column(nullable = false)
 	private Long gameId;
 
-	@Column
+	@Column(nullable = false)
 	private int roundNr;
 
-	@Column
+	@Column(nullable = false)
 	private int playerNr;
 
 	@Column(name = "MOVE_TYPE", nullable = false, insertable = false, updatable = false)
