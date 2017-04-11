@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
@@ -67,6 +68,14 @@ public class GameService {
      * @Param Name - Name of the Game, Owner - Name of the User/Player
      */
     public Game createGame(String name, String owner) {
+
+        if (gameRepository.findByName(name) != null){
+            throw new BadRequestHttpException("A Game with name: " + name + " already exists!");
+        }
+        if (gameRepository.findByOwner(owner) != null){
+            throw new BadRequestHttpException("A Game with the owner: " + owner + " already exists!");
+        }
+
         // Creating the Game and saving it to the Repository
         Game newGame = new Game();
         newGame.setName(name);
