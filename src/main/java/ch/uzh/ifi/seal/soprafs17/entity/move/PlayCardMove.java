@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 @JsonTypeName(value = "PLAY_CARD")
 public class PlayCardMove extends AMove {
 
+    // Existence Reason: Hibernate also needs an empty constructor
     public PlayCardMove(){}
 
     public PlayCardMove(String moveType){

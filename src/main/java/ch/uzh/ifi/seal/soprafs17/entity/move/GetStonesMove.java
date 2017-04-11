@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 @JsonTypeName(value = "GET_STONES")
 public class GetStonesMove extends AMove {
 
+    // Existence Reason: Hibernate also needs an empty constructor
     public GetStonesMove(){}
 
     public GetStonesMove(String moveType) {

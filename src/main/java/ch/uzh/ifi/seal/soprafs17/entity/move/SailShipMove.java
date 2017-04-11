@@ -12,6 +12,7 @@ import javax.persistence.*;
 @JsonTypeName(value = "SAIL_SHIP")
 public class SailShipMove extends AMove {
 
+    // Existence Reason: Hibernate also needs an empty constructor
     public SailShipMove(){}
 
     public SailShipMove(String moveType){
