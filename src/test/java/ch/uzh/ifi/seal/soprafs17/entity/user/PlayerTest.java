@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.user;
 
 /**
  * Created by Cristian on 06.04.2017.

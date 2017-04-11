@@ -1,8 +1,8 @@
-package ch.uzh.ifi.seal.soprafs17.service;
+package ch.uzh.ifi.seal.soprafs17.service.user;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
-import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
-import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
+import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
+import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,41 +13,39 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 /**
- * Test class for the RoundResource REST resource.
+ * Test class for the PlayerResource REST resource.
  *
- * @see RoundService
+ * @see PlayerService
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
-public class RoundServiceTest {
+public class PlayerServiceTest {
 
     @Autowired
-    private RoundService roundService;
+    private PlayerService playerService;
 
     @Autowired
-    private RoundRepository roundRepository;
+    private PlayerRepository playerRepository;
 
     @Test
-    public void createRound() {
-        // TODO: test roundService.createRound()
+    public void createPlayer() {
+        // TODO: test playerService.createPlayer()
     }
 
     @Test
-    public void initializeRound() {
-        // TODO: test roundService.initializeRound()
+    public void initializePlayer() {
+        // TODO: test playerService.initializePlayer()
     }
 
     @Test
-    public void listRounds() {
-        // TODO: test roundService.listRounds()
+    public void getPlayer() {
+        // TODO: test playerService.getPlayer()
     }
 
     @Test
-    public void getRoundByNr() {
-        // TODO: test roundService.getRoundByNr()
+    public void getPlayers() {
+        // TODO: test playerService.getPlayers()
     }
-
-
 }

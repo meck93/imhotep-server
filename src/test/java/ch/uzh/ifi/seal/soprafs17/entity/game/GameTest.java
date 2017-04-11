@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.entity.game;
 
 /**
  * Created by Cristian on 05.04.2017.

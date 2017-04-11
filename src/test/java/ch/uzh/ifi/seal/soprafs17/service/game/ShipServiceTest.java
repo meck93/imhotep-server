@@ -1,7 +1,8 @@
-package ch.uzh.ifi.seal.soprafs17.service;
+package ch.uzh.ifi.seal.soprafs17.service.game;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
-import ch.uzh.ifi.seal.soprafs17.service.game.LobbyService;
+import ch.uzh.ifi.seal.soprafs17.repository.ShipRepository;
+import ch.uzh.ifi.seal.soprafs17.service.game.ShipService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,31 +13,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 /**
- * Test class for the LobbyResource REST resource.
+ * Test class for the ShipResource REST resource.
  *
- * @see LobbyService
+ * @see ShipService
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
-public class LobbyServiceTest {
+public class ShipServiceTest {
 
     @Autowired
-    private LobbyService lobbyService;
+    private ShipService shipService;
+
+    @Autowired
+    private ShipRepository shipRepository;
 
     @Test
-    public void listGames() {
-        // TODO: test lobbyService.listGames()
+    public void createShips() {
+        // TODO: test shipService.createShips()
     }
 
     @Test
-    public void createGame() {
-        // TODO: test lobbyService.createGame()
-    }
-
-    @Test
-    public void joinGame() {
-        // TODO: test lobbyService.joinGame()
+    public void createShip() {
+        // TODO: test shipService.createShip()
     }
 }

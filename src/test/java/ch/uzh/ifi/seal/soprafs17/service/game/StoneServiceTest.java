@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.service;
+package ch.uzh.ifi.seal.soprafs17.service.game;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneRepository;
