@@ -2,7 +2,6 @@ package ch.uzh.ifi.seal.soprafs17.service.move.validation;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
@@ -49,7 +48,7 @@ public class PlaceStoneValidator implements IValidator {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship already sailed");
         }
         // A ship must have at least one free space
-       if(game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getStones().size() < game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getStones().size()){
+       if(game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getMAX_STONES() < game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getStones().size()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. No space left on the ship");
         }
     }
