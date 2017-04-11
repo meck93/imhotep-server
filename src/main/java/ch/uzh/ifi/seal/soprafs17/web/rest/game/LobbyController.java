@@ -55,8 +55,7 @@ public class LobbyController extends GenericController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "games/{gameId}")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public String joinGame(@PathVariable Long gameId, @RequestParam Long userId){
-        return lobbyService.joinGame(gameId, userId);
+    public void joinGame(@PathVariable Long gameId, @RequestParam Long userId){
+        lobbyService.joinGame(gameId, userId);
     }
 }

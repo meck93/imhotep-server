@@ -55,13 +55,13 @@ public class PlayerService {
         User user = userService.getUser(userId);
         Long playerId = user.getId();
 
-        if (user.getPlayer() != null){
+        if (user.getPlayer() != null) {
             throw new BadRequestHttpException("The User is already active as a Player in another Game!");
         }
         if (game.getPlayers().size() >= GameConstants.MAX_PLAYERS) {
             throw new BadRequestHttpException("The Game is already full! - No more Player can join!");
         }
-        if (game.getStatus() == GameStatus.RUNNING){
+        if (game.getStatus() == GameStatus.RUNNING) {
             throw new BadRequestHttpException("The Game is already running and cannot be joined!");
         }
         else {
@@ -80,7 +80,7 @@ public class PlayerService {
         }
     }
 
-    public String initializePlayer(Long gameId, Player player) {
+    public void initializePlayer(Long gameId, Player player) {
         log.debug("Initializing Player: " + player.getId());
 
         // Initializing the Move List and the StartPoints
@@ -103,8 +103,6 @@ public class PlayerService {
 
         // Set the correct amountOfPlayers
         gameService.setNrOfPlayers(gameId, player.getPlayerNumber());
-
-        return "games" + "/" + gameId + "/players/" + player.getPlayerNumber();
     }
 
     public Player getPlayer(Long gameId, int playerNr) {
