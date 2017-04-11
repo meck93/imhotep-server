@@ -37,10 +37,11 @@ public class RuleManager {
 
         // Add new Application-Rules to the Service
         rules.add(new GetStonesRule());
+        rules.add(new PlaceStoneRule());
     }
 
     public synchronized Game applyRules(AMove move, Game game) {
-        log.debug("Applying Move: {} in Game: {}", move, game.getId());
+        log.debug("Applying Move: {} in Game: {}", move.getMoveType(), game.getId());
 
         for (IRule rule : rules){
             // Check if Validation-Rule supports the MoveType

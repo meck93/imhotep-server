@@ -17,6 +17,7 @@ import ch.uzh.ifi.seal.soprafs17.service.game.ShipService;
 import ch.uzh.ifi.seal.soprafs17.service.game.StoneQuarryService;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
+import ch.uzh.ifi.seal.soprafs17.service.user.SupplySledService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +45,14 @@ public class GameService {
     private final MarketPlaceService marketPlaceService;
     private final StoneQuarryService stoneQuarryService;
     private final MarketCardService marketCardService;
+    private final SupplySledService supplySledService;
 
     @Autowired
     public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService,
                        RoundService roundService, RoundCardService roundCardService,
-                       MarketPlaceService marketPlaceService, StoneQuarryService stoneQuarryService,
-                       MarketCardService marketCardService) {
+                       ShipService shipService, MarketPlaceService marketPlaceService,
+                       StoneQuarryService stoneQuarryService, MarketCardService marketCardService,
+                       SupplySledService supplySledService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
@@ -57,6 +60,7 @@ public class GameService {
         this.marketPlaceService = marketPlaceService;
         this.stoneQuarryService = stoneQuarryService;
         this.marketCardService = marketCardService;
+        this.supplySledService = supplySledService;
     }
     /*
      * Implementation of the createGame method:
@@ -177,18 +181,22 @@ public class GameService {
         MarketPlace marketPlace = marketPlaceService.createMarketPlace(gameId);
         game.setMarketPlace(marketPlace);
 
-        // Create the stoneQuarry & fill it with Stones
-        StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry(game);
-        stoneQuarryService.fillQuarry(stoneQuarry);
-
         // Create the four BuildingSites for the game
         game.setObelisk(buildingSiteService.createBuildingSite(BuildingSiteType.OBELISK, gameId));
         game.setPyramid(buildingSiteService.createBuildingSite(BuildingSiteType.PYRAMID, gameId));
         game.setTemple(buildingSiteService.createBuildingSite(BuildingSiteType.TEMPLE, gameId));
         game.setBurialChamber(buildingSiteService.createBuildingSite(BuildingSiteType.BURIAL_CHAMBER, gameId));
 
+        // Create the stoneQuarry & fill it with Stones
+        StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry(game);
+        stoneQuarryService.fillQuarry(stoneQuarry);
+
+        // Filling the SupplySled
+        supplySledService.fillSupplySleds(game);
+
         // Setting the Status to Running
         game.setStatus(GameStatus.RUNNING);
+
         // Setting the CurrentPlayer value to the playerNr of the 1. Player in the List of Players
         game.setCurrentPlayer(game.getPlayers().get(0).getPlayerNumber());
 

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest.game;
 
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,33 @@ public class RoundController extends GenericController {
     }
 
     /*
-     * Handles the request for the game with Id: {gameId}
+     * Returns the Round with RoundNr in Game with GameID
      */
     @RequestMapping(method = RequestMethod.GET, value = "/{roundNr}")
     @ResponseStatus(HttpStatus.OK)
     public Round getRound(@PathVariable("gameId") Long gameId, @PathVariable("roundNr") int roundNumber) {
         return roundService.getRoundByNr(gameId, roundNumber);
     }
+
+    /*
+     * Returns all ships of a specified Round
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/{roundNr}/ships")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Ship> getShips(@PathVariable("gameId") Long gameId, @PathVariable("roundNr") int roundNumber) {
+        return roundService.getShips(gameId, roundNumber);
+    }
+
+    /*
+     * Returns the ship with Id: {shipId}
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/{roundNr}/ships/{shipId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Ship getShip(@PathVariable("shipId") Long shipId) {
+        return roundService.getShip(shipId);
+    }
+
+
 
     /*
      * Creates a Dummy-Stone on each Ship of the Round for the Front-End Mapping/Modelling Purposes

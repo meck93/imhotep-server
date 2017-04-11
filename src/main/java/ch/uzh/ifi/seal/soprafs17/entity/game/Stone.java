@@ -1,16 +1,13 @@
 package ch.uzh.ifi.seal.soprafs17.entity.game;
 
-/**
- * Created by Cristian on 26.03.2017.
- */
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class Stone {
+public class Stone implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,6 +17,9 @@ public class Stone {
 
     @Column
     private String color;
+
+    @Column
+    private int placeOnShip;
 
     public Long getId() {
         return id;
@@ -35,5 +35,13 @@ public class Stone {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public int getPlaceOnShip() {
+        return placeOnShip;
+    }
+
+    public void setPlaceOnShip(int placeOnShip) {
+        this.placeOnShip = placeOnShip;
     }
 }

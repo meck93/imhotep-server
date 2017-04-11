@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.game;
 import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
 import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.ShipRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
-/**
- * Created by Cristian on 26.03.2017.
- */
 
 @Service
 @Transactional
@@ -73,6 +69,16 @@ public class ShipService {
         ship.setStones(new ArrayList<>());
 
         shipRepository.save(ship);
+
+        return ship;
+    }
+
+    public Ship findShip(Long shipId) {
+        log.debug("Find Ship with ID: " + shipId);
+
+        Ship ship = shipRepository.findOne(shipId);
+
+        if (ship == null) throw new NotFoundException(shipId, "ship");
 
         return ship;
     }

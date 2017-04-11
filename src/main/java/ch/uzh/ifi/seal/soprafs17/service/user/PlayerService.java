@@ -1,9 +1,13 @@
 package ch.uzh.ifi.seal.soprafs17.service.user;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.user.SupplySled;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import org.slf4j.Logger;
@@ -51,7 +55,16 @@ public class PlayerService {
         User user = userService.getUser(userId);
         Long playerId = user.getId();
 
-        if (game != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
+        if (user.getPlayer() != null) {
+            throw new BadRequestHttpException("The User is already active as a Player in another Game!");
+        }
+        if (game.getPlayers().size() >= GameConstants.MAX_PLAYERS) {
+            throw new BadRequestHttpException("The Game is already full! - No more Player can join!");
+        }
+        if (game.getStatus() == GameStatus.RUNNING) {
+            throw new BadRequestHttpException("The Game is already running and cannot be joined!");
+        }
+        else {
             // create a new player entity
             Player newPlayer = new Player();
             newPlayer.setUser(user);
@@ -65,17 +78,10 @@ public class PlayerService {
 
             return newPlayer;
         }
-        else {
-            log.error("Error creating player with userId: " + userId);
-            // TODO: Exception handling if creating a player doesn't work
-            return null;
-        }
     }
 
-    public String initializePlayer(Long gameId, Long userId) {
-        log.debug("creating Player from User with userId: " + userId);
-
-        Player player = createPlayer(gameId, userId);
+    public void initializePlayer(Long gameId, Player player) {
+        log.debug("Initializing Player: " + player.getId());
 
         // Initializing the Move List and the StartPoints
         player.setMoves(new ArrayList<>());
@@ -97,33 +103,41 @@ public class PlayerService {
 
         // Set the correct amountOfPlayers
         gameService.setNrOfPlayers(gameId, player.getPlayerNumber());
-
-        return "games" + "/" + gameId + "/players/" + player.getPlayerNumber();
     }
 
-    public Player getPlayer(Long gameId, Long playerNr) {
+    public Player getPlayer(Long gameId, int playerNr) {
         log.debug("getPlayer: " + playerNr + "of Game: " + gameId);
 
         List<Player> players = gameService.findPlayersByGameId(gameId);
         // Getting the Player at position of playerNr
-        Player player = players.get(playerNr.intValue() - 1);
+        Player player = players.get(playerNr - 1);
 
         // Verifying that the player exists in the game
-        if (player != null && player.getGame().getId().equals(gameId)){
-            return player;
+        if (player == null || !player.getGame().getId().equals(gameId)){
+            throw new NotFoundException(gameId, "Player");
         }
 
-        // TODO Exception handling if player doesn't exist
-        log.error("Couldn't find PlayerNr: " + playerNr + " in Game: " + gameId);
-        return null;
+        return player;
     }
 
     public List<Player> getPlayers(Long gameId) {
-        log.debug("list Players of Game " + gameId);
+        log.debug("List all Players of Game " + gameId);
 
         List<Player> result = new ArrayList<>();
         gameService.findPlayersByGameId(gameId).forEach(result::add);
 
+        if (result.isEmpty()) throw new NotFoundException(gameId, "Players");
+
         return result;
+    }
+
+    public SupplySled getPlayerSupplySled(Long gameId, int playerNr) {
+        log.debug("Get SupplySled of Player: " + playerNr + "of Game: " + gameId);
+
+        Player player = this.getPlayer(gameId, playerNr);
+
+        if (player.getSupplySled() == null) throw new NotFoundException("SupplySled");
+
+        return player.getSupplySled();
     }
 }

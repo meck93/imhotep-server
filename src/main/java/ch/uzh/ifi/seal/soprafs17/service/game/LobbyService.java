@@ -1,14 +1,11 @@
 package ch.uzh.ifi.seal.soprafs17.service.game;
 
-/**
- * Created by Dave on 21.03.2017.
- */
-
 
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
-import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +21,13 @@ public class LobbyService {
     private final Logger log = LoggerFactory.getLogger(LobbyService.class);
     private final GameService gameService;
     private final PlayerService playerService;
-    private final UserService userService;
 
     @Autowired
-    public LobbyService(GameService gameService, PlayerService playerService, UserService userService) {
+    public LobbyService(GameService gameService, PlayerService playerService) {
         this.gameService = gameService;
         this.playerService = playerService;
-        this.userService = userService;
         }
+
     /*
      * This method returns a list of all games
      */
@@ -42,19 +38,36 @@ public class LobbyService {
     /*
      * Calls the gameService to create a Game
      */
-    public Game createGame(Game game, Long userId){
-        // TODO: Add check whether the user exists, whether the user is already in game
+    public Game createGame(Game game, Long userId) {
         // Creates a new game
         Game newGame = gameService.createGame(game.getName(), game.getOwner());
-        // Creates a new player from the user who created the game
-        String newPlayer = playerService.initializePlayer(newGame.getId(), userId);
+
+        try {
+            // Creates a new player from the user who created the game
+            Player player = playerService.createPlayer(newGame.getId(), userId);
+
+            // Initializing the new player
+            playerService.initializePlayer(newGame.getId(), player);
+        }
+
+        // Remove the Game again if the User could not be converted into a Player
+        catch (BadRequestHttpException badRequestException){
+            // Delete the game
+            gameService.deleteGame(newGame.getId());
+            // Rethrow the exception
+            throw new BadRequestHttpException(badRequestException.getMessage());
+        }
 
         return newGame;
     }
     /*
      * Implementation of a User joining a Game. User -> Player. Player -> Joins Game.
      */
-    public String joinGame(Long gameId, Long userId){
-        return playerService.initializePlayer(gameId, userId);
+    public void joinGame(Long gameId, Long userId){
+        // Creating a Player
+        Player player = playerService.createPlayer(gameId, userId);
+
+        // Initializing the new player
+        playerService.initializePlayer(gameId, player);
     }
 }
