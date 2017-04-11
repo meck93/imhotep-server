@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service.user;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 import org.slf4j.Logger;
@@ -31,6 +32,13 @@ public class UserService {
     }
 
     public User createUser(String name, String username) {
+
+        if (userRepository.findByName(name) != null) {
+            throw new BadRequestHttpException("A user with the name: " + name + " already exists!");
+        }
+        if (userRepository.findByUsername(username) != null) {
+            throw new BadRequestHttpException("A user with the username: " + username + " already exists!");
+        }
 
         User newUser = new User();
         newUser.setName(name);
