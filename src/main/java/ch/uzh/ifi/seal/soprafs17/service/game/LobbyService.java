@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.game;
 
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import org.slf4j.Logger;
@@ -41,22 +42,32 @@ public class LobbyService {
         // Creates a new game
         Game newGame = gameService.createGame(game.getName(), game.getOwner());
 
-        // Creates a new player from the user who created the game
-        Player player = playerService.createPlayer(newGame.getId(), userId);
+        try {
+            // Creates a new player from the user who created the game
+            Player player = playerService.createPlayer(newGame.getId(), userId);
 
-        // Initializing the new player
-        String playerMapping = playerService.initializePlayer(newGame.getId(), player);
+            // Initializing the new player
+            playerService.initializePlayer(newGame.getId(), player);
+        }
+
+        // Remove the Game again if the User could not be converted into a Player
+        catch (BadRequestHttpException badRequestException){
+            // Delete the game
+            gameService.deleteGame(newGame.getId());
+            // Rethrow the exception
+            throw new BadRequestHttpException(badRequestException.getMessage());
+        }
 
         return newGame;
     }
     /*
      * Implementation of a User joining a Game. User -> Player. Player -> Joins Game.
      */
-    public String joinGame(Long gameId, Long userId){
+    public void joinGame(Long gameId, Long userId){
         // Creating a Player
         Player player = playerService.createPlayer(gameId, userId);
 
         // Initializing the new player
-        return playerService.initializePlayer(gameId, player);
+        playerService.initializePlayer(gameId, player);
     }
 }
