@@ -149,10 +149,30 @@ public class RoundService {
             for (Ship ship : ships) {
                 ArrayList<Stone> testStones = new ArrayList<>();
                 switch (ship.getMAX_STONES()) {
-                    case 1: testStones.add(stoneService.createStone("BLACK")); ship.setStones(testStones); break;
-                    case 2: testStones.add(stoneService.createStone("GRAY")); testStones.add(stoneService.createStone("GRAY")); ship.setStones(testStones); break;
-                    case 3: testStones.add(stoneService.createStone("BROWN")); testStones.add(stoneService.createStone("BROWN")); testStones.add(stoneService.createStone("BROWN")); ship.setStones(testStones); break;
-                    case 4: testStones.add(stoneService.createStone("WHITE")); testStones.add(stoneService.createStone("WHITE")); testStones.add(stoneService.createStone("WHITE")); ship.setStones(testStones); break;
+                    case 1:
+                        Stone stone = stoneService.createStone("BLACK");
+                        stone.setPlaceOnShip(1);
+                        testStones.add(stone);
+                        ship.setStones(testStones); break;
+                    case 2:
+                        Stone stone1 = stoneService.createStone("GRAY");
+                        stone1.setPlaceOnShip(1);
+                        testStones.add(stone1);
+                        ship.setStones(testStones); break;
+                    case 3:
+                        Stone stone3 = stoneService.createStone("BROWN");
+                        Stone stone4 = stoneService.createStone("BROWN");
+                        testStones.add(stone3);
+                        testStones.add(stone4);
+                        ship.setStones(testStones); break;
+                    case 4:
+                        Stone stone5 = stoneService.createStone("WHITE");
+                        Stone stone6 = stoneService.createStone("WHITE");
+                        Stone stone7 = stoneService.createStone("WHITE");
+                        testStones.add(stone5);
+                        testStones.add(stone6);
+                        testStones.add(stone7);
+                        ship.setStones(testStones); break;
                 }
             }
 
