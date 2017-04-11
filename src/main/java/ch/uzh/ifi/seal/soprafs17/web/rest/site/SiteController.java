@@ -6,8 +6,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(SiteController.CONTEXT)
 public class SiteController extends GenericController {
 
-    Logger log  = LoggerFactory.getLogger(SiteController.class);
-    private final BuildingSiteService buildingSiteService;
-    private final MarketPlaceService marketPlaceService;
-
     // Standard URI Mapping of this class
     static final String CONTEXT = "games/{gameId}/sites";
+
+    private final BuildingSiteService buildingSiteService;
+    private final MarketPlaceService marketPlaceService;
 
     @Autowired
     public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService){
