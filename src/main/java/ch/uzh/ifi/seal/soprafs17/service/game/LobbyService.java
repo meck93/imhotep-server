@@ -57,7 +57,7 @@ public class LobbyService {
             // Delete the game
             gameService.deleteGame(newGame.getId());
             // Rethrow the exception
-            throw new BadRequestHttpException(badRequestException.getMessage());
+            throw badRequestException;
         }
 
         return newGame;
