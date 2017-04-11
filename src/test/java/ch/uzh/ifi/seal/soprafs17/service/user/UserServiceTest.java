@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.service;
+package ch.uzh.ifi.seal.soprafs17.service.user;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
@@ -49,5 +49,33 @@ public class UserServiceTest {
         Assert.assertNull(userRepository.findById(user.getId()));
     }
 
+    @Test
+    public void deleteAll() {
+        // TODO: test userService.deleteAll()
+    }
 
+    @Test
+    public void listUsers() {
+        // TODO: test userService.listUsers()
+    }
+
+    @Test
+    public void getUser() {
+        // TODO: test userService.getUser()
+    }
+
+    @Test
+    public void getUserByToken() {
+        // TODO: test userService.getUserByToken()
+    }
+
+    @Test
+    public void login() {
+        // TODO: test userService.login()
+    }
+
+    @Test
+    public void logout() {
+        // TODO: test userService.logout()
+    }
 }
