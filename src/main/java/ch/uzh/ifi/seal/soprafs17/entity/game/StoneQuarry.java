@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.entity.game;
 
+import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -92,6 +93,7 @@ public class StoneQuarry implements Serializable {
             case 2: result = getWhiteStones(); break;
             case 3: result = getBrownStones(); break;
             case 4: result = getGrayStones(); break;
+            default: throw new InternalServerException("No correct playerNr between 1-4 was specified");
         }
         return result;
     }
