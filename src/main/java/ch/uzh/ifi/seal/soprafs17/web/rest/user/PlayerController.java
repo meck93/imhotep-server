@@ -4,8 +4,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.SupplySled;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping(PlayerController.CONTEXT)
 public class PlayerController extends GenericController {
-
-    Logger log  = LoggerFactory.getLogger(PlayerController.class);
 
     // Standard URI Mapping of this class
     static final String CONTEXT = "/games/{gameId}/players";

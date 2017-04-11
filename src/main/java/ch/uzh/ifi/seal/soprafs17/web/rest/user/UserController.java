@@ -3,8 +3,6 @@ package ch.uzh.ifi.seal.soprafs17.web.rest.user;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping(UserController.CONTEXT)
 public class UserController extends GenericController {
-
-    Logger log  = LoggerFactory.getLogger(UserController.class);
 
     // Standard URI mapping of this class
     static final String CONTEXT = "/users";
