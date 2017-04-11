@@ -26,6 +26,7 @@ public class MarketPlaceTest {
     public void getGameId() {
         MarketPlace testMarketPlace = new MarketPlace();
         testMarketPlace.setGameId(1L);
+        Assert.assertNotNull(testMarketPlace);
         Assert.assertEquals(testMarketPlace.getGameId(), Long.valueOf(1L));
 
     }
@@ -35,6 +36,7 @@ public class MarketPlaceTest {
         MarketPlace testMarketPlace = new MarketPlace();
         List<MarketCard> testMarketCards = new ArrayList<>();
         testMarketPlace.setMarketCards(testMarketCards);
+        Assert.assertNotNull(testMarketPlace);
         Assert.assertEquals(testMarketPlace.getMarketCards(),testMarketCards);
     }
 
@@ -42,6 +44,7 @@ public class MarketPlaceTest {
     public void setSiteType() {
         MarketPlace testMarketPlace = new MarketPlace();
         testMarketPlace.setSiteType("TEST_NAME");
+        Assert.assertNotNull(testMarketPlace);
         Assert.assertEquals(testMarketPlace.getSiteType(),"TEST_NAME");
     }
 }

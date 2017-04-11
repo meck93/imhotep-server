@@ -30,6 +30,7 @@ public class PlayerTest {
     public void setId() {
         Player testPlayer = new Player();
         testPlayer.setId(1L);
+        Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getId(), Long.valueOf(1L));
     }
 
@@ -37,6 +38,7 @@ public class PlayerTest {
     public void setPoints() {
         Player testPlayer = new Player();
         testPlayer.setPoints(10);
+        Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getPoints(), 10);
     }
 
@@ -44,6 +46,7 @@ public class PlayerTest {
     public void setColor() {
         Player testPlayer = new Player();
         testPlayer.setColor("red");
+        Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getColor(),"red");
     }
 
@@ -51,6 +54,7 @@ public class PlayerTest {
     public void setPlayerNumber() {
         Player testPlayer = new Player();
         testPlayer.setPlayerNumber(4);
+        Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getPlayerNumber(),4);
     }
 
@@ -59,6 +63,8 @@ public class PlayerTest {
         Player testPlayer = new Player();
         SupplySled testSupplySled = new SupplySled();
         testPlayer.setSupplySled(testSupplySled);
+        Assert.assertNotNull(testPlayer);
+        Assert.assertNotNull(testSupplySled);
         Assert.assertEquals(testPlayer.getSupplySled(),testSupplySled);
     }
 
@@ -67,6 +73,8 @@ public class PlayerTest {
         Player testPlayer = new Player();
         User testUser = new User();
         testPlayer.setUser(testUser);
+        Assert.assertNotNull(testPlayer);
+        Assert.assertNotNull(testUser);
         Assert.assertEquals(testPlayer.getUser(),testUser);
     }
 
@@ -75,6 +83,7 @@ public class PlayerTest {
         Player testPlayer = new Player();
         List<AMove> testMoves = new ArrayList<>();
         testPlayer.setMoves(testMoves);
+        Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getMoves(),testMoves);
     }
 
@@ -83,6 +92,8 @@ public class PlayerTest {
         Player testPlayer = new Player();
         Game testGame = new Game();
         testPlayer.setGame(testGame);
+        Assert.assertNotNull(testPlayer);
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testPlayer.getGame(),testGame);
     }
 
@@ -90,6 +101,7 @@ public class PlayerTest {
     public void setUsername() {
         Player testPlayer = new Player();
         testPlayer.setUsername("testUsername");
+        Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getUsername(),"testUsername");
     }
 
@@ -98,6 +110,7 @@ public class PlayerTest {
         Player testPlayer = new Player();
         List<MarketCard> testMarketCards = new ArrayList<>();
         testPlayer.setHandCards(testMarketCards);
+        Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getHandCards(),testMarketCards);
     }
 }

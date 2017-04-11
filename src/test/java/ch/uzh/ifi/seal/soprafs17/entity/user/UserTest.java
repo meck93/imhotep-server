@@ -24,6 +24,7 @@ public class UserTest {
     public void setId() {
         User testUser = new User();
         testUser.setId(1L);
+        Assert.assertNotNull(testUser);
         Assert.assertEquals(testUser.getId(), Long.valueOf(1L));
     }
 
@@ -31,6 +32,7 @@ public class UserTest {
     public void setName() {
         User testUser = new User();
         testUser.setName("testName");
+        Assert.assertNotNull(testUser);
         Assert.assertEquals(testUser.getName(), "testName");
     }
 
@@ -38,6 +40,7 @@ public class UserTest {
     public void setUsername() {
         User testUser = new User();
         testUser.setUsername("testUsername");
+        Assert.assertNotNull(testUser);
         Assert.assertEquals(testUser.getUsername(), "testUsername");
     }
 
@@ -45,6 +48,7 @@ public class UserTest {
     public void setToken() {
         User testUser = new User();
         testUser.setToken("t123");
+        Assert.assertNotNull(testUser);
         Assert.assertEquals(testUser.getToken(),"t123");
     }
 
@@ -52,6 +56,7 @@ public class UserTest {
     public void setStatus() {
         User testUser = new User();
         testUser.setStatus(UserStatus.ONLINE);
+        Assert.assertNotNull(testUser);
         Assert.assertEquals(testUser.getStatus(),UserStatus.ONLINE);
     }
 
@@ -60,6 +65,8 @@ public class UserTest {
         User testUser = new User();
         Player testPlayer = new Player();
         testUser.setPlayer(testPlayer);
+        Assert.assertNotNull(testUser);
+        Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testUser.getPlayer(),testPlayer);
     }
 }

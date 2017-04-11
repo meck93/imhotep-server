@@ -27,6 +27,7 @@ public class RoundCardTest {
     public void setId() {
         RoundCard testRoundCard = new RoundCard();
         testRoundCard.setId(1L);
+        Assert.assertNotNull(testRoundCard);
         Assert.assertEquals(testRoundCard.getId(), Long.valueOf(1L));
     }
 
@@ -34,6 +35,7 @@ public class RoundCardTest {
     public void setAlreadyChosen() {
         RoundCard testRoundCard = new RoundCard();
         testRoundCard.setAlreadyChosen(true);
+        Assert.assertNotNull(testRoundCard);
         Assert.assertEquals(testRoundCard.isAlreadyChosen(),true);
     }
 
@@ -41,6 +43,7 @@ public class RoundCardTest {
     public void setHeads() {
         RoundCard testRoundCard = new RoundCard();
         testRoundCard.setHeads(RoundCardType.THREE_HEADS);
+        Assert.assertNotNull(testRoundCard);
         Assert.assertEquals(testRoundCard.getHeads(),RoundCardType.THREE_HEADS);
     }
 
@@ -49,6 +52,7 @@ public class RoundCardTest {
         RoundCard testRoundCard = new RoundCard();
         List<ShipSize> testShipSizes = new ArrayList<>();
         testRoundCard.setShipSizes(testShipSizes);
+        Assert.assertNotNull(testRoundCard);
         Assert.assertEquals(testRoundCard.getShipSizes(),testShipSizes);
     }
 
@@ -56,6 +60,7 @@ public class RoundCardTest {
     public void setGameId() {
         RoundCard testRoundCard = new RoundCard();
         testRoundCard.setGameId(1L);
+        Assert.assertNotNull(testRoundCard);
         Assert.assertEquals(testRoundCard.getGameId(),Long.valueOf(1L));
     }
 }

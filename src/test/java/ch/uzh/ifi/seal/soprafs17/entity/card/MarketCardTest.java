@@ -23,6 +23,7 @@ public class MarketCardTest {
     public void setId() {
         MarketCard testMarketCard = new MarketCard();
         testMarketCard.setId(1L);
+        Assert.assertNotNull(testMarketCard);
         Assert.assertEquals(testMarketCard.getId(), Long.valueOf(1L));
     }
 
@@ -30,6 +31,7 @@ public class MarketCardTest {
     public void getGameId() {
         MarketCard testMarketCard = new MarketCard();
         testMarketCard.setGameId(1L);
+        Assert.assertNotNull(testMarketCard);
         Assert.assertEquals(testMarketCard.getGameId(), Long.valueOf(1L));
     }
 
@@ -37,6 +39,7 @@ public class MarketCardTest {
     public void setMarketCardType() {
         MarketCard testMarketCard = new MarketCard();
         testMarketCard.setMarketCardType(MarketCardType.SARCOPHAGUS);
+        Assert.assertNotNull(testMarketCard);
         Assert.assertEquals(testMarketCard.getMarketCardType(),MarketCardType.SARCOPHAGUS);
     }
 
@@ -44,6 +47,7 @@ public class MarketCardTest {
     public void setAlreadyChosen() {
         MarketCard testMarketCard = new MarketCard();
         testMarketCard.setAlreadyChosen(true);
+        Assert.assertNotNull(testMarketCard);
         Assert.assertEquals(testMarketCard.isAlreadyChosen(),true);
     }
 
@@ -51,6 +55,7 @@ public class MarketCardTest {
     public void setColor() {
         MarketCard testMarketCard = new MarketCard();
         testMarketCard.setColor("red");
+        Assert.assertNotNull(testMarketCard);
         Assert.assertEquals(testMarketCard.getColor(),"red");
     }
 

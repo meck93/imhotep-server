@@ -27,6 +27,7 @@ public class ShipTest {
     public void setId() {
         Ship testShip = new Ship();
         testShip.setId(1L);
+        Assert.assertNotNull(testShip);
         Assert.assertEquals(testShip.getId(), Long.valueOf(1L));
     }
 
@@ -35,6 +36,7 @@ public class ShipTest {
         Ship testShip = new Ship();
         List<Stone> testStones = new ArrayList<>();
         testShip.setStones(testStones);
+        Assert.assertNotNull(testShip);
         Assert.assertEquals(testShip.getStones(),testStones);
     }
 
@@ -42,18 +44,21 @@ public class ShipTest {
     public void setGameId() {
         Ship testShip = new Ship();
         testShip.setGameId(1L);
+        Assert.assertNotNull(testShip);
         Assert.assertEquals(testShip.getGameId(),Long.valueOf(1L));
     }
 
     @Test
     public void getMIN_STONES() {
         Ship testShip = new Ship(1,2);
+        Assert.assertNotNull(testShip);
         Assert.assertEquals(testShip.getMIN_STONES(),1);
     }
 
     @Test
     public void getMAX_STONES() {
         Ship testShip = new Ship(1,2);
+        Assert.assertNotNull(testShip);
         Assert.assertEquals(testShip.getMAX_STONES(),2);
     }
 
@@ -61,6 +66,7 @@ public class ShipTest {
     public void setHasSailed() {
         Ship testShip = new Ship();
         testShip.setHasSailed(true);
+        Assert.assertNotNull(testShip);
         Assert.assertEquals(testShip.isHasSailed(),true);
     }
 
@@ -69,6 +75,8 @@ public class ShipTest {
         Ship testShip = new Ship();
         BuildingSite testBuildingSite = new BuildingSite();
         testShip.setTargetSite(testBuildingSite);
+        Assert.assertNotNull(testShip);
+        Assert.assertNotNull(testBuildingSite);
         Assert.assertEquals(testShip.getTargetSite(),testBuildingSite);
     }
 }

@@ -26,6 +26,7 @@ public class StoneQuarryTest {
     public void setId() {
         StoneQuarry testStoneQuarry = new StoneQuarry();
         testStoneQuarry.setId(1L);
+        Assert.assertNotNull(testStoneQuarry);
         Assert.assertEquals(testStoneQuarry.getId(), Long.valueOf(1L));
     }
 
@@ -34,6 +35,7 @@ public class StoneQuarryTest {
         StoneQuarry testStoneQuarry = new StoneQuarry();
         List<Stone> testBlackStones = new ArrayList<>();
         testStoneQuarry.setBlackStones(testBlackStones);
+        Assert.assertNotNull(testStoneQuarry);
         Assert.assertEquals(testStoneQuarry.getBlackStones(),testBlackStones);
     }
 
@@ -42,6 +44,7 @@ public class StoneQuarryTest {
         StoneQuarry testStoneQuarry = new StoneQuarry();
         List<Stone> testWhiteStones = new ArrayList<>();
         testStoneQuarry.setBlackStones(testWhiteStones);
+        Assert.assertNotNull(testStoneQuarry);
         Assert.assertEquals(testStoneQuarry.getBlackStones(),testWhiteStones);
     }
 
@@ -50,6 +53,7 @@ public class StoneQuarryTest {
         StoneQuarry testStoneQuarry = new StoneQuarry();
         List<Stone> testBrownStones = new ArrayList<>();
         testStoneQuarry.setBlackStones(testBrownStones);
+        Assert.assertNotNull(testStoneQuarry);
         Assert.assertEquals(testStoneQuarry.getBlackStones(),testBrownStones);
     }
 
@@ -58,6 +62,7 @@ public class StoneQuarryTest {
         StoneQuarry testStoneQuarry = new StoneQuarry();
         List<Stone> testGrayStones = new ArrayList<>();
         testStoneQuarry.setBlackStones(testGrayStones);
+        Assert.assertNotNull(testStoneQuarry);
         Assert.assertEquals(testStoneQuarry.getBlackStones(),testGrayStones);
     }
 }

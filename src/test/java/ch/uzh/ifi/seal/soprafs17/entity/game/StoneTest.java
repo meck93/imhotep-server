@@ -22,6 +22,7 @@ public class StoneTest {
     public void setId() {
         Stone testStone = new Stone();
         testStone.setId(1L);
+        Assert.assertNotNull(testStone);
         Assert.assertEquals(testStone.getId(), Long.valueOf(1L));
     }
 
@@ -29,6 +30,7 @@ public class StoneTest {
     public void setColor() {
         Stone testStone = new Stone();
         testStone.setColor("black");
+        Assert.assertNotNull(testStone);
         Assert.assertEquals(testStone.getColor(),"black");
     }
 

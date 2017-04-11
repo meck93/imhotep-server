@@ -31,6 +31,7 @@ public class GameTest {
     public void setId() {
         Game testGame = new Game();
         testGame.setId(1L);
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getId(), Long.valueOf(1L));
     }
 
@@ -38,6 +39,7 @@ public class GameTest {
     public void setName() {
         Game testGame = new Game();
         testGame.setName("testGame");
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getName(), "testGame");
     }
 
@@ -45,6 +47,7 @@ public class GameTest {
     public void setOwner() {
         Game testGame = new Game();
         testGame.setOwner("tester");
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getOwner(), "tester");
     }
 
@@ -52,6 +55,7 @@ public class GameTest {
     public void setStatus() {
         Game testGame = new Game();
         testGame.setStatus(GameStatus.PENDING);
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getStatus(),GameStatus.PENDING);
     }
 
@@ -59,6 +63,7 @@ public class GameTest {
     public void setCurrentPlayer() {
         Game testGame = new Game();
         testGame.setCurrentPlayer(1);
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getCurrentPlayer(), Integer.valueOf(1));
     }
 
@@ -66,6 +71,7 @@ public class GameTest {
     public void setRoundCounter() {
         Game testGame = new Game();
         testGame.setRoundCounter(1);
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getRoundCounter(), 1);
     }
 
@@ -74,6 +80,8 @@ public class GameTest {
         Game testGame = new Game();
         BuildingSite testObelisk = new BuildingSite();
         testGame.setObelisk(testObelisk);
+        Assert.assertNotNull(testGame);
+        Assert.assertNotNull(testObelisk);
         Assert.assertEquals(testGame.getObelisk(), testObelisk);
     }
 
@@ -82,6 +90,8 @@ public class GameTest {
         Game testGame = new Game();
         BuildingSite testBurialChamber = new BuildingSite();
         testGame.setObelisk(testBurialChamber);
+        Assert.assertNotNull(testGame);
+        Assert.assertNotNull(testBurialChamber);
         Assert.assertEquals(testGame.getObelisk(), testBurialChamber);
     }
 
@@ -90,6 +100,8 @@ public class GameTest {
         Game testGame = new Game();
         BuildingSite testPyramid = new BuildingSite();
         testGame.setObelisk(testPyramid);
+        Assert.assertNotNull(testGame);
+        Assert.assertNotNull(testPyramid);
         Assert.assertEquals(testGame.getObelisk(), testPyramid);
     }
 
@@ -98,6 +110,8 @@ public class GameTest {
         Game testGame = new Game();
         BuildingSite testTemple = new BuildingSite();
         testGame.setObelisk(testTemple);
+        Assert.assertNotNull(testGame);
+        Assert.assertNotNull(testTemple);
         Assert.assertEquals(testGame.getObelisk(), testTemple);
     }
 
@@ -105,6 +119,7 @@ public class GameTest {
     public void setNumberOfPlayers() {
         Game testGame = new Game();
         testGame.setNumberOfPlayers(4);
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getNumberOfPlayers(), 4);
     }
 
@@ -113,6 +128,8 @@ public class GameTest {
         Game testGame = new Game();
         MarketPlace testMarketPlace = new MarketPlace();
         testGame.setMarketPlace(testMarketPlace);
+        Assert.assertNotNull(testGame);
+        Assert.assertNotNull(testMarketPlace);
         Assert.assertEquals(testGame.getMarketPlace(), testMarketPlace);
     }
 
@@ -121,6 +138,8 @@ public class GameTest {
         Game testGame = new Game();
         StoneQuarry testStoneQuarry = new StoneQuarry();
         testGame.setStoneQuarry(testStoneQuarry);
+        Assert.assertNotNull(testGame);
+        Assert.assertNotNull(testStoneQuarry);
         Assert.assertEquals(testGame.getStoneQuarry(), testStoneQuarry);
     }
 
@@ -129,6 +148,7 @@ public class GameTest {
         Game testGame = new Game();
         List<Round> testRounds = new ArrayList<>();
         testGame.setRounds(testRounds);
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getRounds(), testRounds);
     }
 
@@ -137,6 +157,7 @@ public class GameTest {
         Game testGame = new Game();
         List<Player> testPlayers = new ArrayList<>();
         testGame.setPlayers(testPlayers);
+        Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getPlayers(), testPlayers);
     }
 }

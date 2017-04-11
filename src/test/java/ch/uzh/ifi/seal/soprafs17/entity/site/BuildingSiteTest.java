@@ -28,6 +28,7 @@ public class BuildingSiteTest {
     public void getGameId() {
         BuildingSite testBuildingSite = new BuildingSite();
         testBuildingSite.setGameId(1L);
+        Assert.assertNotNull(testBuildingSite);
         Assert.assertEquals(testBuildingSite.getGameId(), Long.valueOf(1L));
     }
 
@@ -35,6 +36,7 @@ public class BuildingSiteTest {
     public void setSiteType() {
         BuildingSite testBuildingSite = new BuildingSite();
         testBuildingSite.setSiteType("TEST_NAME");
+        Assert.assertNotNull(testBuildingSite);
         Assert.assertEquals(testBuildingSite.getSiteType(),"TEST_NAME");
     }
 
@@ -42,6 +44,7 @@ public class BuildingSiteTest {
     public void setBuildingSiteType() {
         BuildingSite testBuildingSite = new BuildingSite();
         testBuildingSite.setBuildingSiteType(BuildingSiteType.OBELISK);
+        Assert.assertNotNull(testBuildingSite);
         Assert.assertEquals(testBuildingSite.getBuildingSiteType(),BuildingSiteType.OBELISK);
     }
 
@@ -50,6 +53,7 @@ public class BuildingSiteTest {
         BuildingSite testBuildingSite = new BuildingSite();
         List<Stone> testStones = new ArrayList<>();
         testBuildingSite.setStones(testStones);
+        Assert.assertNotNull(testBuildingSite);
         Assert.assertEquals(testBuildingSite.getStones(),testStones);
     }
 
@@ -58,6 +62,8 @@ public class BuildingSiteTest {
         BuildingSite testBuildingSite = new BuildingSite();
         Ship testDockedShip = new Ship();
         testBuildingSite.setDockedShip(testDockedShip);
+        Assert.assertNotNull(testBuildingSite);
+        Assert.assertNotNull(testDockedShip);
         Assert.assertEquals(testBuildingSite.getDockedShip(),testDockedShip);
     }
 }

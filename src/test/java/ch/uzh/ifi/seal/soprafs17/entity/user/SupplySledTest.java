@@ -27,6 +27,7 @@ public class SupplySledTest {
     public void setId() {
         SupplySled testSupplySled = new SupplySled();
         testSupplySled.setId(1L);
+        Assert.assertNotNull(testSupplySled);
         Assert.assertEquals(testSupplySled.getId(), Long.valueOf(1L));
     }
 
@@ -35,6 +36,7 @@ public class SupplySledTest {
         SupplySled testSupplySled = new SupplySled();
         List<Stone> testStones = new ArrayList<>();
         testSupplySled.setStones(testStones);
+        Assert.assertNotNull(testSupplySled);
         Assert.assertEquals(testSupplySled.getStones(),testStones);
     }
 
@@ -43,6 +45,8 @@ public class SupplySledTest {
         SupplySled testSupplySled = new SupplySled();
         Player testPlayer = new Player();
         testSupplySled.setPlayer(testPlayer);
+        Assert.assertNotNull(testPlayer);
+        Assert.assertNotNull(testSupplySled);
         Assert.assertEquals(testSupplySled.getPlayer(),testPlayer);
     }
 }
