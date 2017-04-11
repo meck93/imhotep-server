@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service.move.validation;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
@@ -35,29 +36,21 @@ public class PlaceStoneValidator implements IValidator {
         if (newMove.getPlayerNr() != game.getCurrentPlayer()) {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. PlayerNr of Move <> CurrentPlayer of Game");
         }
-        // The players' supplysled must hold at least one stone
-        if (game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().size() < GameConstants.MIN_STONES_TO_PLACE_STONE) {
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones in supplysled");
-        }
         // The ship must exist in the round
         if (game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()) == null){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship doesn't exist in Round: " + game.getRoundByRoundCounter(game.getRoundCounter()));
+        }
+        // The players' supplysled must hold at least one stone
+        if (game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().size() < GameConstants.MIN_STONES_TO_PLACE_STONE) {
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones in supplysled");
         }
         // The ship must not have sailed already
         if (game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).isHasSailed()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship already sailed");
         }
         // A ship must have at least one free space
-        /*
-        Function Body
-        throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. No space left on the ship");
-         */
-
-        // Check if the place assigned by the player is free
-        /*
-        Function Body
-        throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Place of the ship is already in use");
-         */
-
+       if(game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getStones().size() < game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getStones().size()){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. No space left on the ship");
+        }
     }
 }

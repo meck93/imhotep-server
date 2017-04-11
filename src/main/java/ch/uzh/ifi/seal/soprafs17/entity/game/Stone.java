@@ -18,6 +18,9 @@ public class Stone implements Serializable {
     @Column
     private String color;
 
+    @Column
+    private int placeOnShip;
+
     public Long getId() {
         return id;
     }
@@ -32,5 +35,13 @@ public class Stone implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public int getPlaceOnShip() {
+        return placeOnShip;
+    }
+
+    public void setPlaceOnShip(int placeOnShip) {
+        this.placeOnShip = placeOnShip;
     }
 }

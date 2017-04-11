@@ -47,43 +47,33 @@ public class PlaceStoneRule implements IRule {
         // removing one stone from players' sled
         List<Stone> updatedStones = supplySled.getStones();
         Stone stone = updatedStones.remove(0);
-        supplySled.setStones(updatedStones);
+
+
+        // Adding the position to selected stone
+        stone.setPlaceOnShip(newMove.getPlaceOnShip());
 
         // List of all current ships
         List<Ship> ships = game.getRoundByRoundCounter(game.getRoundCounter()).getShips();
 
         // Find the assigned ship
-        // TODO: Implement a new Getter in class Ship -> so you can directly access the ship, so you don't need the whole part below
-        //Ship assignedShip = ships.getShipById()
+        Ship assignedShip = game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId());
 
-        // Remove the current ship
+        // Remove the assigned ship
+        ships.remove(assignedShip);
 
-        /*
-        for (Ship ship : ships){
-            if (ship.getId() == move.getShipId())   // doesnt work
-        }
-        */
-
-        // Copy the list of stones from assigned ship
-        /*
-        List<Stones> updatedShipStones =  assignedShip.getStones()
-         */
-
-        // Add the stone to the list on the specified place
-        /*
-        updatedShipStones.add(index,move.getStone())
-         */
-
-        // Replace the old list of stones with the new list
-        /*
-        assignedShip.setStones(updatedShipStones)
-         */
+        // Adding stone on ship
+        assignedShip.getStones().add(stone);
 
         // Adding the updated Player back to the Game
         players.add(player);
         game.setPlayers(players);
 
+        // Adding the updated sled to the game
+        supplySled.setStones(updatedStones);
+
         // Adding the updated ship back to the game
+        ships.add(assignedShip);
+        game.getRoundByRoundCounter(game.getRoundCounter()).setShips(ships);
         /*
         ships.add(assignedShip);
         game.getRoundByRoundCounter(game.getRoundCounter()).setShips(ships);
