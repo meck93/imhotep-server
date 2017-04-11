@@ -19,6 +19,7 @@ public abstract class AMove implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	// Existence Reason: Hibernate also needs an empty constructor 
 	public AMove(){}
 
 	public AMove(String moveType){

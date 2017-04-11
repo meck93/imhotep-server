@@ -11,6 +11,7 @@ import javax.persistence.*;
 @JsonTypeName(value = "PLACE_STONE")
 public class PlaceStoneMove extends AMove {
 
+    // Existence Reason: Hibernate also needs an empty constructor
     public PlaceStoneMove(){}
 
     public PlaceStoneMove(String moveType){
