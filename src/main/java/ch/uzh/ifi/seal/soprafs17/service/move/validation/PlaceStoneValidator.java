@@ -48,7 +48,7 @@ public class PlaceStoneValidator implements IValidator {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship already sailed");
         }
         // A ship must have at least one free space
-       if(game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getMAX_STONES() < game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getStones().size()){
+       if(game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getMAX_STONES() == game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getStones().size()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. No space left on the ship");
         }
     }
