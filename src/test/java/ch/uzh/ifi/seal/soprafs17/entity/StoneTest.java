@@ -32,5 +32,5 @@ public class StoneTest {
         Assert.assertEquals(testStone.getColor(),"black");
     }
 
-    //TODO: test getStonePosition() 
+    //TODO: test getStonePosition()
 }
