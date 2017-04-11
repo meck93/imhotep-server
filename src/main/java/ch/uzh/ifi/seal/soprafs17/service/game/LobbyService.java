@@ -1,6 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service.game;
 
 
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
@@ -69,5 +71,42 @@ public class LobbyService {
 
         // Initializing the new player
         playerService.initializePlayer(gameId, player);
+    }
+
+    /*
+     * Starting the Game
+     */
+    public void startGame(Long gameId, Long playerId){
+        Player player = playerService.findPlayerById(playerId);
+        Game game = gameService.findById(gameId);
+
+        // Check that the Game is not already running
+        if (gameService.findById(gameId).getStatus() == GameStatus.RUNNING){
+            throw new BadRequestHttpException("The game has already been started - currently running!");
+        }
+        // Check if the player is the owner
+        if (!game.getOwner().equals(player.getUsername())){
+            throw new BadRequestHttpException("The Player: " + playerId + " is not the owner of the Game: " + gameId);
+        }
+        // Check that the Minimum Amount of Players is fulfilled
+        if (gameService.findNrOfPlayers(gameId) < GameConstants.MIN_PLAYERS){
+            throw new BadRequestHttpException("The game has less than minimum of two Players, therefore, it cannot start yet");
+        }
+
+        // Starting the Game
+        this.gameService.startGame(gameId);
+    }
+    /*
+     * Stopping a Game
+     */
+    public void stopGame(Long gameId, Long playerId) {
+        this.gameService.stopGame(gameId);
+    }
+
+    /*
+     * Deleting a Game
+     */
+    public void deleteGame(Long gameId) {
+        this.gameService.deleteGame(gameId);
     }
 }

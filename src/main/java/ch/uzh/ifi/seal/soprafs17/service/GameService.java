@@ -156,11 +156,10 @@ public class GameService {
      * Handles the initialisation of the game board. Requires an already created but not
      * running game with more than 1 player
      * @param gameId
-     * @param playerId
-     * @pre game, player =/= NULL && state of game =/= RUNNING && game.amountOfPlayers =g= 2
+     * @pre game =/= NULL && state of game =/= RUNNING && game.amountOfPlayers =g= 2
      * @post For all round specific attributes of a game and round: attribute =/= NULL
      */
-    public void startGame(Long gameId, Long playerId) {
+    public void startGame(Long gameId) {
         log.debug("startGame: " + gameId);
 
         // Initializing the game
@@ -233,7 +232,7 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public void stopGame(Long gameId, Long playerId) {
+    public void stopGame(Long gameId) {
         log.debug("stopGame: " + gameId);
 
         // TODO: Stop game in GameService
