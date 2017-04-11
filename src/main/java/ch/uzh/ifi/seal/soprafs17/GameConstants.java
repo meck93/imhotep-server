@@ -27,6 +27,7 @@ public class GameConstants {
 	// max stones on StoneQuarry
 	public static final int MAX_STONES_SUPPLY_SLED = 5;
 	public static final int MAX_STONES_ADDED_PER_MOVE = 3;
+	public static final int MIN_STONES_TO_PLACE_STONE = 1;
 
 	// sonarquabe suggested to add a private constructor instead of the implicit public one
 	private GameConstants() {};
