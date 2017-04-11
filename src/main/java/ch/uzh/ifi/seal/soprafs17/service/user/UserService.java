@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 /**
  * Service class for managing users.
  */
@@ -36,7 +35,7 @@ public class UserService {
         User newUser = new User();
         newUser.setName(name);
         newUser.setUsername(username);
-        newUser.setStatus(UserStatus.OFFLINE);
+        newUser.setStatus(UserStatus.ONLINE);
         newUser.setToken(UUID.randomUUID().toString());
 
         userRepository.save(newUser);
@@ -49,7 +48,11 @@ public class UserService {
     public String deleteUser(Long userId) {
         User user = userRepository.findById(userId);
 
-        userRepository.delete(userId);
+        if (user == null){
+            throw new NotFoundException(userId, "User");
+        }
+
+        userRepository.delete(user);
 
         log.debug("Deleted User: {}", user);
 
@@ -68,7 +71,6 @@ public class UserService {
         return list;
     }
 
-    // Mo's Testing bullshit
     public List<User> listUsers() {
         log.debug("listUsers");
 
@@ -88,28 +90,5 @@ public class UserService {
         if (user == null) throw new NotFoundException(userId, "User");
 
         return user;
-    }
-
-    public User login(Long userId){
-        log.debug("login: " + userId);
-
-        User user = this.getUser(userId);
-
-        user.setToken(UUID.randomUUID().toString());
-        user.setStatus(UserStatus.ONLINE);
-        user = userRepository.save(user);
-
-        return user;
-    }
-
-    public void logout(Long userId, String userToken){
-        log.debug("getUser: " + userId);
-
-        User user = userRepository.findOne(userId);
-
-        if (user != null && user.getToken().equals(userToken)) {
-            user.setStatus(UserStatus.OFFLINE);
-            userRepository.save(user);
-        }
     }
 }
