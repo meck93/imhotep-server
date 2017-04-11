@@ -162,6 +162,8 @@ public class RoundService {
                     case 3:
                         Stone stone3 = stoneService.createStone("BROWN");
                         Stone stone4 = stoneService.createStone("BROWN");
+                        stone3.setPlaceOnShip(1);
+                        stone4.setPlaceOnShip(2);
                         testStones.add(stone3);
                         testStones.add(stone4);
                         ship.setStones(testStones); break;
@@ -169,6 +171,9 @@ public class RoundService {
                         Stone stone5 = stoneService.createStone("WHITE");
                         Stone stone6 = stoneService.createStone("WHITE");
                         Stone stone7 = stoneService.createStone("WHITE");
+                        stone5.setPlaceOnShip(1);
+                        stone6.setPlaceOnShip(2);
+                        stone7.setPlaceOnShip(3);
                         testStones.add(stone5);
                         testStones.add(stone6);
                         testStones.add(stone7);
