@@ -1,8 +1,11 @@
 package ch.uzh.ifi.seal.soprafs17.service.game;
 
 
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import org.slf4j.Logger;
@@ -41,22 +44,69 @@ public class LobbyService {
         // Creates a new game
         Game newGame = gameService.createGame(game.getName(), game.getOwner());
 
-        // Creates a new player from the user who created the game
-        Player player = playerService.createPlayer(newGame.getId(), userId);
+        try {
+            // Creates a new player from the user who created the game
+            Player player = playerService.createPlayer(newGame.getId(), userId);
 
-        // Initializing the new player
-        String playerMapping = playerService.initializePlayer(newGame.getId(), player);
+            // Initializing the new player
+            playerService.initializePlayer(newGame.getId(), player);
+        }
+
+        // Remove the Game again if the User could not be converted into a Player
+        catch (BadRequestHttpException badRequestException){
+            // Delete the game
+            gameService.deleteGame(newGame.getId());
+            // Rethrow the exception
+            throw badRequestException;
+        }
 
         return newGame;
     }
     /*
      * Implementation of a User joining a Game. User -> Player. Player -> Joins Game.
      */
-    public String joinGame(Long gameId, Long userId){
+    public void joinGame(Long gameId, Long userId){
         // Creating a Player
         Player player = playerService.createPlayer(gameId, userId);
 
         // Initializing the new player
-        return playerService.initializePlayer(gameId, player);
+        playerService.initializePlayer(gameId, player);
+    }
+
+    /*
+     * Starting the Game
+     */
+    public void startGame(Long gameId, Long playerId){
+        Player player = playerService.findPlayerById(playerId);
+        Game game = gameService.findById(gameId);
+
+        // Check that the Game is not already running
+        if (gameService.findById(gameId).getStatus() == GameStatus.RUNNING){
+            throw new BadRequestHttpException("The game has already been started - currently running!");
+        }
+        // Check if the player is the owner
+        if (!game.getOwner().equals(player.getUsername())){
+            throw new BadRequestHttpException("The Player: " + playerId + " is not the owner of the Game: " + gameId);
+        }
+        // Check that the Minimum Amount of Players is fulfilled
+        if (gameService.findNrOfPlayers(gameId) < GameConstants.MIN_PLAYERS){
+            throw new BadRequestHttpException("The game has less than minimum of two Players, therefore, it cannot start yet");
+        }
+
+        // Starting the Game
+        this.gameService.startGame(gameId);
+    }
+    /*
+     * Stopping a Game
+     */
+    public void stopGame(Long gameId, Long playerId) {
+        this.gameService.stopGame(gameId);
+    }
+
+    /*
+     * Deleting a Game
+     */
+    public void deleteGame(Long gameId) {
+        this.gameService.deleteGame(gameId);
     }
 }

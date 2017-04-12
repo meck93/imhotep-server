@@ -11,6 +11,7 @@ import javax.persistence.*;
 @JsonTypeName(value = "PLACE_STONE")
 public class PlaceStoneMove extends AMove {
 
+    // Existence Reason: Hibernate also needs an empty constructor
     public PlaceStoneMove(){}
 
     public PlaceStoneMove(String moveType){
@@ -21,7 +22,7 @@ public class PlaceStoneMove extends AMove {
     private Long shipId;
 
     @Column
-    private int stonePosition;
+    private int placeOnShip;
 
     @OneToOne(targetEntity = Stone.class, fetch = FetchType.LAZY)
     private Stone stone;
@@ -34,12 +35,12 @@ public class PlaceStoneMove extends AMove {
         this.shipId = shipId;
     }
 
-    public int getStonePosition() {
-        return stonePosition;
+    public int getPlaceOnShip() {
+        return placeOnShip;
     }
 
-    public void setStonePosition(int stonePosition) {
-        this.stonePosition = stonePosition;
+    public void setPlaceOnShip(int placeOnShip) {
+        this.placeOnShip = placeOnShip;
     }
 
     public Stone getStone() {

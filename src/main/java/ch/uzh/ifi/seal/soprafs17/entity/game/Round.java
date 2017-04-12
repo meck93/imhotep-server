@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.game;
 
 import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class Round implements Serializable{
     private Game game;
 
     @OneToMany(targetEntity= Ship.class)
+    @OrderBy
     private List<Ship> ships;
 
     public Long getId() {
@@ -80,5 +82,18 @@ public class Round implements Serializable{
 
     public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
+    }
+
+    public Ship getShipById(Long shipId){
+        Ship result = null;
+        for (Ship ship : ships){
+            if (ship.getId().equals(shipId)){
+                result = ship;
+            }
+        }
+
+        if (result == null) throw new NotFoundException(shipId, "Ship");
+
+        return result;
     }
 }

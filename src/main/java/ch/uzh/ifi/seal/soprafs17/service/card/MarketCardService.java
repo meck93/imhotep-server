@@ -27,7 +27,6 @@ public class MarketCardService {
     private static final int OCCUR_TWICE = 2;
     private static final int OCCUR_THREE_TIMES = 3;
     private static final int OCCUR_TEN_TIMES = 10;
-
     private static final int MARKET_CARD_DECK_SIZE = 4;
 
     private final MarketCardRepository marketCardRepository;
@@ -45,11 +44,15 @@ public class MarketCardService {
      */
     public MarketCard createMarketCard(Long gameId, String color, MarketCardType marketCardType){
         log.debug("Creating a marketCard" + gameId);
+
+        // Creating a MarketCard of Type: marketCardType
         MarketCard marketCard = new MarketCard();
         marketCard.setGameId(gameId);
         marketCard.setColor(color);
         marketCard.setMarketCardType(marketCardType);
+
         marketCardRepository.save(marketCard);
+
         return marketCard;
     }
 
@@ -83,7 +86,6 @@ public class MarketCardService {
 
         return result;
     }
-
 
     /**
      * Creates the marketCardDeck

@@ -37,7 +37,7 @@ public class Ship implements Serializable{
     private BuildingSite targetSite;
 
     @OneToMany(targetEntity = Stone.class)
-    // Maybe add @OrderBy(position ASC) again -> but then Stone.class needs a variable position
+    @OrderBy("placeOnShip ASC")
     private List<Stone> stones;
 
     public Ship() {
@@ -74,7 +74,7 @@ public class Ship implements Serializable{
         this.gameId = gameId;
     }
 
-    public int getMIN_STONE() {
+    public int getMIN_STONES() {
         return MIN_STONES;
     }
 
