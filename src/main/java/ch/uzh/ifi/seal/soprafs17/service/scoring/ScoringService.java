@@ -27,18 +27,18 @@ public class ScoringService {
         this.rateables = new ArrayList<>();
 
         // Adding the rules of the Game
-        // this.rateables.add(new ObeliskScorer());
+        // this.rateables.add(new PyramidScorer());
 
     }
 
-    public void score(Game game, BuildingSite buildingSite) {
+    public synchronized void score(Game game, BuildingSite buildingSite) {
         log.debug("Scoring Game: {}", game.getId());
 
         for (IRateable rateable : rateables){
             // Check if Scoring-Rule supports the BuildingType
-            if (rateable.supports(buildingSite)) {
+            if (rateable.supports(buildingSite.getBuildingSiteType())) {
                 // Score the BuildingSite
-                rateable.score(buildingSite);
+                rateable.score(game);
             }
         }
     }
