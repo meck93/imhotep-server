@@ -35,5 +35,10 @@ public class StoneTest {
         Assert.assertEquals(testStone.getColor(),"black");
     }
 
-    //TODO: test getStonePosition()
+    @Test
+    public void setPlaceOnShip() {
+        Stone testStone = new Stone();
+        testStone.setPlaceOnShip(1);
+        Assert.assertEquals(testStone.getPlaceOnShip(), 1);
+    }
 }

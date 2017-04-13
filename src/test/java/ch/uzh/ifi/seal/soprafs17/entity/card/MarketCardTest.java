@@ -59,8 +59,5 @@ public class MarketCardTest {
         Assert.assertNotNull(testMarketCard);
         Assert.assertEquals(testMarketCard.getColor(),"red");
     }
-
-
-
 }
 

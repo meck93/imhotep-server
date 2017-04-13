@@ -24,28 +24,11 @@ import java.util.List;
 public class MarketPlaceTest {
 
     @Test
-    public void getGameId() {
-        MarketPlace testMarketPlace = new MarketPlace();
-        testMarketPlace.setGameId(1L);
-        Assert.assertNotNull(testMarketPlace);
-        Assert.assertEquals(testMarketPlace.getGameId(), Long.valueOf(1L));
-
-    }
-
-    @Test
     public void setMarketCards() {
         MarketPlace testMarketPlace = new MarketPlace();
         List<MarketCard> testMarketCards = new ArrayList<>();
         testMarketPlace.setMarketCards(testMarketCards);
         Assert.assertNotNull(testMarketPlace);
         Assert.assertEquals(testMarketPlace.getMarketCards(),testMarketCards);
-    }
-
-    @Test
-    public void setSiteType() {
-        MarketPlace testMarketPlace = new MarketPlace();
-        testMarketPlace.setSiteType("TEST_NAME");
-        Assert.assertNotNull(testMarketPlace);
-        Assert.assertEquals(testMarketPlace.getSiteType(),"TEST_NAME");
     }
 }
