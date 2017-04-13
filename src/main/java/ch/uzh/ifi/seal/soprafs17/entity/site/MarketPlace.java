@@ -1,20 +1,15 @@
 package ch.uzh.ifi.seal.soprafs17.entity.site;
 
-/**
- * Created by Cristian on 26.03.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "MarketPlace")
 @DiscriminatorValue("MARKET_PLACE")
-public class MarketPlace extends ASite implements Serializable{
+public class MarketPlace extends ASite{
 
     public MarketPlace(){};
 

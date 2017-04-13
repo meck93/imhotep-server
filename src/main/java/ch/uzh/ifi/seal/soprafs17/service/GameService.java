@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
@@ -84,6 +84,7 @@ public class GameService {
         newGame.setRoundCounter(0);
         newGame.setPlayers(new ArrayList<>());
         newGame.setRounds(new ArrayList<>());
+        newGame.setBuildingSites(new ArrayList<>());
         newGame.setStatus(GameStatus.PENDING);
 
         gameRepository.save(newGame);
@@ -188,10 +189,10 @@ public class GameService {
         game.setMarketPlace(marketPlace);
 
         // Create the four BuildingSites for the game
-        game.setObelisk(buildingSiteService.createBuildingSite(BuildingSiteType.OBELISK, gameId));
-        game.setPyramid(buildingSiteService.createBuildingSite(BuildingSiteType.PYRAMID, gameId));
-        game.setTemple(buildingSiteService.createBuildingSite(BuildingSiteType.TEMPLE, gameId));
-        game.setBurialChamber(buildingSiteService.createBuildingSite(BuildingSiteType.BURIAL_CHAMBER, gameId));
+        game.getBuildingSites().add(buildingSiteService.createBuildingSite(GameConstants.OBELISK, gameId));
+        game.getBuildingSites().add(buildingSiteService.createBuildingSite(GameConstants.PYRAMID, gameId));
+        game.getBuildingSites().add(buildingSiteService.createBuildingSite(GameConstants.TEMPLE, gameId));
+        game.getBuildingSites().add(buildingSiteService.createBuildingSite(GameConstants.BURIAL_CHAMBER, gameId));
 
         // Create the stoneQuarry & fill it with Stones
         StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry(game);
@@ -205,6 +206,7 @@ public class GameService {
 
         // Setting the CurrentPlayer value to the playerNr of the 1. Player in the List of Players
         game.setCurrentPlayer(game.getPlayers().get(0).getPlayerNumber());
+        game.setCurrentSubRoundPlayer(0);
 
         gameRepository.save(game);
     }
