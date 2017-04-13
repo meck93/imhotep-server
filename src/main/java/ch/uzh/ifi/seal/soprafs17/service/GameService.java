@@ -118,8 +118,6 @@ public class GameService {
         List<Game> result = new ArrayList<>();
         gameRepository.findAll().forEach(result::add);
 
-        if (result.isEmpty()) throw new NotFoundException("Games");
-
         return result;
     }
 
