@@ -64,7 +64,6 @@ public class ShipService {
 
         Ship ship = new Ship(minSize, maxSize);
         ship.setHasSailed(false);
-        ship.setTargetSite(null);
         ship.setGameId(gameId);
         ship.setStones(new ArrayList<>());
 

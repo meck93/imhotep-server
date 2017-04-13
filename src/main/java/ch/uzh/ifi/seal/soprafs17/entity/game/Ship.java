@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.entity.game;
 
-import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,10 +30,6 @@ public class Ship implements Serializable{
     @Column
     @JsonProperty(value = "MAX_STONES")
     private final int MAX_STONES;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BuildingSite_ID")
-    private BuildingSite targetSite;
 
     @OneToMany(targetEntity = Stone.class)
     @OrderBy("placeOnShip ASC")
@@ -88,13 +83,5 @@ public class Ship implements Serializable{
 
     public void setHasSailed(boolean hasSailed) {
         this.hasSailed = hasSailed;
-    }
-
-    public BuildingSite getTargetSite() {
-        return targetSite;
-    }
-
-    public void setTargetSite(BuildingSite targetSite) {
-        this.targetSite = targetSite;
     }
 }

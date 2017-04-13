@@ -1,8 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.service.site;
 
-import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
-import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
+import ch.uzh.ifi.seal.soprafs17.entity.site.*;
+import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
 import ch.uzh.ifi.seal.soprafs17.service.game.StoneService;
@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static ch.uzh.ifi.seal.soprafs17.GameConstants.*;
 
 @Service
 @Transactional
@@ -33,11 +35,24 @@ public class BuildingSiteService {
      * Creating a building site and returning it
      * @param SiteType siteType the type of building site to be created
      */
-    public BuildingSite createBuildingSite(BuildingSiteType buildingSiteType, Long gameId){
-        log.debug("Creating a building site of type: " + buildingSiteType);
+    public BuildingSite createBuildingSite(String siteType, Long gameId){
+        log.debug("Creating a building site of type: " + siteType);
 
-        BuildingSite buildingSite = new BuildingSite(buildingSiteType, gameId);
-        buildingSite.setStones(new ArrayList<>());
+        BuildingSite buildingSite = null;
+
+        switch (siteType){
+            case PYRAMID: buildingSite = new Pyramid(gameId); break;
+            case TEMPLE: buildingSite = new Temple(gameId); break;
+            case OBELISK: buildingSite = new Obelisk(gameId); break;
+            case BURIAL_CHAMBER: buildingSite = new BurialChamber(gameId); break;
+        }
+
+        if (buildingSite != null) {
+            buildingSite.setStones(new ArrayList<>());
+        }
+        else {
+            throw new InternalServerException("Failed to create BuildingSite: " + siteType);
+        }
 
         aSiteRepository.save(buildingSite);
 
@@ -48,12 +63,12 @@ public class BuildingSiteService {
      * Returns the BuildingSite of {siteType} associated to the Game with Id: {gameId}
      * @PARAM gameId the Game Id, siteType the type of the BuildingSite
      */
-    public BuildingSite getBuildingSite(Long gameId, BuildingSiteType buildingSiteType) {
-        log.debug("Finding BuildingSite: " + buildingSiteType + " of Game: " + gameId);
+    public BuildingSite getBuildingSite(Long gameId, String siteType) {
+        log.debug("Finding BuildingSite: " + siteType + " of Game: " + gameId);
 
-        BuildingSite result = aSiteRepository.findBuildingSite(gameId, buildingSiteType);
+        BuildingSite result = aSiteRepository.findBuildingSite(gameId, siteType);
 
-        if (result == null) throw new NotFoundException(buildingSiteType.toString());
+        if (result == null) throw new NotFoundException(siteType);
 
         return result;
     }

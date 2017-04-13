@@ -5,17 +5,15 @@ package ch.uzh.ifi.seal.soprafs17.entity.game;
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
-import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
-import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
-import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.site.*;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
 public class GameTest {
@@ -68,6 +67,14 @@ public class GameTest {
     }
 
     @Test
+    public void setCurrentSubRoundPlayer(){
+        Game testGame = new Game();
+        testGame.setCurrentSubRoundPlayer(1);
+        Assert.assertNotNull(testGame);
+        Assert.assertEquals(testGame.getCurrentSubRoundPlayer(), 1);
+    }
+
+    @Test
     public void setRoundCounter() {
         Game testGame = new Game();
         testGame.setRoundCounter(1);
@@ -78,41 +85,41 @@ public class GameTest {
     @Test
     public void setObelisk() {
         Game testGame = new Game();
-        BuildingSite testObelisk = new BuildingSite();
-        testGame.setObelisk(testObelisk);
+        BuildingSite testObelisk = new Obelisk();
+        testGame.getBuildingSites().add(testObelisk);
         Assert.assertNotNull(testGame);
         Assert.assertNotNull(testObelisk);
-        Assert.assertEquals(testGame.getObelisk(), testObelisk);
+        Assert.assertEquals(testGame.getBuildingSite(GameConstants.OBELISK), testObelisk);
     }
 
     @Test
     public void setBurialChamber() {
         Game testGame = new Game();
-        BuildingSite testBurialChamber = new BuildingSite();
-        testGame.setObelisk(testBurialChamber);
+        BuildingSite testBurialChamber = new BurialChamber();
+        testGame.getBuildingSites().add(testBurialChamber);
         Assert.assertNotNull(testGame);
         Assert.assertNotNull(testBurialChamber);
-        Assert.assertEquals(testGame.getObelisk(), testBurialChamber);
+        Assert.assertEquals(testGame.getBuildingSite(GameConstants.BURIAL_CHAMBER), testBurialChamber);
     }
 
     @Test
     public void setPyramid() {
         Game testGame = new Game();
-        BuildingSite testPyramid = new BuildingSite();
-        testGame.setObelisk(testPyramid);
+        BuildingSite testPyramid = new Pyramid();
+        testGame.getBuildingSites().add(testPyramid);
         Assert.assertNotNull(testGame);
         Assert.assertNotNull(testPyramid);
-        Assert.assertEquals(testGame.getObelisk(), testPyramid);
+        Assert.assertEquals(testGame.getBuildingSite(GameConstants.PYRAMID), testPyramid);
     }
 
     @Test
     public void setTemple() {
         Game testGame = new Game();
-        BuildingSite testTemple = new BuildingSite();
-        testGame.setObelisk(testTemple);
+        BuildingSite testTemple = new Temple();
+        testGame.getBuildingSites().add(testTemple);
         Assert.assertNotNull(testGame);
         Assert.assertNotNull(testTemple);
-        Assert.assertEquals(testGame.getObelisk(), testTemple);
+        Assert.assertEquals(testGame.getBuildingSite(GameConstants.TEMPLE), testTemple);
     }
 
     @Test //same for getOwner()

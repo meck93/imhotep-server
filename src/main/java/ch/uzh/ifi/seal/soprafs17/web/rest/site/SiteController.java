@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest.site;
 
-import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
@@ -27,10 +26,10 @@ public class SiteController extends GenericController {
         this.marketPlaceService = marketPlaceService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{buildingSiteType}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{siteType}")
     @ResponseStatus(HttpStatus.OK)
-    public BuildingSite getObelisk(@PathVariable("gameId") Long gameId, @PathVariable("buildingSiteType") BuildingSiteType buildingSiteType) {
-        return buildingSiteService.getBuildingSite(gameId, buildingSiteType);
+    public BuildingSite getObelisk(@PathVariable("gameId") Long gameId, @PathVariable("siteType") String siteType) {
+        return buildingSiteService.getBuildingSite(gameId, siteType);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/MARKET_PLACE")

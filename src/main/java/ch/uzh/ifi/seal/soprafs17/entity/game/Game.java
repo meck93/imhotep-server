@@ -30,37 +30,31 @@ public class Game implements Serializable {
 	private GameStatus status;
 
 	@Column
-	private Integer currentPlayer;
+	private int currentPlayer;
 
 	@Column
-	private int roundCounter;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	private BuildingSite obelisk;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	private BuildingSite burialChamber;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	private BuildingSite pyramid;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	private BuildingSite temple;
+	private int currentSubRoundPlayer;
 
 	@Column
 	private int numberOfPlayers;
 
-	@OneToOne(targetEntity = MarketPlace.class, cascade = CascadeType.ALL)
+	@Column
+	private int roundCounter;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<BuildingSite> buildingSites;
+
+	@OneToOne(cascade = CascadeType.ALL)
 	private MarketPlace marketPlace;
 
-	@OneToOne(targetEntity = StoneQuarry.class, mappedBy = "game", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "game", cascade = CascadeType.ALL)
 	private StoneQuarry stoneQuarry;
 
-	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<Round> rounds;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
 	@JsonManagedReference
 	private List<Player> players;
 
@@ -74,16 +68,21 @@ public class Game implements Serializable {
 	}
 
 	public Round getRoundByRoundCounter(int roundCounter){
-		Round result = null;
 		for (Round round : this.getRounds()){
 			if (round.getRoundNumber() == this.getRoundCounter()){
-				result = round;
+				return round;
 			}
 		}
+		throw new NotFoundException("Round");
+	}
 
-		if (result == null) throw new NotFoundException("Round");
-
-		return result;
+	public BuildingSite getBuildingSite(String siteType){
+		for (BuildingSite buildingSite : this.buildingSites){
+			if (buildingSite.getSiteType().equals(siteType)){
+				return buildingSite;
+			}
+		}
+		throw new NotFoundException(siteType);
 	}
 
 	public Long getId() {
@@ -134,38 +133,6 @@ public class Game implements Serializable {
 		this.roundCounter = roundCounter;
 	}
 
-	public BuildingSite getObelisk() {
-		return obelisk;
-	}
-
-	public void setObelisk(BuildingSite obelisk) {
-		this.obelisk = obelisk;
-	}
-
-	public BuildingSite getBurialChamber() {
-		return burialChamber;
-	}
-
-	public void setBurialChamber(BuildingSite burialChamber) {
-		this.burialChamber = burialChamber;
-	}
-
-	public BuildingSite getPyramid() {
-		return pyramid;
-	}
-
-	public void setPyramid(BuildingSite pyramid) {
-		this.pyramid = pyramid;
-	}
-
-	public BuildingSite getTemple() {
-		return temple;
-	}
-
-	public void setTemple(BuildingSite temple) {
-		this.temple = temple;
-	}
-
 	public int getNumberOfPlayers() {
 		return numberOfPlayers;
 	}
@@ -204,5 +171,25 @@ public class Game implements Serializable {
 
 	public void setPlayers(List<Player> players) {
 		this.players = players;
+	}
+
+	public void setCurrentPlayer(int currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public int getCurrentSubRoundPlayer() {
+		return currentSubRoundPlayer;
+	}
+
+	public void setCurrentSubRoundPlayer(int currentSubRoundPlayer) {
+		this.currentSubRoundPlayer = currentSubRoundPlayer;
+	}
+
+	public List<BuildingSite> getBuildingSites() {
+		return buildingSites;
+	}
+
+	public void setBuildingSites(List<BuildingSite> buildingSites) {
+		this.buildingSites = buildingSites;
 	}
 }

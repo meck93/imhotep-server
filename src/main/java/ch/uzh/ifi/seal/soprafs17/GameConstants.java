@@ -12,6 +12,11 @@ public class GameConstants {
 	public static final String WHITE = "WHITE";
 	public static final String BLACK = "BLACK";
 
+	public static final String PYRAMID = "PYRAMID";
+	public static final String TEMPLE = "TEMPLE";
+	public static final String OBELISK = "OBELISK";
+	public static final String BURIAL_CHAMBER = "BURIAL_CHAMBER";
+
 	// different types of moves / discriminator values for hibernate db
 	public static final String GET_STONES = "GET_STONES";
 	public static final String PLACE_STONE = "PLACE_STONE";

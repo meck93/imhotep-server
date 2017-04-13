@@ -1,13 +1,12 @@
 package ch.uzh.ifi.seal.soprafs17.entity.site;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "SITE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "SITE_TYPE", discriminatorType = DiscriminatorType.STRING)
-public abstract class ASite {
+public abstract class ASite implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +18,6 @@ public abstract class ASite {
     private Long gameId;
 
     @Column(name = "SITE_TYPE", updatable = false, insertable = false)
-    @JsonIgnore
     private String siteType;
 
     public Long getId() {
