@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service.scoring;
 
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,25 +20,30 @@ public class ScoringService {
 
     private final Logger log = LoggerFactory.getLogger(ScoringService.class);
 
-    private List<IRateable> rateables;
+    private GameRepository gameRepository;
+    private List<IScoreable> rateables;
+
+    public ScoringService(GameRepository gameRepository){
+        this.gameRepository = gameRepository;
+    }
 
     @PostConstruct
     public void addValidation(){
         this.rateables = new ArrayList<>();
 
         // Adding the rules of the Game
-        // this.rateables.add(new PyramidScorer());
-
+        this.rateables.add(new PyramidScorer());
     }
 
-    public synchronized void score(Game game, BuildingSite buildingSite) {
+    public synchronized void score(Game game) {
         log.debug("Scoring Game: {}", game.getId());
 
-        for (IRateable rateable : rateables){
+        for (IScoreable rateable : rateables){
             // Check if Scoring-Rule supports the BuildingType
-            if (rateable.supports(buildingSite.getBuildingSiteType())) {
+            if (rateable.supports(game)) {
                 // Score the BuildingSite
-                rateable.score(game);
+                Game changedGame = rateable.score(game);
+                gameRepository.save(changedGame);
             }
         }
     }
