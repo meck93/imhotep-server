@@ -33,14 +33,15 @@ public class ScoringService {
 
         // Adding the rules of the Game
         this.rateables.add(new PyramidScorer());
+        this.rateables.add(new TempleScorer());
     }
 
-    public synchronized void score(Game game) {
+    public synchronized void score(Game game, String siteType) {
         log.debug("Scoring Game: {}", game.getId());
 
         for (IScoreable rateable : rateables){
             // Check if Scoring-Rule supports the BuildingType
-            if (rateable.supports(game)) {
+            if (rateable.supports(siteType)) {
                 // Score the BuildingSite
                 Game changedGame = rateable.score(game);
                 gameRepository.save(changedGame);

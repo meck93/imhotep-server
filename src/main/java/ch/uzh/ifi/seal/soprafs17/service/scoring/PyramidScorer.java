@@ -14,8 +14,8 @@ import static ch.uzh.ifi.seal.soprafs17.GameConstants.*;
 public class PyramidScorer implements IScoreable {
 
     @Override
-    public boolean supports(Game game) {
-        return true;
+    public boolean supports(String siteType) {
+        return (siteType.equals(PYRAMID));
     }
 
     public Game score(Game game){
@@ -71,9 +71,9 @@ public class PyramidScorer implements IScoreable {
             }
         }
 
-        // Adding the points to the player
+        // Adding the points to the Players points[] at position 0: Pyramid Position
         for (int i = 0; i < game.getNumberOfPlayers(); i++){
-            game.getPlayerByPlayerNr(i+1).setPoints(points[i]);
+            game.getPlayerByPlayerNr(i+1).getPoints()[0] = points[i];
         }
 
         return game;
