@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.service.scoring;
 
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
+import ch.uzh.ifi.seal.soprafs17.entity.site.Pyramid;
 
 import java.util.List;
 
@@ -23,62 +25,45 @@ public class PyramidScorer implements IScoreable {
     public Game scoreNow(Game game) {
 
         // Scores for the Pyramid
-        int[] scores = {2, 1, 3, 2, 4, 3, 2, 1, 3, 2, 3, 1, 3, 4};
+        Pyramid pyramid = (Pyramid) game.getBuildingSite(PYRAMID);
+        int scores[] = pyramid.getScores();
 
         // Retrieve the Stones from the Pyramid
-        List<Stone> stones = game.getBuildingSite("PYRAMID").getStones();
+        List<Stone> stones = game.getBuildingSite(GameConstants.PYRAMID).getStones();
 
         // Scores of the players
-        // Black
-        int scoreP1 = 0;
-        // White
-        int scoreP2 = 0;
-        // Brown
-        int scoreP3 = 0;
-        // Gray
-        int scoreP4 = 0;
+        // BLACK = Player1, WHITE = Player2, BROWN = Player3, GRAY = Player4
+        int points[] = new int[game.getNumberOfPlayers()];
 
         // Adding up the scores
         for (Stone stone : stones){
+            // If the stones is one of the first 14 stones then assign a fixed value from the scores array
             if (stones.indexOf(stone) < 14){
+                // Add the points to the correct player according to the color
                 switch (stone.getColor()){
-                    case BLACK: scoreP1 = scoreP1 + scores[stones.indexOf(stone)]; break;
-                    case WHITE: scoreP2 = scoreP2 + scores[stones.indexOf(stone)]; break;
-                    case BROWN: scoreP3 = scoreP3 + scores[stones.indexOf(stone)]; break;
-                    case GRAY: scoreP4 = scoreP4 + scores[stones.indexOf(stone)]; break;
+                    case BLACK: points[0] = points[0] + scores[stones.indexOf(stone)]; break;
+                    case WHITE: points[1] = points[1] + scores[stones.indexOf(stone)]; break;
+                    case BROWN: points[2] = points[2] + scores[stones.indexOf(stone)]; break;
+                    case GRAY: points[3] = points[3] + scores[stones.indexOf(stone)]; break;
                 }
             }
+            // Just add 1 if all 14 places on the pyramid are already occupied
             else {
+                // Add the points to the correct player according to the color
                 switch (stone.getColor()){
-                    case BLACK: scoreP1 = scoreP1 + 1; break;
-                    case WHITE: scoreP2 = scoreP2 + 1; break;
-                    case BROWN: scoreP3 = scoreP3 + 1; break;
-                    case GRAY: scoreP4 = scoreP4 + 1; break;
+                    case BLACK: points[0] = points[0] + 1; break;
+                    case WHITE: points[1] = points[1] + 1; break;
+                    case BROWN: points[2] = points[2] + 1; break;
+                    case GRAY: points[3] = points[3] + 1; break;
 
                 }
             }
         }
 
-        int finalScoreP1 = scoreP1;
-        int finalScoreP2 = scoreP2;
-        int finalScoreP3 = scoreP3;
-        int finalScoreP4 = scoreP4;
-
         // Adding the points to the player
-        game.getPlayers().forEach(player -> {
-            if (player.getPlayerNumber() == 1) {
-                player.setPoints(finalScoreP1);
-            }
-            if (player.getPlayerNumber() == 2) {
-                player.setPoints(finalScoreP2);
-            }
-            if (player.getPlayerNumber() == 3) {
-                player.setPoints(finalScoreP3);
-            }
-            if (player.getPlayerNumber() == 4) {
-                player.setPoints(finalScoreP4);
-            }
-        });
+        for (int i = 0; i < game.getNumberOfPlayers(); i++){
+            game.getPlayerByPlayerNr(i+1).setPoints(points[i]);
+        }
 
         return game;
     }
