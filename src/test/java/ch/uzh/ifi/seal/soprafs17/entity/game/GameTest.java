@@ -5,9 +5,10 @@ package ch.uzh.ifi.seal.soprafs17.entity.game;
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
-import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.site.*;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
+import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.site.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import org.junit.Assert;
 import org.junit.Test;
@@ -82,46 +83,6 @@ public class GameTest {
         Assert.assertEquals(testGame.getRoundCounter(), 1);
     }
 
-    @Test
-    public void setObelisk() {
-        Game testGame = new Game();
-        BuildingSite testObelisk = new Obelisk();
-        testGame.getBuildingSites().add(testObelisk);
-        Assert.assertNotNull(testGame);
-        Assert.assertNotNull(testObelisk);
-        Assert.assertEquals(testGame.getBuildingSite(GameConstants.OBELISK), testObelisk);
-    }
-
-    @Test
-    public void setBurialChamber() {
-        Game testGame = new Game();
-        BuildingSite testBurialChamber = new BurialChamber();
-        testGame.getBuildingSites().add(testBurialChamber);
-        Assert.assertNotNull(testGame);
-        Assert.assertNotNull(testBurialChamber);
-        Assert.assertEquals(testGame.getBuildingSite(GameConstants.BURIAL_CHAMBER), testBurialChamber);
-    }
-
-    @Test
-    public void setPyramid() {
-        Game testGame = new Game();
-        BuildingSite testPyramid = new Pyramid();
-        testGame.getBuildingSites().add(testPyramid);
-        Assert.assertNotNull(testGame);
-        Assert.assertNotNull(testPyramid);
-        Assert.assertEquals(testGame.getBuildingSite(GameConstants.PYRAMID), testPyramid);
-    }
-
-    @Test
-    public void setTemple() {
-        Game testGame = new Game();
-        BuildingSite testTemple = new Temple();
-        testGame.getBuildingSites().add(testTemple);
-        Assert.assertNotNull(testGame);
-        Assert.assertNotNull(testTemple);
-        Assert.assertEquals(testGame.getBuildingSite(GameConstants.TEMPLE), testTemple);
-    }
-
     @Test //same for getOwner()
     public void setNumberOfPlayers() {
         Game testGame = new Game();
@@ -166,5 +127,60 @@ public class GameTest {
         testGame.setPlayers(testPlayers);
         Assert.assertNotNull(testGame);
         Assert.assertEquals(testGame.getPlayers(), testPlayers);
+    }
+
+    @Test
+    public void getRoundByRoundCounter() {
+        Round testRound = new Round();
+        Game testGame = new Game();
+        List<Round> testRounds = new ArrayList<>();
+        testRounds.add(testRound);
+        testRound.setRoundNumber(1);
+        testGame.setRoundCounter(1);
+        testGame.setRounds(testRounds);
+        Assert.assertEquals(testRounds.get(0), testGame.getRoundByRoundCounter(1));
+    }
+
+    @Test
+    public void getPlayerByPlayerNr() {
+        Player testPlayer = new Player();
+        Game testGame = new Game();
+        List<Player> testPlayers = new ArrayList<>();
+        testPlayers.add(testPlayer);
+        testGame.setPlayers(testPlayers);
+        testPlayer.setPlayerNumber(1);
+        Assert.assertNotNull(testPlayer.getPlayerNumber());
+        Assert.assertEquals(testGame.getPlayerByPlayerNr(1),testPlayers.get(0));
+    }
+
+    @Test
+    public void setBuildingSites() {
+        Game testGame = new Game();
+        List<BuildingSite> testBuildingSites = new ArrayList<>();
+        Pyramid testPyramid = new Pyramid();
+        testGame.setBuildingSites(testBuildingSites);
+        testBuildingSites.add(testPyramid);
+        Assert.assertEquals(testGame.getBuildingSites(),testBuildingSites);
+    }
+
+    @Test
+    public void getBuildingSite() {
+        /*
+        Game testGame = new Game();
+        List<BuildingSite> testBuildingSites = new ArrayList<>();
+        Pyramid testPyramid = new Pyramid();
+        testGame.setBuildingSites(testBuildingSites);
+        Assert.assertEquals(testGame.getBuildingSite("PYRAMID"),testPyramid);
+        */
+    }
+
+    @Test
+    public void BuildingSite() {
+        Game testGame = new Game();
+        Pyramid testPyramid = new Pyramid();
+        List<BuildingSite> testBuildingSites = new ArrayList<>();
+        testBuildingSites.add(testPyramid);
+        testGame.setBuildingSites(testBuildingSites);
+        Assert.assertEquals(testPyramid,testGame.getBuildingSites().get(0));
     }
 }

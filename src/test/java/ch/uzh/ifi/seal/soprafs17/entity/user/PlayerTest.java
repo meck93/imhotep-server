@@ -34,6 +34,14 @@ public class PlayerTest {
     }
 
     @Test
+    public void setGameId() {
+        Game testGame = new Game();
+        testGame.setId(1L);
+        Assert.assertNotNull(testGame);
+        Assert.assertEquals(testGame.getId(),Long.valueOf(1L));
+    }
+
+    @Test
     public void setPoints() {
         Player testPlayer = new Player();
         testPlayer.setPoints(10);

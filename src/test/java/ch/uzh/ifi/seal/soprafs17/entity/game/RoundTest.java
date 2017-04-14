@@ -78,5 +78,17 @@ public class RoundTest {
         Assert.assertEquals(testRound.getRoundNumber(),1);
     }
 
-    //TODO: Test Round -> getShipById()
+    @Test
+    public void getShipById() {
+        Round testRound = new Round();
+        Ship testShip1 = new Ship();
+        Ship testShip2 = new Ship();
+        testShip1.setId(1L);
+        testShip2.setId(2L);
+        List<Ship> testShips = new ArrayList<>();
+        testShips.add(testShip1);
+        testShips.add(testShip2);
+        testRound.setShips(testShips);
+        Assert.assertEquals(testRound.getShips().get(0),testRound.getShipById(1L));
+    }
 }
