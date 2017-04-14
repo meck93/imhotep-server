@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.entity.site.ASite;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Column;
@@ -24,7 +25,13 @@ public class SailShipMove extends AMove {
     private Long shipId;
 
     @Column
-    private String targetSite;
+    private ASite targetSite;
+
+    @Column
+    private long targetSiteId;
+
+    @Column(name = "SITE_TYPE", updatable = false, insertable = false)
+    private String targetSiteType;
 
     public Long getShipId() {
         return shipId;
@@ -34,11 +41,27 @@ public class SailShipMove extends AMove {
         this.shipId = shipId;
     }
 
-    public String getTargetSite() {
+    public ASite getTargetSite() {
         return targetSite;
     }
 
-    public void setTargetSite(String targetSite) {
+    public void setTargetSite(ASite targetSite) {
         this.targetSite = targetSite;
+    }
+
+    public String getTargetSiteType() {
+        return targetSiteType;
+    }
+
+    public void setTargetSiteType(String targetSiteType) {
+        this.targetSiteType = targetSiteType;
+    }
+
+    public long getTargetSiteId() {
+        return targetSiteId;
+    }
+
+    public void setTargetSiteId(long targetSiteId) {
+        this.targetSiteId = targetSiteId;
     }
 }
