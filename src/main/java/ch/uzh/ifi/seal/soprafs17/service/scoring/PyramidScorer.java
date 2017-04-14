@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.site.Pyramid;
+import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class PyramidScorer implements IScoreable {
     public Game scoreNow(Game game) {
 
         // Scores for the Pyramid
-        Pyramid pyramid = (Pyramid) game.getBuildingSite(PYRAMID);
+        Pyramid pyramid = (Pyramid) game.getBuildingSite(GameConstants.PYRAMID);
         int scores[] = pyramid.getScores();
 
         // Retrieve the Stones from the Pyramid
@@ -51,10 +52,20 @@ public class PyramidScorer implements IScoreable {
             else {
                 // Add the points to the correct player according to the color
                 switch (stone.getColor()){
-                    case BLACK: points[0] = points[0] + 1; break;
-                    case WHITE: points[1] = points[1] + 1; break;
-                    case BROWN: points[2] = points[2] + 1; break;
-                    case GRAY: points[3] = points[3] + 1; break;
+                    case BLACK:
+                        points[0] += 1;
+                        break;
+                    case WHITE:
+                        points[1] += 1;
+                        break;
+                    case BROWN:
+                        points[2] += 1;
+                        break;
+                    case GRAY:
+                        points[3] += 1;
+                        break;
+                    default:
+                        throw new InternalServerException("Wrong Color - Color doesn't exist");
 
                 }
             }
