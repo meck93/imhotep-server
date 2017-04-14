@@ -38,6 +38,7 @@ public class RuleManager {
         // Add new Application-Rules to the Service
         rules.add(new GetStonesRule());
         rules.add(new PlaceStoneRule());
+        rules.add(new SailShipRule());
     }
 
     public synchronized Game applyRules(AMove move, Game game) {

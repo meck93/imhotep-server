@@ -28,7 +28,7 @@ public class LobbyService {
     public LobbyService(GameService gameService, PlayerService playerService) {
         this.gameService = gameService;
         this.playerService = playerService;
-        }
+    }
 
     /*
      * This method returns a list of all games

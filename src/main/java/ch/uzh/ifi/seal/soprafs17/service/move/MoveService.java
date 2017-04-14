@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service.move;
 
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
@@ -56,8 +57,10 @@ public class MoveService {
             throw new InternalServerException(applyMoveException);
         }
 
-        // Advancing the Game to the next Player
-        game.setCurrentPlayer((game.getCurrentPlayer()) % (game.getPlayers().size()) + 1);
+        // Advancing the Game to the next Player. If the state of the game is SUBROUND, the current player doesn't change
+        if ((game.getStatus() != GameStatus.SUBROUND)) {
+            game.setCurrentPlayer((game.getCurrentPlayer()) % (game.getPlayers().size()) + 1);
+        }
 
         // Saving the changed Game state into the DB
         this.gameRepository.save(game);

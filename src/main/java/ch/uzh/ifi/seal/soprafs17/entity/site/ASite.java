@@ -47,11 +47,11 @@ public abstract class ASite implements Serializable {
         this.siteType = siteType;
     }
 
-    public boolean isDockedShip() {
-        return dockedShip;
+    public boolean isDocked() {
+        return isDocked;
     }
 
-    public void setDockedShip(boolean dockedShip) {
-        this.dockedShip = dockedShip;
+    public void setDocked(boolean docked) {
+        isDocked = docked;
     }
 }

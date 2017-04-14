@@ -1,11 +1,13 @@
 package ch.uzh.ifi.seal.soprafs17.entity.game;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.entity.site.ASite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -42,6 +44,7 @@ public class Game implements Serializable {
 	private int roundCounter;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OrderBy("id ASC")
 	private List<BuildingSite> buildingSites;
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -191,5 +194,19 @@ public class Game implements Serializable {
 
 	public void setBuildingSites(List<BuildingSite> buildingSites) {
 		this.buildingSites = buildingSites;
+	}
+
+	public ASite getSiteById(Long id){
+		ASite result = null;
+		for (BuildingSite site : buildingSites){
+			if (site.getId().equals(id)){
+				result = site;
+			}
+		}
+
+		if (id == this.marketPlace.getId()) return this.marketPlace;
+		if (result == null) throw new NotFoundException(id, "Site not found!");
+
+		return result;
 	}
 }
