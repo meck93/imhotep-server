@@ -21,7 +21,7 @@ public abstract class ASite implements Serializable {
     private String siteType;
 
     @Column
-    private boolean isDocked;
+    private boolean dockedShip;
 
     public Long getId() {
         return id;
