@@ -79,14 +79,23 @@ public class BuildingSiteService {
         List<BuildingSite> result = aSiteRepository.findAllBuildingSites(gameId);
 
         for (BuildingSite site : result){
-            if (site.getId().intValue() % 2 == 0){
+            if (site.getSiteType().equals(PYRAMID)){
                 Stone stone = stoneService.createStone("BLACK");
                 site.addStone(stone);
             }
-            else {
+            if(site.getSiteType().equals(TEMPLE)) {
                 Stone stone = stoneService.createStone("WHITE");
                 site.addStone(stone);
             }
+            if(site.getSiteType().equals(BURIAL_CHAMBER)) {
+                Stone stone = stoneService.createStone("BROWN");
+                site.addStone(stone);
+            }
+            if(site.getSiteType().equals(OBELISK)) {
+                Stone stone = stoneService.createStone("GRAY");
+                site.addStone(stone);
+            }
+
             aSiteRepository.save(site);
         }
     }
