@@ -18,9 +18,6 @@ public class BuildingSite extends ASite {
         super.setSiteType("BUILDING_SITE");
     }
 
-    @Column
-    private boolean dockedShip;
-
     @OneToMany(targetEntity = Stone.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Stone> stones;
 
@@ -30,14 +27,6 @@ public class BuildingSite extends ASite {
 
     public void setStones(List<Stone> stones) {
         this.stones = stones;
-    }
-
-    public boolean isDockedShip() {
-        return dockedShip;
-    }
-
-    public void setDockedShip(boolean dockedShip) {
-        this.dockedShip = dockedShip;
     }
 
     //Do not delete
