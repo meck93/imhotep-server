@@ -92,8 +92,16 @@ public class BuildingSiteService {
                 site.addStone(stone);
             }
             if(site.getSiteType().equals(OBELISK)) {
-                Stone stone = stoneService.createStone("GRAY");
-                site.addStone(stone);
+                site.addStone(stoneService.createStone("GRAY"));
+                site.addStone(stoneService.createStone("BLACK"));
+                site.addStone(stoneService.createStone("BLACK"));
+                site.addStone(stoneService.createStone("WHITE"));
+                site.addStone(stoneService.createStone("WHITE"));
+                site.addStone(stoneService.createStone("WHITE"));
+                site.addStone(stoneService.createStone("BROWN"));
+                site.addStone(stoneService.createStone("BROWN"));
+                site.addStone(stoneService.createStone("BROWN"));
+                site.addStone(stoneService.createStone("BROWN"));
             }
 
             aSiteRepository.save(site);
