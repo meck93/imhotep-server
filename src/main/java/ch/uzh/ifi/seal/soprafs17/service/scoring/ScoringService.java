@@ -34,6 +34,7 @@ public class ScoringService {
         // Adding the rules of the Game
         this.rateables.add(new PyramidScorer());
         this.rateables.add(new TempleScorer());
+        this.rateables.add(new ObeliskScorer());
     }
 
     public synchronized void score(Game game, String siteType) {
