@@ -2,10 +2,11 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 @Entity(name = "SAIL_SHIP")
 @DiscriminatorValue(value = GameConstants.SAIL_SHIP)
@@ -22,8 +23,8 @@ public class SailShipMove extends AMove {
     @Column
     private Long shipId;
 
-    @OneToOne(targetEntity = BuildingSite.class, fetch = FetchType.LAZY)
-    private BuildingSite targetSite;
+    @Column
+    private String targetSite;
 
     public Long getShipId() {
         return shipId;
@@ -33,11 +34,11 @@ public class SailShipMove extends AMove {
         this.shipId = shipId;
     }
 
-    public BuildingSite getTargetSite() {
+    public String getTargetSite() {
         return targetSite;
     }
 
-    public void setTargetSite(BuildingSite targetSite) {
+    public void setTargetSite(String targetSite) {
         this.targetSite = targetSite;
     }
 }
