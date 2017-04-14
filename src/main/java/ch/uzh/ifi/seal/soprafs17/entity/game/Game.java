@@ -59,7 +59,7 @@ public class Game implements Serializable {
 	private List<Player> players;
 
 	public Player getPlayerByPlayerNr(int playerNr){
-		for (Player player : players){
+		for (Player player : this.players){
 			if (player.getPlayerNumber() == playerNr){
 				return player;
 			}
@@ -68,7 +68,7 @@ public class Game implements Serializable {
 	}
 
 	public Round getRoundByRoundCounter(int roundCounter){
-		for (Round round : this.getRounds()){
+		for (Round round : this.rounds){
 			if (round.getRoundNumber() == this.getRoundCounter()){
 				return round;
 			}
