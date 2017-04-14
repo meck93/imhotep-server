@@ -44,9 +44,10 @@ public class PlayerTest {
     @Test
     public void setPoints() {
         Player testPlayer = new Player();
-        testPlayer.setPoints(10);
+        int[] points = {10, 0, 0, 0, 0, 0};
+        testPlayer.setPoints(points);
         Assert.assertNotNull(testPlayer);
-        Assert.assertEquals(testPlayer.getPoints(), 10);
+        Assert.assertEquals(testPlayer.getPoints()[0], 10);
     }
 
     @Test
