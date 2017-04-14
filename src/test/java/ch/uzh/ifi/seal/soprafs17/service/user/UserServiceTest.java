@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.service;
+package ch.uzh.ifi.seal.soprafs17.service.user;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
  * @see UserService
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
 public class UserServiceTest {
@@ -49,5 +51,33 @@ public class UserServiceTest {
         Assert.assertNull(userRepository.findById(user.getId()));
     }
 
+    @Test
+    public void deleteAll() {
+        // TODO: test userService.deleteAll()
+    }
 
+    @Test
+    public void listUsers() {
+        // TODO: test userService.listUsers()
+    }
+
+    @Test
+    public void getUser() {
+        // TODO: test userService.getUser()
+    }
+
+    @Test
+    public void getUserByToken() {
+        // TODO: test userService.getUserByToken()
+    }
+
+    @Test
+    public void login() {
+        // TODO: test userService.login()
+    }
+
+    @Test
+    public void logout() {
+        // TODO: test userService.logout()
+    }
 }

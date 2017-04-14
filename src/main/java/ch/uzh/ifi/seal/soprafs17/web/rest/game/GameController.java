@@ -42,25 +42,4 @@ public class GameController extends GenericController {
         return gameService.findById(gameId);
     }
 
-    @RequestMapping(value = "/{gameId}/start", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public void startGame(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
-        gameService.startGame(gameId, playerId);
-    }
-
-    @RequestMapping(value = "/{gameId}/stop", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void stopGame(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
-        gameService.stopGame(gameId, playerId);
-    }
-    /*
-     * This request deletes a game entity. Only exists for the frontend for testing purposes.
-     * @Param
-     */
-    @RequestMapping(value = "/{gameId}/delete", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteGame(@PathVariable Long gameId) {
-        gameService.deleteGame(gameId);
-    }
-
 }

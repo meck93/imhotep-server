@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.repository;
 
-import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.site.ASite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
@@ -15,8 +14,8 @@ import java.util.List;
 @Repository("ASiteRepository")
 public interface ASiteRepository  extends CrudRepository<ASite, Long> {
 
-    @Query("SELECT b FROM BuildingSite b WHERE (b.buildingSiteType = :buildingSiteType) AND (b.gameId = :gameId)")
-    public BuildingSite findBuildingSite(@Param("gameId") Long gameId, @Param("buildingSiteType")BuildingSiteType buildingSiteType);
+    @Query("SELECT b FROM BuildingSite b WHERE (b.siteType = :siteType) AND (b.gameId = :gameId)")
+    public BuildingSite findBuildingSite(@Param("gameId") Long gameId, @Param("siteType") String siteType);
 
     @Query("SELECT b FROM BuildingSite b WHERE (b.gameId = :gameId)")
     public List<BuildingSite> findAllBuildingSites(@Param("gameId") Long gameId);

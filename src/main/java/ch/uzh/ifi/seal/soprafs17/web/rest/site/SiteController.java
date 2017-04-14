@@ -1,13 +1,10 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest.site;
 
-import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(SiteController.CONTEXT)
 public class SiteController extends GenericController {
 
-    Logger log  = LoggerFactory.getLogger(SiteController.class);
-    private final BuildingSiteService buildingSiteService;
-    private final MarketPlaceService marketPlaceService;
-
     // Standard URI Mapping of this class
     static final String CONTEXT = "games/{gameId}/sites";
+
+    private final BuildingSiteService buildingSiteService;
+    private final MarketPlaceService marketPlaceService;
 
     @Autowired
     public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService){
@@ -30,10 +26,10 @@ public class SiteController extends GenericController {
         this.marketPlaceService = marketPlaceService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{buildingSiteType}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{siteType}")
     @ResponseStatus(HttpStatus.OK)
-    public BuildingSite getObelisk(@PathVariable("gameId") Long gameId, @PathVariable("buildingSiteType") BuildingSiteType buildingSiteType) {
-        return buildingSiteService.getBuildingSite(gameId, buildingSiteType);
+    public BuildingSite getObelisk(@PathVariable("gameId") Long gameId, @PathVariable("siteType") String siteType) {
+        return buildingSiteService.getBuildingSite(gameId, siteType);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/MARKET_PLACE")

@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @ComponentScan
 @EnableAutoConfiguration
+//@EnableSwagger2
 public class Application {
 
     public static void main(String[] args) {
@@ -25,4 +26,16 @@ public class Application {
             }
         };
     }
+
+    // If you want to use Swagger remove those comments
+
+/*    @Bean
+    public Docket getApi(){
+        return new Docket(DocumentationType.SWAGGER_2).select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
+
+    }*/
+
 }

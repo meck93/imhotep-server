@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.constant.BuildingSiteType;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
@@ -67,6 +68,14 @@ public class GameService {
      * @Param Name - Name of the Game, Owner - Name of the User/Player
      */
     public Game createGame(String name, String owner) {
+
+        if (gameRepository.findByName(name) != null){
+            throw new BadRequestHttpException("A Game with name: " + name + " already exists!");
+        }
+        if (gameRepository.findByOwner(owner) != null){
+            throw new BadRequestHttpException("A Game with the owner: " + owner + " already exists!");
+        }
+
         // Creating the Game and saving it to the Repository
         Game newGame = new Game();
         newGame.setName(name);
@@ -75,6 +84,7 @@ public class GameService {
         newGame.setRoundCounter(0);
         newGame.setPlayers(new ArrayList<>());
         newGame.setRounds(new ArrayList<>());
+        newGame.setBuildingSites(new ArrayList<>());
         newGame.setStatus(GameStatus.PENDING);
 
         gameRepository.save(newGame);
@@ -108,8 +118,6 @@ public class GameService {
 
         List<Game> result = new ArrayList<>();
         gameRepository.findAll().forEach(result::add);
-
-        if (result.isEmpty()) throw new NotFoundException("Games");
 
         return result;
     }
@@ -147,11 +155,10 @@ public class GameService {
      * Handles the initialisation of the game board. Requires an already created but not
      * running game with more than 1 player
      * @param gameId
-     * @param playerId
-     * @pre game, player =/= NULL && state of game =/= RUNNING && game.amountOfPlayers =g= 2
+     * @pre game =/= NULL && state of game =/= RUNNING && game.amountOfPlayers =g= 2
      * @post For all round specific attributes of a game and round: attribute =/= NULL
      */
-    public void startGame(Long gameId, Long playerId) {
+    public void startGame(Long gameId) {
         log.debug("startGame: " + gameId);
 
         // Initializing the game
@@ -182,10 +189,10 @@ public class GameService {
         game.setMarketPlace(marketPlace);
 
         // Create the four BuildingSites for the game
-        game.setObelisk(buildingSiteService.createBuildingSite(BuildingSiteType.OBELISK, gameId));
-        game.setPyramid(buildingSiteService.createBuildingSite(BuildingSiteType.PYRAMID, gameId));
-        game.setTemple(buildingSiteService.createBuildingSite(BuildingSiteType.TEMPLE, gameId));
-        game.setBurialChamber(buildingSiteService.createBuildingSite(BuildingSiteType.BURIAL_CHAMBER, gameId));
+        game.getBuildingSites().add(buildingSiteService.createBuildingSite(GameConstants.OBELISK, gameId));
+        game.getBuildingSites().add(buildingSiteService.createBuildingSite(GameConstants.PYRAMID, gameId));
+        game.getBuildingSites().add(buildingSiteService.createBuildingSite(GameConstants.TEMPLE, gameId));
+        game.getBuildingSites().add(buildingSiteService.createBuildingSite(GameConstants.BURIAL_CHAMBER, gameId));
 
         // Create the stoneQuarry & fill it with Stones
         StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry(game);
@@ -199,6 +206,7 @@ public class GameService {
 
         // Setting the CurrentPlayer value to the playerNr of the 1. Player in the List of Players
         game.setCurrentPlayer(game.getPlayers().get(0).getPlayerNumber());
+        game.setCurrentSubRoundPlayer(0);
 
         gameRepository.save(game);
     }
@@ -224,7 +232,7 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public void stopGame(Long gameId, Long playerId) {
+    public void stopGame(Long gameId) {
         log.debug("stopGame: " + gameId);
 
         // TODO: Stop game in GameService

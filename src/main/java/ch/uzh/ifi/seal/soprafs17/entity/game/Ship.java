@@ -1,7 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.entity.game;
 
-import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
-import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -33,12 +31,8 @@ public class Ship implements Serializable{
     @JsonProperty(value = "MAX_STONES")
     private final int MAX_STONES;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BuildingSite_ID")
-    private BuildingSite targetSite;
-
     @OneToMany(targetEntity = Stone.class)
-    // Maybe add @OrderBy(position ASC) again -> but then Stone.class needs a variable position
+    @OrderBy("placeOnShip ASC")
     private List<Stone> stones;
 
     public Ship() {
@@ -75,7 +69,7 @@ public class Ship implements Serializable{
         this.gameId = gameId;
     }
 
-    public int getMIN_STONE() {
+    public int getMIN_STONES() {
         return MIN_STONES;
     }
 
@@ -89,13 +83,5 @@ public class Ship implements Serializable{
 
     public void setHasSailed(boolean hasSailed) {
         this.hasSailed = hasSailed;
-    }
-
-    public BuildingSite getTargetSite() {
-        return targetSite;
-    }
-
-    public void setTargetSite(BuildingSite targetSite) {
-        this.targetSite = targetSite;
     }
 }

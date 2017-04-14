@@ -33,6 +33,7 @@ public class Round implements Serializable{
     private Game game;
 
     @OneToMany(targetEntity= Ship.class)
+    @OrderBy
     private List<Ship> ships;
 
     public Long getId() {

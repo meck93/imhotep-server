@@ -140,4 +140,16 @@ public class PlayerService {
 
         return player.getSupplySled();
     }
+
+    /*
+     * Finding the Player: playerID in the database
+     */
+    public Player findPlayerById(Long playerId) {
+        log.debug("Find the Player with ID: " + playerId);
+        Player player = playerRepository.findOne(playerId);
+
+        if (player == null) throw new NotFoundException(playerId, "Player");
+
+        return player;
+    }
 }
