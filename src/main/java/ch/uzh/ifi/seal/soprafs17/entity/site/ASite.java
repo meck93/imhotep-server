@@ -21,7 +21,7 @@ public abstract class ASite implements Serializable {
     private String siteType;
 
     @Column
-    private boolean isDocked;
+    private boolean docked;
 
     public Long getId() {
         return id;
@@ -48,10 +48,10 @@ public abstract class ASite implements Serializable {
     }
 
     public boolean isDocked() {
-        return isDocked;
+        return docked;
     }
 
     public void setDocked(boolean docked) {
-        isDocked = docked;
+        this.docked = docked;
     }
 }

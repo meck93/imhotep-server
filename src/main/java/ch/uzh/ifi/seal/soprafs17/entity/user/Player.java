@@ -23,7 +23,7 @@ public class Player implements Serializable {
     private String username;
 
     @Column
-    private int points;
+    private int[] points;
 
     @Column
     private String color;
@@ -63,11 +63,11 @@ public class Player implements Serializable {
         this.id = id;
     }
 
-    public int getPoints() {
+    public int[] getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(int[] points) {
         this.points = points;
     }
 
