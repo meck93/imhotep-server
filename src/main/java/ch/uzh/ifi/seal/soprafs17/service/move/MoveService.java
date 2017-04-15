@@ -57,9 +57,14 @@ public class MoveService {
             throw new InternalServerException(applyMoveException);
         }
 
-        // Advancing the Game to the next Player. If the state of the game is SUBROUND, the current player doesn't change
-        if ((game.getStatus() != GameStatus.SUBROUND)) {
+        // Advancing the Game to the next Player, only if the Game is in Status: RUNNING
+        if ((game.getStatus() == GameStatus.RUNNING)) {
             game.setCurrentPlayer((game.getCurrentPlayer()) % (game.getPlayers().size()) + 1);
+        }
+        // Advancing the Sub-Round when the Game is in Status: SUBROUND
+        if (game.getStatus() == GameStatus.SUBROUND){
+            // Advancing the currentSubRoundPlayer to the next Player according to the Stone on the Ship
+            // game.setCurrentSubRoundPlayer();
         }
 
         // Saving the changed Game state into the DB
