@@ -141,6 +141,7 @@ public class GameService {
 
     public int findNrOfPlayers(Long gameId) {
         log.debug("getAmountOfPlayers: " + gameId);
+
         return gameRepository.findNrOfPlayers(gameId);
     }
 
@@ -150,11 +151,7 @@ public class GameService {
     public List<Player> findPlayersByGameId(Long gameId) {
         log.debug("getPlayersByGameId: " + gameId);
 
-        List<Player> result = gameRepository.findPlayersByGameId(gameId);
-
-        if (result.isEmpty()) throw new NotFoundException(gameId, "Players in Game");
-
-        return result;
+        return gameRepository.findPlayersByGameId(gameId);
     }
 
     /**
@@ -181,8 +178,8 @@ public class GameService {
         log.debug("Initializes the Game: " + gameId);
 
         // Initiates the game
-        Game game = gameRepository.findById(gameId);
-        int amountOfPlayers = gameRepository.findNrOfPlayers(gameId);
+        Game game = this.findById(gameId);
+        int amountOfPlayers = this.findNrOfPlayers(gameId);
 
         // Creates all roundCards required for the Game
         roundCardService.createRoundCards(amountOfPlayers, gameId);
@@ -220,7 +217,7 @@ public class GameService {
     public void initializeRound(Long gameId) {
         log.debug("Initializes Round for Game: " + gameId);
 
-        Game game = gameRepository.findById(gameId);
+        Game game = this.findById(gameId);
 
         // Creating the first round of the game
         Round round = roundService.createRound(gameId, game);
@@ -241,9 +238,12 @@ public class GameService {
     public void stopGame(Long gameId) {
         log.debug("stopGame: " + gameId);
 
-        // TODO: Stop game in GameService
-    }
+        Game game = this.findById(gameId);
 
+        game.setStatus(GameStatus.FINISHED);
+
+        gameRepository.save(game);
+    }
 
     /*
      * Test method to score the all Building Sites of a Game
