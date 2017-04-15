@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service.move.validation;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
@@ -19,6 +20,10 @@ public class PlaceStoneValidator implements IValidator {
         // Casting the abstract Move to a PlaceStoneMove
         PlaceStoneMove newMove = (PlaceStoneMove) move;
 
+        // Game must be running to make this move
+        if(game.getStatus() != GameStatus.RUNNING){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. GameStatus is not Running - Currently: " + game.getStatus());
+        }
         // MoveType of the Move must be of Type: PLACE_STONE
         if( ! newMove.getMoveType().equals(GameConstants.PLACE_STONE)){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Wrong MoveType!");

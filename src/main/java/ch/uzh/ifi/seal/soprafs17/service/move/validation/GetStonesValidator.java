@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service.move.validation;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
@@ -15,6 +16,10 @@ public class GetStonesValidator implements IValidator {
 
     @Override
     public void validate(final AMove move, final Game game) throws MoveValidationException {
+        // Game must be running to make this move
+        if(game.getStatus() != GameStatus.RUNNING){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. GameStatus is not Running - Currently: " + game.getStatus());
+        }
         // MoveType of the Move must be of Type: GET_STONES
         if( ! move.getMoveType().equals(GameConstants.GET_STONES)){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Wrong MoveType");
