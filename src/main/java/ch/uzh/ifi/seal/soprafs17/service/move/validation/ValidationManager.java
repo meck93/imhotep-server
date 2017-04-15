@@ -30,7 +30,7 @@ public class ValidationManager {
         validators.add(new MoveValidation());
         validators.add(new GetStonesValidator());
         validators.add(new PlaceStoneValidator());
-        validators.add(new SailShipValidation());
+        validators.add(new SailShipValidator());
     }
 
     public void validate(final AMove move, final Game game) {
