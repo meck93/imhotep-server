@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
@@ -86,6 +87,12 @@ public class MoveService {
                 }
                 // Game is not finished yet
                 else {
+                    // Clear all site harbors (remove sailed ships from last round)
+                    for (BuildingSite buildingSite: game.getBuildingSites()) {
+                        buildingSite.setDocked(false);
+                    }
+                    game.getMarketPlace().setDocked(false);
+
                     // All Ships have sailed -> Initialize a new Round
                     this.gameService.initializeRound(game.getId());
                 }
