@@ -45,6 +45,15 @@ public class Ship implements Serializable{
         this.MAX_STONES = maxStone;
     }
 
+    public Stone getStoneByPlace(int placeOnShip){
+        for (Stone stone : this.stones){
+            if (stone.getPlaceOnShip() == placeOnShip){
+                return stone;
+            }
+        }
+        return null;
+    }
+
     public Long getId() {
         return id;
     }
