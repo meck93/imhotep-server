@@ -226,10 +226,10 @@ public class GameService {
         Round round = roundService.createRound(gameId, game);
 
         // Initializing the first round
-        roundService.initializeRound(round.getId(), game.getRounds().size());
+        roundService.initializeRound(round.getId(), gameId);
 
         // Setting the roundCounter to the correct value
-        game.setRoundCounter(game.getRounds().size());
+        game.setRoundCounter(round.getRoundNumber());
 
         // adding marketCards to the marketPlace
         List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);
