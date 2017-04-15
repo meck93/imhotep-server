@@ -37,10 +37,10 @@ public class SailShipRule implements IRule {
             game.getMarketPlace().setDocked(true);
         }
         else{
-            // List of all current players
+            // List of all current buildingSites
             List<BuildingSite> buildingSites = game.getBuildingSites();
 
-            // Index of the Player to be removed
+            // Index of the BuildingSite to be removed
             int siteIndex = 0;
             // Setting the index to the correct element in the list
             for (BuildingSite site : buildingSites){
@@ -48,7 +48,7 @@ public class SailShipRule implements IRule {
                     siteIndex = buildingSites.indexOf(site);
                 }
             }
-            // removing the current Player from the List of all Players
+            // removing the current BuildingSite from the List of all BuildingSites
             BuildingSite site = buildingSites.remove(siteIndex);
 
             // Setting the site docked

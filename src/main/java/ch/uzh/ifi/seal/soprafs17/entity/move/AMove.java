@@ -14,7 +14,8 @@ import java.io.Serializable;
 		@JsonSubTypes.Type(value = GetStonesMove.class, name = "GET_STONES"),
 		@JsonSubTypes.Type(value = PlaceStoneMove.class, name = "PLACE_STONE"),
 		@JsonSubTypes.Type(value = SailShipMove.class, name = "SAIL_SHIP"),
-		@JsonSubTypes.Type(value = PlayCardMove.class, name = "PLAY_CARD")})
+		@JsonSubTypes.Type(value = PlayCardMove.class, name = "PLAY_CARD"),
+		@JsonSubTypes.Type(value = GetCardMove.class, name = "GET_CARD")})
 public abstract class AMove implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -46,7 +46,7 @@ public class GetStonesRule implements IRule {
         int nrOfNewStones = GameConstants.MAX_STONES_SUPPLY_SLED - stonesOnSupplySled;
 
         // The current Stones on the SupplySled
-        List<Stone> newSupplySledStones = supplySled.getStones();
+        List<Stone> newSupplySledStones = supplySled.getStones ();
 
         // Adding at most 3 stones to the SupplySled
         for (int i = 0; i < nrOfNewStones && i != GameConstants.MAX_STONES_ADDED_PER_MOVE; i++) {

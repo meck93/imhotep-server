@@ -39,6 +39,7 @@ public class RuleManager {
         rules.add(new GetStonesRule());
         rules.add(new PlaceStoneRule());
         rules.add(new SailShipRule());
+        rules.add(new GetCardRule());
     }
 
     public synchronized Game applyRules(AMove move, Game game) {
