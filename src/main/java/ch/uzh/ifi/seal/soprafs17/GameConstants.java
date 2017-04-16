@@ -2,6 +2,9 @@ package ch.uzh.ifi.seal.soprafs17;
 
 public class GameConstants {
 
+	// max rounds per game
+	public static final Integer LAST_ROUND = 6;
+
 	// max and min players per game
 	public static final Integer MIN_PLAYERS = 2;
 	public static final Integer MAX_PLAYERS = 4;

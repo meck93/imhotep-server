@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity.game;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.entity.site.ASite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
@@ -42,6 +43,7 @@ public class Game implements Serializable {
 	private int roundCounter;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OrderBy("id ASC")
 	private List<BuildingSite> buildingSites;
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -59,7 +61,7 @@ public class Game implements Serializable {
 	private List<Player> players;
 
 	public Player getPlayerByPlayerNr(int playerNr){
-		for (Player player : players){
+		for (Player player : this.players){
 			if (player.getPlayerNumber() == playerNr){
 				return player;
 			}
@@ -68,7 +70,7 @@ public class Game implements Serializable {
 	}
 
 	public Round getRoundByRoundCounter(int roundCounter){
-		for (Round round : this.getRounds()){
+		for (Round round : this.rounds){
 			if (round.getRoundNumber() == this.getRoundCounter()){
 				return round;
 			}
@@ -191,5 +193,19 @@ public class Game implements Serializable {
 
 	public void setBuildingSites(List<BuildingSite> buildingSites) {
 		this.buildingSites = buildingSites;
+	}
+
+	public ASite getSiteById(Long id){
+		ASite result = null;
+		for (BuildingSite site : buildingSites){
+			if (site.getId().equals(id)){
+				result = site;
+			}
+		}
+
+		if (this.marketPlace.getId().equals(id)) return this.marketPlace;
+		if (result == null) throw new NotFoundException(id, "Site not found!");
+
+		return result;
 	}
 }

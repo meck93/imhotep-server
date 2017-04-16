@@ -85,7 +85,7 @@ public class PlayerService {
 
         // Initializing the Move List and the StartPoints
         player.setMoves(new ArrayList<>());
-        player.setPoints(GameConstants.START_POINTS);
+        player.setPoints(new int[6]);
 
         // assign the color according to the playerNumber
         switch (player.getPlayerNumber()) {

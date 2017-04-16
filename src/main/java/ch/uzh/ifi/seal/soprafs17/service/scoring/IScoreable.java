@@ -5,7 +5,7 @@ import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 
 public interface IScoreable {
 
-    public boolean supports(Game game);
+    public boolean supports(String siteType);
 
     public Game score(Game game);
 

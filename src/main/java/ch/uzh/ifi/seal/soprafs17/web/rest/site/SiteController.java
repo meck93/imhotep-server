@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest.site;
 
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
@@ -19,11 +20,13 @@ public class SiteController extends GenericController {
 
     private final BuildingSiteService buildingSiteService;
     private final MarketPlaceService marketPlaceService;
+    private final GameService gameService;
 
     @Autowired
-    public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService){
+    public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService, GameService gameService){
         this.buildingSiteService = buildingSiteService;
         this.marketPlaceService = marketPlaceService;
+        this.gameService = gameService;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{siteType}")
@@ -43,7 +46,8 @@ public class SiteController extends GenericController {
     @RequestMapping(method = RequestMethod.POST, value = "/dummy")
     @ResponseStatus(HttpStatus.CREATED)
     public String createDummyData(@PathVariable("gameId") Long gameId){
-        buildingSiteService.createDummyData(gameId);
+        int nrOfPlayers = gameService.findNrOfPlayers(gameId);
+        buildingSiteService.createDummyData(gameId, nrOfPlayers);
         return "DummyData created!";
     }
 }

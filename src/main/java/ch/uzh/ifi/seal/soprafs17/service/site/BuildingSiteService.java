@@ -75,17 +75,39 @@ public class BuildingSiteService {
     /*
      * Creates a Dummy-Stone on each Site of the Game for the Front-End Mapping/Modelling Purposes
      */
-    public void createDummyData(Long gameId){
+    public void createDummyData(Long gameId, int nrOfPlayers){
         List<BuildingSite> result = aSiteRepository.findAllBuildingSites(gameId);
 
         for (BuildingSite site : result){
-            if (site.getId().intValue() % 2 == 0){
+            if (site.getSiteType().equals(PYRAMID)){
                 Stone stone = stoneService.createStone("BLACK");
                 site.addStone(stone);
             }
-            else {
+            if (site.getSiteType().equals(TEMPLE)) {
                 Stone stone = stoneService.createStone("WHITE");
                 site.addStone(stone);
+            }
+            if (site.getSiteType().equals(BURIAL_CHAMBER)) {
+                Stone stone = stoneService.createStone("BROWN");
+                site.addStone(stone);
+            }
+            if (site.getSiteType().equals(OBELISK)) {
+                // Base case with 2 Players
+                site.addStone(stoneService.createStone("BLACK"));
+                site.addStone(stoneService.createStone("BLACK"));
+                site.addStone(stoneService.createStone("WHITE"));
+                site.addStone(stoneService.createStone("WHITE"));
+                site.addStone(stoneService.createStone("WHITE"));
+
+                if (nrOfPlayers > 2){
+                    site.addStone(stoneService.createStone("BROWN"));
+                    site.addStone(stoneService.createStone("BROWN"));
+                    site.addStone(stoneService.createStone("BROWN"));
+                    site.addStone(stoneService.createStone("BROWN"));
+                }
+                if (nrOfPlayers > 3){
+                    site.addStone(stoneService.createStone("GRAY"));
+                }
             }
             aSiteRepository.save(site);
         }

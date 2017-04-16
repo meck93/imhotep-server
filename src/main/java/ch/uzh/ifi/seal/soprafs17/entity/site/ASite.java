@@ -20,6 +20,9 @@ public abstract class ASite implements Serializable {
     @Column(name = "SITE_TYPE", updatable = false, insertable = false)
     private String siteType;
 
+    @Column
+    private boolean docked;
+
     public Long getId() {
         return id;
     }
@@ -42,5 +45,13 @@ public abstract class ASite implements Serializable {
 
     public void setSiteType(String siteType) {
         this.siteType = siteType;
+    }
+
+    public boolean isDocked() {
+        return docked;
+    }
+
+    public void setDocked(boolean docked) {
+        this.docked = docked;
     }
 }
