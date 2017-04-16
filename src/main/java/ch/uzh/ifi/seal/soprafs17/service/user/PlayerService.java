@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Service class for managing players.
  */
@@ -108,16 +107,13 @@ public class PlayerService {
     public Player getPlayer(Long gameId, int playerNr) {
         log.debug("getPlayer: " + playerNr + "of Game: " + gameId);
 
-        List<Player> players = gameService.findPlayersByGameId(gameId);
-        // Getting the Player at position of playerNr
-        Player player = players.get(playerNr - 1);
-
-        // Verifying that the player exists in the game
-        if (player == null || !player.getGame().getId().equals(gameId)){
-            throw new NotFoundException(gameId, "Player");
+        for (Player player : this.gameService.findPlayersByGameId(gameId)){
+            // Returning the correct player if it has the same playerNr
+            if (player.getPlayerNumber() == playerNr && player.getGame().getId().equals(gameId)){
+                return player;
+            }
         }
-
-        return player;
+        throw new NotFoundException(playerNr, "Player");
     }
 
     public List<Player> getPlayers(Long gameId) {
@@ -146,6 +142,7 @@ public class PlayerService {
      */
     public Player findPlayerById(Long playerId) {
         log.debug("Find the Player with ID: " + playerId);
+
         Player player = playerRepository.findOne(playerId);
 
         if (player == null) throw new NotFoundException(playerId, "Player");
