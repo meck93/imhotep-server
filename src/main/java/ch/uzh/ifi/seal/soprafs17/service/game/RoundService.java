@@ -128,7 +128,7 @@ public class RoundService {
                 }
             }
 
-            if (resultRound == null) throw new NotFoundException(gameId, "Round");
+            if (resultRound == null) throw new NotFoundException(roundNumber, "Round");
 
             return resultRound;
         }
