@@ -1,8 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.entity.user;
 
-import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -133,5 +134,14 @@ public class Player implements Serializable {
 
     public void setHandCards(List<MarketCard> handCards) {
         this.handCards = handCards;
+    }
+
+    public MarketCard getMarketCardById(Long marketCardId){
+        for (MarketCard marketCard : this.getHandCards()){
+            if (marketCard.getId().equals(marketCardId)){
+                return marketCard;
+            }
+        }
+        throw new NotFoundException(marketCardId, "MarketCard");
     }
 }
