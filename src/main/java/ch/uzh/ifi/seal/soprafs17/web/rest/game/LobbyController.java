@@ -75,7 +75,7 @@ public class LobbyController extends GenericController {
     @RequestMapping(value = "games/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
-        lobbyService.stopGame(gameId, playerId);
+        lobbyService.stopGame(gameId);
     }
 
     /*
