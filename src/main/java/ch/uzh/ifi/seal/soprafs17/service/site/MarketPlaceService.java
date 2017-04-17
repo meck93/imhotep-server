@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service.site;
 
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
 import org.slf4j.Logger;
@@ -45,5 +46,11 @@ public class MarketPlaceService {
             log.error("Not able to retrieve the MarketPlace for: " + gameId);
             return null;
         }
+    }
+
+    public void addDummyCard(Long gameId, MarketCard marketCard) {
+        MarketPlace marketPlace = this.getMarketPlace(gameId);
+        marketPlace.getMarketCards().add(marketCard);
+        this.aSiteRepository.save(marketPlace);
     }
 }

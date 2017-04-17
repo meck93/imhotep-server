@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -69,6 +70,7 @@ public class Game implements Serializable {
 		throw new NotFoundException("game");
 	}
 
+	@JsonIgnore
 	public Round getRoundByRoundCounter(){
 		for (Round round : this.rounds){
 			if (round.getRoundNumber() == this.getRoundCounter()){
