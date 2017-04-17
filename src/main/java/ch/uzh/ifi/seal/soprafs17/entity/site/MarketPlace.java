@@ -33,14 +33,11 @@ public class MarketPlace extends ASite{
     }
 
     public MarketCard getMarketCardById(Long marketCardId) {
-        MarketCard result = null;
         for (MarketCard card : marketCards){
             if (card.getId().equals(marketCardId)){
-                result = card;
+                return card;
             }
         }
-        if (result == null) throw new NotFoundException(marketCardId, "MarketCardId not found!");
-
-        return result;
+        throw new NotFoundException(marketCardId, "MarketCardId not found!");
     }
 }
