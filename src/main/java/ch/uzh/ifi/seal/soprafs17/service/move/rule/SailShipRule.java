@@ -10,8 +10,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
 
-import static ch.uzh.ifi.seal.soprafs17.GameConstants.*;
-
 public class SailShipRule implements IRule {
     @Override
     public boolean supports(AMove move) {
@@ -38,16 +36,8 @@ public class SailShipRule implements IRule {
             // Setting the Status to SUBROUND & docking the ship
             game.setStatus(GameStatus.SUBROUND);
             game.getMarketPlace().setDocked(true);
-
-            // Setting the currentSubRoundPlayer according to the first Stone on the ship
-            switch (ship.getStoneByPlace(1).getColor()){
-                case BLACK: game.setCurrentSubRoundPlayer(1); break;
-                case WHITE: game.setCurrentSubRoundPlayer(2); break;
-                case BROWN: game.setCurrentSubRoundPlayer(3); break;
-                case GRAY: game.setCurrentSubRoundPlayer(4); break;
-            }
         }
-        else{
+        else {
             // Retrieving the correct BuildingSite
             BuildingSite buildingSite = (BuildingSite) game.getSiteById(newMove.getTargetSiteId());
 
