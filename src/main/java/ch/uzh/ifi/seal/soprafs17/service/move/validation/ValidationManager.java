@@ -2,6 +2,8 @@ package ch.uzh.ifi.seal.soprafs17.service.move.validation;
 
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.service.move.validation.card.HammerValidator;
+import ch.uzh.ifi.seal.soprafs17.service.move.validation.card.PlayCardValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ public class ValidationManager {
         validators.add(new PlaceStoneValidator());
         validators.add(new SailShipValidator());
         validators.add(new GetCardValidator());
+        validators.add(new PlayCardValidator());
+        validators.add(new HammerValidator());
     }
 
     public void validate(final AMove move, final Game game) {

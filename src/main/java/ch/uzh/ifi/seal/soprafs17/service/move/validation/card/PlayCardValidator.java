@@ -24,7 +24,7 @@ public class PlayCardValidator implements IValidator {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. GameStatus is not Running - Currently: " + game.getStatus());
         }
         // The Card must exist in the Player's deck of cards
-        if (game.getPlayerByPlayerNr(game.getCurrentPlayer()).getMarketCardById(newMove.getCardId()) != null) {
+        if (game.getPlayerByPlayerNr(game.getCurrentPlayer()).getMarketCardById(newMove.getCardId()) == null) {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Player doesn't have a MarketCard with Id: " + newMove.getCardId());
         }
     }
