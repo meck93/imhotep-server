@@ -143,7 +143,7 @@ public class GameService {
         return gameRepository.findNrOfPlayers(gameId);
     }
 
-    /*
+    /**
      * Returns the list of all players associated with Game: {GameId}
      */
     public List<Player> findPlayersByGameId(Long gameId) {
