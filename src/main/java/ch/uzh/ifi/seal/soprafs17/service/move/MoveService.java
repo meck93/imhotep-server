@@ -3,7 +3,10 @@ package ch.uzh.ifi.seal.soprafs17.service.move;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.GetCardMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
@@ -12,6 +15,7 @@ import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
+import ch.uzh.ifi.seal.soprafs17.service.game.StoneService;
 import ch.uzh.ifi.seal.soprafs17.service.move.rule.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.ValidationManager;
 import org.slf4j.Logger;
@@ -19,6 +23,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static ch.uzh.ifi.seal.soprafs17.GameConstants.*;
 
 /**
  * Service class for managing moves.
@@ -34,14 +40,16 @@ public class MoveService {
     private final RuleManager ruleManager;
     private final GameService gameService;
     private final RoundService roundService;
+    private final StoneService stoneService;
 
     @Autowired
-    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService) {
+    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService, StoneService stoneService) {
         this.gameRepository = gameRepository;
         this.validationManager = validationManager;
         this.ruleManager = ruleManager;
         this.gameService = gameService;
         this.roundService = roundService;
+        this.stoneService = stoneService;
     }
 
     public synchronized void validateAndApply(AMove move) throws BadRequestHttpException, InternalServerException {
@@ -91,6 +99,7 @@ public class MoveService {
                     for (BuildingSite buildingSite: game.getBuildingSites()) {
                         buildingSite.setDocked(false);
                     }
+                    // Remove the sailedShip from the Market Place
                     game.getMarketPlace().setDocked(false);
 
                     // All Ships have sailed -> Initialize a new Round
@@ -98,13 +107,61 @@ public class MoveService {
                 }
             }
         }
+        // Saving the changes to the DB
+        this.gameRepository.save(game);
     }
 
     public synchronized void checkSubRound(AMove move, Game game){
-        // Advancing the Sub-Round when the Game is in Status: SUBROUND
-        if (game.getStatus() == GameStatus.SUBROUND){
-            // Advancing the currentSubRoundPlayer to the next Player according to the Stone on the Ship
-            // game.setCurrentSubRoundPlayer();
+        // Advancing the Sub-Round when the Game is in Status: SUBROUND && the Move is SailShipMove (initial Move only)
+        if (game.getStatus() == GameStatus.SUBROUND && move instanceof SailShipMove){
+            //Typecasting to the SailShipMove
+            SailShipMove newMove = (SailShipMove) move;
+            // Retrieving the correct Ship
+            Ship ship = game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId());
+            // Setting the next SubRoundPlayer
+            this.nextSubRoundPlayer(game, ship);
         }
+        // Advancing the Sub-Round when the Game is in Status: SUBROUND && the Move is GetCardMove
+        if (game.getStatus() == GameStatus.SUBROUND && move instanceof GetCardMove){
+            // Typecasting to the GetCardMove
+            GetCardMove newMove = (GetCardMove) move;
+            // Retrieving the correct Ship
+            Ship ship = game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId());
+            // Setting the next SubRoundPlayer
+            this.nextSubRoundPlayer(game, ship);
+        }
+
+        // Saving the changes to the DB
+        this.gameRepository.save(game);
+    }
+
+    private void nextSubRoundPlayer(Game game, Ship ship){
+        // Setting the next currentSubRoundPlayer according to the next Stone on the ship according to the placeOnShip
+        if (!ship.getStones().isEmpty()){
+            forloop:
+            for (int i = 1; i <= ship.getMAX_STONES(); i++){
+                if (ship.getStoneByPlace(i) != null){
+                    switch (ship.getStoneByPlace(i).getColor()){
+                        case BLACK: game.setCurrentSubRoundPlayer(1); break;
+                        case WHITE: game.setCurrentSubRoundPlayer(2); break;
+                        case BROWN: game.setCurrentSubRoundPlayer(3); break;
+                        case GRAY:  game.setCurrentSubRoundPlayer(4); break;
+                    }
+                    // Removing the stone from the Stones on the Ship & putting it back to the StoneQuarry
+                    game.getStoneQuarry().getStonesByPlayerNr(game.getCurrentSubRoundPlayer()).add(ship.getStoneByPlace(i));
+                    ship.getStones().remove(ship.getStoneByPlace(i));
+                    // Only loop to the first hit -> afterwards break
+                    break forloop;
+                }
+            }
+        }
+        // All stones have been unloaded from the Ship
+        else {
+            // Returning the Game back to its normal running state
+            game.setStatus(GameStatus.RUNNING);
+        }
+
+        // Saving the changes to the DB
+        this.gameRepository.save(game);
     }
 }
