@@ -27,7 +27,7 @@ public class ValidationManager {
         this.validators = new ArrayList<>();
 
         // Adding the rules of the Game
-        validators.add(new MoveValidation());
+        validators.add(new MoveValidator());
         validators.add(new GetStonesValidator());
         validators.add(new PlaceStoneValidator());
         validators.add(new SailShipValidator());
