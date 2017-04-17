@@ -56,7 +56,7 @@ public class Game implements Serializable {
 	@JsonManagedReference
 	private List<Round> rounds;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
 	@JsonManagedReference
 	private List<Player> players;
 
@@ -196,16 +196,14 @@ public class Game implements Serializable {
 	}
 
 	public ASite getSiteById(Long id){
-		ASite result = null;
-		for (BuildingSite site : buildingSites){
-			if (site.getId().equals(id)){
-				result = site;
-			}
-		}
 
 		if (this.marketPlace.getId().equals(id)) return this.marketPlace;
-		if (result == null) throw new NotFoundException(id, "Site not found!");
 
-		return result;
+		for (BuildingSite site : buildingSites){
+			if (site.getId().equals(id)){
+				return site;
+			}
+		}
+		throw new NotFoundException(id, "Site not found!");
 	}
 }
