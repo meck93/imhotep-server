@@ -7,9 +7,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.GetCardMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 
-/**
- * Created by Cristian on 15.04.2017.
- */
 public class GetCardValidator implements IValidator {
 
     @Override
@@ -31,9 +28,15 @@ public class GetCardValidator implements IValidator {
         if (!newMove.getMoveType().equals(GameConstants.GET_CARD)) {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Wrong MoveType!");
         }
+        // The Move and the Game must have the same currentSubRoundPlayer
+        if (game.getCurrentSubRoundPlayer() != newMove.getCurrentSubRoundPlayer()){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                    "Current SubRound PlayerNumber of Game: " + game.getCurrentSubRoundPlayer() + " != of Move: " + newMove.getCurrentSubRoundPlayer());
+        }
         // The card must exist in the round
-        if (game.getMarketPlace().getMarketCardById(newMove.getMarketCardId())== null){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Card doesn't exist in Round: " + game.getRoundByRoundCounter(game.getRoundCounter()));
+        if (game.getMarketPlace().getMarketCardById(newMove.getMarketCardId()) == null){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                    "MarketCard doesn't exist in Round: " + game.getRoundByRoundCounter());
         }
     }
 }

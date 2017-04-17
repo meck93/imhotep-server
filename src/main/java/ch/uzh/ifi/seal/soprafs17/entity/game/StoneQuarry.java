@@ -85,16 +85,12 @@ public class StoneQuarry implements Serializable {
     }
 
     public List<Stone> getStonesByPlayerNr(int playerNr) {
-
-        List<Stone> result = null;
-
         switch (playerNr){
-            case 1: result = getBlackStones(); break;
-            case 2: result = getWhiteStones(); break;
-            case 3: result = getBrownStones(); break;
-            case 4: result = getGrayStones(); break;
+            case 1: return getBlackStones();
+            case 2: return getWhiteStones();
+            case 3: return getBrownStones();
+            case 4: return getGrayStones();
             default: throw new InternalServerException("No correct playerNr between 1-4 was specified");
         }
-        return result;
     }
 }

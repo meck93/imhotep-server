@@ -39,9 +39,6 @@ public class ObeliskScorer implements IScoreable {
         Obelisk obelisk = (Obelisk) game.getBuildingSite(GameConstants.OBELISK);
         List<Stone> stones = obelisk.getStones();
 
-        // The number of players in this game
-        int nrOfPlayers = game.getNumberOfPlayers();
-
         // The Scores used according to the Nr. of Players
         int[] scores = obelisk.getScores(game.getNumberOfPlayers());
 
@@ -133,7 +130,7 @@ public class ObeliskScorer implements IScoreable {
         // making sure the result, sum and counter are not null, calculating the resulting value
         if (sum1 != 0) res1 = sum1/counter1;
         if (sum2 != 0) res2 = sum2/counter2;
-        if (sum3 != 0) res3 = sum3/counter2;
+        if (sum3 != 0) res3 = sum3/counter3;
 
         // Assigning the correct score to each rank
         for (Map.Entry<Integer, Integer> entry : testMap.entrySet()){
@@ -150,7 +147,6 @@ public class ObeliskScorer implements IScoreable {
                 game.getPlayerByPlayerNr(entry.getKey() + 1).getPoints()[2] = scores[3];
             }
         }
-
         return game;
     }
 }

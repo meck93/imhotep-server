@@ -69,7 +69,7 @@ public class Game implements Serializable {
 		throw new NotFoundException("game");
 	}
 
-	public Round getRoundByRoundCounter(int roundCounter){
+	public Round getRoundByRoundCounter(){
 		for (Round round : this.rounds){
 			if (round.getRoundNumber() == this.getRoundCounter()){
 				return round;
@@ -196,16 +196,14 @@ public class Game implements Serializable {
 	}
 
 	public ASite getSiteById(Long id){
-		ASite result = null;
-		for (BuildingSite site : buildingSites){
-			if (site.getId().equals(id)){
-				result = site;
-			}
-		}
 
 		if (this.marketPlace.getId().equals(id)) return this.marketPlace;
-		if (result == null) throw new NotFoundException(id, "Site not found!");
 
-		return result;
+		for (BuildingSite site : buildingSites){
+			if (site.getId().equals(id)){
+				return site;
+			}
+		}
+		throw new NotFoundException(id, "Site not found!");
 	}
 }

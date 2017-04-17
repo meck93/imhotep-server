@@ -8,8 +8,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +18,6 @@ import java.util.List;
 @Transactional
 public class LobbyService {
 
-    private final Logger log = LoggerFactory.getLogger(LobbyService.class);
     private final GameService gameService;
     private final PlayerService playerService;
 
@@ -62,6 +59,7 @@ public class LobbyService {
 
         return newGame;
     }
+
     /*
      * Implementation of a User joining a Game. User -> Player. Player -> Joins Game.
      */
@@ -111,7 +109,7 @@ public class LobbyService {
     /*
      * Stopping a Game
      */
-    public void stopGame(Long gameId, Long playerId) {
+    public void stopGame(Long gameId) {
         this.gameService.stopGame(gameId);
     }
 

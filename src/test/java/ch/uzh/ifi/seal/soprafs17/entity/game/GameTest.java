@@ -138,7 +138,7 @@ public class GameTest {
         testRound.setRoundNumber(1);
         testGame.setRoundCounter(1);
         testGame.setRounds(testRounds);
-        Assert.assertEquals(testRounds.get(0), testGame.getRoundByRoundCounter(1));
+        Assert.assertEquals(testRounds.get(0), testGame.getRoundByRoundCounter());
     }
 
     @Test

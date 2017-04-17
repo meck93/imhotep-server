@@ -6,36 +6,33 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotFoundException extends BaseHttpException {
 
-    private Long Id;
+    private static final String NOT_FOUND = " could not be found!";
 
     public NotFoundException() {super(); }
 
-    public NotFoundException(Long Id) {
+    public NotFoundException(Long id) {
         // Specifies the StatusCode for return
-        super(HttpStatus.NOT_FOUND, Id + ": could not be found!");
-        this.Id = Id;
+        super(HttpStatus.NOT_FOUND, id + NOT_FOUND);
     }
     /*
      * Returns the Class and the Id where the Exception was thrown
      */
-    public NotFoundException(Long Id, String classMsg) {
+    public NotFoundException(Long id, String classMsg) {
         // Specifies the StatusCode for return
-        super(HttpStatus.NOT_FOUND, classMsg + " " + Id + " could not be found!");
-        this.Id = Id;
+        super(HttpStatus.NOT_FOUND, classMsg + " " + id + NOT_FOUND);
     }
     /*
      * Returns the Class and the Id where the Exception was thrown
      */
     public NotFoundException(int number, String classMsg) {
         // Specifies the StatusCode for return
-        super(HttpStatus.NOT_FOUND, classMsg + " " + number + " could not be found!");
-        this.Id = Long.parseLong(number+"");
+        super(HttpStatus.NOT_FOUND, classMsg + " " + number + NOT_FOUND);
     }
     /*
      * Returns the Class and the Id where the Exception was thrown
      */
     public NotFoundException(String classMsg) {
         // Specifies the StatusCode for return
-        super(HttpStatus.NOT_FOUND, classMsg + " could not be found!");
+        super(HttpStatus.NOT_FOUND, classMsg + NOT_FOUND);
     }
 }
