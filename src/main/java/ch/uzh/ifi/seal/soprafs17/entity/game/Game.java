@@ -7,7 +7,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -204,7 +203,7 @@ public class Game implements Serializable {
 			}
 		}
 
-		if (id == this.marketPlace.getId()) return this.marketPlace;
+		if (this.marketPlace.getId().equals(id)) return this.marketPlace;
 		if (result == null) throw new NotFoundException(id, "Site not found!");
 
 		return result;

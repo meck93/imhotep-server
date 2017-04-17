@@ -26,6 +26,14 @@ public class NotFoundException extends BaseHttpException {
     /*
      * Returns the Class and the Id where the Exception was thrown
      */
+    public NotFoundException(int number, String classMsg) {
+        // Specifies the StatusCode for return
+        super(HttpStatus.NOT_FOUND, classMsg + " " + number + " could not be found!");
+        this.Id = Long.parseLong(number+"");
+    }
+    /*
+     * Returns the Class and the Id where the Exception was thrown
+     */
     public NotFoundException(String classMsg) {
         // Specifies the StatusCode for return
         super(HttpStatus.NOT_FOUND, classMsg + " could not be found!");

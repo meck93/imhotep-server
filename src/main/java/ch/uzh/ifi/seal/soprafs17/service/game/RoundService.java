@@ -52,32 +52,43 @@ public class RoundService {
             // Creating a new Round
             Round newRound = new Round();
             newRound.setGame(game);
-            newRound.setShips(new ArrayList<>());
-            newRound.setRoundNumber(0);
-
-            // getting a new roundCard
-            RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
-            newRound.setCard(newRoundCard);
+            newRound.setRoundNumber(game.getRounds().size() + 1);
 
             roundRepository.save(newRound);
 
             return newRound;
         }
 
-        public Round initializeRound(Long roundId, int roundNumber) {
+        public Round initializeRound(Long roundId, Long gameId) {
             log.debug("Initializing Round: " + roundId);
 
             Round round = roundRepository.findById(roundId);
 
-            // setting the correct round number
-            round.setRoundNumber(roundNumber);
+            // getting a new roundCard
+            RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
+            round.setCard(newRoundCard);
+
             // adding ships to the round
-            List<Ship> currentShips = shipService.createShips(round.getCard());
+            List<Ship> currentShips = shipService.createShips(newRoundCard);
             round.setShips(currentShips);
 
             roundRepository.save(round);
 
             return round;
+        }
+
+        /*
+         * Checks whether all ships in the round have been sailed
+         */
+        public boolean goToNextRound(Round round){
+            log.debug("Checking whether all ships have sailed in RoundNr: " + round.getRoundNumber() + " RoundNr: " + round.getGame().getId());
+
+            for (Ship ship : round.getShips()){
+                if (!ship.isHasSailed()){
+                    return false;
+                }
+            }
+            return true;
         }
 
         /*
@@ -117,7 +128,7 @@ public class RoundService {
                 }
             }
 
-            if (resultRound == null) throw new NotFoundException(gameId, "Round");
+            if (resultRound == null) throw new NotFoundException(roundNumber, "Round");
 
             return resultRound;
         }

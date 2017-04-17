@@ -2,7 +2,6 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.site.ASite;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Column;
@@ -14,8 +13,10 @@ import javax.persistence.Entity;
 @JsonTypeName(value = "SAIL_SHIP")
 public class SailShipMove extends AMove {
 
-    // Existence Reason: Hibernate also needs an empty constructor
-    public SailShipMove(){}
+
+    public SailShipMove(){
+        // Existence Reason: Hibernate also needs an empty constructor
+    }
 
     public SailShipMove(String moveType){
         super(moveType);
@@ -23,9 +24,6 @@ public class SailShipMove extends AMove {
 
     @Column
     private Long shipId;
-
-    @Column
-    private ASite targetSite;
 
     @Column
     private long targetSiteId;
@@ -39,14 +37,6 @@ public class SailShipMove extends AMove {
 
     public void setShipId(Long shipId) {
         this.shipId = shipId;
-    }
-
-    public ASite getTargetSite() {
-        return targetSite;
-    }
-
-    public void setTargetSite(ASite targetSite) {
-        this.targetSite = targetSite;
     }
 
     public String getTargetSiteType() {

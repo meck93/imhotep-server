@@ -1,22 +1,13 @@
 package ch.uzh.ifi.seal.soprafs17.service.move.validation;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
-import ch.uzh.ifi.seal.soprafs17.entity.site.ASite;
-import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
-import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 
-/**
- * Created by User on 14.04.2017.
- */
-public class SailShipValidation implements IValidator {
-
-
+public class SailShipValidator implements IValidator {
 
     @Override
     public boolean supports(AMove move) {
@@ -29,6 +20,10 @@ public class SailShipValidation implements IValidator {
         // Casting the abstract Move to a PlaceStoneMove
         SailShipMove newMove = (SailShipMove) move;
 
+        // Game must be running to make this move
+        if(game.getStatus() != GameStatus.RUNNING){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. GameStatus is not Running - Currently: " + game.getStatus());
+        }
         // MoveType of the Move must be of Type: SAIL_SHIP
         if( ! newMove.getMoveType().equals(GameConstants.SAIL_SHIP)){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Wrong MoveType!");
@@ -36,10 +31,6 @@ public class SailShipValidation implements IValidator {
         // The ship must exist in the round
         if (game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()) == null){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship doesn't exist in Round: " + game.getRoundByRoundCounter(game.getRoundCounter()));
-        }
-        // A ship must hold the minimum amount of stones for its size
-        if (game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getStones().size() < game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getMIN_STONES()){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones on ship.");
         }
         // The ship must not have sailed already
         if (game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).isHasSailed()){
@@ -49,6 +40,9 @@ public class SailShipValidation implements IValidator {
         if (game.getSiteById(newMove.getTargetSiteId()).isDocked()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Site is already docked.");
         }
-
+        // A ship must hold the minimum amount of stones for its size
+        if (game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getStones().size() < game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId()).getMIN_STONES()){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones on ship.");
+        }
     }
 }
