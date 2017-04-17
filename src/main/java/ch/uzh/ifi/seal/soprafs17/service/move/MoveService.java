@@ -15,7 +15,6 @@ import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
-import ch.uzh.ifi.seal.soprafs17.service.game.StoneService;
 import ch.uzh.ifi.seal.soprafs17.service.move.rule.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.ValidationManager;
 import org.slf4j.Logger;
@@ -40,16 +39,14 @@ public class MoveService {
     private final RuleManager ruleManager;
     private final GameService gameService;
     private final RoundService roundService;
-    private final StoneService stoneService;
 
     @Autowired
-    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService, StoneService stoneService) {
+    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService) {
         this.gameRepository = gameRepository;
         this.validationManager = validationManager;
         this.ruleManager = ruleManager;
         this.gameService = gameService;
         this.roundService = roundService;
-        this.stoneService = stoneService;
     }
 
     public synchronized void validateAndApply(AMove move) throws BadRequestHttpException, InternalServerException {
@@ -83,7 +80,7 @@ public class MoveService {
 
     public synchronized void checkNextRound(AMove move, Game game){
         // Advancing the Game to the next Player, only if the Game is in Status: RUNNING
-        if ((game.getStatus() == GameStatus.RUNNING)) {
+        if (game.getStatus() == GameStatus.RUNNING) {
             // Advancing the currentPlayer
             game.setCurrentPlayer((game.getCurrentPlayer()) % (game.getPlayers().size()) + 1);
 
