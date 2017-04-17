@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.move.rule;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.service.move.rule.card.HammerRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class RuleManager {
         rules.add(new PlaceStoneRule());
         rules.add(new SailShipRule());
         rules.add(new GetCardRule());
+        rules.add(new HammerRule());
     }
 
     public synchronized Game applyRules(AMove move, Game game) {

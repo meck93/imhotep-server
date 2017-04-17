@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service.move.validation;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.GetCardMove;
@@ -34,9 +35,17 @@ public class GetCardValidator implements IValidator {
                     "Current SubRound PlayerNumber of Game: " + game.getCurrentSubRoundPlayer() + " != of Move: " + newMove.getCurrentSubRoundPlayer());
         }
         // The card must exist in the round
-        if (game.getMarketPlace().getMarketCardById(newMove.getMarketCardId()) == null){
+        boolean cardExists = false;
+
+        for (MarketCard marketCard : game.getMarketPlace().getMarketCards()){
+            if (marketCard.getId().equals(newMove.getMarketCardId())){
+                cardExists = true;
+            }
+        }
+
+        if (!cardExists){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
-                    "MarketCard doesn't exist in Round: " + game.getRoundByRoundCounter());
+                    "MarketCard doesn't exist in Round: " + game.getRoundByRoundCounter().getRoundNumber());
         }
     }
 }

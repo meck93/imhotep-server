@@ -1,8 +1,11 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest.site;
 
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
@@ -21,12 +24,14 @@ public class SiteController extends GenericController {
     private final BuildingSiteService buildingSiteService;
     private final MarketPlaceService marketPlaceService;
     private final GameService gameService;
+    private final MarketCardService marketCardService;
 
     @Autowired
-    public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService, GameService gameService){
+    public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService, GameService gameService, MarketCardService marketCardService){
         this.buildingSiteService = buildingSiteService;
         this.marketPlaceService = marketPlaceService;
         this.gameService = gameService;
+        this.marketCardService = marketCardService;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{siteType}")
@@ -48,6 +53,16 @@ public class SiteController extends GenericController {
     public String createDummyData(@PathVariable("gameId") Long gameId){
         int nrOfPlayers = gameService.findNrOfPlayers(gameId);
         buildingSiteService.createDummyData(gameId, nrOfPlayers);
+        return "DummyData created!";
+    }
+    /*
+     * Creates a Dummy-MarketCard on each Site of the Game for the Front-End Mapping/Modelling Purposes
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/dummyCard")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createDummyCard(@PathVariable("gameId") Long gameId, @RequestParam("color") String color, @RequestParam("marketCardType") MarketCardType marketCardType){
+        MarketCard marketCard = this.marketCardService.createMarketCard(gameId, color, marketCardType);
+        this.marketPlaceService.addDummyCard(gameId, marketCard);
         return "DummyData created!";
     }
 }
