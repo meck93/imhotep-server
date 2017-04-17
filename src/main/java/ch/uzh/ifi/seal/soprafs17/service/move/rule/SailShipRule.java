@@ -26,7 +26,7 @@ public class SailShipRule implements IRule {
         SailShipMove newMove = (SailShipMove) move;
 
         // Retrieving the Ship from the Game
-        Ship ship = game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId());
+        Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
 
         // Updating the ship
         ship.setHasSailed(true);

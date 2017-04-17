@@ -69,7 +69,7 @@ public class Game implements Serializable {
 		throw new NotFoundException("game");
 	}
 
-	public Round getRoundByRoundCounter(int roundCounter){
+	public Round getRoundByRoundCounter(){
 		for (Round round : this.rounds){
 			if (round.getRoundNumber() == this.getRoundCounter()){
 				return round;

@@ -36,7 +36,7 @@ public class GetCardValidator implements IValidator {
         // The card must exist in the round
         if (game.getMarketPlace().getMarketCardById(newMove.getMarketCardId()) == null){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
-                    "MarketCard doesn't exist in Round: " + game.getRoundByRoundCounter(game.getRoundCounter()));
+                    "MarketCard doesn't exist in Round: " + game.getRoundByRoundCounter());
         }
     }
 }

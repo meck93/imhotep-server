@@ -88,7 +88,7 @@ public class MoveService {
             game.setCurrentPlayer((game.getCurrentPlayer()) % (game.getPlayers().size()) + 1);
 
             // Checking whether all ships have been sailed or not
-            if (move.getMoveType().equals(GameConstants.SAIL_SHIP) && this.roundService.goToNextRound(game.getRoundByRoundCounter(game.getRoundCounter()))){
+            if (move.getMoveType().equals(GameConstants.SAIL_SHIP) && this.roundService.goToNextRound(game.getRoundByRoundCounter())){
                 // After six Rounds the Game will be ended
                 if (game.getRoundCounter() == GameConstants.LAST_ROUND) {
                     this.gameService.stopGame(game.getId());
@@ -117,7 +117,7 @@ public class MoveService {
             //Typecasting to the SailShipMove
             SailShipMove newMove = (SailShipMove) move;
             // Retrieving the correct Ship
-            Ship ship = game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId());
+            Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
             // Setting the next SubRoundPlayer
             this.nextSubRoundPlayer(game, ship);
         }
@@ -126,7 +126,7 @@ public class MoveService {
             // Typecasting to the GetCardMove
             GetCardMove newMove = (GetCardMove) move;
             // Retrieving the correct Ship
-            Ship ship = game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId());
+            Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
             // Setting the next SubRoundPlayer
             this.nextSubRoundPlayer(game, ship);
         }
