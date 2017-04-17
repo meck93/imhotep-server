@@ -74,6 +74,18 @@ public class LobbyService {
     }
 
     /*
+     * Implementation of a Player removing himself from a Game.
+     */
+    public void removePlayer(Long gameId, Long playerId){
+        // Retrieve the correct Player
+        Player player = this.playerService.findPlayerById(playerId);
+        // Removes the player from the Game
+        this.gameService.removePlayer(gameId, player.getPlayerNumber());
+        // Deleting the Player in the database
+        // this.playerService.deletePlayer(player);
+    }
+
+    /*
      * Starting the Game
      */
     public void startGame(Long gameId, Long playerId){

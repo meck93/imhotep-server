@@ -88,4 +88,15 @@ public class LobbyController extends GenericController {
     public void deleteGame(@PathVariable Long gameId) {
         lobbyService.deleteGame(gameId);
     }
+
+    /*
+     * Context: /lobby/games/{gameId}/players/{playerNr}/delete
+     * Removing a Game
+     * @Param gameId Game
+     */
+    @RequestMapping(value = "games/{gameId}/players/{playerId}/delete", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePlayer(@PathVariable Long gameId, @PathVariable Long playerId) {
+        lobbyService.removePlayer(gameId, playerId);
+    }
 }

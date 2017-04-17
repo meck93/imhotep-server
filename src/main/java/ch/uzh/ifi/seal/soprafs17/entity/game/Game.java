@@ -56,7 +56,7 @@ public class Game implements Serializable {
 	@JsonManagedReference
 	private List<Round> rounds;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
 	@JsonManagedReference
 	private List<Player> players;
 
