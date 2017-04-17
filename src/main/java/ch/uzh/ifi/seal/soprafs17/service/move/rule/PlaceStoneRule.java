@@ -74,10 +74,6 @@ public class PlaceStoneRule implements IRule {
         // Adding the updated ship back to the game
         ships.add(assignedShip);
         game.getRoundByRoundCounter().setShips(ships);
-        /*
-        ships.add(assignedShip);
-        game.getRoundByRoundCounter(game.getRoundCounter()).setShips(ships);
-         */
 
         return game;
     }
