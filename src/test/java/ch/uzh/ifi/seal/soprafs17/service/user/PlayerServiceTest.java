@@ -2,7 +2,6 @@ package ch.uzh.ifi.seal.soprafs17.service.user;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
-import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,23 @@ public class PlayerServiceTest {
 
     @Test
     public void createPlayer() {
-        // TODO: test playerService.createPlayer()
+        /*
+        Waiting for player repository
+        Player testPlayer = new Player();
+        Game testGame = new Game();
+        testGame.setId(1L);
+        User testUser = new User();
+        testUser.setPlayer(testPlayer);
+        testPlayer.setUsername("testName");
+        testPlayer.setId(1L);
+        testPlayer.setGame(testGame);
+        testPlayer.setPlayerNumber(1);
+        List<Player> testPlayers = new ArrayList<>();
+        testPlayers.add(testPlayer);
+        testGame.setPlayers(testPlayers);
+        testGame.setStatus(GameStatus.PENDING);
+        Assert.assertEquals(testPlayer,playerRepository.findOne(1L));
+        */
     }
 
     @Test

@@ -28,7 +28,7 @@ public class MarketCard implements Serializable {
 
     @Column(nullable = false)
     @JsonIgnore
-    private boolean alreadyChosen;
+    private boolean alreadyChosen; //for marketCardDeck
 
     @Column(nullable = false)
     private MarketCardType marketCardType;

@@ -164,17 +164,6 @@ public class GameTest {
     }
 
     @Test
-    public void getBuildingSite() {
-        /*
-        Game testGame = new Game();
-        List<BuildingSite> testBuildingSites = new ArrayList<>();
-        Pyramid testPyramid = new Pyramid();
-        testGame.setBuildingSites(testBuildingSites);
-        Assert.assertEquals(testGame.getBuildingSite("PYRAMID"),testPyramid);
-        */
-    }
-
-    @Test
     public void BuildingSite() {
         Game testGame = new Game();
         Pyramid testPyramid = new Pyramid();
@@ -182,5 +171,18 @@ public class GameTest {
         testBuildingSites.add(testPyramid);
         testGame.setBuildingSites(testBuildingSites);
         Assert.assertEquals(testPyramid,testGame.getBuildingSites().get(0));
+    }
+
+    @Test
+    public void getSiteById() {
+        /*
+        Game testGame = new Game();
+        BuildingSite testBuildingSite = new Pyramid();
+        testBuildingSite.setId(1L);
+        List<BuildingSite> testSites = new ArrayList<>();
+        testSites.add(testBuildingSite);
+        testGame.setBuildingSites(testSites);
+        Assert.assertEquals(testGame.getSiteById(1L), testBuildingSite);
+         */
     }
 }

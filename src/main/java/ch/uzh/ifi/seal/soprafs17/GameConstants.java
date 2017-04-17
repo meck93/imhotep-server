@@ -24,6 +24,7 @@ public class GameConstants {
 	public static final String GET_STONES = "GET_STONES";
 	public static final String PLACE_STONE = "PLACE_STONE";
 	public static final String SAIL_SHIP = "SAIL_SHIP";
+	public static final String GET_CARD = "GET_CARD";
 	public static final String PLAY_CARD = "PLAY_CARD";
 
 	// starting points
