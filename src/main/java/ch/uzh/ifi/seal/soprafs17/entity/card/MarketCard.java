@@ -1,14 +1,12 @@
 package ch.uzh.ifi.seal.soprafs17.entity.card;
 
-/**
- * Created by Cristian on 25.03.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
-import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
@@ -28,13 +26,10 @@ public class MarketCard implements Serializable {
 
     @Column(nullable = false)
     @JsonIgnore
-    private boolean alreadyChosen; //for marketCardDeck
+    private boolean alreadyChosen;
 
     @Column(nullable = false)
     private MarketCardType marketCardType;
-
-    @ManyToOne(targetEntity = MarketPlace.class, fetch = FetchType.LAZY)
-    private MarketPlace marketPlace;
 
     public MarketCardType getMarketCardType() {
         return marketCardType;
