@@ -82,8 +82,7 @@ public class PlayerService {
     public void initializePlayer(Long gameId, Player player) {
         log.debug("Initializing Player: " + player.getId());
 
-        // Initializing the Move List and the StartPoints
-        player.setMoves(new ArrayList<>());
+        // Initializing the StartPoints to Zero
         player.setPoints(new int[6]);
 
         // assign the color according to the playerNumber
@@ -94,11 +93,12 @@ public class PlayerService {
             case 4: player.setColor(GameConstants.GRAY); break;
         }
 
+        //Add the SupplySled to the player
+        SupplySled supplySled = supplySledService.createSupplySled(player.getId());
+        player.setSupplySled(supplySled);
+
         // Saving the changes to the DB
         playerRepository.save(player);
-
-        //add the SupplySled to the player
-        supplySledService.createSupplySled(player);
 
         // Set the correct amountOfPlayers
         gameService.setNrOfPlayers(gameId, player.getPlayerNumber());
@@ -148,5 +148,11 @@ public class PlayerService {
         if (player == null) throw new NotFoundException(playerId, "Player");
 
         return player;
+    }
+
+    public void deletePlayer(Long playerId) {
+        log.debug("Deleting Player: " + playerId);
+
+        playerRepository.deletePlayer(playerId);
     }
 }

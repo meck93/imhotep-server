@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.entity.user;
 
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -14,15 +13,18 @@ public class SupplySled implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public SupplySled(){
+        // Left empty because Hibernate needs an empty constructor
+    }
+
     @Id
     @GeneratedValue
     @JsonIgnore
     private Long id;
 
-    @OneToOne(targetEntity = Player.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "Player_ID", foreignKey = @ForeignKey(name ="PLAYER_ID_FK"))
-    @JsonBackReference(value = "player")
-    private Player player;
+    @Column
+    @JsonIgnore
+    private Long playerId;
 
     @OneToMany
     private List<Stone> stones;
@@ -43,11 +45,11 @@ public class SupplySled implements Serializable {
         this.stones = stones;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Long getPlayerId() {
+        return playerId;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
     }
 }

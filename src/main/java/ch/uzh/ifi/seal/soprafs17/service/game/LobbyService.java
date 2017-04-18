@@ -75,12 +75,16 @@ public class LobbyService {
      * Implementation of a Player removing himself from a Game.
      */
     public void removePlayer(Long gameId, Long playerId){
-        // Retrieve the correct Player
-        Player player = this.playerService.findPlayerById(playerId);
-        // Removes the player from the Game
-        this.gameService.removePlayer(gameId, player.getPlayerNumber());
-        // Deleting the Player in the database
-        // this.playerService.deletePlayer(player);
+        // The player to be deleted
+        Player toBeDeleted = this.playerService.findPlayerById(playerId);
+
+        // Check whether the player is the owner
+        if (toBeDeleted.getPlayerNumber() == 1){
+            // Deleting all players and the Game - if the owner's going to be deleted
+            this.deleteGame(gameId);
+        }
+        // Only the specified player with ID: playerId is going to be deleted
+        this.playerService.deletePlayer(playerId);
     }
 
     /*
@@ -117,6 +121,13 @@ public class LobbyService {
      * Deleting a Game
      */
     public void deleteGame(Long gameId) {
+        Game game = this.gameService.findById(gameId);
+
+        // Deleting All Players in the Game
+        for (Player player : game.getPlayers()){
+            this.playerService.deletePlayer(player.getId());
+        }
+        // Deleting the game
         this.gameService.deleteGame(gameId);
     }
 }

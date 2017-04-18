@@ -99,9 +99,7 @@ public class GameService {
     }
 
     public void deleteGame(Long gameId) {
-        Game game = gameRepository.findById(gameId);
-
-        if (game == null) throw new NotFoundException(gameId, "Game");
+        Game game = this.findById(gameId);
 
         gameRepository.delete(game);
 
@@ -115,25 +113,6 @@ public class GameService {
         game.setNumberOfPlayers(nrOfPlayers);
 
         gameRepository.save(game);
-    }
-
-    /*
-     * Deleting a player instance from a Game - User removes himself from a Game
-     */
-    public void removePlayer(Long gameId, int playerNumber) {
-        log.debug("Removed Player: " + playerNumber + " from Game: " + gameId);
-
-        // Finding the correct Game
-        Game game = this.findById(gameId);
-        // If the Player is the Owner -> everyone will be removed from the Game and the Game will be deleted
-        if (playerNumber == 1){
-            this.deleteGame(gameId);
-            return;
-        }
-        // Removing the player from the Game
-        game.getPlayers().removeIf(player -> player.getPlayerNumber() == playerNumber);
-        // Saving the new state of the Game with 1 Player less
-        this.gameRepository.save(game);
     }
 
     public List<Game> listGames() {
