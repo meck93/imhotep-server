@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 @JsonTypeName(value = "SAIL_SHIP")
 public class SailShipMove extends AMove {
 
-
     public SailShipMove(){
         // Existence Reason: Hibernate also needs an empty constructor
     }
@@ -28,23 +27,12 @@ public class SailShipMove extends AMove {
     @Column
     private long targetSiteId;
 
-    @Column(name = "SITE_TYPE", updatable = false, insertable = false)
-    private String targetSiteType;
-
     public Long getShipId() {
         return shipId;
     }
 
     public void setShipId(Long shipId) {
         this.shipId = shipId;
-    }
-
-    public String getTargetSiteType() {
-        return targetSiteType;
-    }
-
-    public void setTargetSiteType(String targetSiteType) {
-        this.targetSiteType = targetSiteType;
     }
 
     public long getTargetSiteId() {
