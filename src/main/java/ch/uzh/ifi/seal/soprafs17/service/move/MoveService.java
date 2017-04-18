@@ -88,6 +88,8 @@ public class MoveService {
             if (move.getMoveType().equals(GameConstants.SAIL_SHIP) && this.roundService.goToNextRound(game.getRoundByRoundCounter())){
                 // After six Rounds the Game will be ended
                 if (game.getRoundCounter() == GameConstants.LAST_ROUND) {
+                    // TODO: Score the Burial_Chamber & the Obelisk here
+                    // TODO: Score the Green and Violet Market Card here
                     this.gameService.stopGame(game.getId());
                 }
                 // Game is not finished yet
@@ -98,6 +100,8 @@ public class MoveService {
                     }
                     // Remove the sailedShip from the Market Place
                     game.getMarketPlace().setDocked(false);
+
+                    // TODO: Score the Temple HERE!
 
                     // All Ships have sailed -> Initialize a new Round
                     this.gameService.initializeRound(game.getId());
