@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.service.move.validation.card;
 
-import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
@@ -9,26 +8,22 @@ import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.IValidator;
 
-public class HammerValidator implements IValidator {
+/**
+ * Created by User on 19.04.2017.
+ */
+public class SailValidator implements IValidator {
+
 
     @Override
     public boolean supports(AMove move) {
-        return move.getMoveType().equals(MarketCardType.HAMMER.toString());
+        return move.getMoveType().equals(MarketCardType.SAIL.toString());
     }
 
     @Override
     public void validate(final AMove move, final Game game) throws MoveValidationException {
+
         // Typecasting to the correct Move Type
         PlayCardMove newMove = (PlayCardMove) move;
-
-        // The SupplySled cannot be full
-        if (game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().size() == GameConstants.MAX_STONES_SUPPLY_SLED){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. SupplySled is already full! - Move cannot be applied");
-        }
-        // Stones taken from StoneQuarry must be less than the maximal allowed amount (30)
-        if (game.getStoneQuarry().getStonesByPlayerNr(game.getCurrentPlayer()).size() == 0){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The Player: " + game.getCurrentPlayer() + " has already used the maximal amount of stones allowed!");
-        }
 
         // The ship must exist in the round
         boolean shipExists = false;
@@ -57,6 +52,14 @@ public class HammerValidator implements IValidator {
         // A ship must have at least one free space
         if(game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() == game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. No space left on the ship.");
+        }
+        // The site has to be free
+        if (game.getSiteById(newMove.getTargetSiteId()).isDocked()){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Site is already docked.");
+        }
+        // A ship must hold the minimum amount of stones for its size -1
+        if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() < game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMIN_STONES()-1){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones on ship.");
         }
     }
 }
