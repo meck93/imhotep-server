@@ -22,7 +22,8 @@ public class PlayCardValidator implements IValidator {
 
         // Game must be running to make this move
         if(game.getStatus() != GameStatus.RUNNING){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. GameStatus is not Running - Currently: " + game.getStatus());
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                    "GameStatus is not Running - Currently: " + game.getStatus());
         }
 
         // The card must exist in the player's deck of cards
