@@ -17,6 +17,7 @@ import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
 import ch.uzh.ifi.seal.soprafs17.service.move.rule.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.ValidationManager;
+import ch.uzh.ifi.seal.soprafs17.service.scoring.BurialChamberScorer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,10 @@ public class MoveService {
             if (move.getMoveType().equals(GameConstants.SAIL_SHIP) && this.roundService.goToNextRound(game.getRoundByRoundCounter())){
                 // After six Rounds the Game will be ended
                 if (game.getRoundCounter() == GameConstants.LAST_ROUND) {
-                    // TODO: Score the Burial_Chamber & the Obelisk here
+
+                    BurialChamberScorer burialChamberScorer = new BurialChamberScorer();
+                    burialChamberScorer.scoreEndOfGame(game);
+                    // TODO: Score the Obelisk here
                     // TODO: Score the Green and Violet Market Card here
                     this.gameService.stopGame(game.getId());
                 }

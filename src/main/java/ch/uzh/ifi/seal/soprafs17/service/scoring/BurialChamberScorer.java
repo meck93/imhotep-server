@@ -52,26 +52,32 @@ public class BurialChamberScorer implements IScoreable {
         else if (figure == 1){
             arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+1;
+            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure == 2){
             arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+3;
+            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure == 3){
             arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+6;
+            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure == 4){
             arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+10;
+            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure == 5){
             arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+15;
+            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure > 5){
             arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+2*(figure-5)+15;
+            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
     }
 
@@ -118,12 +124,13 @@ public class BurialChamberScorer implements IScoreable {
 
     public void scoreChamber(int arr[], int player, Game game) {
         int count = 0;
-        int figure = 1;
+        int figure = 0;
         while (isValid(count)) {
 
             // Find an entry point
 
             if (arr[count] == player) {
+                figure++;  
                 if (isValid(lookUp(arr, count)) && arr[lookUp(arr, count)] == player) {
                     arr[lookUp(arr,count)] = -2;
                     figure++;
@@ -159,7 +166,7 @@ public class BurialChamberScorer implements IScoreable {
                     lookUpIndex = findLookUpIndex(arr);
                 }
                 addPoints(game,player,figure);
-                figure = 1;
+                figure = 0;
 
             } else {
                 count = incrementCount(count, arr);
