@@ -56,15 +56,24 @@ public class PlaceStoneValidator implements IValidator {
         if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).isHasSailed()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship already sailed.");
         }
+        // A ship must have at least one free space
+        if(game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() ==
+                game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES()){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. No space left on the ship.");
+        }
         // The requested placeOnShip mustn't be occupied
         game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().forEach(stone -> {
             if (stone.getPlaceOnShip() == newMove.getPlaceOnShip()){
                 throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The requested place on the ship is already occupied.");
             }
         });
-        // A ship must have at least one free space
-        if(game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() == game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES()){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. No space left on the ship.");
+        // The placeOnShip value must be smaller or equal to the MAX_STONES value && greater than 0
+        if(newMove.getPlaceOnShip() > game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES() || newMove.getPlaceOnShip() < 1){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                    "The place on the Ship cannot be larger than value: MAX_STONES");
         }
+
+
+
     }
 }
