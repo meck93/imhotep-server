@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.move.validation;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
@@ -28,10 +29,21 @@ public class SailShipValidator implements IValidator {
         if( ! newMove.getMoveType().equals(GameConstants.SAIL_SHIP)){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Wrong MoveType!");
         }
+
         // The ship must exist in the round
-        if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()) == null){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship doesn't exist in Round: " + game.getRoundByRoundCounter());
+        boolean shipExists = false;
+
+        for (Ship ship : game.getRoundByRoundCounter().getShips()){
+            if (ship.getId().equals(newMove.getShipId())){
+                shipExists = true;
+            }
         }
+
+        if (!shipExists){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                    "Ship doesn't exist in Round: " + game.getRoundByRoundCounter());
+        }
+
         // The ship must not have sailed already
         if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).isHasSailed()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship already sailed.");
