@@ -29,6 +29,10 @@ public class SailShipValidator implements IValidator {
         if( ! newMove.getMoveType().equals(GameConstants.SAIL_SHIP)){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Wrong MoveType!");
         }
+        // The Move's Player Nr must be the same as the Nr of the current Player in the Game (Verifies who is allowed to make a move currently)
+        if (move.getPlayerNr() != game.getCurrentPlayer()) {
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. PlayerNr of Move != CurrentPlayer of Game");
+        }
 
         // The ship must exist in the round
         boolean shipExists = false;

@@ -62,7 +62,8 @@ public class ChiselValidator implements IValidator {
         if (newMove.getShipId() == newMove.getShipId2()) {
             // The requested placeOShip mustn't be occupied
             if (newMove.getPlaceOnShip() == newMove.getPlaceOnShip2()) {
-                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The requested place on the ship is already occupied.");
+                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                        "The requested place on the ship is already occupied.");
             }
             // The ship must have at leas two free slots
             if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() > game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES() - 2) {
@@ -91,7 +92,8 @@ public class ChiselValidator implements IValidator {
             // The requested placeOnShip mustn't be occupied on the second ship
             game.getRoundByRoundCounter().getShipById(newMove.getShipId2()).getStones().forEach(stone -> {
                 if (stone.getPlaceOnShip() == newMove.getPlaceOnShip2()){
-                    throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The requested place on the ship is already occupied.");
+                    throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                            "The requested place on the ship is already occupied.");
                 }
             });
         }

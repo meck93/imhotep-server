@@ -24,6 +24,10 @@ public class GetStonesValidator implements IValidator {
         if( ! move.getMoveType().equals(GameConstants.GET_STONES)){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Wrong MoveType");
         }
+        // The Move's Player Nr must be the same as the Nr of the current Player in the Game (Verifies who is allowed to make a move currently)
+        if (move.getPlayerNr() != game.getCurrentPlayer()) {
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. PlayerNr of Move != CurrentPlayer of Game");
+        }
         // Stones on the SupplySled must be less than the Maximum (5)
         if (game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().size() == GameConstants.MAX_STONES_SUPPLY_SLED){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. SupplySled is already full!");
