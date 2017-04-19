@@ -17,7 +17,7 @@ import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
 import ch.uzh.ifi.seal.soprafs17.service.move.rule.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.ValidationManager;
-import ch.uzh.ifi.seal.soprafs17.service.scoring.BurialChamberScorer;
+import ch.uzh.ifi.seal.soprafs17.service.scoring.ScoringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +40,16 @@ public class MoveService {
     private final RuleManager ruleManager;
     private final GameService gameService;
     private final RoundService roundService;
+    private final ScoringService scoringService;
 
     @Autowired
-    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService) {
+    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService, ScoringService scoringService) {
         this.gameRepository = gameRepository;
         this.validationManager = validationManager;
         this.ruleManager = ruleManager;
         this.gameService = gameService;
         this.roundService = roundService;
+        this.scoringService = scoringService;
     }
 
     public synchronized void validateAndApply(AMove move) throws BadRequestHttpException, InternalServerException {
@@ -82,6 +84,8 @@ public class MoveService {
     public synchronized void checkNextRound(AMove move, Game game){
         // Advancing the Game to the next Player, only if the Game is in Status: RUNNING
         if (game.getStatus() == GameStatus.RUNNING) {
+            //Scoring the Pyramid
+            this.scoringService.score(game, GameConstants.PYRAMID);
             // Advancing the currentPlayer
             game.setCurrentPlayer((game.getCurrentPlayer()) % (game.getPlayers().size()) + 1);
 
@@ -89,11 +93,12 @@ public class MoveService {
             if (move.getMoveType().equals(GameConstants.SAIL_SHIP) && this.roundService.goToNextRound(game.getRoundByRoundCounter())){
                 // After six Rounds the Game will be ended
                 if (game.getRoundCounter() == GameConstants.LAST_ROUND) {
+                    // Scoring End of the Game (Burial_Chamber, MarketCards, Obelisk)
+                    this.scoringService.score(game, GameConstants.OBELISK);
+                    this.scoringService.score(game, GameConstants.BURIAL_CHAMBER);
 
-                    BurialChamberScorer burialChamberScorer = new BurialChamberScorer();
-                    burialChamberScorer.scoreEndOfGame(game);
-                    // TODO: Score the Obelisk here
                     // TODO: Score the Green and Violet Market Card here
+                    // Stopping the Game -> Status Change -> Winning Screen
                     this.gameService.stopGame(game.getId());
                 }
                 // Game is not finished yet
@@ -105,7 +110,8 @@ public class MoveService {
                     // Remove the sailedShip from the Market Place
                     game.getMarketPlace().setDocked(false);
 
-                    // TODO: Score the Temple HERE!
+                    // Scoring at the End of the Round (Temple)
+                    this.scoringService.score(game, GameConstants.TEMPLE);
 
                     // All Ships have sailed -> Initialize a new Round
                     this.gameService.initializeRound(game.getId());
