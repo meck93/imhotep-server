@@ -24,18 +24,7 @@ public class GetCardMove extends AMove {
     private Long shipId;
 
     @Column
-    private int currentSubRoundPlayer;
-
-    @Column
     private Long marketCardId;
-
-    public int getCurrentSubRoundPlayer() {
-        return currentSubRoundPlayer;
-    }
-
-    public void setCurrentSubRoundPlayer(int currentSubRoundPlayer) {
-        this.currentSubRoundPlayer = currentSubRoundPlayer;
-    }
 
     public Long getMarketCardId() {
         return marketCardId;
