@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.entity.game;
 
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -52,6 +53,15 @@ public class Ship implements Serializable{
             }
         }
         return null;
+    }
+
+    public Stone getStoneById(long stoneId){
+        for (Stone stone : this.stones){
+            if (stone.getId() == stoneId){
+                return stone;
+            }
+        }
+        throw new NotFoundException("Stone");
     }
 
     public Long getId() {

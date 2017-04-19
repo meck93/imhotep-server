@@ -1,10 +1,12 @@
 package ch.uzh.ifi.seal.soprafs17.entity.site;
 
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import java.util.List;
 
 @Entity(name = "MarketPlace")
@@ -19,6 +21,7 @@ public class MarketPlace extends ASite{
     }
 
     @OneToMany(targetEntity = MarketCard.class/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
+    @OrderBy("id ASC")
     private List<MarketCard> marketCards;
 
     public List<MarketCard> getMarketCards() {
@@ -27,5 +30,14 @@ public class MarketPlace extends ASite{
 
     public void setMarketCards(List<MarketCard> marketCards) {
         this.marketCards = marketCards;
+    }
+
+    public MarketCard getMarketCardById(Long marketCardId) {
+        for (MarketCard card : marketCards){
+            if (card.getId().equals(marketCardId)){
+                return card;
+            }
+        }
+        throw new NotFoundException(marketCardId, "MarketCardId not found!");
     }
 }

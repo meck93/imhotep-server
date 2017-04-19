@@ -53,10 +53,10 @@ public class PlaceStoneRule implements IRule {
         stone.setPlaceOnShip(newMove.getPlaceOnShip());
 
         // List of all current ships
-        List<Ship> ships = game.getRoundByRoundCounter(game.getRoundCounter()).getShips();
+        List<Ship> ships = game.getRoundByRoundCounter().getShips();
 
         // Find the assigned ship
-        Ship assignedShip = game.getRoundByRoundCounter(game.getRoundCounter()).getShipById(newMove.getShipId());
+        Ship assignedShip = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
 
         // Remove the assigned ship
         ships.remove(assignedShip);
@@ -73,11 +73,7 @@ public class PlaceStoneRule implements IRule {
 
         // Adding the updated ship back to the game
         ships.add(assignedShip);
-        game.getRoundByRoundCounter(game.getRoundCounter()).setShips(ships);
-        /*
-        ships.add(assignedShip);
-        game.getRoundByRoundCounter(game.getRoundCounter()).setShips(ships);
-         */
+        game.getRoundByRoundCounter().setShips(ships);
 
         return game;
     }

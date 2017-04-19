@@ -15,7 +15,6 @@ import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
 import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
-import ch.uzh.ifi.seal.soprafs17.service.game.ShipService;
 import ch.uzh.ifi.seal.soprafs17.service.game.StoneQuarryService;
 import ch.uzh.ifi.seal.soprafs17.service.scoring.ScoringService;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
@@ -55,8 +54,7 @@ public class GameService {
 
     @Autowired
     public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService,
-                       RoundService roundService, RoundCardService roundCardService,
-                       ShipService shipService, MarketPlaceService marketPlaceService,
+                       RoundService roundService, RoundCardService roundCardService, MarketPlaceService marketPlaceService,
                        StoneQuarryService stoneQuarryService, MarketCardService marketCardService,
                        SupplySledService supplySledService, ScoringService scoringService) {
         this.gameRepository = gameRepository;
@@ -145,7 +143,7 @@ public class GameService {
         return gameRepository.findNrOfPlayers(gameId);
     }
 
-    /*
+    /**
      * Returns the list of all players associated with Game: {GameId}
      */
     public List<Player> findPlayersByGameId(Long gameId) {

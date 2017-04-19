@@ -1,35 +1,48 @@
-package ch.uzh.ifi.seal.soprafs17.service.move.rule;
+package ch.uzh.ifi.seal.soprafs17.service.move.rule.card;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
+import ch.uzh.ifi.seal.soprafs17.service.move.rule.IRule;
 
-public class SailShipRule implements IRule {
+/**
+ * Created by User on 19.04.2017.
+ */
+public class LeverRule implements IRule{
+
     @Override
     public boolean supports(AMove move) {
-        return move instanceof SailShipMove;
+        return move.getMoveType().equals(MarketCardType.LEVER.toString());
     }
 
-    /*
-     * Apply the changes to the game in regards to the Place_Stone move
-     */
     @Override
     public Game apply(AMove move, Game game) throws ApplyMoveException {
 
         // Typecasting the AbstractMove to a PlaceStoneMove
-        SailShipMove newMove = (SailShipMove) move;
+        PlayCardMove newMove = (PlayCardMove) move;
 
-        // Retrieving the Ship from the Game
-        Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
+        // Retrieving the Player
+        Player player = game.getPlayerByPlayerNr(game.getCurrentPlayer());
+
+        // Removing the marketCard from the players deck of cards
+        player.getHandCards().remove(player.getMarketCardById(newMove.getCardId()));
+
+        // removing the current Player from the List of all Players
+        game.getPlayers().remove(player);
+
+        // Find the assigned ship
+        Ship assignedShip = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
 
         // Updating the ship
-        ship.setHasSailed(true);
+        assignedShip.setHasSailed(true);
 
         //Updating the status of the game
         if(game.getSiteById(newMove.getTargetSiteId()).getClass().equals(MarketPlace.class)){
@@ -45,19 +58,23 @@ public class SailShipRule implements IRule {
             buildingSite.setDocked(true);
 
             // Unloading the Stones from the Ship onto the BuildingSite
-            for (int i = 1; i <= ship.getMAX_STONES(); i++){
+            for (int i = 0; i < newMove.getUnloadingOrder().size(); i++){
                 // Retrieving the correct Stone in order of the placement
-                Stone stone = ship.getStoneByPlace(i);
+                Stone stone2 = assignedShip.getStoneById(newMove.getUnloadingOrder().get(i));
                 // When Stone == Null, there was no stone on this position on the ship
-                if (stone == null){
+                if (stone2 == null){
                     continue;
                 }
                 // Adding the Stone to the Site
-                buildingSite.getStones().add(stone);
+                buildingSite.getStones().add(stone2);
                 // Removing the Stone from the Ship
-                ship.getStones().remove(stone);
+                assignedShip.getStones().remove(stone2);
             }
         }
+
+        // Adding the updated Player back to the Game
+        game.getPlayers().add(player);
+
         return game;
     }
 }

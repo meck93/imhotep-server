@@ -4,6 +4,7 @@ package ch.uzh.ifi.seal.soprafs17.service.card;
  * Created by Cristian on 25.03.2017.
  */
 
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.repository.MarketCardRepository;
@@ -98,26 +99,26 @@ public class MarketCardService {
 
         // create all the marketCards that occur two times
         for(int i=0; i<OCCUR_TWICE; i++) {
-            createMarketCard(gameId, "red", PAVED_PATH);
-            createMarketCard(gameId, "red", SARCOPHAGUS);
-            createMarketCard(gameId, "red", ENTRANCE);
-            createMarketCard(gameId, "green", PYRAMID_DECORATION);
-            createMarketCard(gameId, "green", TEMPLE_DECORATION);
-            createMarketCard(gameId, "green", BURIAL_CHAMBER_DECORATION);
-            createMarketCard(gameId, "green", OBELISK_DECORATION);
-            createMarketCard(gameId, "blue", LEVER);
-            createMarketCard(gameId, "blue", HAMMER);
+            createMarketCard(gameId, GameConstants.RED, PAVED_PATH);
+            createMarketCard(gameId, GameConstants.RED, SARCOPHAGUS);
+            createMarketCard(gameId, GameConstants.RED, ENTRANCE);
+            createMarketCard(gameId, GameConstants.GREEN, PYRAMID_DECORATION);
+            createMarketCard(gameId, GameConstants.GREEN, TEMPLE_DECORATION);
+            createMarketCard(gameId, GameConstants.GREEN, BURIAL_CHAMBER_DECORATION);
+            createMarketCard(gameId, GameConstants.GREEN, OBELISK_DECORATION);
+            createMarketCard(gameId, GameConstants.BLUE, LEVER);
+            createMarketCard(gameId, GameConstants.BLUE, HAMMER);
         }
 
         // create all the marketCards that occur three times
         for(int i=0; i<OCCUR_THREE_TIMES; i++) {
-            createMarketCard(gameId, "blue", CHISEL);
-            createMarketCard(gameId, "blue", SAIL);
+            createMarketCard(gameId, GameConstants.BLUE, CHISEL);
+            createMarketCard(gameId, GameConstants.BLUE, SAIL);
         }
 
         // create STATUE marketCards (10 times)
         for(int i=0; i<OCCUR_TEN_TIMES;i++) {
-            createMarketCard(gameId, "violet", STATUE);
+            createMarketCard(gameId, GameConstants.VIOLET, STATUE);
         }
     }
 

@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -56,7 +57,7 @@ public class Game implements Serializable {
 	@JsonManagedReference
 	private List<Round> rounds;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "game", orphanRemoval = true)
 	@JsonManagedReference
 	private List<Player> players;
 
@@ -69,7 +70,8 @@ public class Game implements Serializable {
 		throw new NotFoundException("game");
 	}
 
-	public Round getRoundByRoundCounter(int roundCounter){
+	@JsonIgnore
+	public Round getRoundByRoundCounter(){
 		for (Round round : this.rounds){
 			if (round.getRoundNumber() == this.getRoundCounter()){
 				return round;
@@ -196,16 +198,14 @@ public class Game implements Serializable {
 	}
 
 	public ASite getSiteById(Long id){
-		ASite result = null;
-		for (BuildingSite site : buildingSites){
-			if (site.getId().equals(id)){
-				result = site;
-			}
-		}
 
 		if (this.marketPlace.getId().equals(id)) return this.marketPlace;
-		if (result == null) throw new NotFoundException(id, "Site not found!");
 
-		return result;
+		for (BuildingSite site : buildingSites){
+			if (site.getId().equals(id)){
+				return site;
+			}
+		}
+		throw new NotFoundException(id, "Site not found!");
 	}
 }

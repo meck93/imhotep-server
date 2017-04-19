@@ -13,15 +13,15 @@ public class Obelisk extends BuildingSite {
 
     // Scores for the Obelisk - 2 Player
     @JsonIgnore
-    private int[] scoresTwoPlayer = {10, 1};
+    private final int[] scoresTwoPlayer = {10, 1};
 
     // Scores for the Obelisk - 3 Player
     @JsonIgnore
-    private int[] scoresThreePlayer = {12, 6, 1};
+    private final int[] scoresThreePlayer = {12, 6, 1};
 
     // Scores for the Obelisk - 4 Player
     @JsonIgnore
-    private int[] scoresFourPlayer = {15, 10, 5, 1};
+    private final int[] scoresFourPlayer = {15, 10, 5, 1};
 
     public Obelisk(){
         // Purposely left blank because Hibernate needs an empty constructor
@@ -36,24 +36,12 @@ public class Obelisk extends BuildingSite {
         return scoresTwoPlayer;
     }
 
-    public void setScoresTwoPlayer(int[] scoresTwoPlayer) {
-        this.scoresTwoPlayer = scoresTwoPlayer;
-    }
-
     public int[] getScoresThreePlayer() {
         return scoresThreePlayer;
     }
 
-    public void setScoresThreePlayer(int[] scoresThreePlayer) {
-        this.scoresThreePlayer = scoresThreePlayer;
-    }
-
     public int[] getScoresFourPlayer() {
         return scoresFourPlayer;
-    }
-
-    public void setScoresFourPlayer(int[] scoresFourPlayer) {
-        this.scoresFourPlayer = scoresFourPlayer;
     }
 
     public int[] getScores(int numberOfPlayers){

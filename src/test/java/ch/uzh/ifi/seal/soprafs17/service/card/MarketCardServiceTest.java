@@ -5,7 +5,6 @@ import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.repository.MarketCardRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
-import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,7 +59,23 @@ public class MarketCardServiceTest {
 
     @Test
     public void getMarketCardDeck() {
-        // TODO: test marketCardService.getMarketCardDeck()
+        /*
+        Game testGame = gameService.createGame("testName", "testName");
+        testGame.setId(1L);
+        MarketCard testMarketCard1 = new MarketCard();
+        MarketCard testMarketCard2 = new MarketCard();
+        MarketCard testMarketCard3 = new MarketCard();
+        MarketCard testMarketCard4 = new MarketCard();
+        MarketPlace testMarketPlace = new MarketPlace();
+        testGame.setMarketPlace(testMarketPlace);
+        List<MarketCard> testMarketCards = new ArrayList<>();
+        testMarketCards.add(testMarketCard1);
+        testMarketCards.add(testMarketCard2);
+        testMarketCards.add(testMarketCard3);
+        testMarketCards.add(testMarketCard4);
+        testMarketPlace.setMarketCards(testMarketCards);
+        Assert.assertEquals(testMarketCards, marketCardService.getMarketCardDeck(1L));
+          */
     }
 
     @Test

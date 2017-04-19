@@ -1,34 +1,29 @@
-package ch.uzh.ifi.seal.soprafs17.service.move.validation;
+package ch.uzh.ifi.seal.soprafs17.service.move.validation.card;
 
-import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
+import ch.uzh.ifi.seal.soprafs17.service.move.validation.IValidator;
 
-public class PlaceStoneValidator implements IValidator {
+/**
+ * Created by User on 19.04.2017.
+ */
+public class SailValidator implements IValidator {
+
 
     @Override
     public boolean supports(AMove move) {
-        return move instanceof PlaceStoneMove;
+        return move.getMoveType().equals(MarketCardType.SAIL.toString());
     }
 
     @Override
     public void validate(final AMove move, final Game game) throws MoveValidationException {
 
-        // Casting the abstract Move to a PlaceStoneMove
-        PlaceStoneMove newMove = (PlaceStoneMove) move;
-
-        // Game must be running to make this move
-        if(game.getStatus() != GameStatus.RUNNING){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. GameStatus is not Running - Currently: " + game.getStatus());
-        }
-        // MoveType of the Move must be of Type: PLACE_STONE
-        if( ! newMove.getMoveType().equals(GameConstants.PLACE_STONE)){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Wrong MoveType!");
-        }
+        // Typecasting to the correct Move Type
+        PlayCardMove newMove = (PlayCardMove) move;
 
         // The ship must exist in the round
         boolean shipExists = false;
@@ -44,10 +39,6 @@ public class PlaceStoneValidator implements IValidator {
                     "Ship doesn't exist in Round: " + game.getRoundByRoundCounter());
         }
 
-        // The players' SupplySled must hold at least one stone
-        if (game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().size() < GameConstants.MIN_STONES_TO_PLACE_STONE) {
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones in SupplySled.");
-        }
         // The ship must not have sailed already
         if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).isHasSailed()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship already sailed.");
@@ -61,6 +52,14 @@ public class PlaceStoneValidator implements IValidator {
         // A ship must have at least one free space
         if(game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() == game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. No space left on the ship.");
+        }
+        // The site has to be free
+        if (game.getSiteById(newMove.getTargetSiteId()).isDocked()){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Site is already docked.");
+        }
+        // A ship must hold the minimum amount of stones for its size -1
+        if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() < game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMIN_STONES()-1){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones on ship.");
         }
     }
 }

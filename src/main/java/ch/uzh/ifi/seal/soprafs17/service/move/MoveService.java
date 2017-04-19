@@ -3,7 +3,10 @@ package ch.uzh.ifi.seal.soprafs17.service.move;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.GetCardMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
@@ -14,11 +17,14 @@ import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
 import ch.uzh.ifi.seal.soprafs17.service.move.rule.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.ValidationManager;
+import ch.uzh.ifi.seal.soprafs17.service.scoring.BurialChamberScorer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static ch.uzh.ifi.seal.soprafs17.GameConstants.*;
 
 /**
  * Service class for managing moves.
@@ -75,14 +81,19 @@ public class MoveService {
 
     public synchronized void checkNextRound(AMove move, Game game){
         // Advancing the Game to the next Player, only if the Game is in Status: RUNNING
-        if ((game.getStatus() == GameStatus.RUNNING)) {
+        if (game.getStatus() == GameStatus.RUNNING) {
             // Advancing the currentPlayer
             game.setCurrentPlayer((game.getCurrentPlayer()) % (game.getPlayers().size()) + 1);
 
             // Checking whether all ships have been sailed or not
-            if (move.getMoveType().equals(GameConstants.SAIL_SHIP) && this.roundService.goToNextRound(game.getRoundByRoundCounter(game.getRoundCounter()))){
+            if (move.getMoveType().equals(GameConstants.SAIL_SHIP) && this.roundService.goToNextRound(game.getRoundByRoundCounter())){
                 // After six Rounds the Game will be ended
                 if (game.getRoundCounter() == GameConstants.LAST_ROUND) {
+
+                    BurialChamberScorer burialChamberScorer = new BurialChamberScorer();
+                    burialChamberScorer.scoreEndOfGame(game);
+                    // TODO: Score the Obelisk here
+                    // TODO: Score the Green and Violet Market Card here
                     this.gameService.stopGame(game.getId());
                 }
                 // Game is not finished yet
@@ -91,20 +102,71 @@ public class MoveService {
                     for (BuildingSite buildingSite: game.getBuildingSites()) {
                         buildingSite.setDocked(false);
                     }
+                    // Remove the sailedShip from the Market Place
                     game.getMarketPlace().setDocked(false);
+
+                    // TODO: Score the Temple HERE!
 
                     // All Ships have sailed -> Initialize a new Round
                     this.gameService.initializeRound(game.getId());
                 }
             }
         }
+        // Saving the changes to the DB
+        this.gameRepository.save(game);
     }
 
     public synchronized void checkSubRound(AMove move, Game game){
-        // Advancing the Sub-Round when the Game is in Status: SUBROUND
-        if (game.getStatus() == GameStatus.SUBROUND){
-            // Advancing the currentSubRoundPlayer to the next Player according to the Stone on the Ship
-            // game.setCurrentSubRoundPlayer();
+        // Advancing the Sub-Round when the Game is in Status: SUBROUND && the Move is SailShipMove (initial Move only)
+        if (game.getStatus() == GameStatus.SUBROUND && move instanceof SailShipMove){
+            //Typecasting to the SailShipMove
+            SailShipMove newMove = (SailShipMove) move;
+            // Retrieving the correct Ship
+            Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
+            // Setting the next SubRoundPlayer
+            this.nextSubRoundPlayer(game, ship);
         }
+        // Advancing the Sub-Round when the Game is in Status: SUBROUND && the Move is GetCardMove
+        if (game.getStatus() == GameStatus.SUBROUND && move instanceof GetCardMove){
+            // Typecasting to the GetCardMove
+            GetCardMove newMove = (GetCardMove) move;
+            // Retrieving the correct Ship
+            Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
+            // Setting the next SubRoundPlayer
+            this.nextSubRoundPlayer(game, ship);
+        }
+
+        // Saving the changes to the DB
+        this.gameRepository.save(game);
+    }
+
+    private void nextSubRoundPlayer(Game game, Ship ship){
+        // Setting the next currentSubRoundPlayer according to the next Stone on the ship according to the placeOnShip
+        if (!ship.getStones().isEmpty()){
+            forloop:
+            for (int i = 1; i <= ship.getMAX_STONES(); i++){
+                if (ship.getStoneByPlace(i) != null){
+                    switch (ship.getStoneByPlace(i).getColor()){
+                        case BLACK: game.setCurrentSubRoundPlayer(1); break;
+                        case WHITE: game.setCurrentSubRoundPlayer(2); break;
+                        case BROWN: game.setCurrentSubRoundPlayer(3); break;
+                        case GRAY:  game.setCurrentSubRoundPlayer(4); break;
+                    }
+                    // Removing the stone from the Stones on the Ship & putting it back to the StoneQuarry
+                    game.getStoneQuarry().getStonesByPlayerNr(game.getCurrentSubRoundPlayer()).add(ship.getStoneByPlace(i));
+                    ship.getStones().remove(ship.getStoneByPlace(i));
+                    // Only loop to the first hit -> afterwards break
+                    break forloop;
+                }
+            }
+        }
+        // All stones have been unloaded from the Ship
+        else {
+            // Returning the Game back to its normal running state
+            game.setStatus(GameStatus.RUNNING);
+        }
+
+        // Saving the changes to the DB
+        this.gameRepository.save(game);
     }
 }

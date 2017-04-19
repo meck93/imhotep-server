@@ -24,7 +24,14 @@ public class GameConstants {
 	public static final String GET_STONES = "GET_STONES";
 	public static final String PLACE_STONE = "PLACE_STONE";
 	public static final String SAIL_SHIP = "SAIL_SHIP";
+	public static final String GET_CARD = "GET_CARD";
 	public static final String PLAY_CARD = "PLAY_CARD";
+
+	// marketCard colors
+	public static final String RED = "RED";
+	public static final String GREEN = "GREEN";
+	public static final String BLUE = "BLUE";
+	public static final String VIOLET = "VIOLET";
 
 	// starting points
 	public static final int START_POINTS = 0;
