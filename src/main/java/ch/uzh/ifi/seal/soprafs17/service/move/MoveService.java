@@ -76,21 +76,23 @@ public class MoveService {
         // Saving the changed Game state into the DB
         this.gameRepository.save(game);
 
-        // Checking if the game advances to the next Round
+        //Scoring the Pyramid
+        this.scoringService.score(game, GameConstants.PYRAMID);
+
+        // Checking if the Game is still in the Status: SUBROUND
         this.checkSubRound(move, game);
+        // Checking if the game advances to the next Round
         this.checkNextRound(move, game);
     }
 
     public synchronized void checkNextRound(AMove move, Game game){
         // Advancing the Game to the next Player, only if the Game is in Status: RUNNING
         if (game.getStatus() == GameStatus.RUNNING) {
-            //Scoring the Pyramid
-            this.scoringService.score(game, GameConstants.PYRAMID);
             // Advancing the currentPlayer
             game.setCurrentPlayer((game.getCurrentPlayer()) % (game.getPlayers().size()) + 1);
 
             // Checking whether all ships have been sailed or not
-            if (move.getMoveType().equals(GameConstants.SAIL_SHIP) && this.roundService.goToNextRound(game.getRoundByRoundCounter())){
+            if (this.roundService.goToNextRound(game.getRoundByRoundCounter())){
                 // After six Rounds the Game will be ended
                 if (game.getRoundCounter() == GameConstants.LAST_ROUND) {
                     // Scoring End of the Game (Burial_Chamber, MarketCards, Obelisk)
