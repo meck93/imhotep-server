@@ -84,6 +84,7 @@ public class LobbyService {
             this.deleteGame(gameId);
         }
         // Only the specified player with ID: playerId is going to be deleted
+        this.gameService.setNrOfPlayers(gameId, toBeDeleted.getPlayerNumber() - 1);
         this.playerService.deletePlayer(playerId);
     }
 
@@ -125,6 +126,7 @@ public class LobbyService {
 
         // Deleting All Players in the Game
         for (Player player : game.getPlayers()){
+            this.gameService.setNrOfPlayers(gameId, player.getPlayerNumber() - 1);
             this.playerService.deletePlayer(player.getId());
         }
         // Deleting the game
