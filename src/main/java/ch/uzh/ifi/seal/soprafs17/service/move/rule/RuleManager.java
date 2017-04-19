@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.move.rule;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.service.move.rule.card.ChiselRule;
 import ch.uzh.ifi.seal.soprafs17.service.move.rule.card.HammerRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,7 @@ public class RuleManager {
         rules.add(new SailShipRule());
         rules.add(new GetCardRule());
         rules.add(new HammerRule());
+        rules.add(new ChiselRule());
     }
 
     public synchronized Game applyRules(AMove move, Game game) {

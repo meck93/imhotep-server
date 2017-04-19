@@ -30,7 +30,7 @@ public class HammerValidator implements IValidator {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The Player: " + game.getCurrentPlayer() + " has already used the maximal amount of stones allowed!");
         }
 
-        // The card must exist in the round
+        // The ship must exist in the round
         boolean shipExists = false;
 
         for (Ship ship : game.getRoundByRoundCounter().getShips()){

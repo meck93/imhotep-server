@@ -33,6 +33,12 @@ public class PlayCardMove extends AMove {
     @Column
     private long targetSiteId;
 
+    @Column
+    private long shipId2;
+
+    @Column
+    private int placeOnShip2;
+
     @Column(name = "SITE_TYPE", updatable = false, insertable = false)
     private String targetSiteType;
 
@@ -74,5 +80,21 @@ public class PlayCardMove extends AMove {
 
     public void setTargetSiteType(String targetSiteType) {
         this.targetSiteType = targetSiteType;
+    }
+
+    public long getShipId2() {
+        return shipId2;
+    }
+
+    public void setShipId2(long shipId2) {
+        this.shipId2 = shipId2;
+    }
+
+    public int getPlaceOnShip2() {
+        return placeOnShip2;
+    }
+
+    public void setPlaceOnShip2(int placeOnShip2) {
+        this.placeOnShip2 = placeOnShip2;
     }
 }
