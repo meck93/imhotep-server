@@ -39,17 +39,6 @@ public class GameController extends GenericController {
     @RequestMapping(value = "/{gameId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Game getGame(@PathVariable Long gameId) {
-        this.gameService.score(gameId);
-        return gameService.findById(gameId);
-    }
-
-    /*
-     * Handles the request for the game with Id: {gameId}
-     */
-    @RequestMapping(value = "/{gameId}/score", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public Game scoreGame(@PathVariable Long gameId, @PathVariable String siteType) {
-        this.gameService.score(gameId, siteType);
         return gameService.findById(gameId);
     }
 
