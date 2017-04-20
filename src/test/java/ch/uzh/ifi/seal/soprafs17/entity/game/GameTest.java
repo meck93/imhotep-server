@@ -177,12 +177,13 @@ public class GameTest {
     public void getSiteById() {
         /*
         Game testGame = new Game();
-        BuildingSite testBuildingSite = new Pyramid();
-        testBuildingSite.setId(1L);
+        Pyramid testBuildingSite = new Pyramid();
         List<BuildingSite> testSites = new ArrayList<>();
         testSites.add(testBuildingSite);
         testGame.setBuildingSites(testSites);
+        testBuildingSite.setId(1L);
         Assert.assertEquals(testGame.getSiteById(1L), testBuildingSite);
-         */
+        */
     }
 }
+
