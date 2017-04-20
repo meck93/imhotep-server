@@ -61,14 +61,6 @@ public class PlayCardMoveTest {
     }
 
     @Test
-    public void setTargetSiteType() {
-        PlayCardMove testPlayCardMove = new PlayCardMove();
-        testPlayCardMove.setTargetSiteType("TEST");
-        Assert.assertNotNull(testPlayCardMove);
-        Assert.assertEquals(testPlayCardMove.getTargetSiteType(),"TEST");
-    }
-
-    @Test
     public void setShipId2() {
         PlayCardMove testPlayCardMove = new PlayCardMove();
         testPlayCardMove.setShipId2(1L);

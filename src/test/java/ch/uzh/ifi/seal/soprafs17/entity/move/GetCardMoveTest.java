@@ -26,12 +26,4 @@ public class GetCardMoveTest {
         Assert.assertNotNull(testMove.getMarketCardId());
         Assert.assertEquals(testMove.getMarketCardId(), Long.valueOf(1L));
     }
-
-    @Test
-    public void setShipId() {
-        GetCardMove testMove = new GetCardMove();
-        testMove.setShipId(1L);
-        Assert.assertNotNull(testMove.getShipId());
-        Assert.assertEquals(testMove.getShipId(), Long.valueOf(1L));
-    }
 }
