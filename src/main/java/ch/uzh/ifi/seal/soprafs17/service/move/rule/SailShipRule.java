@@ -33,8 +33,10 @@ public class SailShipRule implements IRule {
 
         //Updating the status of the game
         if(game.getSiteById(newMove.getTargetSiteId()).getClass().equals(MarketPlace.class)){
-            // Setting the Status to SUBROUND & docking the ship
+            // Setting the Status to SUBROUND
             game.setStatus(GameStatus.SUBROUND);
+            // Docking the Ship with correct ID to the MarketPlace
+            game.getMarketPlace().setDockedShipId(newMove.getShipId());
             game.getMarketPlace().setDocked(true);
         }
         else {

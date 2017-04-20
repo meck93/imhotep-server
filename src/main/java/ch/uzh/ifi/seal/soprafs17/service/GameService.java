@@ -92,6 +92,16 @@ public class GameService {
         return newGame;
     }
 
+    public void addPlayer(Long gameId, Player player){
+        log.debug("Adding the player to the Game");
+
+        Game game = this.findById(gameId);
+
+        game.getPlayers().add(player);
+
+        gameRepository.save(game);
+    }
+
     public void deleteGame(Long gameId) {
         Game game = this.findById(gameId);
 
@@ -100,11 +110,26 @@ public class GameService {
         log.debug("Deleted Game: {}", game);
     }
 
-    public void setNrOfPlayers(Long gameId, int nrOfPlayers) {
-        log.debug("Nr of Players: " + nrOfPlayers + " of Game: " + gameId);
+    public void updateNrOfPlayers(Long gameId) {
+        log.debug("Updating the Nr of Players in Game: " + gameId);
 
-        Game game = gameRepository.findById(gameId);
-        game.setNumberOfPlayers(nrOfPlayers);
+        Game game = this.findById(gameId);
+
+        // setting the correct amount of players
+        game.setNumberOfPlayers(game.getPlayers().size());
+
+        // Readjust the Player Number & the Color if the Amount of Players has changed
+        for (int i = 0; i < game.getPlayers().size(); i++){
+            // Readjusting the PlayerNumbers
+            game.getPlayers().get(i).setPlayerNumber(i+1);
+            // assign the color according to the playerNumber
+            switch (game.getPlayers().get(i).getPlayerNumber()) {
+                case 1: game.getPlayerByPlayerNr(1).setColor(GameConstants.BLACK); break;
+                case 2: game.getPlayerByPlayerNr(2).setColor(GameConstants.WHITE); break;
+                case 3: game.getPlayerByPlayerNr(3).setColor(GameConstants.BROWN); break;
+                case 4: game.getPlayerByPlayerNr(4).setColor(GameConstants.GRAY); break;
+            }
+        }
 
         gameRepository.save(game);
     }
@@ -139,7 +164,7 @@ public class GameService {
      * Returns the list of all players associated with Game: {GameId}
      */
     public List<Player> findPlayersByGameId(Long gameId) {
-        log.debug("getPlayersByGameId: " + gameId);
+        log.debug("Find Players of Game: " + gameId);
 
         return gameRepository.findPlayersByGameId(gameId);
     }
