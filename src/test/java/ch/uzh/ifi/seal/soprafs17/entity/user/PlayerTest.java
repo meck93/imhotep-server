@@ -7,7 +7,6 @@ package ch.uzh.ifi.seal.soprafs17.entity.user;
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,15 +83,6 @@ public class PlayerTest {
         Assert.assertNotNull(testPlayer);
         Assert.assertNotNull(testUser);
         Assert.assertEquals(testPlayer.getUser(),testUser);
-    }
-
-    @Test
-    public void setMoves() {
-        Player testPlayer = new Player();
-        List<AMove> testMoves = new ArrayList<>();
-        testPlayer.setMoves(testMoves);
-        Assert.assertNotNull(testPlayer);
-        Assert.assertEquals(testPlayer.getMoves(),testMoves);
     }
 
     @Test

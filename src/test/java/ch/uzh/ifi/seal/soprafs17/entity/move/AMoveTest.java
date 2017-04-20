@@ -31,6 +31,7 @@ public class AMoveTest {
     @Test
     public void setMoveType() {
         AMove testMove = new GetStonesMove();
+
         testMove.setMoveType("GET_STONE");
         Assert.assertNotNull(testMove);
         Assert.assertEquals(testMove.getMoveType(),"GET_STONE");
