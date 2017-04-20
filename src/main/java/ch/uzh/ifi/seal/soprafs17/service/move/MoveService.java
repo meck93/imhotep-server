@@ -100,6 +100,7 @@ public class MoveService {
                     this.scoringService.score(game, GameConstants.BURIAL_CHAMBER);
 
                     // TODO: Score the Green and Violet Market Card here
+
                     // Stopping the Game -> Status Change -> Winning Screen
                     this.gameService.stopGame(game.getId());
                 }
@@ -125,27 +126,18 @@ public class MoveService {
     }
 
     public synchronized void checkSubRound(AMove move, Game game){
-        // Advancing the Sub-Round when the Game is in Status: SUBROUND && the Move is SailShipMove (initial Move only)
-        if (game.getStatus() == GameStatus.SUBROUND && move instanceof SailShipMove){
-            //Typecasting to the SailShipMove
-            SailShipMove newMove = (SailShipMove) move;
-            // Retrieving the correct Ship
-            Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
-            // Setting the next SubRoundPlayer
-            this.nextSubRoundPlayer(game, ship);
-        }
-        // Advancing the Sub-Round when the Game is in Status: SUBROUND && the Move is GetCardMove
-        if (game.getStatus() == GameStatus.SUBROUND && move instanceof GetCardMove){
-            // Typecasting to the GetCardMove
-            GetCardMove newMove = (GetCardMove) move;
-            // Retrieving the correct Ship
-            Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
-            // Setting the next SubRoundPlayer
-            this.nextSubRoundPlayer(game, ship);
-        }
+        // Advancing the Sub-Round when the Game is in Status: SUBROUND
+        if (game.getStatus() == GameStatus.SUBROUND && (move instanceof SailShipMove || move instanceof GetCardMove)){
 
-        // Saving the changes to the DB
-        this.gameRepository.save(game);
+            // Retrieving the correct Ship
+            Ship ship = game.getRoundByRoundCounter().getShipById(game.getMarketPlace().getDockedShipId());
+
+            // Setting the next SubRoundPlayer
+            this.nextSubRoundPlayer(game, ship);
+
+            // Saving the changes to the DB
+            this.gameRepository.save(game);
+        }
     }
 
     private void nextSubRoundPlayer(Game game, Ship ship){
@@ -168,6 +160,7 @@ public class MoveService {
                 }
             }
         }
+
         // All stones have been unloaded from the Ship
         else {
             // Returning the Game back to its normal running state
