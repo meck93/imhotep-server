@@ -111,4 +111,20 @@ public class PlayerTest {
         Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getHandCards(),testMarketCards);
     }
+
+    @Test
+    public void getMarketCardById() {
+        Player testPlayer = new Player();
+        List<Player> players = new ArrayList<>();
+        players.add(testPlayer);
+        MarketCard testCard1 = new MarketCard();
+        testCard1.setId(1L);
+        MarketCard testCard2 = new MarketCard();
+        testCard2.setId(2L);
+        List<MarketCard> testCards = new ArrayList<>();
+        testCards.add(testCard1);
+        testCards.add(testCard2);
+        testPlayer.setHandCards(testCards);
+        Assert.assertEquals(testPlayer.getMarketCardById(1L),testCard1);
+    }
 }
