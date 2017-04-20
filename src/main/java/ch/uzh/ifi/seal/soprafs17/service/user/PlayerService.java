@@ -49,7 +49,7 @@ public class PlayerService {
         log.debug("creating Player from User with userId: " + userId);
 
         Game game = gameService.findById(gameId);
-        int playerNumber = gameService.findNrOfPlayers(gameId) + 1;
+        int playerNumber = game.getPlayers().size() + 1;
 
         User user = userService.getUser(userId);
         Long playerId = user.getId();
@@ -99,9 +99,6 @@ public class PlayerService {
 
         // Saving the changes to the DB
         playerRepository.save(player);
-
-        // Set the correct amountOfPlayers
-        gameService.setNrOfPlayers(gameId, player.getPlayerNumber());
     }
 
     public Player getPlayer(Long gameId, int playerNr) {
