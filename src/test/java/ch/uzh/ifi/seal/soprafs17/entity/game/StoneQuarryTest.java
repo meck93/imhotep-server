@@ -117,4 +117,12 @@ public class StoneQuarryTest {
         testStoneQuarry.setBlackStones(testStones);
         Assert.assertEquals(testStoneQuarry.getStonesByPlayerNr(1),testStones);
     }
+
+    @Test
+    public void setGame() {
+        Game testGame = new Game();
+        StoneQuarry testStoneQuarry = new StoneQuarry();
+        testStoneQuarry.setGame(testGame);
+        Assert.assertEquals(testStoneQuarry.getGame(),testGame);
+    }
 }
