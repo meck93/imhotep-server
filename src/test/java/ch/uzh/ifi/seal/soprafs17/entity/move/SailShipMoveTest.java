@@ -29,12 +29,12 @@ public class SailShipMoveTest {
         Assert.assertEquals(testSailShipMove.getShipId(),Long.valueOf(1L));
     }
 
-/*    @Test
-    public void setTargetSite() {
+    @Test
+    public void setTargetSiteId() {
         SailShipMove testSailShipMove = new SailShipMove();
-        testSailShipMove.setTargetSite("PYRAMID");
+        testSailShipMove.setTargetSiteId(1L);
         Assert.assertNotNull(testSailShipMove);
-        Assert.assertEquals(testSailShipMove.getTargetSite(),"PYRAMID");
-    }*/
+        Assert.assertEquals(testSailShipMove.getTargetSiteId(),1L);
+    }
 
 }
