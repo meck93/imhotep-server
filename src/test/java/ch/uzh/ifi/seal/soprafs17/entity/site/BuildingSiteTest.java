@@ -28,15 +28,4 @@ public class BuildingSiteTest {
         Assert.assertNotNull(testBuildingSite);
         Assert.assertEquals(testBuildingSite.getStones(),testStones);
     }
-
-    // TODO adapt to changes
-
-    /*@Test
-    public void setDockedShip() {
-        BuildingSite testBuildingSite = new BuildingSite();
-        boolean dockedShip = true;
-        testBuildingSite.setDockedShip(dockedShip);
-        Assert.assertNotNull(testBuildingSite);
-        Assert.assertEquals(testBuildingSite.isDockedShip(),true);
-    }*/
 }

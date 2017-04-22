@@ -53,69 +53,53 @@ public class StoneQuarryTest {
     public void setWhiteStones() {
         StoneQuarry testStoneQuarry = new StoneQuarry();
         List<Stone> testWhiteStones = new ArrayList<>();
-        testStoneQuarry.setBlackStones(testWhiteStones);
+        testStoneQuarry.setWhiteStones((testWhiteStones));
         Assert.assertNotNull(testStoneQuarry);
-        Assert.assertEquals(testStoneQuarry.getBlackStones(),testWhiteStones);
-    }
-
-    @Test
-    public void getWhiteStones() {
-        StoneQuarry testStoneQuarry = new StoneQuarry();
-        List<Stone> testWhiteStones = new ArrayList<>();
-        testStoneQuarry.setBlackStones(testWhiteStones);
-        Assert.assertNotNull(testStoneQuarry);
-        Assert.assertEquals(testStoneQuarry.getBlackStones(),testWhiteStones);
+        Assert.assertEquals(testStoneQuarry.getWhiteStones(),testWhiteStones);
     }
 
     @Test
     public void setBrownStones() {
         StoneQuarry testStoneQuarry = new StoneQuarry();
         List<Stone> testBrownStones = new ArrayList<>();
-        testStoneQuarry.setBlackStones(testBrownStones);
+        testStoneQuarry.setBrownStones(testBrownStones);
         Assert.assertNotNull(testStoneQuarry);
-        Assert.assertEquals(testStoneQuarry.getBlackStones(),testBrownStones);
-    }
-
-    @Test
-    public void getBrownStones() {
-        StoneQuarry testStoneQuarry = new StoneQuarry();
-        List<Stone> testBrownStones = new ArrayList<>();
-        testStoneQuarry.setBlackStones(testBrownStones);
-        Assert.assertNotNull(testStoneQuarry);
-        Assert.assertEquals(testStoneQuarry.getBlackStones(),testBrownStones);
+        Assert.assertEquals(testStoneQuarry.getBrownStones(),testBrownStones);
     }
 
     @Test
     public void setGrayStones() {
         StoneQuarry testStoneQuarry = new StoneQuarry();
         List<Stone> testGrayStones = new ArrayList<>();
-        testStoneQuarry.setBlackStones(testGrayStones);
+        testStoneQuarry.setGrayStones(testGrayStones);
         Assert.assertNotNull(testStoneQuarry);
-        Assert.assertEquals(testStoneQuarry.getBlackStones(),testGrayStones);
-    }
-
-    @Test
-    public void getGrayStones() {
-        StoneQuarry testStoneQuarry = new StoneQuarry();
-        List<Stone> testGrayStones = new ArrayList<>();
-        testStoneQuarry.setBlackStones(testGrayStones);
-        Assert.assertNotNull(testStoneQuarry);
-        Assert.assertEquals(testStoneQuarry.getBlackStones(),testGrayStones);
+        Assert.assertEquals(testStoneQuarry.getGrayStones(),testGrayStones);
     }
 
     @Test
     public void getStonesByPlayerNr() {
-        int playerNr = 1;
-        Player testPlayer = new Player();
+        Player testPlayer1 = new Player();
+        Player testPlayer2 = new Player();
+        Player testPlayer3 = new Player();
+        Player testPlayer4 = new Player();
         Stone testStone = new Stone();
         List<Stone> testStones = new ArrayList<>();
         Game testGame = new Game();
-        testPlayer.setPlayerNumber(1);
+        testPlayer1.setPlayerNumber(1);
+        testPlayer2.setPlayerNumber(2);
+        testPlayer3.setPlayerNumber(3);
+        testPlayer4.setPlayerNumber(4);
         testStones.add(testStone);
         StoneQuarry testStoneQuarry = new StoneQuarry();
         testGame.setStoneQuarry(testStoneQuarry);
         testStoneQuarry.setBlackStones(testStones);
+        testStoneQuarry.setWhiteStones(testStones);
+        testStoneQuarry.setBrownStones(testStones);
+        testStoneQuarry.setGrayStones(testStones);
         Assert.assertEquals(testStoneQuarry.getStonesByPlayerNr(1),testStones);
+        Assert.assertEquals(testStoneQuarry.getStonesByPlayerNr(2),testStones);
+        Assert.assertEquals(testStoneQuarry.getStonesByPlayerNr(3),testStones);
+        Assert.assertEquals(testStoneQuarry.getStonesByPlayerNr(4),testStones);
     }
 
     @Test

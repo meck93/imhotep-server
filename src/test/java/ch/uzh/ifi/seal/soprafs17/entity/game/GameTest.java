@@ -11,7 +11,9 @@ import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.site.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
@@ -26,6 +28,9 @@ import java.util.List;
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
 public class GameTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void setId() {
@@ -144,13 +149,18 @@ public class GameTest {
     @Test
     public void getPlayerByPlayerNr() {
         Player testPlayer = new Player();
+        Player testPlayer2 = new Player();
         Game testGame = new Game();
+        Game testGame2 = new Game();
         List<Player> testPlayers = new ArrayList<>();
         testPlayers.add(testPlayer);
         testGame.setPlayers(testPlayers);
         testPlayer.setPlayerNumber(1);
+        testPlayer2.setPlayerNumber(100);
         Assert.assertNotNull(testPlayer.getPlayerNumber());
         Assert.assertEquals(testGame.getPlayerByPlayerNr(1),testPlayers.get(0));
+        thrown.expect(NullPointerException.class);
+        testGame2.getPlayerByPlayerNr(100);
     }
 
     @Test

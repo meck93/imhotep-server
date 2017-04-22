@@ -37,4 +37,11 @@ public class SailShipMoveTest {
         Assert.assertEquals(testSailShipMove.getTargetSiteId(),1L);
     }
 
+    @Test
+    public void SailShipMove() {
+        SailShipMove testMove = new SailShipMove();
+        testMove.setMoveType("TEST");
+        Assert.assertEquals(testMove.getMoveType(),"TEST");
+    }
+
 }

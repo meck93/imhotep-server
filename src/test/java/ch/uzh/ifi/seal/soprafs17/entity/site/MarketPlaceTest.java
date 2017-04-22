@@ -39,4 +39,15 @@ public class MarketPlaceTest {
         Assert.assertNotNull(testMarketPlace);
         Assert.assertEquals(testMarketPlace.getDockedShipId(),Long.valueOf(1L));
     }
+
+    @Test
+    public void getMarketCardById() {
+        MarketPlace testMarketPlace = new MarketPlace();
+        MarketCard testCard = new MarketCard();
+        testCard.setId(1L);
+        List<MarketCard> testCards = new ArrayList<>();
+        testCards.add(testCard);
+        testMarketPlace.setMarketCards(testCards);
+        Assert.assertEquals(testMarketPlace.getMarketCardById(1L),testCard);
+    }
 }

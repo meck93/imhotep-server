@@ -26,4 +26,11 @@ public class GetCardMoveTest {
         Assert.assertNotNull(testMove.getMarketCardId());
         Assert.assertEquals(testMove.getMarketCardId(), Long.valueOf(1L));
     }
+
+    @Test
+    public void GetCardMove() {
+        GetCardMove testMove = new GetCardMove();
+        testMove.setMoveType("TEST");
+        Assert.assertEquals(testMove.getMoveType(),"TEST");
+    }
 }
