@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity(name = "PLAY_CARD")
 @DiscriminatorValue(value = GameConstants.PLAY_CARD)
@@ -44,9 +43,6 @@ public class PlayCardMove extends AMove {
     @Column
     private ArrayList<Long> unloadingOrder;
 
-    @Column(name = "SITE_TYPE", updatable = false, insertable = false)
-    private String targetSiteType;
-
     public Long getCardId() {
         return cardId;
     }
@@ -77,14 +73,6 @@ public class PlayCardMove extends AMove {
 
     public void setTargetSiteId(long targetSiteId) {
         this.targetSiteId = targetSiteId;
-    }
-
-    public String getTargetSiteType() {
-        return targetSiteType;
-    }
-
-    public void setTargetSiteType(String targetSiteType) {
-        this.targetSiteType = targetSiteType;
     }
 
     public long getShipId2() {

@@ -7,7 +7,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.user;
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +31,24 @@ public class PlayerTest {
         testPlayer.setId(1L);
         Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getId(), Long.valueOf(1L));
+    }
+
+    @Test
+    public void getGameId() {
+        Player testPlayer = new Player();
+        Game testGame = new Game();
+        testGame.setId(1L);
+        testPlayer.setGame(testGame);
+        Assert.assertNotNull(testPlayer);
+        Assert.assertEquals(testPlayer.getGameId(), Long.valueOf(1L));
+    }
+
+    @Test
+    public void setPlayerId() {
+        Player testPlayer = new Player();
+        testPlayer.setPlayerId(1L);
+        Assert.assertNotNull(testPlayer);
+        Assert.assertEquals(testPlayer.getPlayerId(), Long.valueOf(1L));
     }
 
     @Test
@@ -87,15 +105,6 @@ public class PlayerTest {
     }
 
     @Test
-    public void setMoves() {
-        Player testPlayer = new Player();
-        List<AMove> testMoves = new ArrayList<>();
-        testPlayer.setMoves(testMoves);
-        Assert.assertNotNull(testPlayer);
-        Assert.assertEquals(testPlayer.getMoves(),testMoves);
-    }
-
-    @Test
     public void setGame() {
         Player testPlayer = new Player();
         Game testGame = new Game();
@@ -120,5 +129,24 @@ public class PlayerTest {
         testPlayer.setHandCards(testMarketCards);
         Assert.assertNotNull(testPlayer);
         Assert.assertEquals(testPlayer.getHandCards(),testMarketCards);
+    }
+
+    @Test
+    public void getMarketCardById() {
+        Player testPlayer = new Player();
+        List<Player> players = new ArrayList<>();
+        players.add(testPlayer);
+        MarketCard testCard1 = new MarketCard();
+        testCard1.setId(1L);
+        MarketCard testCard2 = new MarketCard();
+        testCard2.setId(2L);
+        List<MarketCard> testCards = new ArrayList<>();
+        testCards.add(testCard1);
+        testCards.add(testCard2);
+        testPlayer.setHandCards(testCards);
+        Assert.assertEquals(testPlayer.getMarketCardById(1L),testCard1);
+        try{
+            Assert.assertEquals(testPlayer.getMarketCardById(124L),null);
+        } catch (NotFoundException e) {}
     }
 }

@@ -54,10 +54,10 @@ public class GameServiceTest {
     }
 
     @Test
-    public void setNrOfPlayers() {
+    public void updateNrOfPlayers() {
         Game testGame = gameService.createGame("testName","testName");
         testGame.setId((1L));
-        gameService.setNrOfPlayers(1L,4);
+        gameService.updateNrOfPlayers(1L);
         gameRepository.findNrOfPlayers(1L);
         Assert.assertNotNull(gameRepository.findNrOfPlayers(1L));
     }

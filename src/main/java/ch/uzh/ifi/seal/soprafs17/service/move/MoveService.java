@@ -17,7 +17,7 @@ import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
 import ch.uzh.ifi.seal.soprafs17.service.move.rule.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.ValidationManager;
-import ch.uzh.ifi.seal.soprafs17.service.scoring.BurialChamberScorer;
+import ch.uzh.ifi.seal.soprafs17.service.scoring.ScoringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +40,16 @@ public class MoveService {
     private final RuleManager ruleManager;
     private final GameService gameService;
     private final RoundService roundService;
+    private final ScoringService scoringService;
 
     @Autowired
-    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService) {
+    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService, ScoringService scoringService) {
         this.gameRepository = gameRepository;
         this.validationManager = validationManager;
         this.ruleManager = ruleManager;
         this.gameService = gameService;
         this.roundService = roundService;
+        this.scoringService = scoringService;
     }
 
     public synchronized void validateAndApply(AMove move) throws BadRequestHttpException, InternalServerException {
@@ -74,8 +76,12 @@ public class MoveService {
         // Saving the changed Game state into the DB
         this.gameRepository.save(game);
 
-        // Checking if the game advances to the next Round
+        //Scoring the Pyramid
+        this.scoringService.score(game, GameConstants.PYRAMID);
+
+        // Checking if the Game is still in the Status: SUBROUND
         this.checkSubRound(move, game);
+        // Checking if the game advances to the next Round
         this.checkNextRound(move, game);
     }
 
@@ -86,14 +92,16 @@ public class MoveService {
             game.setCurrentPlayer((game.getCurrentPlayer()) % (game.getPlayers().size()) + 1);
 
             // Checking whether all ships have been sailed or not
-            if (move.getMoveType().equals(GameConstants.SAIL_SHIP) && this.roundService.goToNextRound(game.getRoundByRoundCounter())){
+            if (this.roundService.goToNextRound(game.getRoundByRoundCounter())){
                 // After six Rounds the Game will be ended
                 if (game.getRoundCounter() == GameConstants.LAST_ROUND) {
+                    // Scoring End of the Game (Burial_Chamber, MarketCards, Obelisk)
+                    this.scoringService.score(game, GameConstants.OBELISK);
+                    this.scoringService.score(game, GameConstants.BURIAL_CHAMBER);
 
-                    BurialChamberScorer burialChamberScorer = new BurialChamberScorer();
-                    burialChamberScorer.scoreEndOfGame(game);
-                    // TODO: Score the Obelisk here
                     // TODO: Score the Green and Violet Market Card here
+
+                    // Stopping the Game -> Status Change -> Winning Screen
                     this.gameService.stopGame(game.getId());
                 }
                 // Game is not finished yet
@@ -105,7 +113,8 @@ public class MoveService {
                     // Remove the sailedShip from the Market Place
                     game.getMarketPlace().setDocked(false);
 
-                    // TODO: Score the Temple HERE!
+                    // Scoring at the End of the Round (Temple)
+                    this.scoringService.score(game, GameConstants.TEMPLE);
 
                     // All Ships have sailed -> Initialize a new Round
                     this.gameService.initializeRound(game.getId());
@@ -117,27 +126,18 @@ public class MoveService {
     }
 
     public synchronized void checkSubRound(AMove move, Game game){
-        // Advancing the Sub-Round when the Game is in Status: SUBROUND && the Move is SailShipMove (initial Move only)
-        if (game.getStatus() == GameStatus.SUBROUND && move instanceof SailShipMove){
-            //Typecasting to the SailShipMove
-            SailShipMove newMove = (SailShipMove) move;
-            // Retrieving the correct Ship
-            Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
-            // Setting the next SubRoundPlayer
-            this.nextSubRoundPlayer(game, ship);
-        }
-        // Advancing the Sub-Round when the Game is in Status: SUBROUND && the Move is GetCardMove
-        if (game.getStatus() == GameStatus.SUBROUND && move instanceof GetCardMove){
-            // Typecasting to the GetCardMove
-            GetCardMove newMove = (GetCardMove) move;
-            // Retrieving the correct Ship
-            Ship ship = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
-            // Setting the next SubRoundPlayer
-            this.nextSubRoundPlayer(game, ship);
-        }
+        // Advancing the Sub-Round when the Game is in Status: SUBROUND
+        if (game.getStatus() == GameStatus.SUBROUND && (move instanceof SailShipMove || move instanceof GetCardMove)){
 
-        // Saving the changes to the DB
-        this.gameRepository.save(game);
+            // Retrieving the correct Ship
+            Ship ship = game.getRoundByRoundCounter().getShipById(game.getMarketPlace().getDockedShipId());
+
+            // Setting the next SubRoundPlayer
+            this.nextSubRoundPlayer(game, ship);
+
+            // Saving the changes to the DB
+            this.gameRepository.save(game);
+        }
     }
 
     private void nextSubRoundPlayer(Game game, Ship ship){
@@ -160,6 +160,7 @@ public class MoveService {
                 }
             }
         }
+
         // All stones have been unloaded from the Ship
         else {
             // Returning the Game back to its normal running state

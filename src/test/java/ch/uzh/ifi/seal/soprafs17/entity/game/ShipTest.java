@@ -5,6 +5,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.game;
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,6 +68,34 @@ public class ShipTest {
         testShip.setHasSailed(true);
         Assert.assertNotNull(testShip);
         Assert.assertEquals(testShip.isHasSailed(),true);
+    }
+
+    @Test
+    public void getStoneByPlace() {
+        Stone testStone = new Stone();
+        Ship testShip = new Ship();
+        testStone.setPlaceOnShip(1);
+        List<Stone> testStones = new ArrayList<>();
+        testStones.add(testStone);
+        testShip.setStones(testStones);
+        Assert.assertEquals(testShip.getStoneByPlace(1),testStone);
+        try{
+            Assert.assertEquals(testShip.getStoneByPlace(6),null);
+        } catch (NullPointerException e) {}
+    }
+
+    @Test
+    public void getStoneById() {
+        Stone testStone = new Stone();
+        Ship testShip = new Ship();
+        testStone.setId(1L);
+        List<Stone> testStones = new ArrayList<>();
+        testStones.add(testStone);
+        testShip.setStones(testStones);
+        Assert.assertEquals(testShip.getStoneById(1L),testStone);
+        try{
+            Assert.assertEquals(testShip.getStoneById(2L),null);
+        } catch (NotFoundException e) {}
     }
 }
 

@@ -8,9 +8,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.IValidator;
 
-/**
- * Created by User on 19.04.2017.
- */
 public class SailValidator implements IValidator {
 
 
@@ -46,11 +43,13 @@ public class SailValidator implements IValidator {
         // The requested placeOnShip mustn't be occupied
         game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().forEach(stone -> {
             if (stone.getPlaceOnShip() == newMove.getPlaceOnShip()){
-                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The requested place on the ship is already occupied.");
+                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                        "The requested place on the ship is already occupied.");
             }
         });
         // A ship must have at least one free space
-        if(game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() == game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES()){
+        if(game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() ==
+                game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. No space left on the ship.");
         }
         // The site has to be free
@@ -58,7 +57,8 @@ public class SailValidator implements IValidator {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Site is already docked.");
         }
         // A ship must hold the minimum amount of stones for its size -1
-        if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() < game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMIN_STONES()-1){
+        if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() <
+                game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMIN_STONES()-1){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones on ship.");
         }
     }

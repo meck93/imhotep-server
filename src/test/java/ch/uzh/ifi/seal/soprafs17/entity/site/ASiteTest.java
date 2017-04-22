@@ -44,5 +44,13 @@ public class ASiteTest {
         Assert.assertNotNull(testBuildingSite);
         Assert.assertEquals(testBuildingSite.getSiteType(),"TEST_NAME");
     }
+
+    @Test
+    public void setDocked() {
+        BuildingSite testBuildingSite = new BuildingSite();
+        testBuildingSite.setDocked(true);
+        Assert.assertNotNull(testBuildingSite);
+        Assert.assertEquals(testBuildingSite.isDocked(), true);
+    }
 }
 

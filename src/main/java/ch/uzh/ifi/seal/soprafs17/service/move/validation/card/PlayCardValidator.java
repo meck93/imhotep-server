@@ -22,7 +22,12 @@ public class PlayCardValidator implements IValidator {
 
         // Game must be running to make this move
         if(game.getStatus() != GameStatus.RUNNING){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. GameStatus is not Running - Currently: " + game.getStatus());
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                    "GameStatus is not Running - Currently: " + game.getStatus());
+        }
+        // The Move's Player Nr must be the same as the Nr of the current Player in the Game (Verifies who is allowed to make a move currently)
+        if (move.getPlayerNr() != game.getCurrentPlayer()) {
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. PlayerNr of Move != CurrentPlayer of Game");
         }
 
         // The card must exist in the player's deck of cards

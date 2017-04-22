@@ -8,9 +8,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.IValidator;
 
-/**
- * Created by User on 19.04.2017.
- */
 public class ChiselValidator implements IValidator {
 
     @Override
@@ -26,7 +23,8 @@ public class ChiselValidator implements IValidator {
 
         // The SupplySled must hold at least two stones
         if (game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().size() < 2){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. SupplySled must hold at least two stones! - Move cannot be applied");
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                    "SupplySled must hold at least two stones! - Move cannot be applied");
         }
 
         /* PART ONE: VALIDATE THE FIRST SHIP*/
@@ -47,12 +45,14 @@ public class ChiselValidator implements IValidator {
 
         // The first ship must not have sailed already
         if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).isHasSailed()){
-            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship already sailed.");
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType()
+                    + " failed. Ship already sailed.");
         }
         // The requested placeOnShip mustn't be occupied on the first ship
         game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().forEach(stone -> {
             if (stone.getPlaceOnShip() == newMove.getPlaceOnShip()){
-                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The requested place on the ship is already occupied.");
+                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                        "The requested place on the ship is already occupied.");
             }
         });
 
@@ -62,7 +62,8 @@ public class ChiselValidator implements IValidator {
         if (newMove.getShipId() == newMove.getShipId2()) {
             // The requested placeOShip mustn't be occupied
             if (newMove.getPlaceOnShip() == newMove.getPlaceOnShip2()) {
-                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The requested place on the ship is already occupied.");
+                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                        "The requested place on the ship is already occupied.");
             }
             // The ship must have at leas two free slots
             if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() > game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES() - 2) {
@@ -70,7 +71,7 @@ public class ChiselValidator implements IValidator {
             }
         }
         else{
-            // The   first ship must exist in the round
+            // The first ship must exist in the round
             boolean ship2Exists = false;
 
             for (Ship ship : game.getRoundByRoundCounter().getShips()){
@@ -91,7 +92,8 @@ public class ChiselValidator implements IValidator {
             // The requested placeOnShip mustn't be occupied on the second ship
             game.getRoundByRoundCounter().getShipById(newMove.getShipId2()).getStones().forEach(stone -> {
                 if (stone.getPlaceOnShip() == newMove.getPlaceOnShip2()){
-                    throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The requested place on the ship is already occupied.");
+                    throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                            "The requested place on the ship is already occupied.");
                 }
             });
         }

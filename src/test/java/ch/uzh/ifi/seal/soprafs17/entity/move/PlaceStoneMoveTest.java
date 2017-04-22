@@ -22,6 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlaceStoneMoveTest {
 
     @Test
+    public void PlaceStoneMove() {
+        PlaceStoneMove testMove = new PlaceStoneMove("TEST");
+        Assert.assertNotNull(testMove);
+        Assert.assertEquals(testMove.getMoveType(),"TEST");
+    }
+
+    @Test
     public void setShipId() {
         PlaceStoneMove testPlaceStoneMove = new PlaceStoneMove();
         testPlaceStoneMove.setShipId(1L);

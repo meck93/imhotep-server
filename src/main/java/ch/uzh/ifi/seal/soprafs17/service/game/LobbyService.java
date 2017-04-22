@@ -42,11 +42,8 @@ public class LobbyService {
         Game newGame = gameService.createGame(game.getName(), game.getOwner());
 
         try {
-            // Creates a new player from the user who created the game
-            Player player = playerService.createPlayer(newGame.getId(), userId);
-
-            // Initializing the new player
-            playerService.initializePlayer(newGame.getId(), player);
+            // Player joins the Game
+            this.joinGame(newGame.getId(), userId);
         }
 
         // Remove the Game again if the User could not be converted into a Player
@@ -69,6 +66,48 @@ public class LobbyService {
 
         // Initializing the new player
         playerService.initializePlayer(gameId, player);
+
+        // Set the player in the Game
+        this.gameService.addPlayer(gameId, player);
+
+        // Update the Number of Players
+        this.gameService.updateNrOfPlayers(gameId);
+    }
+
+    /*
+     * Implementation of a Player removing himself from a Game.
+     */
+    public void removePlayer(Long gameId, Long playerId){
+        // The player to be deleted
+        Player toBeDeleted = this.playerService.findPlayerById(playerId);
+
+        // Only the specified player with ID: playerId is going to be deleted
+        this.playerService.deletePlayer(playerId);
+        this.gameService.updateNrOfPlayers(gameId);
+
+        // Check whether the player is the owner
+        if (toBeDeleted.getPlayerNumber() == 1){
+            // Deleting all players and the Game - if the owner's going to be deleted
+            this.deleteGame(gameId);
+        }
+    }
+
+    /*
+     * Deleting a Game
+     */
+    public void deleteGame(Long gameId) {
+        Game game = this.gameService.findById(gameId);
+
+        // Deleting All Players in the Game
+        game.getPlayers().forEach(player -> {
+            if (player.getPlayerNumber() != 1){
+                this.playerService.deletePlayer(player.getId());
+                this.gameService.updateNrOfPlayers(gameId);
+            }
+        });
+
+        // Deleting the game
+        this.gameService.deleteGame(gameId);
     }
 
     /*
@@ -101,10 +140,4 @@ public class LobbyService {
         this.gameService.stopGame(gameId);
     }
 
-    /*
-     * Deleting a Game
-     */
-    public void deleteGame(Long gameId) {
-        this.gameService.deleteGame(gameId);
-    }
 }

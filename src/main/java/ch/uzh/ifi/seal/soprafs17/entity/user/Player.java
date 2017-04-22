@@ -2,10 +2,9 @@ package ch.uzh.ifi.seal.soprafs17.entity.user;
 
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,6 +17,10 @@ public class Player implements Serializable {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
+    private Long playerId;
+
+    @Column(name = "id")
     private Long id;
 
     @Column
@@ -42,15 +45,19 @@ public class Player implements Serializable {
     @JsonBackReference
     private Game game;
 
-    @OneToOne(mappedBy = "player", targetEntity = SupplySled.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JsonManagedReference(value = "player")
+    @OneToOne(targetEntity = SupplySled.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private SupplySled supplySled;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<MarketCard> handCards;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<AMove> moves;
+    public Long getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
+    }
 
     public Long getGameId(){
         return game.getId();
@@ -102,14 +109,6 @@ public class Player implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public List<AMove> getMoves() {
-        return moves;
-    }
-
-    public void setMoves(List<AMove> moves) {
-        this.moves = moves;
     }
 
     public Game getGame() {

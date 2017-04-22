@@ -5,14 +5,19 @@ package ch.uzh.ifi.seal.soprafs17.entity.game;
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.site.Obelisk;
 import ch.uzh.ifi.seal.soprafs17.entity.site.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
+import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,6 +31,9 @@ import java.util.List;
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
 public class GameTest {
+
+    @Autowired
+    private BuildingSiteService buildingSiteService;
 
     @Test
     public void setId() {
@@ -139,6 +147,9 @@ public class GameTest {
         testGame.setRoundCounter(1);
         testGame.setRounds(testRounds);
         Assert.assertEquals(testRounds.get(0), testGame.getRoundByRoundCounter());
+        try {
+            Assert.assertEquals(testGame.getRoundByRoundCounter(),testRounds.get(0));
+        } catch(NotFoundException e) {}
     }
 
     @Test
@@ -151,6 +162,9 @@ public class GameTest {
         testPlayer.setPlayerNumber(1);
         Assert.assertNotNull(testPlayer.getPlayerNumber());
         Assert.assertEquals(testGame.getPlayerByPlayerNr(1),testPlayers.get(0));
+        try {
+            Assert.assertEquals(testGame.getPlayerByPlayerNr(2),testPlayers.get(0));
+        } catch(NotFoundException e) {}
     }
 
     @Test
@@ -174,15 +188,32 @@ public class GameTest {
     }
 
     @Test
-    public void getSiteById() {
-        /*
+    public void getBuildingSite() {
         Game testGame = new Game();
-        BuildingSite testBuildingSite = new Pyramid();
-        testBuildingSite.setId(1L);
+        BuildingSite obelisk = new Obelisk();
+        obelisk.setSiteType(GameConstants.OBELISK);
         List<BuildingSite> testSites = new ArrayList<>();
-        testSites.add(testBuildingSite);
+        testSites.add(obelisk);
         testGame.setBuildingSites(testSites);
-        Assert.assertEquals(testGame.getSiteById(1L), testBuildingSite);
-         */
+        Assert.assertEquals(testGame.getBuildingSite(GameConstants.OBELISK),obelisk );
+    }
+
+    @Test
+    public void getSiteById() {
+/*
+        Game testGame = new Game();
+        testGame.setId(1L);
+        BuildingSite testBuildingSite = new BuildingSite();
+        List<BuildingSite> testSites = new ArrayList<>();
+        testBuildingSite.setId(2L);
+        testSites.add(buildingSiteService.createBuildingSite(GameConstants.OBELISK,1L));
+        buildingSiteService.createBuildingSite(GameConstants.OBELISK,1L).setId(2L);
+
+        Assert.assertEquals(testGame.getSiteById(2L), testBuildingSite);
+        try {
+            Assert.assertEquals(testGame.getSiteById(2L),testBuildingSite);
+        } catch(NotFoundException e) {}
+*/
     }
 }
+

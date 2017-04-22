@@ -1,18 +1,13 @@
 package ch.uzh.ifi.seal.soprafs17.service.move.validation.card;
 
-import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import ch.uzh.ifi.seal.soprafs17.service.move.validation.IValidator;
 
-/**
- * Created by User on 19.04.2017.
- */
 public class LeverValidator implements IValidator{
 
     @Override
@@ -49,7 +44,8 @@ public class LeverValidator implements IValidator{
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Site is already docked.");
         }
         // A ship must hold the minimum amount of stones for its size
-        if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() < game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMIN_STONES()){
+        if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() <
+                game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMIN_STONES()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones on ship.");
         }
     }

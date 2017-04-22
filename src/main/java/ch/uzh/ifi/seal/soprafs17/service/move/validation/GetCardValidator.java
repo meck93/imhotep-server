@@ -30,9 +30,9 @@ public class GetCardValidator implements IValidator {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Wrong MoveType!");
         }
         // The Move and the Game must have the same currentSubRoundPlayer
-        if (game.getCurrentSubRoundPlayer() != newMove.getCurrentSubRoundPlayer()){
+        if (game.getCurrentSubRoundPlayer() != newMove.getPlayerNr()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
-                    "Current SubRound PlayerNumber of Game: " + game.getCurrentSubRoundPlayer() + " != of Move: " + newMove.getCurrentSubRoundPlayer());
+                    "Current SubRound PlayerNumber of Game: " + game.getCurrentSubRoundPlayer() + " != of PlayerNr of Move: " + newMove.getPlayerNr());
         }
         // The card must exist in the round
         boolean cardExists = false;

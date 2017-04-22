@@ -41,12 +41,12 @@ public class SupplySledTest {
     }
 
     @Test
-    public void setPlayer() {
+    public void setPlayerId() {
         SupplySled testSupplySled = new SupplySled();
         Player testPlayer = new Player();
-        testSupplySled.setPlayer(testPlayer);
+        testSupplySled.setPlayerId(1L);
         Assert.assertNotNull(testPlayer);
         Assert.assertNotNull(testSupplySled);
-        Assert.assertEquals(testSupplySled.getPlayer(),testPlayer);
+        Assert.assertEquals(testSupplySled.getPlayerId(),Long.valueOf(1L));
     }
 }

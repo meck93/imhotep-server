@@ -6,7 +6,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.StoneQuarry;
-import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
@@ -16,7 +15,6 @@ import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
 import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
 import ch.uzh.ifi.seal.soprafs17.service.game.StoneQuarryService;
-import ch.uzh.ifi.seal.soprafs17.service.scoring.ScoringService;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
 import ch.uzh.ifi.seal.soprafs17.service.user.SupplySledService;
@@ -27,8 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -50,13 +46,12 @@ public class GameService {
     private final StoneQuarryService stoneQuarryService;
     private final MarketCardService marketCardService;
     private final SupplySledService supplySledService;
-    private final ScoringService scoringService;
 
     @Autowired
     public GameService(GameRepository gameRepository, BuildingSiteService buildingSiteService,
                        RoundService roundService, RoundCardService roundCardService, MarketPlaceService marketPlaceService,
                        StoneQuarryService stoneQuarryService, MarketCardService marketCardService,
-                       SupplySledService supplySledService, ScoringService scoringService) {
+                       SupplySledService supplySledService) {
         this.gameRepository = gameRepository;
         this.buildingSiteService = buildingSiteService;
         this.roundService = roundService;
@@ -65,7 +60,6 @@ public class GameService {
         this.stoneQuarryService = stoneQuarryService;
         this.marketCardService = marketCardService;
         this.supplySledService = supplySledService;
-        this.scoringService = scoringService;
     }
     /*
      * Implementation of the createGame method:
@@ -98,21 +92,44 @@ public class GameService {
         return newGame;
     }
 
-    public void deleteGame(Long gameId) {
-        Game game = gameRepository.findById(gameId);
+    public void addPlayer(Long gameId, Player player){
+        log.debug("Adding the player to the Game");
 
-        if (game == null) throw new NotFoundException(gameId, "Game");
+        Game game = this.findById(gameId);
+
+        game.getPlayers().add(player);
+
+        gameRepository.save(game);
+    }
+
+    public void deleteGame(Long gameId) {
+        Game game = this.findById(gameId);
 
         gameRepository.delete(game);
 
         log.debug("Deleted Game: {}", game);
     }
 
-    public void setNrOfPlayers(Long gameId, int nrOfPlayers) {
-        log.debug("Nr of Players: " + nrOfPlayers + " of Game: " + gameId);
+    public void updateNrOfPlayers(Long gameId) {
+        log.debug("Updating the Nr of Players in Game: " + gameId);
 
-        Game game = gameRepository.findById(gameId);
-        game.setNumberOfPlayers(nrOfPlayers);
+        Game game = this.findById(gameId);
+
+        // setting the correct amount of players
+        game.setNumberOfPlayers(game.getPlayers().size());
+
+        // Readjust the Player Number & the Color if the Amount of Players has changed
+        for (int i = 0; i < game.getPlayers().size(); i++){
+            // Readjusting the PlayerNumbers
+            game.getPlayers().get(i).setPlayerNumber(i+1);
+            // assign the color according to the playerNumber
+            switch (game.getPlayers().get(i).getPlayerNumber()) {
+                case 1: game.getPlayerByPlayerNr(1).setColor(GameConstants.BLACK); break;
+                case 2: game.getPlayerByPlayerNr(2).setColor(GameConstants.WHITE); break;
+                case 3: game.getPlayerByPlayerNr(3).setColor(GameConstants.BROWN); break;
+                case 4: game.getPlayerByPlayerNr(4).setColor(GameConstants.GRAY); break;
+            }
+        }
 
         gameRepository.save(game);
     }
@@ -147,7 +164,7 @@ public class GameService {
      * Returns the list of all players associated with Game: {GameId}
      */
     public List<Player> findPlayersByGameId(Long gameId) {
-        log.debug("getPlayersByGameId: " + gameId);
+        log.debug("Find Players of Game: " + gameId);
 
         return gameRepository.findPlayersByGameId(gameId);
     }
@@ -241,34 +258,5 @@ public class GameService {
         game.setStatus(GameStatus.FINISHED);
 
         gameRepository.save(game);
-    }
-
-    /*
-     * Test method to score the all Building Sites of a Game
-     */
-    public synchronized void score(Long gameId){
-
-        Game game = this.findById(gameId);
-
-        List<BuildingSite> buildingSites = Collections.synchronizedList(new ArrayList<>());
-        buildingSites.addAll(game.getBuildingSites());
-
-        synchronized (buildingSites){
-            Iterator<BuildingSite> it = buildingSites.iterator();
-            while (it.hasNext()){
-                BuildingSite buildingSite = it.next();
-                this.scoringService.score(game, buildingSite.getSiteType());
-            }
-        }
-    }
-
-    /*
-     * Test method to score a specific BuildingSite of a Game
-     */
-    public synchronized void score(Long gameId, String siteType){
-
-        Game game = this.findById(gameId);
-
-        this.scoringService.score(game, siteType);
     }
 }

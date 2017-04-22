@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 /**
- * Created by Cristian on 13.04.2017.
+ * Created by Cristian on 20.04.2017.
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
@@ -13,35 +13,24 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-//TODO the target site is now a object of the type ASite
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
-public class SailShipMoveTest {
+public class GetCardMoveTest {
 
     @Test
-    public void setShipId() {
-        SailShipMove testSailShipMove = new SailShipMove();
-        testSailShipMove.setShipId(1L);
-        Assert.assertNotNull(testSailShipMove);
-        Assert.assertEquals(testSailShipMove.getShipId(),Long.valueOf(1L));
+    public void setMarketCardId() {
+        GetCardMove testMove = new GetCardMove();
+        testMove.setMarketCardId(1L);
+        Assert.assertNotNull(testMove.getMarketCardId());
+        Assert.assertEquals(testMove.getMarketCardId(), Long.valueOf(1L));
     }
 
     @Test
-    public void setTargetSiteId() {
-        SailShipMove testSailShipMove = new SailShipMove();
-        testSailShipMove.setTargetSiteId(1L);
-        Assert.assertNotNull(testSailShipMove);
-        Assert.assertEquals(testSailShipMove.getTargetSiteId(),1L);
-    }
-
-    @Test
-    public void SailShipMove() {
-        SailShipMove testMove = new SailShipMove();
+    public void GetCardMove() {
+        GetCardMove testMove = new GetCardMove();
         testMove.setMoveType("TEST");
         Assert.assertEquals(testMove.getMoveType(),"TEST");
     }
-
 }
