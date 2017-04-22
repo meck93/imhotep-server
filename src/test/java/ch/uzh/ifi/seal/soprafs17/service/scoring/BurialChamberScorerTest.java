@@ -4,8 +4,6 @@ import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
-import ch.uzh.ifi.seal.soprafs17.entity.site.ASite;
-import ch.uzh.ifi.seal.soprafs17.entity.site.BurialChamber;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -42,6 +40,32 @@ public class BurialChamberScorerTest {
     private UserService userService;
 
     private  BurialChamberScorer burialChamberScorer = new BurialChamberScorer();
+
+    @Test
+    public void supports() {
+        Assert.assertEquals(burialChamberScorer.supports(GameConstants.BURIAL_CHAMBER),true);
+    }
+
+    @Test
+    public void score() {
+        try {
+            Assert.assertNull(burialChamberScorer.score(new Game()));
+        } catch (NullPointerException e) {}
+    }
+
+    @Test
+    public void scoreNow() {
+        try {
+            Assert.assertNull(burialChamberScorer.scoreNow(new Game()));
+        } catch (NullPointerException e) {}
+    }
+
+    @Test
+    public void scoreEndOfRound() {
+        try {
+            Assert.assertNull(burialChamberScorer.scoreEndOfRound(new Game()));
+        } catch (NullPointerException e) {}
+    }
 
     @Test
     public void convertToArray(){

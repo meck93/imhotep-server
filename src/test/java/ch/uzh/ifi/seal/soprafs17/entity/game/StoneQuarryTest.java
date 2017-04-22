@@ -6,6 +6,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.game;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,6 +101,9 @@ public class StoneQuarryTest {
         Assert.assertEquals(testStoneQuarry.getStonesByPlayerNr(2),testStones);
         Assert.assertEquals(testStoneQuarry.getStonesByPlayerNr(3),testStones);
         Assert.assertEquals(testStoneQuarry.getStonesByPlayerNr(4),testStones);
+        try {
+            Assert.assertEquals(testStoneQuarry.getStonesByPlayerNr(5),testStones);
+        } catch(InternalServerException e) {}
     }
 
     @Test

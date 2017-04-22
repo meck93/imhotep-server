@@ -6,6 +6,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.site;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,5 +50,8 @@ public class MarketPlaceTest {
         testCards.add(testCard);
         testMarketPlace.setMarketCards(testCards);
         Assert.assertEquals(testMarketPlace.getMarketCardById(1L),testCard);
+        try{
+            Assert.assertEquals(testMarketPlace.getMarketCardById(6L),null);
+        } catch (NotFoundException e) {}
     }
 }

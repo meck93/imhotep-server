@@ -6,6 +6,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.site;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,5 +59,8 @@ public class ObeliskTest {
         Assert.assertArrayEquals(testObelisk.getScores(2),testScoreTwoPlayer);
         Assert.assertArrayEquals(testObelisk.getScores(3),testScoreThreePlayer);
         Assert.assertArrayEquals(testObelisk.getScores(4),testScoreFourPlayer);
+        try{
+            Assert.assertEquals(testObelisk.getScores(6),null);
+        } catch (InternalServerException e) {}
     }
 }

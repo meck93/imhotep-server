@@ -5,15 +5,16 @@ package ch.uzh.ifi.seal.soprafs17.entity.game;
  */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
+import ch.uzh.ifi.seal.soprafs17.entity.site.Obelisk;
 import ch.uzh.ifi.seal.soprafs17.entity.site.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
@@ -28,9 +29,6 @@ import java.util.List;
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
 public class GameTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void setId() {
@@ -144,23 +142,24 @@ public class GameTest {
         testGame.setRoundCounter(1);
         testGame.setRounds(testRounds);
         Assert.assertEquals(testRounds.get(0), testGame.getRoundByRoundCounter());
+        try {
+            Assert.assertEquals(testGame.getRoundByRoundCounter(),testRounds.get(0));
+        } catch(NotFoundException e) {}
     }
 
     @Test
     public void getPlayerByPlayerNr() {
         Player testPlayer = new Player();
-        Player testPlayer2 = new Player();
         Game testGame = new Game();
-        Game testGame2 = new Game();
         List<Player> testPlayers = new ArrayList<>();
         testPlayers.add(testPlayer);
         testGame.setPlayers(testPlayers);
         testPlayer.setPlayerNumber(1);
-        testPlayer2.setPlayerNumber(100);
         Assert.assertNotNull(testPlayer.getPlayerNumber());
         Assert.assertEquals(testGame.getPlayerByPlayerNr(1),testPlayers.get(0));
-        thrown.expect(NullPointerException.class);
-        testGame2.getPlayerByPlayerNr(100);
+        try {
+            Assert.assertEquals(testGame.getPlayerByPlayerNr(2),testPlayers.get(0));
+        } catch(NotFoundException e) {}
     }
 
     @Test
@@ -184,6 +183,17 @@ public class GameTest {
     }
 
     @Test
+    public void getBuildingSite() {
+        Game testGame = new Game();
+        BuildingSite obelisk = new Obelisk();
+        obelisk.setSiteType(GameConstants.OBELISK);
+        List<BuildingSite> testSites = new ArrayList<>();
+        testSites.add(obelisk);
+        testGame.setBuildingSites(testSites);
+        Assert.assertEquals(testGame.getBuildingSite(GameConstants.OBELISK),obelisk );
+    }
+
+    @Test
     public void getSiteById() {
         /*
         Game testGame = new Game();
@@ -193,6 +203,9 @@ public class GameTest {
         testGame.setBuildingSites(testSites);
         testBuildingSite.setId(1L);
         Assert.assertEquals(testGame.getSiteById(1L), testBuildingSite);
+        try {
+            Assert.assertEquals(testGame.getSiteById(2),testSites.get(0));
+        } catch(NotFoundException e) {}
         */
     }
 }

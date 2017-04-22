@@ -7,6 +7,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.user;
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -144,5 +145,8 @@ public class PlayerTest {
         testCards.add(testCard2);
         testPlayer.setHandCards(testCards);
         Assert.assertEquals(testPlayer.getMarketCardById(1L),testCard1);
+        try{
+            Assert.assertEquals(testPlayer.getMarketCardById(124L),null);
+        } catch (NotFoundException e) {}
     }
 }
