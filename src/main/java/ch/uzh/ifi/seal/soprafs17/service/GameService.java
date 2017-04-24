@@ -97,9 +97,19 @@ public class GameService {
 
         Game game = this.findById(gameId);
 
-        game.getPlayers().add(player);
+        boolean inGame = false;
 
-        gameRepository.save(game);
+        for (Player playerInGame : game.getPlayers()){
+            if (player.getId().equals(playerInGame.getId())){
+                inGame = true;
+            }
+        }
+
+        if (!inGame){
+            game.getPlayers().add(player);
+            gameRepository.save(game);
+
+        }
     }
 
     public void deleteGame(Long gameId) {
@@ -167,6 +177,18 @@ public class GameService {
         log.debug("Find Players of Game: " + gameId);
 
         return gameRepository.findPlayersByGameId(gameId);
+    }
+
+    public int sizeOfQuarry(Long gameId, int playerNumber) {
+        log.debug("Size of the Stone Quarry: " + gameId);
+
+        Game game = this.findById(gameId);
+
+        if (playerNumber > game.getNumberOfPlayers()){
+            throw new NotFoundException(playerNumber, "PlayerNumber");
+        }
+
+        return game.getStoneQuarry().getStonesByPlayerNr(playerNumber).size();
     }
 
     /**
