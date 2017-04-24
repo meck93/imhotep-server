@@ -1,8 +1,11 @@
 package ch.uzh.ifi.seal.soprafs17.service.user;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.user.SupplySled;
 import ch.uzh.ifi.seal.soprafs17.repository.SupplySledRepository;
-import ch.uzh.ifi.seal.soprafs17.service.user.SupplySledService;
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,22 +27,37 @@ import org.springframework.transaction.annotation.Transactional;
 public class SupplySledServiceTest {
 
     @Autowired
-    private SupplySledService supplySledService;
+    public SupplySledService supplySledService;
 
     @Autowired
-    private SupplySledRepository supplySledRepository;
+    public SupplySledRepository supplySledRepository;
 
+    @Autowired
+    public GameService gameService;
+
+    @Test
     public void createSupplySled() {
-        // TODO: test supplySledService.createSupplySled()
-        /* Player testPlayer = new Player();
-        *  SupplySled testSupplySled = supplySledService.createSupplySled(testPlayer);
-        *   Assert.assertEquals(testSupplySled, supplySledRepository.findOne(1L));
-        */
+        SupplySled testSupplySled = supplySledService.createSupplySled(1L);
+        Assert.assertNotNull(testSupplySled);
+        Assert.assertEquals(testSupplySled, supplySledRepository.findOne(1L));
     }
 
     @Test
-    public void addStone() {
-        //Stone testStone = new Stone();
-        // TODO: test supplySledService.addStone()
+    public void getSupplySledByGameId() {
+        Game testGame = new Game();
+        SupplySled testSupplySled = supplySledService.createSupplySled(1L);
+        Assert.assertNotNull(testSupplySled);
+        Assert.assertEquals(supplySledService.getSupplySledByGameId(testGame,1L), testSupplySled);
+    }
+
+    @Test
+    public void fillSupplySled() {
+       //TODO: Test fillSupplySled()
+    }
+
+    @Test
+    public void fillSupplySleds() {
+        //TODO: Test fillSupplySleds()
     }
 }
+
