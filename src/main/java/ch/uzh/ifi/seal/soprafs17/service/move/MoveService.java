@@ -98,8 +98,7 @@ public class MoveService {
                     // Scoring End of the Game (Burial_Chamber, MarketCards, Obelisk)
                     this.scoringService.score(game, GameConstants.OBELISK);
                     this.scoringService.score(game, GameConstants.BURIAL_CHAMBER);
-
-                    // TODO: Score the Green and Violet Market Card here
+                    this.scoringService.score(game, GameConstants.CARD);
 
                     // Stopping the Game -> Status Change -> Winning Screen
                     this.gameService.stopGame(game.getId());

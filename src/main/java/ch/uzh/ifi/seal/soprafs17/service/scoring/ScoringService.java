@@ -19,6 +19,8 @@ import java.util.List;
 public class ScoringService {
 
     private final Logger log = LoggerFactory.getLogger(ScoringService.class);
+    private static final int TOTAL = 5;
+
 
     private GameRepository gameRepository;
     private List<IScoreable> rateables;
@@ -36,6 +38,7 @@ public class ScoringService {
         this.rateables.add(new TempleScorer());
         this.rateables.add(new ObeliskScorer());
         this.rateables.add(new BurialChamberScorer());
+        this.rateables.add(new CardScorer());
     }
 
     public synchronized void score(Game game, String siteType) {
@@ -46,9 +49,24 @@ public class ScoringService {
             if (rateable.supports(siteType)) {
                 // Score the BuildingSite
                 Game changedGame = rateable.score(game);
-                gameRepository.save(changedGame);
+                Game scoredGame = this.sumUp(changedGame);
+                gameRepository.save(scoredGame);
             }
         }
     }
 
+    public synchronized Game sumUp(Game game){
+        log.debug("Summing up all the points for Game: " + game.getId());
+
+        game.getPlayers().forEach(player -> {
+            // Resetting the total points
+            player.getPoints()[TOTAL] = 0;
+            // Adding up all the individual points from each BuildingSite/Remaining MarketCard
+            for (int i = 0; i < TOTAL; i++){
+                player.getPoints()[TOTAL] += player.getPoints()[i];
+            }
+        });
+
+        return game;
+    }
 }

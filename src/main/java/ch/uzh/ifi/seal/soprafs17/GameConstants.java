@@ -44,6 +44,9 @@ public class GameConstants {
 	public static final int MAX_STONES_ADDED_PER_MOVE = 3;
 	public static final int MIN_STONES_TO_PLACE_STONE = 1;
 
+	// cards
+	public static final String CARD = "CARD";
+
 	// sonarquabe suggested to add a private constructor instead of the implicit public one
 	private GameConstants() {};
 }

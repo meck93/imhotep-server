@@ -1,8 +1,10 @@
 package ch.uzh.ifi.seal.soprafs17.service.card;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.repository.MarketCardRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import org.junit.Assert;
@@ -37,49 +39,37 @@ public class MarketCardServiceTest {
 
     @Test
     public void createMarketCard() {
-        MarketCard testMarketCard = marketCardService.createMarketCard(1L,"test", MarketCardType.CHISEL);
+        MarketCard testMarketCard = marketCardService.createMarketCard(1L, GameConstants.BLUE, MarketCardType.CHISEL);
         Assert.assertEquals(testMarketCard, marketCardRepository.findOne(1L));
     }
 
     @Test
     public void getMarketCard() {
-        // TODO: test marketCardService.getMarketCard()
-         /*
         Game testGame = gameService.createGame("testName", "testName");
         testGame.setId(1L);
-        MarketCard testMarketCard = new MarketCard();
-        MarketPlace testMarketPlace = new MarketPlace();
-        testGame.setMarketPlace(testMarketPlace);
-        List<MarketCard> testMarketCards = new ArrayList<>();
-        testMarketCards.add(testMarketCard);
-        testMarketPlace.setMarketCards(testMarketCards);
-        Assert.assertEquals(testMarketCards, marketCardService.getMarketCard(1L));
-    */
+        MarketCard testMarketCard1 = marketCardService.createMarketCard(1L,GameConstants.BLUE, MarketCardType.CHISEL);
+        MarketCard testMarketCard2 = marketCardService.createMarketCard(1L,GameConstants.BLUE, MarketCardType.CHISEL);
+        Assert.assertEquals(testMarketCard1, marketCardService.getMarketCard(1L));
     }
 
     @Test
     public void getMarketCardDeck() {
-        /*
         Game testGame = gameService.createGame("testName", "testName");
         testGame.setId(1L);
-        MarketCard testMarketCard1 = new MarketCard();
-        MarketCard testMarketCard2 = new MarketCard();
-        MarketCard testMarketCard3 = new MarketCard();
-        MarketCard testMarketCard4 = new MarketCard();
-        MarketPlace testMarketPlace = new MarketPlace();
-        testGame.setMarketPlace(testMarketPlace);
-        List<MarketCard> testMarketCards = new ArrayList<>();
-        testMarketCards.add(testMarketCard1);
-        testMarketCards.add(testMarketCard2);
-        testMarketCards.add(testMarketCard3);
-        testMarketCards.add(testMarketCard4);
-        testMarketPlace.setMarketCards(testMarketCards);
-        Assert.assertEquals(testMarketCards, marketCardService.getMarketCardDeck(1L));
-          */
+        Assert.assertNull(marketCardRepository.findOne(1L));
+        MarketCard testMarketCard1 = marketCardService.createMarketCard(1L,GameConstants.BLUE, MarketCardType.CHISEL);
+        MarketCard testMarketCard2 = marketCardService.createMarketCard(1L,GameConstants.BLUE, MarketCardType.CHISEL);
+        Assert.assertNotNull(testMarketCard1);
+        Assert.assertNotNull(testMarketCard2);
+
     }
 
     @Test
     public void getMarketCardSet() {
-        // TODO: test marketCardService.getMarketCardSet()
+        Game testGame = gameService.createGame("testName", "testName");
+        testGame.setId(1L);
+        MarketCard testMarketCard = marketCardService.createMarketCard(1L, GameConstants.RED, MarketCardType.PAVED_PATH);
+        marketCardService.createMarketCardSet(1L);
+        Assert.assertEquals(marketCardRepository.findOne(1L),testMarketCard);
     }
 }

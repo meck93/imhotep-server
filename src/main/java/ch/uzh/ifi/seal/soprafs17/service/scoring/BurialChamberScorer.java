@@ -6,6 +6,8 @@ import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 
 import java.util.List;
 
+
+
 public class BurialChamberScorer implements IScoreable {
     @Override
     public boolean supports(String siteType) {
@@ -29,20 +31,26 @@ public class BurialChamberScorer implements IScoreable {
 
     public int[] convertToArray(List<Stone> aList){
         int[] array = new int[30];
-        for (int i = 0; i < aList.size(); i++){
-            if (aList.get(i).getColor() == GameConstants.BLACK){
+        int i = 0;
+        int aListCounter = 0;
+
+        while(i >= 0 && aListCounter<aList.size()){
+            if (aList.get(aListCounter).getColor().equals(GameConstants.BLACK)){
                 array[i] = 1;
             }
-            if (aList.get(i).getColor() == GameConstants.WHITE){
+            if (aList.get(aListCounter).getColor().equals(GameConstants.WHITE)){
                 array[i] = 2;
             }
-            if (aList.get(i).getColor() == GameConstants.BROWN){
+            if (aList.get(aListCounter).getColor().equals(GameConstants.BROWN)){
                 array[i] = 3;
             }
-            if (aList.get(i).getColor() == GameConstants.GRAY){
+            if (aList.get(aListCounter).getColor().equals(GameConstants.GRAY)){
                 array[i] = 4;
             }
+            i = incrementCount(i,array);
+            aListCounter++;
         }
+
         return array;
     }
 
@@ -109,6 +117,13 @@ public class BurialChamberScorer implements IScoreable {
         return pos;
     }
 
+    public int lookLeft(int[] arr, int position) {
+        if (position > 29 || position<=0 || position == 10 || position == 20 ) return -1;
+        int pos;
+        pos = (position + -1) % arr.length;
+        return pos;
+    }
+
     public int incrementCount(int counter, int[] arr) {
         if (counter >= 29 || counter < 0) return -1;
         if (counter >= 20) return (counter + 11) % arr.length;
@@ -130,7 +145,7 @@ public class BurialChamberScorer implements IScoreable {
             // Find an entry point
 
             if (arr[count] == player) {
-                figure++;  
+                figure++;
                 if (isValid(lookUp(arr, count)) && arr[lookUp(arr, count)] == player) {
                     arr[lookUp(arr,count)] = -2;
                     figure++;
@@ -141,6 +156,10 @@ public class BurialChamberScorer implements IScoreable {
                 }
                 if (isValid(lookRight(arr, count)) && arr[lookRight(arr, count)] == player) {
                     arr[lookRight(arr,count)] = -2;
+                    figure++;
+                }
+                if (isValid(lookLeft(arr, count)) && arr[lookLeft(arr, count)] == player) {
+                    arr[lookLeft(arr,count)] = -2;
                     figure++;
                 }
                 arr[count] = -1;
@@ -162,10 +181,15 @@ public class BurialChamberScorer implements IScoreable {
                         arr[lookRight(arr,lookUpIndex)] = -2;
                         figure++;
                     }
+                    if (isValid(lookLeft(arr, lookUpIndex)) && arr[lookLeft(arr, lookUpIndex)] == player) {
+                        arr[lookLeft(arr,lookUpIndex)] = -2;
+                        figure++;
+                    }
                     arr[lookUpIndex] = -1;
                     lookUpIndex = findLookUpIndex(arr);
                 }
-                addPoints(game,player,figure);
+
+                addPoints(game, player, figure);
                 figure = 0;
 
             } else {

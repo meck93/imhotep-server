@@ -33,14 +33,14 @@ import java.util.List;
 public class BurialChamberScorerTest {
 
     @Autowired
-    private GameService gameService;
+    public GameService gameService;
     @Autowired
-    private PlayerService playerService;
+    public PlayerService playerService;
     @Autowired
-    private UserService userService;
+    public UserService userService;
 
     private  BurialChamberScorer burialChamberScorer = new BurialChamberScorer();
-
+    
     @Test
     public void supports() {
         Assert.assertEquals(burialChamberScorer.supports(GameConstants.BURIAL_CHAMBER),true);
@@ -74,26 +74,46 @@ public class BurialChamberScorerTest {
         Stone stone2 = new Stone();
         Stone stone3 = new Stone();
         Stone stone4 = new Stone();
+        Stone stone5 = new Stone();
+        Stone stone6 = new Stone();
+        Stone stone7 = new Stone();
+        Stone stone8 = new Stone();
+
+
+
+        int[] testArray ={
+                1,4,3,0,0,0,0,0,0,0,
+                2,1,4,0,0,0,0,0,0,0,
+                3,2,0,0,0,0,0,0,0,0
+        };
 
         stone1.setColor(GameConstants.BLACK);
         stone2.setColor(GameConstants.WHITE);
         stone3.setColor(GameConstants.BROWN);
         stone4.setColor(GameConstants.GRAY);
+        stone5.setColor(GameConstants.BLACK);
+        stone6.setColor(GameConstants.WHITE);
+        stone7.setColor(GameConstants.BROWN);
+        stone8.setColor(GameConstants.GRAY);
 
         stones.add(stone1);
         stones.add(stone2);
         stones.add(stone3);
         stones.add(stone4);
 
-        int[] resultArray ={
-                1,2,3,4,0,0,0,0,0,0,
-                0,0,0,0,0,0,0,0,0,0,
-                0,0,0,0,0,0,0,0,0,0
-        };
+        stones.add(stone5);
+        stones.add(stone6);
+        stones.add(stone7);
+        stones.add(stone8);
 
-        int [] testArray = burialChamberScorer.convertToArray(stones);
+        int[] resultArray = burialChamberScorer.convertToArray(stones);
 
-        for (int i = 0; i<30; i++) {
+        Assert.assertEquals(resultArray[0],1);
+        Assert.assertEquals(resultArray[10],2);
+        Assert.assertEquals(resultArray[20],3);
+        Assert.assertEquals(resultArray[1],4);
+
+        for (int i = 0; i < resultArray.length;i++) {
             Assert.assertEquals(resultArray[i], testArray[i]);
         }
     }
@@ -167,6 +187,25 @@ public class BurialChamberScorerTest {
     }
 
     @Test
+    public void lookLeft(){
+        int[] testArray ={
+                1,2,3,4,0,0,0,0,0,0,
+                0,0,0,0,0,0,0,0,0,0,
+                0,0,0,0,0,0,0,0,0,0
+        };
+
+        int pos1 = 0;
+        int pos2 = 9;
+        int pos3 = 420;
+        int pos4 = -360;
+
+        Assert.assertEquals(burialChamberScorer.lookLeft(testArray,pos1),-1);
+        Assert.assertEquals(burialChamberScorer.lookLeft(testArray,pos2),8);
+        Assert.assertEquals(burialChamberScorer.lookLeft(testArray,pos3),-1);
+        Assert.assertEquals(burialChamberScorer.lookLeft(testArray,pos4),-1);
+    }
+
+    @Test
     public void incrementCount() {
         int counter1 = 0;
         int counter2 = 420;
@@ -237,10 +276,11 @@ public class BurialChamberScorerTest {
     public void scoreChamber(){
 
         int[] testArray ={
-                1,0,0,1,0,0,0,1,0,0,
-                1,0,0,1,0,0,0,1,0,0,
-                1,1,1,1,0,0,0,0,0,1
+                0,1,1,1,1,0,0,0,0,0,
+                1,0,1,0,1,0,0,0,0,0,
+                0,1,1,1,0,0,0,0,0,0
         };
+
 
         Game game = gameService.createGame("testName", "testOwner");
         User user1 = userService.createUser("testName","testUser");
@@ -254,12 +294,11 @@ public class BurialChamberScorerTest {
         player1.setPoints(points);
 
         burialChamberScorer.scoreChamber(testArray,1,game);
-        Assert.assertEquals(player1.getPoints()[3],25);
+        Assert.assertEquals(player1.getPoints()[3],24);
     }
 
    /* @Test
     public void scoreEndOfGame(){
-
         Game game = gameService.createGame("testName", "testOwner");
         game.setId(1L);
         User user1 = userService.createUser("testName","testUser");
@@ -267,7 +306,6 @@ public class BurialChamberScorerTest {
         user1.setPlayer(player1);
         List<Player> players = new ArrayList<>();
         players.add(player1);
-
         *//*User user2 = userService.createUser("testName2","testUser2");
         Player player2 = playerService.createPlayer(1L,2L);
         user2.setPlayer(player2);
@@ -277,16 +315,12 @@ public class BurialChamberScorerTest {
         int[] points = {0,0,0,0};
         player1.setPoints(points);
         *//*player2.setPoints(points);*//*
-
         int[] testArray ={
                 1,0,0,1,0,2,0,1,0,2,
                 1,0,0,1,2,2,2,1,0,0,
                 1,1,1,1,0,2,0,0,0,1
         };
-
-
         burialChamberScorer.scoreEndOfGame(game);
-
         Assert.assertEquals(game.getPlayerByPlayerNr(1).getPoints()[3],25);
        *//* Assert.assertEquals(player2.getPoints()[3],18);*//*
     }*/
