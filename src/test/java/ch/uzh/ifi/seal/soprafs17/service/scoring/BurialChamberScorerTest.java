@@ -40,8 +40,7 @@ public class BurialChamberScorerTest {
     public UserService userService;
 
     private  BurialChamberScorer burialChamberScorer = new BurialChamberScorer();
-
-
+    
     @Test
     public void supports() {
         Assert.assertEquals(burialChamberScorer.supports(GameConstants.BURIAL_CHAMBER),true);
