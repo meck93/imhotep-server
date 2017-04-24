@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
 import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.ShipRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -69,6 +70,9 @@ public class ShipServiceTest {
     public void findShip() {
         Game testGame = new Game();
         testGame.setId(1L);
+        try {
+            shipService.findShip(1L);
+        } catch (NotFoundException e) {}
         shipService.createShip(4,2, 1L);
         Assert.assertNotNull(shipService.findShip(1L));
 
