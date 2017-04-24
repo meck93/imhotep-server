@@ -73,13 +73,26 @@ public class RoundServiceTest {
     }
 
     @Test
+    public void goToNextRound() {
+        //TODO: test this method
+    }
+
+    @Test
     public void listRounds() {
-        // TODO: test roundService.listRounds()
+        Game testGame = gameService.createGame("testGame", "testOwner");
+        testGame.setId(1L);
+        Round testRound = roundService.createRound(1L,testGame);
+        testRound.setId(1L);
+        Assert.assertEquals(roundService.listRounds(1L).get(0),testRound);
     }
 
     @Test
     public void getRoundByNr() {
-        // TODO: test roundService.getRoundByNr()
+        Game testGame = gameService.createGame("testGame", "testOwner");
+        testGame.setId(1L);
+        Round testRound = roundService.createRound(1L,testGame);
+        testRound.setId(1L);
+        Assert.assertEquals(roundService.getRoundByNr(1L,1),testRound);
     }
 
 

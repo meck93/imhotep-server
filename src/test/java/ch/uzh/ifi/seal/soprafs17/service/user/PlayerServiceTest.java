@@ -37,19 +37,19 @@ import java.util.List;
 public class PlayerServiceTest {
 
     @Autowired
-    private PlayerService playerService;
+    public PlayerService playerService;
 
     @Autowired
-    private UserService userService;
+    public UserService userService;
 
     @Autowired
-    private PlayerRepository playerRepository;
+    public PlayerRepository playerRepository;
 
     @Autowired
-    private GameService gameService;
+    public GameService gameService;
 
     @Autowired
-    private GameRepository gameRepository;
+    public GameRepository gameRepository;
 
     @Test
     public void createPlayer() {
@@ -175,6 +175,7 @@ public class PlayerServiceTest {
         user1.setId(1L);
         Player player1 = playerService.createPlayer(1L,1L);
         player1.setPlayerId(1L);
+
         Assert.assertNotNull(playerService.findPlayerById(1L));
         playerService.deletePlayer(1L);
         Assert.assertNull(playerRepository.findById(1L));

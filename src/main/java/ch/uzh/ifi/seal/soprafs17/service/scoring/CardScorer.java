@@ -11,9 +11,7 @@ import java.util.List;
 
 import static ch.uzh.ifi.seal.soprafs17.constant.MarketCardType.*;
 
-/**
- * Created by User on 21.04.2017.
- */
+
 public class CardScorer implements IScoreable {
 
     @Override
@@ -76,8 +74,8 @@ public class CardScorer implements IScoreable {
 
     public void scoreVioletCards(Game game, int player, int amount){
         int[] arr;
-        if (amount == 0){}
-        else if (amount == 1){
+
+        if (amount == 1){
             arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[4] = arr[4]+1;
             game.getPlayerByPlayerNr(player).setPoints(arr);
