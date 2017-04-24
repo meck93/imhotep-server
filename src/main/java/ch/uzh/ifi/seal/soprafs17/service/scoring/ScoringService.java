@@ -38,6 +38,7 @@ public class ScoringService {
         this.rateables.add(new TempleScorer());
         this.rateables.add(new ObeliskScorer());
         this.rateables.add(new BurialChamberScorer());
+        this.rateables.add(new CardScorer());
     }
 
     public synchronized void score(Game game, String siteType) {
