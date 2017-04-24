@@ -13,9 +13,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
 import ch.uzh.ifi.seal.soprafs17.service.move.rule.IRule;
 
-/**
- * Created by User on 19.04.2017.
- */
 public class LeverRule implements IRule{
 
     @Override
@@ -31,15 +28,15 @@ public class LeverRule implements IRule{
 
         // Retrieving the Player
         Player player = game.getPlayerByPlayerNr(game.getCurrentPlayer());
+        // removing the current Player from the List of all Players
+        game.getPlayers().remove(player);
 
         // Removing the marketCard from the players deck of cards
         player.getHandCards().remove(player.getMarketCardById(newMove.getCardId()));
 
-        // removing the current Player from the List of all Players
-        game.getPlayers().remove(player);
-
         // Find the assigned ship
         Ship assignedShip = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
+        game.getRoundByRoundCounter().getShips().remove(assignedShip);
 
         // Updating the ship
         assignedShip.setHasSailed(true);
@@ -53,6 +50,7 @@ public class LeverRule implements IRule{
         else {
             // Retrieving the correct BuildingSite
             BuildingSite buildingSite = (BuildingSite) game.getSiteById(newMove.getTargetSiteId());
+            game.getBuildingSites().remove(buildingSite);
 
             // Setting the site docked
             buildingSite.setDocked(true);
@@ -70,8 +68,11 @@ public class LeverRule implements IRule{
                 // Removing the Stone from the Ship
                 assignedShip.getStones().remove(stone2);
             }
+            // Adding the updated BuildingSite back to the game
+            game.getBuildingSites().add(buildingSite);
         }
-
+        // Adding the updated ship back to the game
+        game.getRoundByRoundCounter().getShips().add(assignedShip);
         // Adding the updated Player back to the Game
         game.getPlayers().add(player);
 

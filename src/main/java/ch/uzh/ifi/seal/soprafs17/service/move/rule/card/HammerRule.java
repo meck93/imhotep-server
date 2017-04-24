@@ -30,12 +30,11 @@ public class HammerRule implements IRule {
 
         // Retrieving the Player
         Player player = game.getPlayerByPlayerNr(game.getCurrentPlayer());
+        // removing the current Player from the List of all Players
+        game.getPlayers().remove(player);
 
         // Removing the marketCard from the players deck of cards
         player.getHandCards().remove(player.getMarketCardById(newMove.getCardId()));
-
-        // removing the current Player from the List of all Players
-        game.getPlayers().remove(player);
 
         /* PART ONE: GET STONES */
 

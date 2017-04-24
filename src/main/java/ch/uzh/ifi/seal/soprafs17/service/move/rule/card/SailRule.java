@@ -10,15 +10,11 @@ import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
-import ch.uzh.ifi.seal.soprafs17.entity.user.SupplySled;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
 import ch.uzh.ifi.seal.soprafs17.service.move.rule.IRule;
 
 import java.util.List;
 
-/**
- * Created by User on 19.04.2017.
- */
 public class SailRule implements IRule{
 
     @Override
@@ -34,19 +30,15 @@ public class SailRule implements IRule{
 
         // Retrieving the Player
         Player player = game.getPlayerByPlayerNr(game.getCurrentPlayer());
+        game.getPlayers().remove(player);
 
         // Removing the marketCard from the players deck of cards
         player.getHandCards().remove(player.getMarketCardById(newMove.getCardId()));
 
         /* PART ONE: PLACING STONE ON SHIP*/
 
-        // Retrieving the SupplySled of the current Player
-        SupplySled supplySled = player.getSupplySled();
-
-        // removing one stone from players' sled
-        List<Stone> updatedStones = supplySled.getStones();
-        Stone stone = updatedStones.remove(0);
-
+        // removing one stone from players' SupplySled
+        Stone stone = player.getSupplySled().getStones().remove(0);
 
         // Adding the position to selected stone
         stone.setPlaceOnShip(newMove.getPlaceOnShip());
@@ -56,7 +48,6 @@ public class SailRule implements IRule{
 
         // Find the assigned ship
         Ship assignedShip = game.getRoundByRoundCounter().getShipById(newMove.getShipId());
-
         // Remove the assigned ship
         ships.remove(assignedShip);
 
@@ -65,12 +56,6 @@ public class SailRule implements IRule{
 
         // Adding the updated Player back to the Game
         game.getPlayers().add(player);
-
-        // Adding the updated sled to the game
-        supplySled.setStones(updatedStones);
-
-        // Adding the updated ship back to the game
-        game.getRoundByRoundCounter().getShips().add(assignedShip);
 
         /*PART TWO: SAILING SHIP TO A TARGET SITE*/
 
@@ -86,6 +71,7 @@ public class SailRule implements IRule{
         else {
             // Retrieving the correct BuildingSite
             BuildingSite buildingSite = (BuildingSite) game.getSiteById(newMove.getTargetSiteId());
+            game.getBuildingSites().remove(buildingSite);
 
             // Setting the site docked
             buildingSite.setDocked(true);
@@ -103,7 +89,13 @@ public class SailRule implements IRule{
                 // Removing the Stone from the Ship
                 assignedShip.getStones().remove(stone2);
             }
+            // Adding the updated BuildingSite back to the game
+            game.getBuildingSites().add(buildingSite);
+
         }
+        // Adding the updated ship back to the game
+        game.getRoundByRoundCounter().getShips().add(assignedShip);
+
         return game;
     }
 }
