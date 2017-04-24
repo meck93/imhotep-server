@@ -112,14 +112,6 @@ public class GameService {
         }
     }
 
-    public void deleteGame(Long gameId) {
-        Game game = this.findById(gameId);
-
-        gameRepository.delete(game);
-
-        log.debug("Deleted Game: {}", game);
-    }
-
     public void updateNrOfPlayers(Long gameId) {
         log.debug("Updating the Nr of Players in Game: " + gameId);
 
@@ -142,6 +134,14 @@ public class GameService {
         }
 
         gameRepository.save(game);
+    }
+
+    public void deleteGame(Long gameId) {
+        Game game = this.findById(gameId);
+
+        gameRepository.delete(game);
+
+        log.debug("Deleted Game: {}", game);
     }
 
     public List<Game> listGames() {
