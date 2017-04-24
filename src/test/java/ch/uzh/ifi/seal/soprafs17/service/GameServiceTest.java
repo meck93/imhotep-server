@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
@@ -105,7 +106,6 @@ public class GameServiceTest {
 
     @Test
     public void startGame() {
-        Assert.assertNull(gameRepository.findById(1L));
         // test initializeGame() and initializeRound() first
     }
 
@@ -117,6 +117,16 @@ public class GameServiceTest {
     @Test
     public void initializeRound() {
         // TODO: test createRound(), initializeRound(), getMarketCardDeck() and setMarketCards() first!
+    }
+
+    @Test
+    public void stopGame() {
+        Assert.assertNull(gameRepository.findById(1L));
+        Game testGame = gameService.createGame("testName","testName");
+        testGame.setId(1L);
+        Assert.assertNotNull(gameRepository.findById(1L));
+        gameService.stopGame(1L);
+        Assert.assertEquals(gameRepository.findById(1L).getStatus(), GameStatus.FINISHED);
     }
 
 }
