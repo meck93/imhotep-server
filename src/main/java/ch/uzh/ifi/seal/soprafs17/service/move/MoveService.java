@@ -82,10 +82,10 @@ public class MoveService {
         // Checking if the Game is still in the Status: SUBROUND
         this.checkSubRound(move, game);
         // Checking if the game advances to the next Round
-        this.checkNextRound(move, game);
+        this.checkNextRound(game);
     }
 
-    public synchronized void checkNextRound(AMove move, Game game){
+    public synchronized void checkNextRound(Game game){
         // Advancing the Game to the next Player, only if the Game is in Status: RUNNING
         if (game.getStatus() == GameStatus.RUNNING) {
             // Advancing the currentPlayer

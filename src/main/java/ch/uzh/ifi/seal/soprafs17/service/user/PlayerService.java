@@ -140,7 +140,7 @@ public class PlayerService {
     public Player findPlayerById(Long playerId) {
         log.debug("Find the Player with ID: " + playerId);
 
-        Player player = playerRepository.findOne(playerId);
+        Player player = playerRepository.findPlayerById(playerId);
 
         if (player == null) throw new NotFoundException(playerId, "Player");
 

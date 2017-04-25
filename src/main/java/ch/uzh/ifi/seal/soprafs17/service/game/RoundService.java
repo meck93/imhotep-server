@@ -4,10 +4,8 @@ import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
-import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
 import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +25,12 @@ public class RoundService {
         private final RoundRepository roundRepository;
         private final RoundCardService roundCardService;
         private final ShipService shipService;
-        private final StoneService stoneService;
 
         @Autowired
-        public RoundService(RoundRepository roundRepository, RoundCardService roundCardService, ShipService shipService, StoneService stoneService, MarketCardService marketCardService) {
+        public RoundService(RoundRepository roundRepository, RoundCardService roundCardService, ShipService shipService) {
             this.roundRepository = roundRepository;
             this.roundCardService = roundCardService;
             this.shipService = shipService;
-            this.stoneService = stoneService;
         }
 
         /**
@@ -151,47 +147,5 @@ public class RoundService {
          */
         public Ship getShip(Long shipId){
             return shipService.findShip(shipId);
-        }
-
-        public void createDummyData(Long gameId, int roundNr) {
-            Round round = this.getRoundByNr(gameId, roundNr);
-            List<Ship> ships = round.getShips();
-
-            for (Ship ship : ships) {
-                ArrayList<Stone> testStones = new ArrayList<>();
-                switch (ship.getMAX_STONES()) {
-                    case 1:
-                        Stone stone = stoneService.createStone("BLACK");
-                        stone.setPlaceOnShip(1);
-                        testStones.add(stone);
-                        ship.setStones(testStones); break;
-                    case 2:
-                        Stone stone1 = stoneService.createStone("GRAY");
-                        stone1.setPlaceOnShip(1);
-                        testStones.add(stone1);
-                        ship.setStones(testStones); break;
-                    case 3:
-                        Stone stone3 = stoneService.createStone("BROWN");
-                        Stone stone4 = stoneService.createStone("BROWN");
-                        stone3.setPlaceOnShip(1);
-                        stone4.setPlaceOnShip(2);
-                        testStones.add(stone3);
-                        testStones.add(stone4);
-                        ship.setStones(testStones); break;
-                    case 4:
-                        Stone stone5 = stoneService.createStone("WHITE");
-                        Stone stone6 = stoneService.createStone("WHITE");
-                        Stone stone7 = stoneService.createStone("WHITE");
-                        stone5.setPlaceOnShip(1);
-                        stone6.setPlaceOnShip(2);
-                        stone7.setPlaceOnShip(3);
-                        testStones.add(stone5);
-                        testStones.add(stone6);
-                        testStones.add(stone7);
-                        ship.setStones(testStones); break;
-                }
-            }
-
-            roundRepository.save(round);
         }
 }

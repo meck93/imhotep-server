@@ -136,8 +136,4 @@ public class RoundCardService {
 
         return currentCard;
     }
-
-    public void deleteCard(RoundCard roundCard){
-        roundCardRepository.delete(roundCard);
-    }
 }

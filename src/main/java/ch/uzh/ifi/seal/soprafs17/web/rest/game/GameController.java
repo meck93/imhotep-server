@@ -42,4 +42,12 @@ public class GameController extends GenericController {
         return gameService.findById(gameId);
     }
 
+    /*
+     * Handles the request for the size of the StoneQuarry of each Player
+     */
+    @RequestMapping(value = "/{gameId}/stoneQuarry/{playerNumber}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public int sizeOfQuarry(@PathVariable Long gameId, @PathVariable int playerNumber) {
+        return gameService.sizeOfQuarry(gameId, playerNumber);
+    }
 }
