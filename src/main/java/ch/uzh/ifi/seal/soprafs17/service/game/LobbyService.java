@@ -81,14 +81,15 @@ public class LobbyService {
         // The player to be deleted
         Player toBeDeleted = this.playerService.findPlayerById(playerId);
 
-        // Only the specified player with ID: playerId is going to be deleted
-        this.playerService.deletePlayer(playerId);
-        this.gameService.updateNrOfPlayers(gameId);
-
         // Check whether the player is the owner
         if (toBeDeleted.getPlayerNumber() == 1){
             // Deleting all players and the Game - if the owner's going to be deleted
             this.deleteGame(gameId);
+        }
+        else {
+            // Only the specified player with ID: playerId is going to be deleted
+            this.playerService.deletePlayer(playerId);
+            this.gameService.updateNrOfPlayers(gameId);
         }
     }
 
@@ -99,15 +100,9 @@ public class LobbyService {
         Game game = this.gameService.findById(gameId);
 
         // Deleting All Players in the Game
-        game.getPlayers().forEach(player -> {
-            if (player.getPlayerNumber() != 1){
-                this.playerService.deletePlayer(player.getId());
-                this.gameService.updateNrOfPlayers(gameId);
-            }
-        });
+        game.getPlayers().forEach(player -> this.playerService.deletePlayer(player.getId()));
 
-        // Deleting the game
-        this.gameService.deleteGame(gameId);
+        // TODO: Deleting the actual Game and not just the Players
     }
 
     /*
