@@ -129,4 +129,12 @@ public class GameServiceTest {
         Assert.assertEquals(gameRepository.findById(1L).getStatus(), GameStatus.FINISHED);
     }
 
+    @Test
+    public void saveGame() {
+        Game testGame = gameService.createGame("testName", "testOwner");
+        gameService.saveGame(1L);
+        Assert.assertNotNull(gameRepository.findById(1L));
+        Assert.assertEquals(gameRepository.findById(1L), testGame);
+    }
+
 }

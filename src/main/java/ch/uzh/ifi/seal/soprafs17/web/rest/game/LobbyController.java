@@ -99,19 +99,15 @@ public class LobbyController extends GenericController {
     public void deletePlayer(@PathVariable Long gameId, @PathVariable Long playerId) {
         lobbyService.removePlayer(gameId, playerId);
     }
-<<<<<<< HEAD
-}
-=======
 
     /*
-* Context: /lobby/games/{gameId}/fastforward
-* Fastforward function
-* @Param gameId
-*/
-    @RequestMapping(value = "/lobby/games/{gameId}/fastforward", method = RequestMethod.POST)
+    * Context: /lobby/games/{gameId}/fastforward
+    * Fastforward function
+    * @Param gameId
+    */
+    @RequestMapping(value = "games/{gameId}/fastforward", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void fastforward(@PathVariable Long gameId) {
-        lobbyService.fastForward(gameId);
+    public void fastForward(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
+        lobbyService.fastForward(gameId, playerId);
     }
 }
->>>>>>> origin/Cristian
