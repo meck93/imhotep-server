@@ -14,5 +14,8 @@ public interface PlayerRepository extends CrudRepository<Player, Long> {
     @Modifying
     void deletePlayer(@Param("id") Long id);
 
+    @Query("SELECT p FROM Player p WHERE p.id = :id")
+    Player findPlayerById(@Param("id") Long id);
+
     Player findById(Long id);
 }
