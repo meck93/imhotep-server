@@ -4,6 +4,7 @@ package ch.uzh.ifi.seal.soprafs17.service.game;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -133,6 +135,61 @@ public class LobbyService {
      */
     public void stopGame(Long gameId) {
         this.gameService.stopGame(gameId);
+    }
+
+    public void fastForward(Long gameId) {
+        Game game = gameService.findById(gameId);
+        gameService.initializeGame(gameId);
+        for (int i = 1; i<=6; i++) {
+           gameService.initializeRound(gameId);
+        }
+
+        Stone s1 = new Stone();
+        Stone s2 = new Stone();
+        Stone s3 = new Stone();
+        Stone s4 = new Stone();
+        Stone s5 = new Stone();
+        Stone s6 = new Stone();
+        Stone s7 = new Stone();
+        Stone s8 = new Stone();
+        Stone s9 = new Stone();
+        Stone s10 = new Stone();
+        Stone s11 = new Stone();
+        Stone s12 = new Stone();
+
+        s1.setColor(GameConstants.WHITE);
+        s2.setColor(GameConstants.WHITE);
+        s3.setColor(GameConstants.WHITE);
+        s4.setColor(GameConstants.BLACK);
+        s5.setColor(GameConstants.BLACK);
+        s6.setColor(GameConstants.WHITE);
+        s7.setColor(GameConstants.WHITE);
+        s8.setColor(GameConstants.BLACK);
+        s9.setColor(GameConstants.WHITE);
+        s10.setColor(GameConstants.BLACK);
+        s11.setColor(GameConstants.BLACK);
+        s12.setColor(GameConstants.BLACK);
+
+       List<Stone> ls = new ArrayList<>();
+
+       ls.add(s1);
+       ls.add(s2);
+       ls.add(s3);
+       ls.add(s4);
+       ls.add(s5);
+       ls.add(s6);
+       ls.add(s7);
+       ls.add(s8);
+       ls.add(s9);
+       ls.add(s10);
+       ls.add(s11);
+       ls.add(s12);
+
+       game.getBuildingSite(GameConstants.BURIAL_CHAMBER).setStones(ls);
+
+
+
+
     }
 
 }
