@@ -158,14 +158,6 @@ public class GameServiceTest {
     }
 
     @Test
-    public void saveGame() {
-        Game testGame = gameService.createGame("testName", "testOwner");
-        gameService.saveGame(1L);
-        Assert.assertNotNull(gameRepository.findById(1L));
-        Assert.assertEquals(gameRepository.findById(1L), testGame);
-    }
-
-    @Test
     public void sizeOfQuarry() {
         //TODO: test sizeOfQuarry()
     }

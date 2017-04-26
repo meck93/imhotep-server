@@ -281,10 +281,4 @@ public class GameService {
 
         gameRepository.save(game);
     }
-
-    public void saveGame(Long gameId) {
-        log.debug("saveGame: " + gameId);
-        Game game = this.findById(gameId);
-        gameRepository.save(game);
-    }
 }
