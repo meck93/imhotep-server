@@ -157,6 +157,21 @@ public class LobbyService {
 
     public void fastForward(Long gameId, Long playerId) {
         Game game = gameService.findById(gameId);
+        Player player = playerService.findPlayerById(playerId);
+
+        // Check that the Game is not already running
+        if (gameService.findById(gameId).getStatus() == GameStatus.RUNNING){
+            throw new BadRequestHttpException("The game has already been started - currently running!");
+        }
+        // Check if the player is the owner
+        if (!game.getOwner().equals(player.getUsername())){
+            throw new BadRequestHttpException("The Player: " + playerId + " is not the owner of the Game: " + gameId);
+        }
+        // Check that the Minimum Amount of Players is fulfilled
+        if (gameService.findNrOfPlayers(gameId) < GameConstants.MIN_PLAYERS){
+            throw new BadRequestHttpException("The game has less than minimum of two Players, therefore, it cannot start yet");
+        }
+
         this.gameService.initializeGame(gameId);
 
         // Creating the first round of the game
