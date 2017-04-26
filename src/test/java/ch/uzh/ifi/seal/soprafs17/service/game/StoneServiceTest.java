@@ -50,7 +50,7 @@ public class StoneServiceTest {
 
     @Test
     public void createStones() {
-        Game testGame = gameService.createGame("testGame", "testOwner");    
+        Game testGame = gameService.createGame("testGame", "testOwner");
         testGame.setId(1L);
         Stone testStone1 = stoneService.createStone(GameConstants.BLACK);
         testStone1.setId(1L);
