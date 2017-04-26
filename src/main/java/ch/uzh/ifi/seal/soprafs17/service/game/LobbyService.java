@@ -5,12 +5,18 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
+import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
-import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
+import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
+import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +30,21 @@ public class LobbyService {
 
     private final GameService gameService;
     private final PlayerService playerService;
+    private final RoundCardService roundCardService;
+    private final MarketCardService marketCardService;
+    private final RoundRepository roundRepository;
+    private final GameRepository gameRepository;
+    private final ShipService shipService;
 
     @Autowired
-    public LobbyService(GameService gameService, PlayerService playerService) {
+    public LobbyService(GameService gameService, PlayerService playerService, RoundCardService roundCardService, MarketCardService marketCardService, RoundRepository roundRepository, GameRepository gameRepository, ShipService shipService) {
         this.gameService = gameService;
         this.playerService = playerService;
+        this.roundCardService = roundCardService;
+        this.marketCardService = marketCardService;
+        this.roundRepository = roundRepository;
+        this.gameRepository = gameRepository;
+        this.shipService = shipService;
     }
 
     /*
@@ -141,22 +157,31 @@ public class LobbyService {
 
     public void fastForward(Long gameId, Long playerId) {
         Game game = gameService.findById(gameId);
-        this.startGame(gameId,playerId);
+        this.gameService.initializeGame(gameId);
 
+        // Creating the first round of the game
+        Round newRound = new Round();
+        newRound.setGame(game);
+        newRound.setRoundNumber(6);
 
-        if (game == null) throw new NotFoundException(gameId, "Game");
-        for (int i = 2; i<=6; i++) {
-            //game.setRoundCounter(i);
-            gameService.initializeRound(gameId);
-            /*
-            List<Round> rounds = game.getRounds();
-            rounds.add(game.getRoundByRoundCounter());
-            game.setRounds(rounds);
-            */
-        }
+        // getting a new roundCard
+        RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
+        newRound.setCard(newRoundCard);
 
-        //Setting round 6
+        // adding ships to the round
+        List<Ship> currentShips = shipService.createShips(newRoundCard);
+        newRound.setShips(currentShips);
+
+        roundRepository.save(newRound);
+
+        // Setting the roundCounter to the correct value
         game.setRoundCounter(6);
+
+        // adding marketCards to the marketPlace
+        List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);
+        game.getMarketPlace().setMarketCards(fourCards);
+
+        gameRepository.save(game);
 
         //Set stones on burialChamber
         Stone s1 = new Stone();
@@ -347,7 +372,7 @@ public class LobbyService {
         game.getPlayerByPlayerNr(1).setPoints(scoreP1);
         game.getPlayerByPlayerNr(2).setPoints(scoreP2);
 
-        gameService.saveGame(gameId);
+        gameRepository.save(game);
 
     }
 
