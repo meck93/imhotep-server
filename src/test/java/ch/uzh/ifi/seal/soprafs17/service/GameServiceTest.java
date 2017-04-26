@@ -74,12 +74,12 @@ public class GameServiceTest {
         Game testGame = gameService.createGame("testName","testName");
         Assert.assertNotNull(gameRepository.findById(1L));
         Assert.assertEquals(gameRepository.findById(1L),testGame);
-        //try{
+        try{
             User user1 = userService.createUser("testName","testName");
             Player player1 = playerService.createPlayer(1L,1L);
             playerService.initializePlayer(testGame.getId(), player1);
             gameService.addPlayer(1L,player1);
-        //} catch (BadRequestHttpException e) {}
+        } catch (BadRequestHttpException e) {}
     }
 
     @Test
@@ -163,6 +163,11 @@ public class GameServiceTest {
         gameService.saveGame(1L);
         Assert.assertNotNull(gameRepository.findById(1L));
         Assert.assertEquals(gameRepository.findById(1L), testGame);
+    }
+
+    @Test
+    public void sizeOfQuarry() {
+        //TODO: test sizeOfQuarry()
     }
 
 }
