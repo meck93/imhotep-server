@@ -58,6 +58,28 @@ public class PlayerServiceTest {
         User user = userService.createUser("testName","testOwner");
         Player testPlayer = playerService.createPlayer(1L,1L);
         Assert.assertEquals(testPlayer,playerRepository.findById(1L));
+
+        try {
+            Player player2 = playerService.createPlayer(1L,1L);
+            user.setPlayer(player2);
+            Player testPlayer2 = new Player();
+            Assert.assertNull(playerService.createPlayer(1L,1L));
+        } catch (BadRequestHttpException e) {}
+
+        try {
+            User user2 = userService.createUser("testName","testOwner2");
+            Player testPlayer2 = playerService.createPlayer(1L,2L);
+            User user3 = userService.createUser("testName","testOwner3");
+            Player testPlayer3 = playerService.createPlayer(1L,3L);
+            User user4 = userService.createUser("testName","testOwner4");
+            Player testPlayer4 = playerService.createPlayer(1L,1L);
+            User user5 = userService.createUser("testName","testOwner5");
+            Player testPlayer5 = playerService.createPlayer(1L,1L);
+        } catch (BadRequestHttpException e) {}
+
+        try {
+            testGame.setStatus(GameStatus.RUNNING);
+        } catch (BadRequestHttpException e) {}
     }
 
     @Test

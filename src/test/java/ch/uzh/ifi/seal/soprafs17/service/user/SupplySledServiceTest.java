@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.user;
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.SupplySled;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.SupplySledRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import org.junit.Assert;
@@ -48,6 +49,9 @@ public class SupplySledServiceTest {
         SupplySled testSupplySled = supplySledService.createSupplySled(1L);
         Assert.assertNotNull(testSupplySled);
         Assert.assertEquals(supplySledService.getSupplySledByGameId(testGame,1L), testSupplySled);
+        try{
+            supplySledService.getSupplySledByGameId(testGame,2L);
+        } catch (NotFoundException e) {}
     }
 
     @Test

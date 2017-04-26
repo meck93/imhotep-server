@@ -46,9 +46,10 @@ public class UserServiceTest {
     @Test
     public void deleteUser() {
         User user = userService.createUser("testName", "testUsername");
+        Assert.assertNotNull(userRepository.findById(1L));
         user.setToken("t123");
-        userRepository.delete(user.getId());
-        Assert.assertNull(userRepository.findById(user.getId()));
+        userService.deleteUser(1L);
+        Assert.assertNull(userRepository.findById(1L));
     }
 
     @Test
