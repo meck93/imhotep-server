@@ -174,20 +174,24 @@ public class LobbyService {
 
         this.gameService.initializeGame(gameId);
 
-        // Creating the first round of the game
-        Round newRound = new Round();
-        newRound.setGame(game);
-        newRound.setRoundNumber(6);
+        for (int i = 1; i <= 6; i++){
+            // Creating the first round of the game
+            Round newRound = new Round();
+            newRound.setGame(game);
+            newRound.setRoundNumber(i);
 
-        // getting a new roundCard
-        RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
-        newRound.setCard(newRoundCard);
+            // getting a new roundCard
+            RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
+            newRound.setCard(newRoundCard);
 
-        // adding ships to the round
-        List<Ship> currentShips = shipService.createShips(newRoundCard);
-        newRound.setShips(currentShips);
+            // adding ships to the round
+            List<Ship> currentShips = shipService.createShips(newRoundCard);
+            newRound.setShips(currentShips);
 
-        roundRepository.save(newRound);
+            roundRepository.save(newRound);
+
+            game.getRounds().add(newRound);
+        }
 
         // Setting the roundCounter to the correct value
         game.setRoundCounter(6);
@@ -383,6 +387,10 @@ public class LobbyService {
         //Setting pyramid score
         scoreP1[0] = 6;
         scoreP2[0] = 11;
+
+        //total points
+        scoreP1[5] = scoreP1[1] + scoreP1[0];
+        scoreP2[5] = scoreP2[1] + scoreP2[0];
 
         game.getPlayerByPlayerNr(1).setPoints(scoreP1);
         game.getPlayerByPlayerNr(2).setPoints(scoreP2);
