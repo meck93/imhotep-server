@@ -156,10 +156,4 @@ public class GameServiceTest {
         gameService.stopGame(1L);
         Assert.assertEquals(gameRepository.findById(1L).getStatus(), GameStatus.FINISHED);
     }
-
-    @Test
-    public void sizeOfQuarry() {
-        //TODO: test sizeOfQuarry()
-    }
-
 }
