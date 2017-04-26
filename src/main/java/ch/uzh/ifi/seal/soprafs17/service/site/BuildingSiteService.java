@@ -1,11 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.service.site;
 
-import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.site.*;
 import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.ASiteRepository;
-import ch.uzh.ifi.seal.soprafs17.service.game.StoneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static ch.uzh.ifi.seal.soprafs17.GameConstants.*;
 
@@ -23,12 +20,10 @@ public class BuildingSiteService {
 
     private final Logger log = LoggerFactory.getLogger(BuildingSiteService.class);
     private final ASiteRepository aSiteRepository;
-    private final StoneService stoneService;
 
     @Autowired
-    public BuildingSiteService(ASiteRepository aSiteRepository, StoneService stoneService) {
+    public BuildingSiteService(ASiteRepository aSiteRepository) {
         this.aSiteRepository = aSiteRepository;
-        this.stoneService = stoneService;
     }
 
     /*
@@ -71,45 +66,5 @@ public class BuildingSiteService {
         if (result == null) throw new NotFoundException(siteType);
 
         return result;
-    }
-    /*
-     * Creates a Dummy-Stone on each Site of the Game for the Front-End Mapping/Modelling Purposes
-     */
-    public void createDummyData(Long gameId, int nrOfPlayers){
-        List<BuildingSite> result = aSiteRepository.findAllBuildingSites(gameId);
-
-        for (BuildingSite site : result){
-            if (site.getSiteType().equals(PYRAMID)){
-                Stone stone = stoneService.createStone("BLACK");
-                site.addStone(stone);
-            }
-            if (site.getSiteType().equals(TEMPLE)) {
-                Stone stone = stoneService.createStone("WHITE");
-                site.addStone(stone);
-            }
-            if (site.getSiteType().equals(BURIAL_CHAMBER)) {
-                Stone stone = stoneService.createStone("BROWN");
-                site.addStone(stone);
-            }
-            if (site.getSiteType().equals(OBELISK)) {
-                // Base case with 2 Players
-                site.addStone(stoneService.createStone("BLACK"));
-                site.addStone(stoneService.createStone("BLACK"));
-                site.addStone(stoneService.createStone("WHITE"));
-                site.addStone(stoneService.createStone("WHITE"));
-                site.addStone(stoneService.createStone("WHITE"));
-
-                if (nrOfPlayers > 2){
-                    site.addStone(stoneService.createStone("BROWN"));
-                    site.addStone(stoneService.createStone("BROWN"));
-                    site.addStone(stoneService.createStone("BROWN"));
-                    site.addStone(stoneService.createStone("BROWN"));
-                }
-                if (nrOfPlayers > 3){
-                    site.addStone(stoneService.createStone("GRAY"));
-                }
-            }
-            aSiteRepository.save(site);
-        }
     }
 }

@@ -4,7 +4,6 @@ import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.entity.site.MarketPlace;
-import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
 import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import ch.uzh.ifi.seal.soprafs17.service.site.MarketPlaceService;
@@ -23,14 +22,12 @@ public class SiteController extends GenericController {
 
     private final BuildingSiteService buildingSiteService;
     private final MarketPlaceService marketPlaceService;
-    private final GameService gameService;
     private final MarketCardService marketCardService;
 
     @Autowired
-    public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService, GameService gameService, MarketCardService marketCardService){
+    public SiteController(BuildingSiteService buildingSiteService, MarketPlaceService marketPlaceService, MarketCardService marketCardService){
         this.buildingSiteService = buildingSiteService;
         this.marketPlaceService = marketPlaceService;
-        this.gameService = gameService;
         this.marketCardService = marketCardService;
     }
 
@@ -45,16 +42,7 @@ public class SiteController extends GenericController {
     public MarketPlace getObelisk(@PathVariable("gameId") Long gameId) {
         return marketPlaceService.getMarketPlace(gameId);
     }
-    /*
-     * Creates a Dummy-Stone on each Site of the Game for the Front-End Mapping/Modelling Purposes
-     */
-    @RequestMapping(method = RequestMethod.POST, value = "/dummy")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String createDummyData(@PathVariable("gameId") Long gameId){
-        int nrOfPlayers = gameService.findNrOfPlayers(gameId);
-        buildingSiteService.createDummyData(gameId, nrOfPlayers);
-        return "DummyData created!";
-    }
+
     /*
      * Creates a Dummy-MarketCard on each Site of the Game for the Front-End Mapping/Modelling Purposes
      */

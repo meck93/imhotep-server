@@ -4,7 +4,11 @@ import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
+import ch.uzh.ifi.seal.soprafs17.entity.user.User;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
+import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,18 +34,29 @@ import java.util.List;
 public class GameServiceTest {
 
     @Autowired
-    private GameService gameService;
+    public GameService gameService;
 
     @Autowired
-    private GameRepository gameRepository;
+    public GameRepository gameRepository;
+
+    @Autowired
+    public UserService userService;
+
+    @Autowired
+    public PlayerService playerService;
 
     @Test
     public void createGame() {
-        Assert.assertNull(gameRepository.findById(1L));
+        try{
+            Assert.assertNull(gameRepository.findById(1L));
+        } catch (BadRequestHttpException e) {}
         Game testGame = gameService.createGame("testName","testName");
         testGame.setId((1L));
         Assert.assertNotNull(gameRepository.findById(1L));
         Assert.assertEquals(gameRepository.findById(1L),testGame);
+        try{
+            Game testGame2 = gameService.createGame("testName","testName");
+        }catch (BadRequestHttpException e) {}
     }
 
     @Test
@@ -52,6 +67,19 @@ public class GameServiceTest {
         Assert.assertNotNull(gameRepository.findById(1L));
         gameService.deleteGame(1L);
         Assert.assertNull(gameRepository.findById(1L));
+    }
+
+    @Test
+    public void addPlayer() {
+        Game testGame = gameService.createGame("testName","testName");
+        Assert.assertNotNull(gameRepository.findById(1L));
+        Assert.assertEquals(gameRepository.findById(1L),testGame);
+        try{
+            User user1 = userService.createUser("testName","testName");
+            Player player1 = playerService.createPlayer(1L,1L);
+            playerService.initializePlayer(testGame.getId(), player1);
+            gameService.addPlayer(1L,player1);
+        } catch (BadRequestHttpException e) {}
     }
 
     @Test
@@ -128,5 +156,4 @@ public class GameServiceTest {
         gameService.stopGame(1L);
         Assert.assertEquals(gameRepository.findById(1L).getStatus(), GameStatus.FINISHED);
     }
-
 }

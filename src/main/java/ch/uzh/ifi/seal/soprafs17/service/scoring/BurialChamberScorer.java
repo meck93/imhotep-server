@@ -56,8 +56,7 @@ public class BurialChamberScorer implements IScoreable {
 
     public void addPoints(Game game, int player, int figure){
         int[] arr;
-        if (figure == 0){}
-        else if (figure == 1){
+        if (figure == 1){
             arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+1;
             game.getPlayerByPlayerNr(player).setPoints(arr);
@@ -93,7 +92,9 @@ public class BurialChamberScorer implements IScoreable {
     public boolean isValid(int position) {
         if (position >= 0 && position <= 29) {
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     public int lookDown(int[] arr, int position) {
@@ -127,7 +128,7 @@ public class BurialChamberScorer implements IScoreable {
     public int incrementCount(int counter, int[] arr) {
         if (counter >= 29 || counter < 0) return -1;
         if (counter >= 20) return (counter + 11) % arr.length;
-        else return counter = (counter + 10) % arr.length;
+        else return (counter + 10) % arr.length;
     }
 
     public int findLookUpIndex(int[] arr){

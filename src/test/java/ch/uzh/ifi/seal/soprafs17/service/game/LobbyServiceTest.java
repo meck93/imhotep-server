@@ -1,9 +1,12 @@
 package ch.uzh.ifi.seal.soprafs17.service.game;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
+import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,9 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -31,6 +37,9 @@ public class LobbyServiceTest {
     public GameService gameService;
 
     @Autowired
+    public GameRepository gameRepository;
+
+    @Autowired
     public PlayerService playerService;
 
     @Autowired
@@ -38,7 +47,14 @@ public class LobbyServiceTest {
 
     @Test
     public void listGames() {
-        // TODO: test lobbyService.listGames()
+        Assert.assertNull(gameRepository.findById(1L));
+        List<Game> testResult = new ArrayList<>();
+        Game testGame = gameService.createGame("testName","testName");
+        testGame.setId(1L);
+        testResult.add((testGame));
+        Assert.assertNotNull(gameRepository.findById(1L));
+        Assert.assertNotNull(lobbyService.listGames());
+        Assert.assertEquals(testResult,lobbyService.listGames());
     }
 
     @Test
