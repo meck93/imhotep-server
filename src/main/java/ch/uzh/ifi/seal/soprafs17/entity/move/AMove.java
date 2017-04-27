@@ -37,7 +37,7 @@ public abstract class AMove implements Serializable {
 	@Column(nullable = false)
 	private int playerNr;
 
-	@Column(name = "MOVE_TYPE", nullable = false, insertable = false, updatable = false)
+	@Column(name = "MOVE_TYPE", nullable = false)
 	private String moveType;
 
 	public Long getId() {
