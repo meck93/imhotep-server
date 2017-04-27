@@ -8,7 +8,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;

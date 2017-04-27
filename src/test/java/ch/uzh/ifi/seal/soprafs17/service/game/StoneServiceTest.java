@@ -15,7 +15,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -50,17 +49,10 @@ public class StoneServiceTest {
 
     @Test
     public void createStones() {
-        Game testGame = gameService.createGame("testGame", "testOwner");
-        testGame.setId(1L);
-
-        Stone testStone1 = stoneService.createStone(GameConstants.BLACK);
-        testStone1.setId(1L);
-        Stone testStone2 = stoneService.createStone(GameConstants.BLACK);
-        testStone2.setId(2L);
-        List<Stone> testStones = new ArrayList<>();
-        testStones.add(testStone1);
-        testStones.add(testStone2);
-
-        Assert.assertEquals(testStones,stoneRepository.findAll());
+        List<Stone> testStones = stoneService.createStones(GameConstants.BLACK);
+        Assert.assertEquals(testStones.size(),30);
+        for (Stone stone : testStones) {
+            Assert.assertEquals(stone.getColor(), GameConstants.BLACK);
+        }
     }
 }
