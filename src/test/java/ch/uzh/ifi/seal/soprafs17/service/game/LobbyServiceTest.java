@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.service.game;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
@@ -228,7 +230,45 @@ public class LobbyServiceTest {
 
         game2.setStoneQuarry(this.stoneQuarryRepository.findOne(1L));
 
-        //lobbyService.fastForward(game2.getId(),player3.getId());
+        List<MarketCard> handcardsP1 = new ArrayList<>();
+        game2.getPlayerByPlayerNr(1).setHandCards(handcardsP1);
+
+        List<MarketCard> handcardsP2 = new ArrayList<>();
+        game2.getPlayerByPlayerNr(2).setHandCards(handcardsP2);
+
+        lobbyService.fastForward(game2.getId(),player3.getId());
+
+        Assert.assertEquals(game2.getRoundCounter(),6);
+        Assert.assertNotNull(game2.getRoundByRoundCounter());
+
+        Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().size(),3);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().size(),4);
+
+        Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().get(0).getColor(), GameConstants.BLUE);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().get(1).getColor(),GameConstants.BLUE);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().get(2).getColor(), GameConstants.GREEN);
+
+        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().get(0).getColor(), GameConstants.VIOLET);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().get(1).getColor(), GameConstants.VIOLET);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().get(2).getColor(), GameConstants.VIOLET);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().get(3).getColor(), GameConstants.VIOLET);
+
+        Assert.assertEquals(game2.getPlayerByPlayerNr(1).getPoints()[0],6);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getPoints()[0],11);
+
+        Assert.assertEquals(game2.getPlayerByPlayerNr(1).getPoints()[1],1);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getPoints()[1],3);
+
+        Assert.assertEquals(game2.getBuildingSite(GameConstants.OBELISK).getStones().size(),7);
+        Assert.assertEquals(game2.getBuildingSite(GameConstants.PYRAMID).getStones().size(),7);
+        Assert.assertEquals(game2.getBuildingSite(GameConstants.TEMPLE).getStones().size(),4);
+        Assert.assertEquals(game2.getBuildingSite(GameConstants.BURIAL_CHAMBER).getStones().size(),12);
+
+        Assert.assertEquals(game2.getStoneQuarry().getBlackStones().size(),18);
+        Assert.assertEquals(game2.getStoneQuarry().getWhiteStones().size(),8);
+
+        Assert.assertNotNull(gameRepository.findById(game2.getId()));
+
 
     }
 }

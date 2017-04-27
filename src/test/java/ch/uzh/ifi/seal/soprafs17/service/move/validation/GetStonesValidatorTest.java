@@ -12,7 +12,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
-import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -20,7 +19,6 @@ import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,7 +188,7 @@ public class GetStonesValidatorTest {
         Game testGame = this.gameService.findById(game.getId());
 
         // Dissatisfying the requirements: Size of StoneQuarry not empty
-        testGame.getStoneQuarry().setBlackStones(new ArrayList<>());
+        testGame.getStoneQuarry().setBlackStones(new ArrayList<Stone>());
         Assert.assertEquals(testGame.getStoneQuarry().getBlackStones().size(), 0);
 
         // Throws the exception
