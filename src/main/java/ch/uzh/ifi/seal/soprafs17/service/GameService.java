@@ -70,9 +70,13 @@ public class GameService {
         if (gameRepository.findByName(name) != null){
             throw new BadRequestHttpException("A Game with name: " + name + " already exists!");
         }
-        if (gameRepository.findByOwner(owner) != null){
-            throw new BadRequestHttpException("A Game with the owner: " + owner + " already exists!");
-        }
+
+        this.gameRepository.findAll().forEach(game -> {
+            if (game.getOwner().equals(owner) && !game.getStatus().equals(GameStatus.FINISHED)){
+                throw new BadRequestHttpException("The Game with the Owner: " + owner + " is not finished yet! " +
+                        "A new Game with the same owner can only be started once the running-one is finished");
+            }
+        });
 
         // Creating the Game and saving it to the Repository
         Game newGame = new Game();
@@ -276,9 +280,7 @@ public class GameService {
         log.debug("stopGame: " + gameId);
 
         Game game = this.findById(gameId);
-
         game.setStatus(GameStatus.FINISHED);
-        game.setOwner(null);
 
         gameRepository.save(game);
     }
