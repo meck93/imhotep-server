@@ -7,6 +7,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.game;
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -90,5 +91,17 @@ public class RoundTest {
         testShips.add(testShip2);
         testRound.setShips(testShips);
         Assert.assertEquals(testRound.getShips().get(0),testRound.getShipById(1L));
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void dontFindShip(){
+        Round testRound = new Round();
+        Ship testShip1 = new Ship();
+        testShip1.setId(1L);
+        List<Ship> testShips = new ArrayList<>();
+        testShips.add(testShip1);
+        testRound.setShips(testShips);
+
+        Assert.assertEquals(testRound.getShips().get(0),testRound.getShipById(2L));
     }
 }

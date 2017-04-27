@@ -52,6 +52,7 @@ public class StoneServiceTest {
     public void createStones() {
         Game testGame = gameService.createGame("testGame", "testOwner");
         testGame.setId(1L);
+
         Stone testStone1 = stoneService.createStone(GameConstants.BLACK);
         testStone1.setId(1L);
         Stone testStone2 = stoneService.createStone(GameConstants.BLACK);
@@ -59,6 +60,7 @@ public class StoneServiceTest {
         List<Stone> testStones = new ArrayList<>();
         testStones.add(testStone1);
         testStones.add(testStone2);
+
         Assert.assertEquals(testStones,stoneRepository.findAll());
     }
 }
