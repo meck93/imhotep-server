@@ -25,7 +25,7 @@ public class Game implements Serializable {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String owner;
 
 	@Column

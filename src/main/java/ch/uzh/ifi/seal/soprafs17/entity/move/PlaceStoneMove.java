@@ -1,10 +1,11 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 @Entity(name = "PLACE_STONE")
 @DiscriminatorValue(value = GameConstants.PLACE_STONE)
@@ -25,9 +26,6 @@ public class PlaceStoneMove extends AMove {
     @Column
     private int placeOnShip;
 
-    @OneToOne(targetEntity = Stone.class, fetch = FetchType.LAZY)
-    private Stone stone;
-
     public Long getShipId() {
         return shipId;
     }
@@ -42,13 +40,5 @@ public class PlaceStoneMove extends AMove {
 
     public void setPlaceOnShip(int placeOnShip) {
         this.placeOnShip = placeOnShip;
-    }
-
-    public Stone getStone() {
-        return stone;
-    }
-
-    public void setStone(Stone stone) {
-        this.stone = stone;
     }
 }
