@@ -8,7 +8,10 @@ import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
+<<<<<<< HEAD
+=======
 import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
+>>>>>>> refs/remotes/origin/development
 import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
@@ -231,4 +234,8 @@ public class SailShipValidatorTest {
         // Throws the exception
         sailShipValidator.validate(sMove, testGame);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/remotes/origin/development
