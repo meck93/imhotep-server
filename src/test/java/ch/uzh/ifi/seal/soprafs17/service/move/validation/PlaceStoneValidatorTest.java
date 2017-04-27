@@ -190,7 +190,7 @@ public class PlaceStoneValidatorTest {
         Assert.assertNotNull(pMove);
 
         // Set SupplySled empty
-        game.getPlayerByPlayerNr(1).getSupplySled().setStones(new ArrayList<Stone>());
+        game.getPlayerByPlayerNr(1).getSupplySled().setStones(new ArrayList<>());
 
         // Throws the exception
         placeStoneValidator.validate(pMove, testGame);

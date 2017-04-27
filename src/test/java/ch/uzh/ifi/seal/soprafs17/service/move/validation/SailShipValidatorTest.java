@@ -225,7 +225,7 @@ public class SailShipValidatorTest {
         Assert.assertNotNull(sMove);
 
         // Set SupplySled empty
-        game.getRoundByRoundCounter().getShipById(1L).setStones(new ArrayList<Stone>());
+        game.getRoundByRoundCounter().getShipById(1L).setStones(new ArrayList<>());
 
         // Throws the exception
         sailShipValidator.validate(sMove, testGame);

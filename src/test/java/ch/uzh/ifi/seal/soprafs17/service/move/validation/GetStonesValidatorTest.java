@@ -188,7 +188,7 @@ public class GetStonesValidatorTest {
         Game testGame = this.gameService.findById(game.getId());
 
         // Dissatisfying the requirements: Size of StoneQuarry not empty
-        testGame.getStoneQuarry().setBlackStones(new ArrayList<Stone>());
+        testGame.getStoneQuarry().setBlackStones(new ArrayList<>());
         Assert.assertEquals(testGame.getStoneQuarry().getBlackStones().size(), 0);
 
         // Throws the exception
