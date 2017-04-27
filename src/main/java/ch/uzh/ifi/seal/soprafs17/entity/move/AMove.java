@@ -24,10 +24,6 @@ public abstract class AMove implements Serializable {
 		// Existence Reason: Hibernate also needs an empty constructor
 	}
 
-	public AMove(String moveType){
-		this.moveType = moveType;
-	}
-
 	@Id
 	@GeneratedValue
 	private Long id;

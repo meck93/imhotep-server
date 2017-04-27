@@ -13,12 +13,8 @@ import javax.persistence.Entity;
 @JsonTypeName(value = "SAIL_SHIP")
 public class SailShipMove extends AMove {
 
-    public SailShipMove(){
+    public SailShipMove() {
         // Existence Reason: Hibernate also needs an empty constructor
-    }
-
-    public SailShipMove(String moveType){
-        super(moveType);
     }
 
     @Column
