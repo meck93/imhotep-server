@@ -14,6 +14,7 @@ import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
+import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
 import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
@@ -35,9 +36,10 @@ public class LobbyService {
     private final RoundRepository roundRepository;
     private final GameRepository gameRepository;
     private final ShipService shipService;
+    private final StoneQuarryRepository stoneQuarryRepository;
 
     @Autowired
-    public LobbyService(GameService gameService, PlayerService playerService, RoundCardService roundCardService, MarketCardService marketCardService, RoundRepository roundRepository, GameRepository gameRepository, ShipService shipService) {
+    public LobbyService(GameService gameService, PlayerService playerService, RoundCardService roundCardService, MarketCardService marketCardService, RoundRepository roundRepository, GameRepository gameRepository, ShipService shipService, StoneQuarryRepository stoneQuarryRepository) {
         this.gameService = gameService;
         this.playerService = playerService;
         this.roundCardService = roundCardService;
@@ -45,6 +47,7 @@ public class LobbyService {
         this.roundRepository = roundRepository;
         this.gameRepository = gameRepository;
         this.shipService = shipService;
+        this.stoneQuarryRepository = stoneQuarryRepository;
     }
 
     /*
@@ -324,6 +327,23 @@ public class LobbyService {
         ls4.add(s30);
 
         game.getBuildingSite(GameConstants.OBELISK).setStones(ls4);
+
+        game.setStoneQuarry(this.stoneQuarryRepository.findOne(game.getId()));
+
+        //Removing the stones from the supply sled
+        List<Stone> stoneQuarry1 = game.getStoneQuarry().getBlackStones();
+        List<Stone> stoneQuarry2 = game.getStoneQuarry().getWhiteStones();
+
+        for (int i = 0; i<10;i++) {
+            stoneQuarry1.remove(0);
+        }
+
+        for (int i = 0; i<19;i++) {
+            stoneQuarry2.remove(0);
+        }
+
+        game.getStoneQuarry().setBlackStones(stoneQuarry1);
+        game.getStoneQuarry().setWhiteStones(stoneQuarry2);
 
         //Setting the handCards
         MarketCard chisel = new MarketCard();
