@@ -12,7 +12,7 @@ public class Pyramid extends BuildingSite {
 
     // Scores for the Pyramid
     @JsonIgnore
-    private final int[] scores = {2, 1, 3, 2, 4, 3, 2, 1, 3, 2, 3, 1, 3, 4};
+    private static final int[] scores = {2, 1, 3, 2, 4, 3, 2, 1, 3, 2, 3, 1, 3, 4};
 
     public Pyramid() {
         // Purposely left blank because Hibernate needs an empty constructor

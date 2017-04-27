@@ -13,15 +13,15 @@ public class Obelisk extends BuildingSite {
 
     // Scores for the Obelisk - 2 Player
     @JsonIgnore
-    private final int[] scoresTwoPlayer = {10, 1};
+    private static final int[] scoresTwoPlayer = {10, 1};
 
     // Scores for the Obelisk - 3 Player
     @JsonIgnore
-    private final int[] scoresThreePlayer = {12, 6, 1};
+    private static final int[] scoresThreePlayer = {12, 6, 1};
 
     // Scores for the Obelisk - 4 Player
     @JsonIgnore
-    private final int[] scoresFourPlayer = {15, 10, 5, 1};
+    private static final int[] scoresFourPlayer = {15, 10, 5, 1};
 
     public Obelisk(){
         // Purposely left blank because Hibernate needs an empty constructor
