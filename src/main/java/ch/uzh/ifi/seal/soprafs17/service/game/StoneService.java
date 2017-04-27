@@ -6,6 +6,7 @@ package ch.uzh.ifi.seal.soprafs17.service.game;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
+import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,9 +53,6 @@ public class StoneService {
         if (stones.size() == GameConstants.START_STONES) {
             return stones;
         }
-        else {
-            log.error("Failed to initial stones for color: " + color);
-            return null;
-        }
+        throw new InternalServerException("Failed to initial stones for color: " + color);
     }
 }
