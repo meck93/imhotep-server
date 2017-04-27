@@ -196,6 +196,4 @@ public class GetStonesValidatorTest {
         // Throws the exception
         getStonesValidator.validate(move, testGame);
     }
-
-
 }
