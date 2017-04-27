@@ -136,7 +136,7 @@ public class SailShipValidatorTest {
     public void validateAllTrue(){
         // Satisfying all requirements
         Game testGame = this.gameService.findById(game.getId());
-        sailShipValidator.validate(move, testGame);
+        sailShipValidator.validate(sMove, testGame);
     }
 
     @Test(expected = MoveValidationException.class)

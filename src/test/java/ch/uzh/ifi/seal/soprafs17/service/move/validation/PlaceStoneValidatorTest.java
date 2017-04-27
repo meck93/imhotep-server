@@ -130,7 +130,7 @@ public class PlaceStoneValidatorTest {
     public void validateAllTrue(){
         // Satisfying all requirements
         Game testGame = this.gameService.findById(game.getId());
-        placeStoneValidator.validate(move, testGame);
+        placeStoneValidator.validate(pMove, testGame);
     }
 
     @Test(expected = MoveValidationException.class)
