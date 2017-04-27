@@ -64,8 +64,8 @@ public class PlaceStoneValidator implements IValidator {
         // The requested placeOnShip mustn't be occupied
         game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().forEach(stone -> {
             if (stone.getPlaceOnShip() == newMove.getPlaceOnShip()){
-                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The requested place on the ship is already occupied.");
-            }});
+                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The requested place on the ship is already occupied.");}});
+        
         // The placeOnShip value must be smaller or equal to the MAX_STONES value && greater than 0
         if(newMove.getPlaceOnShip() > game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES() || newMove.getPlaceOnShip() < 1){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
