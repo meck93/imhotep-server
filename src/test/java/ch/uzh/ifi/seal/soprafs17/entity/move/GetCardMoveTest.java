@@ -1,8 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
-/**
- * Created by Cristian on 20.04.2017.
- */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import org.junit.Assert;
@@ -25,12 +22,5 @@ public class GetCardMoveTest {
         testMove.setMarketCardId(1L);
         Assert.assertNotNull(testMove.getMarketCardId());
         Assert.assertEquals(testMove.getMarketCardId(), Long.valueOf(1L));
-    }
-
-    @Test
-    public void GetCardMove() {
-        GetCardMove testMove = new GetCardMove();
-        testMove.setMoveType("TEST");
-        Assert.assertEquals(testMove.getMoveType(),"TEST");
     }
 }

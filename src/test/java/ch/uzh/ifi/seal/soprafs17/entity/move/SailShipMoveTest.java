@@ -1,10 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
-/**
- * Created by Cristian on 13.04.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,8 +37,8 @@ public class SailShipMoveTest {
     @Test
     public void SailShipMove() {
         SailShipMove testMove = new SailShipMove();
-        testMove.setMoveType("TEST");
-        Assert.assertEquals(testMove.getMoveType(),"TEST");
+        testMove.setMoveType(GameConstants.SAIL_SHIP);
+        Assert.assertEquals(testMove.getMoveType(),GameConstants.SAIL_SHIP);
     }
 
 }

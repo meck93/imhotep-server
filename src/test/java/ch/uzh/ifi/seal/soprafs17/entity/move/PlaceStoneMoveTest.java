@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,9 +19,10 @@ public class PlaceStoneMoveTest {
 
     @Test
     public void PlaceStoneMove() {
-        PlaceStoneMove testMove = new PlaceStoneMove("TEST");
+        PlaceStoneMove testMove = new PlaceStoneMove();
+        testMove.setMoveType(GameConstants.PLACE_STONE);
         Assert.assertNotNull(testMove);
-        Assert.assertEquals(testMove.getMoveType(),"TEST");
+        Assert.assertEquals(testMove.getMoveType(),GameConstants.PLACE_STONE);
     }
 
     @Test
