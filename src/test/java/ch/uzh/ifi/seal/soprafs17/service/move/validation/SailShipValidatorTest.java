@@ -234,8 +234,4 @@ public class SailShipValidatorTest {
         // Throws the exception
         sailShipValidator.validate(sMove, testGame);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> refs/remotes/origin/development
