@@ -278,6 +278,7 @@ public class GameService {
         Game game = this.findById(gameId);
 
         game.setStatus(GameStatus.FINISHED);
+        game.setOwner(null);
 
         gameRepository.save(game);
     }
