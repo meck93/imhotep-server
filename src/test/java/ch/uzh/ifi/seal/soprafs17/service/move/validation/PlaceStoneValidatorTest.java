@@ -233,9 +233,16 @@ public class PlaceStoneValidatorTest {
         // Finding the Game
         Game testGame = this.gameService.findById(game.getId());
 
-        // Dissatisfying the requirements: Ship_ID
+        // Dissatisfying the requirements: Ship_ID - negative value
         Assert.assertNotNull(pMove);
         pMove.setPlaceOnShip(-2);
+
+        // Throws the exception
+        placeStoneValidator.validate(pMove, testGame);
+
+        // Dissatisfying the requirements: Ship_ID - too large value
+        Assert.assertNotNull(pMove);
+        pMove.setPlaceOnShip(5);
 
         // Throws the exception
         placeStoneValidator.validate(pMove, testGame);
@@ -256,6 +263,4 @@ public class PlaceStoneValidatorTest {
         // Throws the exception
         placeStoneValidator.validate(pMove, testGame);
     }
-
-
 }
