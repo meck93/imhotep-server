@@ -183,6 +183,11 @@ public class LobbyServiceTest {
 
     @Test
     public void fastForward() {
+        /*
+            FIRST TEST:
+        */
+
+        //Creating prerequisites
         User user1 = userService.createUser("testUser1", "test1");
         User user2 = userService.createUser("testUser2", "test2");
 
@@ -198,11 +203,17 @@ public class LobbyServiceTest {
         gameService.addPlayer(game.getId(), player2);
         gameService.updateNrOfPlayers(game.getId());
 
+        //Cannot fastForward a game that is already started
         try{
             lobbyService.startGame(game.getId(),player1.getId());
             lobbyService.fastForward(game.getId(),player1.getId());
         } catch (BadRequestHttpException e) {}
 
+        /*
+            SECOND TEST:
+        */
+
+        //Creating prerequisites
         User user3 = userService.createUser("testUser3", "test3");
         User user4 = userService.createUser("testUser4", "test4");
 
@@ -230,45 +241,55 @@ public class LobbyServiceTest {
 
         game2.setStoneQuarry(this.stoneQuarryRepository.findOne(1L));
 
+        //Setting handCards of the first player
         List<MarketCard> handcardsP1 = new ArrayList<>();
         game2.getPlayerByPlayerNr(1).setHandCards(handcardsP1);
 
+        //Setting handCards of the second player
         List<MarketCard> handcardsP2 = new ArrayList<>();
         game2.getPlayerByPlayerNr(2).setHandCards(handcardsP2);
 
+        //FastForwarding to round 6
         lobbyService.fastForward(game2.getId(),player3.getId());
 
+        //Check if roundCounter is correctly set to 6
         Assert.assertEquals(game2.getRoundCounter(),6);
         Assert.assertNotNull(game2.getRoundByRoundCounter());
 
+        //Check if handCards are set correctly
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().size(),3);
         Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().size(),4);
 
+        //Check if the marketCards are correctly set in the first players' handCards
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().get(0).getColor(), GameConstants.BLUE);
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().get(1).getColor(),GameConstants.BLUE);
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().get(2).getColor(), GameConstants.GREEN);
 
+        //Check if the marketCards are correctly set in the second players' handCards
         Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().get(0).getColor(), GameConstants.VIOLET);
         Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().get(1).getColor(), GameConstants.VIOLET);
         Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().get(2).getColor(), GameConstants.VIOLET);
         Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().get(3).getColor(), GameConstants.VIOLET);
 
+        //Check if the score is set correctly
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getPoints()[0],6);
         Assert.assertEquals(game2.getPlayerByPlayerNr(2).getPoints()[0],11);
 
+        //Check if the score is set correctly
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getPoints()[1],1);
         Assert.assertEquals(game2.getPlayerByPlayerNr(2).getPoints()[1],3);
 
+        //Check if the stones have been setup correctly on each building site
         Assert.assertEquals(game2.getBuildingSite(GameConstants.OBELISK).getStones().size(),7);
         Assert.assertEquals(game2.getBuildingSite(GameConstants.PYRAMID).getStones().size(),7);
         Assert.assertEquals(game2.getBuildingSite(GameConstants.TEMPLE).getStones().size(),4);
         Assert.assertEquals(game2.getBuildingSite(GameConstants.BURIAL_CHAMBER).getStones().size(),12);
 
+        //Check if stoneQuarry holds the correct amount of stones for each player in the game
         Assert.assertEquals(game2.getStoneQuarry().getBlackStones().size(),18);
         Assert.assertEquals(game2.getStoneQuarry().getWhiteStones().size(),8);
 
+        //Check if the game has been saved correctly
         Assert.assertNotNull(gameRepository.findById(game2.getId()));
-
-
     }
 }
