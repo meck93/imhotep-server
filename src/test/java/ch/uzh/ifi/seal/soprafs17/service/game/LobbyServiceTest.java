@@ -71,13 +71,23 @@ public class LobbyServiceTest {
 
     @Test
     public void createGame() {
+        Game testGame = new Game();
         User user1 = userService.createUser("testName","testOwner");
-        Game game = gameService.createGame("testGame","testOwner");
-        Assert.assertNotNull(game);
+        testGame.setId(1L);
+        testGame.setOwner("testOwner");
+        testGame.setName("testGame");
+        Assert.assertNotNull(lobbyService.createGame(testGame,user1.getId()));
+
+        //catching the exception thrown if the User could not be converted into a Player
         try{
-            lobbyService.createGame(game,user1.getId());
-            Assert.assertNotNull(game);
+            Game testGame2 = new Game();
+            testGame2.setId(2L);
+            testGame2.setOwner("testOwner");
+            testGame2.setName("testGame2");
+            lobbyService.createGame(testGame2,user1.getId());
+            gameRepository.findById(testGame2.getId());
         } catch (BadRequestHttpException e) {}
+
     }
 
     @Test
@@ -107,7 +117,7 @@ public class LobbyServiceTest {
         gameService.addPlayer(game.getId(), player2);
         gameService.updateNrOfPlayers(game.getId());
 
-        lobbyService.removePlayer(1L,1L);
+        lobbyService.removePlayer(1L,user1.getId());
         try{
             Assert.assertNull(playerService.findPlayerById(2L));
         } catch (NotFoundException e) {}
@@ -131,9 +141,43 @@ public class LobbyServiceTest {
         gameService.addPlayer(game.getId(), player2);
         gameService.updateNrOfPlayers(game.getId());
 
+        //Check if the gameStatus is set to PENDING
         Assert.assertEquals(game.getStatus(), GameStatus.PENDING);
-        lobbyService.startGame(game.getId(),player1.getId());
-        Assert.assertEquals(game.getStatus(), GameStatus.RUNNING);
+
+        //Throw exception for trying to start a game that is already running
+        try{
+            lobbyService.startGame(game.getId(),player1.getId());
+            Assert.assertEquals(game.getStatus(), GameStatus.RUNNING);
+            lobbyService.startGame(game.getId(),player1.getId());
+        }catch (BadRequestHttpException e) {}
+    }
+
+    @Test
+    public void startGameWithException() {
+        User user1 = userService.createUser("testUser1", "test1");
+        User user2 = userService.createUser("testUser2", "test2");
+
+        Game game = gameService.createGame("testGame", "test1");
+
+        Player player1 = playerService.createPlayer(game.getId(), user1.getId());
+        playerService.initializePlayer(game.getId(), player1);
+        gameService.addPlayer(game.getId(), player1);
+        gameService.updateNrOfPlayers(game.getId());
+
+        //Throw exception for trying to start a game when the minimum amount of player isn't met
+        try{
+            lobbyService.startGame(game.getId(),player1.getId());
+        }catch (BadRequestHttpException e) {}
+
+        Player player2 = playerService.createPlayer(game.getId(), user2.getId());
+        playerService.initializePlayer(game.getId(), player2);
+        gameService.addPlayer(game.getId(), player2);
+        gameService.updateNrOfPlayers(game.getId());
+
+        //Throw exception for trying to start a game when you are not the owner of the game
+        try{
+            lobbyService.startGame(game.getId(),player2.getId());
+        }catch (BadRequestHttpException e) {}
     }
 
     @Test
