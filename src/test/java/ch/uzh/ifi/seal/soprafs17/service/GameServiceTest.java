@@ -6,7 +6,10 @@ import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
+import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
+import ch.uzh.ifi.seal.soprafs17.service.game.StoneService;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
 import org.junit.Assert;
@@ -44,6 +47,12 @@ public class GameServiceTest {
 
     @Autowired
     public PlayerService playerService;
+
+    @Autowired
+    public StoneQuarryRepository stoneQuarryRepository;
+
+    @Autowired
+    public StoneService stoneService;
 
     @Test
     public void createGame() {
@@ -155,5 +164,37 @@ public class GameServiceTest {
         Assert.assertNotNull(gameRepository.findById(1L));
         gameService.stopGame(1L);
         Assert.assertEquals(gameRepository.findById(1L).getStatus(), GameStatus.FINISHED);
+    }
+
+    @Test
+    public void sizeOfQuarry() {
+        //Creating prerequisites
+        User user1 = userService.createUser("testUser1", "test1");
+        User user2 = userService.createUser("testUser2", "test2");
+
+        Game game = gameService.createGame("testGame", "test1");
+
+        Player player1 = playerService.createPlayer(game.getId(), user1.getId());
+        playerService.initializePlayer(game.getId(), player1);
+        gameService.addPlayer(game.getId(), player1);
+        gameService.updateNrOfPlayers(game.getId());
+
+        Player player2 = playerService.createPlayer(game.getId(), user2.getId());
+        playerService.initializePlayer(game.getId(), player2);
+        gameService.addPlayer(game.getId(), player2);
+        gameService.updateNrOfPlayers(game.getId());
+
+        //Starting the game and setting the stoneQuarry
+        gameService.startGame(game.getId());
+        game.setStoneQuarry(stoneQuarryRepository.findOne(1L));
+
+        //Catching exception for illegal playerNumber
+        try{
+            Assert.assertNull(gameService.sizeOfQuarry(game.getId(),3));
+        } catch (NotFoundException e) {}
+
+        //Check if actual stones in the StoneQuarry are equal to the sizeOfQuarry value for both players
+        Assert.assertEquals(gameService.sizeOfQuarry(game.getId(),1),game.getStoneQuarry().getBlackStones().size());
+        Assert.assertEquals(gameService.sizeOfQuarry(game.getId(),2),game.getStoneQuarry().getWhiteStones().size());
     }
 }
