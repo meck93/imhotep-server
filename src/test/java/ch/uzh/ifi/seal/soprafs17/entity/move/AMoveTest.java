@@ -19,6 +19,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class AMoveTest {
 
     @Test
+    public void AMove() {
+        AMove testMove = new PlaceStoneMove("TEST");
+        Assert.assertNotNull(testMove);
+        Assert.assertEquals(testMove.getMoveType(),"TEST");
+    }
+
+    @Test
+    public void setDescription() {
+        AMove testMove = new GetStonesMove();
+        String testDescrption = "Hello World";
+
+        testMove.setId(1L);
+        testMove.setDescription(testDescrption);
+        Assert.assertNotNull(testMove);
+        Assert.assertEquals(testMove.getDescription(), testDescrption);
+    }
+
+    @Test
     public void setId() {
         AMove testMove = new GetStonesMove();
         testMove.setId(1L);

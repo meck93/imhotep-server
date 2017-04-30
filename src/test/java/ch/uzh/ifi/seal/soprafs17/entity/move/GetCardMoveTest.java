@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
 public class GetCardMoveTest {
+
+    @Test
+    public void GetCardMove() {
+        GetCardMove testMove = new GetCardMove();
+        testMove.setMoveType(GameConstants.GET_CARD);
+        Assert.assertNotNull(testMove);
+        Assert.assertEquals(testMove.getMoveType(), GameConstants.GET_CARD);
+    }
 
     @Test
     public void setMarketCardId() {
