@@ -4,14 +4,13 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
-import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.GetCardMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.*;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
+import ch.uzh.ifi.seal.soprafs17.repository.AMoveRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.game.RoundService;
@@ -21,6 +20,8 @@ import ch.uzh.ifi.seal.soprafs17.service.scoring.ScoringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,19 +42,21 @@ public class MoveService {
     private final GameService gameService;
     private final RoundService roundService;
     private final ScoringService scoringService;
+    private final AMoveRepository aMoveRepository;
 
     @Autowired
-    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService, ScoringService scoringService) {
+    public MoveService(GameRepository gameRepository, ValidationManager validationManager, RuleManager ruleManager, GameService gameService, RoundService roundService, ScoringService scoringService, AMoveRepository aMoveRepository) {
         this.gameRepository = gameRepository;
         this.validationManager = validationManager;
         this.ruleManager = ruleManager;
         this.gameService = gameService;
         this.roundService = roundService;
         this.scoringService = scoringService;
+        this.aMoveRepository = aMoveRepository;
     }
 
     public synchronized void validateAndApply(AMove move) throws BadRequestHttpException, InternalServerException {
-        log.debug("Validates and applies the Move: {}", move);
+        log.debug("Validates and applies the Move: {}", move.getMoveType());
 
         Game game = gameRepository.findById(move.getGameId());
 
@@ -76,16 +79,22 @@ public class MoveService {
         // Saving the changed Game state into the DB
         this.gameRepository.save(game);
 
-        //Scoring the Pyramid
+        //Scoring the Pyramid - after every Move
         this.scoringService.score(game, GameConstants.PYRAMID);
+
+        // Logging the move - saving it into the database including the description
+        this.logMove(move, game);
 
         // Checking if the Game is still in the Status: SUBROUND
         this.checkSubRound(move, game);
+
         // Checking if the game advances to the next Round
         this.checkNextRound(game);
     }
 
     public synchronized void checkNextRound(Game game){
+        log.debug("Checks if the Game: {} needs to proceed to the next Round", game.getId());
+
         // Advancing the Game to the next Player, only if the Game is in Status: RUNNING
         if (game.getStatus() == GameStatus.RUNNING) {
             // Advancing the currentPlayer
@@ -125,6 +134,8 @@ public class MoveService {
     }
 
     public synchronized void checkSubRound(AMove move, Game game){
+        log.debug("Checks if the Game: {} is currently in a SubRound", game.getId());
+
         // Advancing the Sub-Round when the Game is in Status: SUBROUND
         if (game.getStatus() == GameStatus.SUBROUND && (move instanceof SailShipMove || move instanceof GetCardMove)){
 
@@ -140,6 +151,8 @@ public class MoveService {
     }
 
     private void nextSubRoundPlayer(Game game, Ship ship){
+        log.debug("Checks if the Game: {} needs to proceed to the next SubRoundPlayer", game.getId());
+
         // Setting the next currentSubRoundPlayer according to the next Stone on the ship according to the placeOnShip
         if (!ship.getStones().isEmpty()){
             forloop:
@@ -168,5 +181,47 @@ public class MoveService {
 
         // Saving the changes to the DB
         this.gameRepository.save(game);
+    }
+
+    public void logMove(AMove move, Game game){
+        log.debug("Logging Move: {} of Type: {} in Game: {}", move.getId(), move.getMoveType(), game.getId());
+
+        // Creating a description for each Move
+        switch (move.getMoveType()){
+            case GameConstants.GET_STONES: move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
+                    + " filled his SupplySled");
+            break;
+            case GameConstants.PLACE_STONE:
+                move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
+                        + " placed a Stone on Ship: " + ((PlaceStoneMove) move).getShipId()
+                        + " at Position: " + ((PlaceStoneMove) move).getPlaceOnShip());
+                break;
+            case GameConstants.SAIL_SHIP:
+                move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
+                        + " sailed Ship: " + ((SailShipMove) move).getShipId()
+                        + " to " + game.getSiteById(((SailShipMove) move).getTargetSiteId()).getSiteType());
+                break;
+            case GameConstants.GET_CARD:
+                move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
+                        + " picked Card: " + (game.getMarketPlace().getMarketCardById(((GetCardMove) move).getMarketCardId()).getMarketCardType())
+                        + " from the MarketPlace");
+                break;
+            case GameConstants.PLAY_CARD:
+                move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
+                        + " played Card: " + (game.getPlayerByPlayerNr(move.getPlayerNr()).getMarketCardById(((PlayCardMove) move).getCardId()).getMarketCardType()));
+                break;
+        }
+
+        // Saving the Move including Description to the database
+        this.aMoveRepository.save(move);
+    }
+
+    public Page<AMove> findLastMoves(Long gameId, int numberOfMoves){
+        log.debug("Returning the last {} Moves in Game {}", numberOfMoves, gameId);
+
+        // Creating a Query to return only the top numberOfMoves, starting on Page 0
+        PageRequest pageable = new PageRequest(0, numberOfMoves);
+
+        return this.aMoveRepository.findLastFiveMoves(gameId, pageable);
     }
 }

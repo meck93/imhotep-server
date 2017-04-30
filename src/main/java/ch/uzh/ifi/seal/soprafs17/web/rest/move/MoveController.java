@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.service.move.MoveService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,15 @@ public class MoveController extends GenericController {
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody AMove move) {
         // Validating and applying the Move
-        moveService.validateAndApply(move);
+        this.moveService.validateAndApply(move);
     }
+
+    @RequestMapping(value = CONTEXT + "/moves", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Page<AMove> getMoveLog(@PathVariable("gameId") Long gameId, @RequestParam("numberOfMoves") int numberOfMoves) {
+        // Returning the log for the required amount of Moves
+        return this.moveService.findLastMoves(gameId, numberOfMoves);
+    }
+
+
 }
