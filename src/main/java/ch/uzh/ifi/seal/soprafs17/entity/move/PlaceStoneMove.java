@@ -16,6 +16,10 @@ public class PlaceStoneMove extends AMove {
         // Existence Reason: Hibernate also needs an empty constructor
     }
 
+    public PlaceStoneMove(String moveType){
+        super(moveType);
+    }
+
     @Column
     private Long shipId;
 

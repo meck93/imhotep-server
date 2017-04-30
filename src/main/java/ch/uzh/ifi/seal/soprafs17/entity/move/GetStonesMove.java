@@ -15,4 +15,8 @@ public class GetStonesMove extends AMove {
     public GetStonesMove(){
         // Existence Reason: Hibernate also needs an empty constructor
     }
+
+    public GetStonesMove(String moveType){
+        super(moveType);
+    }
 }

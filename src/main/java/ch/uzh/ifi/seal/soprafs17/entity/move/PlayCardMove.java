@@ -18,6 +18,10 @@ public class PlayCardMove extends AMove {
         // Existence Reason: Hibernate also needs an empty constructor
     }
 
+    public PlayCardMove(String moveType){
+        super(moveType);
+    }
+
     @Column
     private Long cardId;
 

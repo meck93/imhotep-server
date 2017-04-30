@@ -17,6 +17,10 @@ public class SailShipMove extends AMove {
         // Existence Reason: Hibernate also needs an empty constructor
     }
 
+    public SailShipMove(String moveType){
+        super(moveType);
+    }
+
     @Column
     private Long shipId;
 

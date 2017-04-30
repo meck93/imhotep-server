@@ -6,8 +6,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name = "MOVE")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Entity
+@Table(name = "MOVE")
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "MOVE_TYPE", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
@@ -22,6 +23,11 @@ public abstract class AMove implements Serializable {
 
 	public AMove(){
 		// Existence Reason: Hibernate also needs an empty constructor
+	}
+
+	// Field must be set on Creation
+	public AMove(String moveType){
+		this.moveType = moveType;
 	}
 
 	@Id
@@ -39,6 +45,17 @@ public abstract class AMove implements Serializable {
 
 	@Column(name = "MOVE_TYPE", nullable = false, insertable = false, updatable = false)
 	private String moveType;
+
+	@Column
+	private String description;
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public Long getId() {
 		return id;
