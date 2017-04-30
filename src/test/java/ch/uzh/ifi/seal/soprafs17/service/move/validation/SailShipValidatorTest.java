@@ -194,7 +194,7 @@ public class SailShipValidatorTest {
         // Dissatisfying the requirements: Ship_ID
         Assert.assertNotNull(sMove);
 
-        // Set SupplySled empty
+        // Set Ship 1 to sailed
         game.getRoundByRoundCounter().getShipById(1L).setHasSailed(true);
 
         // Throws the exception
