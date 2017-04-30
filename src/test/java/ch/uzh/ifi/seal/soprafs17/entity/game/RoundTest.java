@@ -6,7 +6,6 @@ package ch.uzh.ifi.seal.soprafs17.entity.game;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
-import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,15 +40,6 @@ public class RoundTest {
         Assert.assertNotNull(testRound);
         Assert.assertNotNull(testRoundCard);
         Assert.assertEquals(testRound.getCard(),testRoundCard);
-    }
-
-    @Test
-    public void setMoves() {
-        Round testRound = new Round();
-        List<AMove> testMoves = new ArrayList<>();
-        testRound.setMoves(testMoves);
-        Assert.assertNotNull(testRound);
-        Assert.assertEquals(testRound.getMoves(),testMoves);
     }
 
     @Test

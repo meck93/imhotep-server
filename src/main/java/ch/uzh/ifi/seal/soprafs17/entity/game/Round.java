@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.entity.game;
 
 import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
-import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -23,9 +22,6 @@ public class Round implements Serializable{
 
     @OneToOne(targetEntity = RoundCard.class)
     private RoundCard card;
-
-    @OneToMany(targetEntity = AMove.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AMove> moves;
 
     @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "GAME_ID")
@@ -50,14 +46,6 @@ public class Round implements Serializable{
 
     public void setCard(RoundCard card) {
         this.card = card;
-    }
-
-    public List<AMove> getMoves() {
-        return moves;
-    }
-
-    public void setMoves(List<AMove> moves) {
-        this.moves = moves;
     }
 
     public Game getGame() {
