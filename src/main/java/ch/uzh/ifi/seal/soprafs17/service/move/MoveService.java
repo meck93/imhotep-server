@@ -104,7 +104,8 @@ public class MoveService {
             if (this.roundService.goToNextRound(game.getRoundByRoundCounter())){
                 // After six Rounds the Game will be ended
                 if (game.getRoundCounter() == GameConstants.LAST_ROUND) {
-                    // Scoring End of the Game (Burial_Chamber, MarketCards, Obelisk)
+                    // Scoring End of the Game (Burial_Chamber, MarketCards, Obelisk, Temple)
+                    this.scoringService.score(game, GameConstants.TEMPLE);
                     this.scoringService.score(game, GameConstants.OBELISK);
                     this.scoringService.score(game, GameConstants.BURIAL_CHAMBER);
                     this.scoringService.score(game, GameConstants.CARD);
