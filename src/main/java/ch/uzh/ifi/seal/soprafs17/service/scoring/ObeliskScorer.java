@@ -52,6 +52,7 @@ public class ObeliskScorer implements IScoreable {
         List<Stone> brown = new ArrayList<>();
         List<Stone> gray = new ArrayList<>();
 
+        // are used to make sure every color doesn't overwrite a different color and is only assigned once
         boolean blackAssigned = false;
         boolean whiteAssigned = false;
         boolean brownAssigned = false;
@@ -92,25 +93,36 @@ public class ObeliskScorer implements IScoreable {
             for (int j = 0; j < toBeScored.size(); j++){
                 // checking the sizes of the largest obelisk against the one currently looked at in the list
                 if (max == (toBeScored.get(j).size())) {
-                    // Creating a HashMap entry with key: index and value: rank
                     if (max == black.size() && !blackAssigned){
+                        // Creating a HashMap entry with key: index and value: rank
                         testMap.put(j, rank);
+                        // Creating a HashMap entry with key: index and value: color
                         playerMap.put(j, GameConstants.BLACK);
+                        // making sure the black color cannot be overwritten <=> no color can have more than one rank
                         blackAssigned = true;
                     }
                     else if (max == white.size() && !whiteAssigned){
+                        // Creating a HashMap entry with key: index and value: rank
                         testMap.put(j, rank);
+                        // Creating a HashMap entry with key: index and value: color
                         playerMap.put(j, GameConstants.WHITE);
+                        // making sure the black color cannot be overwritten <=> no color can have more than one rank
                         whiteAssigned = true;
                     }
                     else if (max == brown.size() && !brownAssigned){
+                        // Creating a HashMap entry with key: index and value: rank
                         testMap.put(j, rank);
+                        // Creating a HashMap entry with key: index and value: color
                         playerMap.put(j, GameConstants.BROWN);
+                        // making sure the black color cannot be overwritten <=> no color can have more than one rank
                         brownAssigned = true;
                     }
                     else if (max == gray.size() && !grayAssigned){
+                        // Creating a HashMap entry with key: index and value: rank
                         testMap.put(j, rank);
+                        // Creating a HashMap entry with key: index and value: color
                         playerMap.put(j, GameConstants.GRAY);
+                        // making sure the black color cannot be overwritten <=> no color can have more than one rank
                         grayAssigned = true;
                     }
                     // Removing the largest obelisk from the list
@@ -157,37 +169,60 @@ public class ObeliskScorer implements IScoreable {
         if (sum2 != 0) res2 = sum2/counter2;
         if (sum3 != 0) res3 = sum3/counter3;
 
-        // Assigning the correct score to each rank
+        // Iterator for <Key, Color>
         Map.Entry<Integer, String> mapping;
         Iterator<Map.Entry<Integer, String>> iterator = playerMap.entrySet().iterator();
+        // Assigning the correct score to each rank
         for (Map.Entry<Integer, Integer> entry : testMap.entrySet()){
+            // Using an iterator because entries can be removed
             while (iterator.hasNext()){
                 mapping = iterator.next();
+                // If entry has rank 1
                 if (entry.getValue() == 1) {
+                    // key of entry and mapping must be the same
                     if (entry.getKey().equals(mapping.getKey())) {
+                        // Sett the correct result as points
                         game.getPlayerByColor(mapping.getValue()).getPoints()[2] = res1;
+                        // remove the mapping from the iterator to make sure every color <=> player
+                        // will have the points only assigned once
                         iterator.remove();
+                        // return outside of the while loop once 1 mapping was found
                         break;
                     }
                 }
+                // If entry has rank 2
                 else if (entry.getValue() == 2) {
+                    // key of entry and mapping must be the same
                     if (entry.getKey().equals(mapping.getKey())){
                         game.getPlayerByColor(mapping.getValue()).getPoints()[2] = res2;
+                        // remove the mapping from the iterator to make sure every color <=> player
+                        // will have the points only assigned once
                         iterator.remove();
+                        // return outside of the while loop once 1 mapping was found
                         break;
                     }
                 }
+                // If entry has rank 3
                 else if (entry.getValue() == 3) {
+                    // key of entry and mapping must be the same
                     if (entry.getKey().equals(mapping.getKey())) {
                         game.getPlayerByColor(mapping.getValue()).getPoints()[2] = res3;
+                        // remove the mapping from the iterator to make sure every color <=> player
+                        // will have the points only assigned once
                         iterator.remove();
+                        // return outside of the while loop once 1 mapping was found
                         break;
                     }
                 }
+                // If entry has rank 4
                 else if (entry.getValue() == 4) {
+                    // key of entry and mapping must be the same
                     if (entry.getKey().equals(mapping.getKey())) {
                         game.getPlayerByColor(mapping.getValue()).getPoints()[2] = scores[3];
+                        // remove the mapping from the iterator to make sure every color <=> player
+                        // will have the points only assigned once
                         iterator.remove();
+                        // return outside of the while loop once 1 mapping was found
                         break;
                     }
                 }
