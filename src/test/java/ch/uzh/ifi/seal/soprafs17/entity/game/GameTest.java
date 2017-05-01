@@ -18,6 +18,7 @@ import ch.uzh.ifi.seal.soprafs17.service.site.BuildingSiteService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
@@ -204,6 +205,34 @@ public class GameTest {
         try{
             Assert.assertEquals(testGame.getBuildingSite(GameConstants.PYRAMID),obelisk );
         } catch (NotFoundException e) {}
+    }
+
+    @Test
+    public void getPlayerByColor() {
+        Player testPlayer = new Player();
+        testPlayer.setColor(GameConstants.BLACK);
+        Game testGame = new Game();
+        List<Player> testPlayers = new ArrayList<>();
+        testPlayers.add(testPlayer);
+        testGame.setPlayers(testPlayers);
+        testPlayer.setPlayerNumber(1);
+        Assert.assertNotNull(testPlayer);
+        Assert.assertNotNull(testGame);
+        Assert.assertEquals(testGame.getPlayerByColor(GameConstants.BLACK),testPlayers.get(0));
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getPlayerByColorException() {
+        Player testPlayer = new Player();
+        testPlayer.setColor(GameConstants.BLACK);
+        Game testGame = new Game();
+        List<Player> testPlayers = new ArrayList<>();
+        testPlayers.add(testPlayer);
+        testGame.setPlayers(testPlayers);
+        testPlayer.setPlayerNumber(1);
+        Assert.assertNotNull(testPlayer);
+        Assert.assertNotNull(testGame);
+        Assert.assertEquals(testGame.getPlayerByColor(GameConstants.GRAY),testPlayers.get(0));
     }
 
     @Test
