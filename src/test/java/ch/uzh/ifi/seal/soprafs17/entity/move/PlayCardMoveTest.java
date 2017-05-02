@@ -1,10 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
-/**
- * Created by Cristian on 13.04.2017.
- */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +22,9 @@ public class PlayCardMoveTest {
 
     @Test
     public void PlayCardMove() {
-        PlayCardMove testMove = new PlayCardMove("TEST");
-        Assert.assertEquals(testMove.getMoveType(),"TEST");
+        PlayCardMove testMove = new PlayCardMove();
+        testMove.setMoveType(GameConstants.PLAY_CARD);
+        Assert.assertEquals(testMove.getMoveType(), GameConstants.PLAY_CARD);
     }
 
     @Test

@@ -25,7 +25,7 @@ public class Game implements Serializable {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String owner;
 
 	@Column
@@ -61,13 +61,22 @@ public class Game implements Serializable {
 	@JsonManagedReference
 	private List<Player> players;
 
+	public Player getPlayerByColor(String color){
+		for (Player player : this.players){
+			if (player.getColor().equals(color)) {
+				return player;
+			}
+		}
+		throw new NotFoundException("Player");
+	}
+
 	public Player getPlayerByPlayerNr(int playerNr){
 		for (Player player : this.players){
 			if (player.getPlayerNumber() == playerNr){
 				return player;
 			}
 		}
-		throw new NotFoundException("game");
+		throw new NotFoundException("Player");
 	}
 
 	@JsonIgnore

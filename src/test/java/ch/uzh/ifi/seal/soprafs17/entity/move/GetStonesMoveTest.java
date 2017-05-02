@@ -1,10 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
-/**
- * Created by Cristian on 20.04.2017.
- */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +19,9 @@ public class GetStonesMoveTest {
 
     @Test
     public void GetStonesMove() {
-        GetStonesMove testMove = new GetStonesMove("TEST");
+        GetStonesMove testMove = new GetStonesMove();
+        testMove.setMoveType(GameConstants.GET_STONES);
         Assert.assertNotNull(testMove);
-        Assert.assertEquals(testMove.getMoveType(),"TEST");
+        Assert.assertEquals(testMove.getMoveType(), GameConstants.GET_STONES);
     }
 }

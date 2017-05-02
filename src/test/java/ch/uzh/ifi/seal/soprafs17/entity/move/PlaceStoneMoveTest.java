@@ -1,11 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
-/**
- * Created by Cristian on 13.04.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.Application;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
+import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +19,10 @@ public class PlaceStoneMoveTest {
 
     @Test
     public void PlaceStoneMove() {
-        PlaceStoneMove testMove = new PlaceStoneMove("TEST");
+        PlaceStoneMove testMove = new PlaceStoneMove();
+        testMove.setMoveType(GameConstants.PLACE_STONE);
         Assert.assertNotNull(testMove);
-        Assert.assertEquals(testMove.getMoveType(),"TEST");
+        Assert.assertEquals(testMove.getMoveType(),GameConstants.PLACE_STONE);
     }
 
     @Test
@@ -42,15 +39,5 @@ public class PlaceStoneMoveTest {
         testPlaceStoneMove.setPlaceOnShip(1);
         Assert.assertNotNull(testPlaceStoneMove);
         Assert.assertEquals(testPlaceStoneMove.getPlaceOnShip(),1);
-    }
-
-    @Test
-    public void setStone() {
-        PlaceStoneMove testPlaceStoneMove = new PlaceStoneMove();
-        Stone testStone = new Stone();
-        testPlaceStoneMove.setStone(testStone);
-        Assert.assertNotNull(testPlaceStoneMove);
-        Assert.assertNotNull(testStone);
-        Assert.assertEquals(testPlaceStoneMove.getStone(), testStone);
     }
 }

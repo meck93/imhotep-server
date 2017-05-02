@@ -48,6 +48,13 @@ public class ChiselValidator implements IValidator {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType()
                     + " failed. Ship already sailed.");
         }
+
+        // The placeOnShip value must be smaller or equal to the MAX_STONES value && greater than 0
+        if(newMove.getPlaceOnShip() > game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMAX_STONES() || newMove.getPlaceOnShip() <= 0){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                    "The place on the Ship cannot be larger than value: MAX_STONES");
+        }
+
         // The requested placeOnShip mustn't be occupied on the first ship
         game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().forEach(stone -> {
             if (stone.getPlaceOnShip() == newMove.getPlaceOnShip()){
@@ -89,6 +96,13 @@ public class ChiselValidator implements IValidator {
             if (game.getRoundByRoundCounter().getShipById(newMove.getShipId2()).isHasSailed()){
                 throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Ship already sailed.");
             }
+
+            // The placeOnShip2 value must be smaller or equal to the MAX_STONES value && greater than 0
+            if(newMove.getPlaceOnShip2() > game.getRoundByRoundCounter().getShipById(newMove.getShipId2()).getMAX_STONES() || newMove.getPlaceOnShip2() <= 0){
+                throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. " +
+                        "The place on the Ship cannot be larger than value: MAX_STONES");
+            }
+
             // The requested placeOnShip mustn't be occupied on the second ship
             game.getRoundByRoundCounter().getShipById(newMove.getShipId2()).getStones().forEach(stone -> {
                 if (stone.getPlaceOnShip() == newMove.getPlaceOnShip2()){

@@ -16,7 +16,7 @@ public class GetCardMove extends AMove {
         // Existence Reason: Hibernate also needs an empty constructor
     }
 
-    public GetCardMove(String moveType) {
+    public GetCardMove(String moveType){
         super(moveType);
     }
 
