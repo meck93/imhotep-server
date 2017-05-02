@@ -68,6 +68,9 @@ public class MoveService {
             throw new BadRequestHttpException(moveValException);
         }
 
+        // Logging the move - saving it into the database including the description
+        this.logMove(move, game);
+
         try {
             // Applying the Move to the Game
             game = ruleManager.applyRules(move, game);
@@ -81,9 +84,6 @@ public class MoveService {
 
         //Scoring the Pyramid - after every Move
         this.scoringService.score(game, GameConstants.PYRAMID);
-
-        // Logging the move - saving it into the database including the description
-        this.logMove(move, game);
 
         // Checking if the Game is still in the Status: SUBROUND
         this.checkSubRound(move, game);
@@ -184,7 +184,7 @@ public class MoveService {
         this.gameRepository.save(game);
     }
 
-    public void logMove(AMove move, Game game){
+    public void logMove(final AMove move, final Game game){
         log.debug("Logging Move: {} of Type: {} in Game: {}", move.getId(), move.getMoveType(), game.getId());
 
         // Creating a description for each Move
