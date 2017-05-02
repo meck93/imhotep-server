@@ -2,13 +2,11 @@ package ch.uzh.ifi.seal.soprafs17.service.move;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
-import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.*;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.repository.AMoveRepository;
@@ -42,6 +40,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class MoveServiceTest {
 
     private AMove move;
+    private GetStonesMove move1;
+    private GetStonesMove move4;
+    private PlaceStoneMove move2;
+    private PlaceStoneMove move5;
+    private SailShipMove move3;
+    private GetCardMove move6;
+    private PlaceStoneMove move7;
+
     private Game game;
 
     @Autowired
@@ -105,60 +111,158 @@ public class MoveServiceTest {
         Assert.assertNotNull(game.getStoneQuarry().getWhiteStones());
 
         Round round = this.roundRepository.findById(1L);
-        for (int i = 1; i <= round.getShipById(1L).getMAX_STONES(); i++){
-            round.getShipById(1L).getStones().add(new Stone());
-            round.getShipById(1L).getStones().get(i - 1).setPlaceOnShip(i);
-            round.getShipById(1L).getStones().get(i - 1).setColor(GameConstants.BLACK);
-        }
+
         game.getRounds().add(round);
 
         this.gameRepository.save(game);
+    }
 
+    @Before
+    public void addEnvironement(){
         // TestMove1 - GET_STONES
-        AMove move1 = new GetStonesMove(GameConstants.GET_STONES);
+        move1 = new GetStonesMove(GameConstants.GET_STONES);
         move1.setGameId(1L);
         move1.setRoundNr(1);
         move1.setPlayerNr(1);
         this.aMoveRepository.save(move1);
 
-        // TestMove2 - PLACE_STONE
-        AMove move2 = new PlaceStoneMove(GameConstants.PLACE_STONE);
-        move2.setGameId(1L);
-        move2.setRoundNr(1);
-        move2.setPlayerNr(2);
-        this.aMoveRepository.save(move2);
-
-        // TestMove3 - SAIL_SHIP
-        AMove move3 = new SailShipMove(GameConstants.SAIL_SHIP);
-        move3.setGameId(1L);
-        move3.setRoundNr(1);
-        move3.setPlayerNr(1);
-        this.aMoveRepository.save(move3);
-
         // TestMove4 - GET_STONES
-        AMove move4 = new GetStonesMove(GameConstants.GET_STONES);
+        move4 = new GetStonesMove(GameConstants.GET_STONES);
         move4.setGameId(1L);
         move4.setRoundNr(1);
         move4.setPlayerNr(2);
         this.aMoveRepository.save(move4);
 
+        // TestMove2 - PLACE_STONE
+        move2 = new PlaceStoneMove(GameConstants.PLACE_STONE);
+        move2.setGameId(1L);
+        move2.setRoundNr(1);
+        move2.setPlayerNr(1);
+        move2.setShipId(1L);
+        move2.setPlaceOnShip(1);
+        this.aMoveRepository.save(move2);
+
         // TestMove5 - PLACE_STONE
-        AMove move5 = new PlaceStoneMove(GameConstants.PLACE_STONE);
+        move5 = new PlaceStoneMove(GameConstants.PLACE_STONE);
         move5.setGameId(1L);
         move5.setRoundNr(1);
-        move5.setPlayerNr(1);
+        move5.setPlayerNr(2);
+        move5.setShipId(1L);
+        move5.setPlaceOnShip(2);
         this.aMoveRepository.save(move5);
 
-        // TestMove6 - PLACE_STONE
-        AMove move6 = new PlaceStoneMove(GameConstants.GET_CARD);
+        //TestMove7 - PLACE_STONE
+        move7 = new PlaceStoneMove(GameConstants.PLACE_STONE);
+        move7.setGameId(1L);
+        move7.setRoundNr(1);
+        move7.setPlayerNr(1);
+        move7.setPlaceOnShip(3);
+        move7.setShipId(1L);
+        this.aMoveRepository.save(move7);
+
+        // TestMove3 - SAIL_SHIP
+        move3 = new SailShipMove(GameConstants.SAIL_SHIP);
+        move3.setGameId(1L);
+        move3.setRoundNr(1);
+        move3.setPlayerNr(2);
+        move3.setShipId(1L);
+        move3.setTargetSiteId(1L);
+        this.aMoveRepository.save(move3);
+
+        // TestMove6 - GET_CARD
+        move6 = new GetCardMove(GameConstants.GET_CARD);
         move6.setGameId(1L);
         move6.setRoundNr(1);
         move6.setPlayerNr(1);
+        // Set the MarketCardId to a random from the Marketplace
+        move6.setMarketCardId(game.getMarketPlace().getMarketCards().get(0).getId());
         this.aMoveRepository.save(move6);
     }
 
     @Test
+    public void validateAndApplyGetStones(){
+
+        this.moveService.validateAndApply(move1);
+
+        // Assert that the Size of TheSupplySled is equal to the maxSize (5)
+        Assert.assertEquals(game.getPlayerByPlayerNr(1).getSupplySled().getStones().size(), GameConstants.MAX_STONES_SUPPLY_SLED);
+    }
+
+    @Test
+    public void validateAndApplyPlaceStones(){
+        this.addEnvironement();
+
+        // PlaceStoneMove of Player1 on Ship 1 - Position 1
+        this.moveService.validateAndApply(move2);
+
+        //Assert that 1 Stone has been placed on Ship1
+        Assert.assertEquals(game.getRoundByRoundCounter().getShipById(1L).getStones().size(), 1);
+
+        // PlaceStoneMove of Player2 on Ship 1 - Position 2
+        this.moveService.validateAndApply(move5);
+
+        //Assert that 1 Stone has been placed on Ship1
+        Assert.assertEquals(game.getRoundByRoundCounter().getShipById(1L).getStones().size(), 2);
+
+        // PlaceStoneMove of Player1 on Ship 1 - Position 3
+        this.moveService.validateAndApply(move7);
+
+        //Assert that 1 Stone has been placed on Ship1
+        Assert.assertEquals(game.getRoundByRoundCounter().getShipById(1L).getStones().size(), 3);
+    }
+
+    @Test
+    public void validateAndApplySailShip(){
+        //Place the Stones on the Ship
+        this.validateAndApplyPlaceStones();
+
+        //SailShip by Player 2 to MarketPlace (ID = 1)
+        this.moveService.validateAndApply(move3);
+
+        game = this.gameService.findById(game.getId());
+
+        // Assert the ship has sailed
+        Assert.assertEquals(game.getRoundByRoundCounter().getShipById(1L).isHasSailed(), true);
+        // Assert the Site has been docked
+        Assert.assertEquals(game.getMarketPlace().isDocked(), true);
+        Assert.assertEquals(game.getMarketPlace().getDockedShipId(), move3.getShipId());
+    }
+
+    @Test
+    public void validateAndApplyGetCard(){
+        this.validateAndApplySailShip();
+
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setColor(GameConstants.RED);
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setMarketCardType(MarketCardType.ENTRANCE);
+
+        boolean isRed = false;
+        String siteType = null;
+
+        if (game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).getColor().equals(GameConstants.RED)){
+            isRed = true;
+            switch (game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).getMarketCardType()){
+                case PAVED_PATH: siteType = GameConstants.OBELISK; break;
+                case SARCOPHAGUS: siteType = GameConstants.BURIAL_CHAMBER; break;
+                case ENTRANCE: siteType = GameConstants.PYRAMID;
+            }
+        }
+
+        this.moveService.validateAndApply(move6);
+
+        // Assert the MarketCard ID of the HandCard and the move are the same
+        if (!isRed) {
+            Assert.assertEquals(game.getPlayerByPlayerNr(1).getHandCards().get(0).getId(), move6.getMarketCardId());
+        }
+        else {
+            Assert.assertEquals(game.getBuildingSite(siteType).getStones().size(), 1);
+        }
+    }
+
+    @Test
     public void logMove(){
+        // Create additional environment
+        this.addEnvironement();
+
         // Game and Move must exist
         Assert.assertNotNull(move);
         Assert.assertNotNull(game);
@@ -175,6 +279,9 @@ public class MoveServiceTest {
 
     @Test
     public void findLastMoves(){
+        // Create additional environment
+        this.addEnvironement();
+
         // Game and Move must exist
         Assert.assertNotNull(move);
         Assert.assertNotNull(game);
