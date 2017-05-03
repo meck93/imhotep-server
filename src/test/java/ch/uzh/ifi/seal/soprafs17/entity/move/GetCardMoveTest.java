@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,5 +32,13 @@ public class GetCardMoveTest {
         testMove.setMarketCardId(1L);
         Assert.assertNotNull(testMove.getMarketCardId());
         Assert.assertEquals(testMove.getMarketCardId(), Long.valueOf(1L));
+    }
+
+    @Test
+    public void setMarketCardType() {
+        GetCardMove testMove = new GetCardMove();
+        testMove.setMarketCardType(MarketCardType.CHISEL);
+        Assert.assertNotNull(testMove.getMarketCardType());
+        Assert.assertEquals(testMove.getMarketCardType(), MarketCardType.CHISEL);
     }
 }
