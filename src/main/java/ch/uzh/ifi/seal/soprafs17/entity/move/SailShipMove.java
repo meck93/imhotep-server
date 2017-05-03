@@ -27,6 +27,17 @@ public class SailShipMove extends AMove {
     @Column
     private long targetSiteId;
 
+    @Column
+    private String targetSiteType;
+
+    public String getTargetSiteType() {
+        return targetSiteType;
+    }
+
+    public void setTargetSiteType(String targetSiteType) {
+        this.targetSiteType = targetSiteType;
+    }
+
     public Long getShipId() {
         return shipId;
     }
