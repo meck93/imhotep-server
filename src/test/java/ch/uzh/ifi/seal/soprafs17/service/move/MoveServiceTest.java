@@ -27,6 +27,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import static ch.uzh.ifi.seal.soprafs17.GameConstants.LEVER;
+import static ch.uzh.ifi.seal.soprafs17.GameConstants.SAIL;
+
 /**
  * Test class for the GameResource REST resource.
  *
@@ -118,7 +121,7 @@ public class MoveServiceTest {
     }
 
     @Before
-    public void addEnvironement(){
+    public void addEnvironment(){
         // TestMove1 - GET_STONES
         move1 = new GetStonesMove(GameConstants.GET_STONES);
         move1.setGameId(1L);
@@ -186,11 +189,19 @@ public class MoveServiceTest {
 
         // Assert that the Size of TheSupplySled is equal to the maxSize (5)
         Assert.assertEquals(game.getPlayerByPlayerNr(1).getSupplySled().getStones().size(), GameConstants.MAX_STONES_SUPPLY_SLED);
+
+        this.moveService.validateAndApply(move4);
+
+        // Assert that the Size of TheSupplySled is equal to the maxSize (5)
+        Assert.assertEquals(game.getPlayerByPlayerNr(2).getSupplySled().getStones().size(), GameConstants.MAX_STONES_SUPPLY_SLED);
     }
 
     @Test
     public void validateAndApplyPlaceStones(){
-        this.addEnvironement();
+        this.addEnvironment();
+
+        //GetStones Move
+        this.validateAndApplyGetStones();
 
         // PlaceStoneMove of Player1 on Ship 1 - Position 1
         this.moveService.validateAndApply(move2);
@@ -261,36 +272,60 @@ public class MoveServiceTest {
     @Test
     public void logMove(){
         // Create additional environment
-        this.addEnvironement();
+        this.addEnvironment();
 
         // Game and Move must exist
         Assert.assertNotNull(move);
         Assert.assertNotNull(game);
 
         // Making sure there is no description yet
-        Assert.assertNull(move.getDescription());
+        Assert.assertNull(move.getUserName());
 
         // Logging the Move
         this.moveService.logMove(move, game);
 
         // Testing that the Description has been created
-        Assert.assertNotNull(move.getDescription());
+        Assert.assertNotNull(move.getUserName());
     }
 
     @Test
     public void findLastMoves(){
         // Create additional environment
-        this.addEnvironement();
+        this.addEnvironment();
+        this.validateAndApplyGetCard();
 
-        // Game and Move must exist
-        Assert.assertNotNull(move);
+        // Game must exist
         Assert.assertNotNull(game);
 
-        Page<AMove> result = this.moveService.findLastMoves(game.getId(), 5);
-        Assert.assertEquals(result.getNumberOfElements(), 5);
+        Page<AMove> result = this.moveService.findLastMoves(game.getId(), 6);
+        Assert.assertEquals(result.getNumberOfElements(), 6);
 
         for (AMove move : result){
-            System.out.println(move.getDescription());
+            System.out.println("UserName: " + move.getUserName() + " MoveType: " + move.getMoveType() + " MoveID: " + move.getId());
+            Assert.assertNotNull(move.getUserName());
+
+            switch (move.getMoveType()){
+                case GameConstants.SAIL_SHIP:
+                    // Assert that the TargetSiteType is added by the Logging Function
+                    Assert.assertNotNull(((SailShipMove) move).getTargetSiteType());
+                    break;
+                case GameConstants.GET_CARD:
+                    // Assert getMarketCardType is added by the Logging Function
+                    Assert.assertNotNull(((GetCardMove) move).getMarketCardType());
+                    break;
+                case LEVER:
+                    // Assert that the TargetSiteType is added by the Logging Function
+                    Assert.assertNotNull(((PlayCardMove) move).getTargetSiteType());
+                    // Assert getMarketCardType is added by the Logging Function
+                    Assert.assertNotNull(((PlayCardMove) move).getMarketCardType());
+                    break;
+                case SAIL:
+                    // Assert that the TargetSiteType is added by the Logging Function
+                    Assert.assertNotNull(((PlayCardMove) move).getTargetSiteType());
+                    // Assert getMarketCardType is added by the Logging Function
+                    Assert.assertNotNull(((PlayCardMove) move).getMarketCardType());
+                    break;
+            }
         }
     }
 
