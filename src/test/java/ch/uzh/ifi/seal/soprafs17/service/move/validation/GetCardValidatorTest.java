@@ -130,6 +130,21 @@ public class GetCardValidatorTest {
     public void validateAllTrue(){
         // Satisfying all requirements
         Game testGame = this.gameService.findById(game.getId());
+
+        // Get the first marketCard on the MarketPlace
+        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(0).getId());
+        getCardValidator.validate(gMove, testGame);
+
+        // Get the first marketCard on the MarketPlace
+        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(1).getId());
+        getCardValidator.validate(gMove, testGame);
+
+        // Get the first marketCard on the MarketPlace
+        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(2).getId());
+        getCardValidator.validate(gMove, testGame);
+
+        // Get the first marketCard on the MarketPlace
+        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(3).getId());
         getCardValidator.validate(gMove, testGame);
     }
 

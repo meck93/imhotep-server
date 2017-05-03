@@ -20,7 +20,7 @@ public class MarketPlace extends ASite{
     @Column
     private Long dockedShipId;
 
-    @OneToMany(targetEntity = MarketCard.class/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
+    @OneToMany(targetEntity = MarketCard.class)
     @OrderBy("id ASC")
     private List<MarketCard> marketCards;
 
@@ -41,11 +41,11 @@ public class MarketPlace extends ASite{
     }
 
     public MarketCard getMarketCardById(Long marketCardId) {
-        for (MarketCard card : marketCards){
-            if (card.getId().equals(marketCardId)){
-                return card;
+        for (MarketCard marketCard : this.marketCards){
+            if (marketCard.getId().equals(marketCardId)){
+                return marketCard;
             }
         }
-        throw new NotFoundException(marketCardId, "MarketCardId not found!");
+        throw new NotFoundException(marketCardId, "MarketCardId");
     }
 }

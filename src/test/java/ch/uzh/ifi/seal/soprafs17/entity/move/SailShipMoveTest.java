@@ -41,4 +41,12 @@ public class SailShipMoveTest {
         Assert.assertEquals(testMove.getMoveType(),GameConstants.SAIL_SHIP);
     }
 
+    @Test
+    public void setTargetSiteType() {
+        SailShipMove testMove = new SailShipMove();
+        testMove.setTargetSiteType(GameConstants.BURIAL_CHAMBER);
+        Assert.assertNotNull(testMove.getTargetSiteType());
+        Assert.assertEquals(testMove.getTargetSiteType(), GameConstants.BURIAL_CHAMBER);
+    }
+
 }

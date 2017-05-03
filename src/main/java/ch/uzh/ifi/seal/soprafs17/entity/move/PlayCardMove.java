@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Column;
@@ -35,6 +36,9 @@ public class PlayCardMove extends AMove {
     private long targetSiteId;
 
     @Column
+    private String targetSiteType;
+
+    @Column
     private long shipId2;
 
     @Column
@@ -42,6 +46,25 @@ public class PlayCardMove extends AMove {
 
     @Column
     private ArrayList<Long> unloadingOrder;
+
+    @Column
+    private MarketCardType marketCardType;
+
+    public String getTargetSiteType() {
+        return targetSiteType;
+    }
+
+    public void setTargetSiteType(String targetSiteType) {
+        this.targetSiteType = targetSiteType;
+    }
+
+    public MarketCardType getMarketCardType() {
+        return marketCardType;
+    }
+
+    public void setMarketCardType(MarketCardType marketCardType) {
+        this.marketCardType = marketCardType;
+    }
 
     public Long getCardId() {
         return cardId;

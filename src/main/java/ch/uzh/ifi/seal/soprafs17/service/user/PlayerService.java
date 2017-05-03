@@ -71,6 +71,7 @@ public class PlayerService {
             newPlayer.setId(playerId);
             newPlayer.setGame(game);
             newPlayer.setPlayerNumber(playerNumber);
+            newPlayer.setHandCards(new ArrayList<>());
 
             // save the new entity in the database
             playerRepository.save(newPlayer);

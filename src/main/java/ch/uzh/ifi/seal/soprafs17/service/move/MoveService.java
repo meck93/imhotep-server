@@ -4,7 +4,10 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
-import ch.uzh.ifi.seal.soprafs17.entity.move.*;
+import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.GetCardMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.entity.site.BuildingSite;
 import ch.uzh.ifi.seal.soprafs17.exceptions.ApplyMoveException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
@@ -68,6 +71,9 @@ public class MoveService {
             throw new BadRequestHttpException(moveValException);
         }
 
+        // Logging the move - saving it into the database including the description
+        this.logMove(move, game);
+
         try {
             // Applying the Move to the Game
             game = ruleManager.applyRules(move, game);
@@ -81,9 +87,6 @@ public class MoveService {
 
         //Scoring the Pyramid - after every Move
         this.scoringService.score(game, GameConstants.PYRAMID);
-
-        // Logging the move - saving it into the database including the description
-        this.logMove(move, game);
 
         // Checking if the Game is still in the Status: SUBROUND
         this.checkSubRound(move, game);
@@ -184,32 +187,32 @@ public class MoveService {
         this.gameRepository.save(game);
     }
 
-    public void logMove(AMove move, Game game){
+    public void logMove(final AMove move, final Game game){
         log.debug("Logging Move: {} of Type: {} in Game: {}", move.getId(), move.getMoveType(), game.getId());
+
+        move.setUserName(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername());
 
         // Creating a description for each Move
         switch (move.getMoveType()){
-            case GameConstants.GET_STONES: move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
-                    + " filled his SupplySled");
-            break;
-            case GameConstants.PLACE_STONE:
-                move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
-                        + " placed a Stone on Ship: " + ((PlaceStoneMove) move).getShipId()
-                        + " at Position: " + ((PlaceStoneMove) move).getPlaceOnShip());
-                break;
             case GameConstants.SAIL_SHIP:
-                move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
-                        + " sailed Ship: " + ((SailShipMove) move).getShipId()
-                        + " to " + game.getSiteById(((SailShipMove) move).getTargetSiteId()).getSiteType());
+                // Set the destination of the move
+                ((SailShipMove) move).setTargetSiteType(game.getSiteById(((SailShipMove) move).getTargetSiteId()).getSiteType());
                 break;
             case GameConstants.GET_CARD:
-                move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
-                        + " picked Card: " + (game.getMarketPlace().getMarketCardById(((GetCardMove) move).getMarketCardId()).getMarketCardType())
-                        + " from the MarketPlace");
+                // Setting the MarketCardType to the same of the taken Card
+                ((GetCardMove) move).setMarketCardType(game.getMarketPlace().getMarketCardById(((GetCardMove) move).getMarketCardId()).getMarketCardType());
                 break;
-            case GameConstants.PLAY_CARD:
-                move.setDescription(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername()
-                        + " played Card: " + (game.getPlayerByPlayerNr(move.getPlayerNr()).getMarketCardById(((PlayCardMove) move).getCardId()).getMarketCardType()));
+            case LEVER:
+                // Set the destination of the move
+                ((PlayCardMove) move).setTargetSiteType(game.getSiteById(((PlayCardMove) move).getTargetSiteId()).getSiteType());
+                // Setting the MarketCardType to the same of the taken Card
+                ((PlayCardMove) move).setMarketCardType(game.getPlayerByPlayerNr(move.getPlayerNr()).getMarketCardById(((PlayCardMove) move).getCardId()).getMarketCardType());
+                break;
+            case SAIL:
+                // Set the destination of the move
+                ((PlayCardMove) move).setTargetSiteType(game.getSiteById(((PlayCardMove) move).getTargetSiteId()).getSiteType());
+                // Setting the MarketCardType to the same of the taken Card
+                ((PlayCardMove) move).setMarketCardType(game.getPlayerByPlayerNr(move.getPlayerNr()).getMarketCardById(((PlayCardMove) move).getCardId()).getMarketCardType());
                 break;
         }
 

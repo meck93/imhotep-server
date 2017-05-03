@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,5 +86,21 @@ public class PlayCardMoveTest {
         testOrder.add(testUnloadOrder2);
         testPlayCardMove.setUnloadingOrder(testOrder);
         Assert.assertEquals(testPlayCardMove.getUnloadingOrder(),testOrder);
+    }
+
+    @Test
+    public void setMarketCardType() {
+        PlayCardMove testMove = new PlayCardMove();
+        testMove.setMarketCardType(MarketCardType.CHISEL);
+        Assert.assertNotNull(testMove.getMarketCardType());
+        Assert.assertEquals(testMove.getMarketCardType(), MarketCardType.CHISEL);
+    }
+
+    @Test
+    public void setTargetSiteType() {
+        PlayCardMove testMove = new PlayCardMove();
+        testMove.setTargetSiteType(GameConstants.BURIAL_CHAMBER);
+        Assert.assertNotNull(testMove.getTargetSiteType());
+        Assert.assertEquals(testMove.getTargetSiteType(), GameConstants.BURIAL_CHAMBER);
     }
 }

@@ -47,14 +47,14 @@ public abstract class AMove implements Serializable {
 	private String moveType;
 
 	@Column
-	private String description;
+	private String userName;
 
-	public String getDescription() {
-		return description;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public Long getId() {

@@ -27,6 +27,10 @@ public class GameConstants {
 	public static final String GET_CARD = "GET_CARD";
 	public static final String PLAY_CARD = "PLAY_CARD";
 
+	// Constants for the different MarketCardTypes
+	public static final String LEVER = "LEVER";
+	public static final String SAIL = "SAIL";
+
 	// marketCard colors
 	public static final String RED = "RED";
 	public static final String GREEN = "GREEN";
