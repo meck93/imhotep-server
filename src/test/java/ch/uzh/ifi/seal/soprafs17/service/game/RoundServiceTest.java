@@ -90,8 +90,6 @@ public class RoundServiceTest {
         Ship testShip3 = new Ship();
         Ship testShip4 = new Ship();
 
-
-
         testShip1.setHasSailed(true);
         testShip2.setHasSailed(true);
         testShip3.setHasSailed(true);
