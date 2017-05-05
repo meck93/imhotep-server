@@ -129,63 +129,51 @@ public class PlaceStoneValidatorTest {
     @Test
     public void validateAllTrue(){
         // Satisfying all requirements
-        Game testGame = this.gameService.findById(game.getId());
-        placeStoneValidator.validate(pMove, testGame);
+        placeStoneValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validateStatus(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: STATUS
         Assert.assertNotNull(move);
-        testGame.setStatus(GameStatus.PENDING);
+        game.setStatus(GameStatus.PENDING);
+
         // Throws the exception
-        placeStoneValidator.validate(move, testGame);
+        placeStoneValidator.validate(move, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validateMoveType(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: MOVE_TYPE
         move.setMoveType(GameConstants.SAIL_SHIP);
         Assert.assertNotNull(move);
+
         // Throws the exception
-        placeStoneValidator.validate(move, testGame);
+        placeStoneValidator.validate(move, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validatePlayerNumber(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: Game_ID
         Assert.assertNotNull(move);
         move.setPlayerNr(2);
+
         // Throws the exception
-        placeStoneValidator.validate(move, testGame);
+        placeStoneValidator.validate(move, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validateShipId(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: Ship_ID
         Assert.assertNotNull(pMove);
         pMove.setShipId(5L);
+
         // Throws the exception
-        placeStoneValidator.validate(pMove, testGame);
+        placeStoneValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validateSupplySled(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: Ship_ID
         Assert.assertNotNull(pMove);
 
@@ -193,14 +181,11 @@ public class PlaceStoneValidatorTest {
         game.getPlayerByPlayerNr(1).getSupplySled().setStones(new ArrayList<>());
 
         // Throws the exception
-        placeStoneValidator.validate(pMove, testGame);
+        placeStoneValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validateShipHasSailed(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: Ship_ID
         Assert.assertNotNull(pMove);
 
@@ -208,14 +193,11 @@ public class PlaceStoneValidatorTest {
         game.getRoundByRoundCounter().getShipById(1L).setHasSailed(true);
 
         // Throws the exception
-        placeStoneValidator.validate(pMove, testGame);
+        placeStoneValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validateShipHasFreeSpace(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: Ship_ID
         Assert.assertNotNull(pMove);
 
@@ -225,34 +207,28 @@ public class PlaceStoneValidatorTest {
         }
 
         // Throws the exception
-        placeStoneValidator.validate(pMove, testGame);
+        placeStoneValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validatePlaceOnShipValid(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: Ship_ID - negative value
         Assert.assertNotNull(pMove);
         pMove.setPlaceOnShip(-2);
 
         // Throws the exception
-        placeStoneValidator.validate(pMove, testGame);
+        placeStoneValidator.validate(pMove, game);
 
         // Dissatisfying the requirements: Ship_ID - too large value
         Assert.assertNotNull(pMove);
         pMove.setPlaceOnShip(5);
 
         // Throws the exception
-        placeStoneValidator.validate(pMove, testGame);
+        placeStoneValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validatePlaceOnShipOccupied(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: Ship_ID
         Assert.assertNotNull(pMove);
 
@@ -261,6 +237,6 @@ public class PlaceStoneValidatorTest {
         game.getRoundByRoundCounter().getShipById(1L).getStones().get(0).setPlaceOnShip(1);
 
         // Throws the exception
-        placeStoneValidator.validate(pMove, testGame);
+        placeStoneValidator.validate(pMove, game);
     }
 }
