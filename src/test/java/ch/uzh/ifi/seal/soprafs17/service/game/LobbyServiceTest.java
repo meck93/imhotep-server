@@ -285,14 +285,6 @@ public class LobbyServiceTest {
 
         game2.setStoneQuarry(this.stoneQuarryRepository.findOne(1L));
 
-        //Setting handCards of the first player
-        List<MarketCard> handcardsP1 = new ArrayList<>();
-        game2.getPlayerByPlayerNr(1).setHandCards(handcardsP1);
-
-        //Setting handCards of the second player
-        List<MarketCard> handcardsP2 = new ArrayList<>();
-        game2.getPlayerByPlayerNr(2).setHandCards(handcardsP2);
-
         //FastForwarding to round 6
         lobbyService.fastForward(game2.getId(),player3.getId());
 
