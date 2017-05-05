@@ -15,6 +15,7 @@ public class GameConstants {
 	public static final String WHITE = "WHITE";
 	public static final String BLACK = "BLACK";
 
+	// Name for the different BuildingSites
 	public static final String PYRAMID = "PYRAMID";
 	public static final String TEMPLE = "TEMPLE";
 	public static final String OBELISK = "OBELISK";
@@ -27,18 +28,11 @@ public class GameConstants {
 	public static final String GET_CARD = "GET_CARD";
 	public static final String PLAY_CARD = "PLAY_CARD";
 
-	// Constants for the different MarketCardTypes
-	public static final String LEVER = "LEVER";
-	public static final String SAIL = "SAIL";
-
 	// marketCard colors
 	public static final String RED = "RED";
 	public static final String GREEN = "GREEN";
 	public static final String BLUE = "BLUE";
 	public static final String VIOLET = "VIOLET";
-
-	// starting points
-	public static final int START_POINTS = 0;
 
 	// amount of starting stones
 	public static final int START_STONES = 30;
@@ -51,6 +45,5 @@ public class GameConstants {
 	// cards
 	public static final String CARD = "CARD";
 
-	// sonarquabe suggested to add a private constructor instead of the implicit public one
 	private GameConstants() {};
 }
