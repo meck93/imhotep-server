@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.game;
 import ch.uzh.ifi.seal.soprafs17.constant.ShipSize;
 import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
+import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.NotFoundException;
 import ch.uzh.ifi.seal.soprafs17.repository.ShipRepository;
 import org.slf4j.Logger;
@@ -52,11 +53,7 @@ public class ShipService {
         if (ships.size() == 4) {
             return ships;
         }
-        else {
-            log.error("Unable to add the ships of the roundCardId: " + roundCard.getId());
-            return null;
-        }
-
+        throw new InternalServerException("Unable to add the Ships of the RoundCard: " + roundCard.getId());
     }
 
     public Ship createShip(int maxSize, int minSize, Long gameId) {
