@@ -142,7 +142,11 @@ public class MoveService {
         log.debug("Checks if the Game: {} is currently in a SubRound", game.getId());
 
         // Advancing the Sub-Round when the Game is in Status: SUBROUND
-        if (game.getStatus() == GameStatus.SUBROUND && (move instanceof SailShipMove || move instanceof GetCardMove)){
+        // MoveTypes allowed: Lever -> sailed to MarketPlace, Sail -> Sailed to MarketPlace
+        // GetCard -> retrieving Card from Marketplace, SailShip -> sailed to MarketPlace
+        if (game.getStatus() == GameStatus.SUBROUND && (move.getMoveType().equals(GameConstants.SAIL_SHIP)
+                || move.getMoveType().equals(GameConstants.GET_CARD)
+                || move.getMoveType().equals(MarketCardType.SAIL.toString()) || move.getMoveType().equals(MarketCardType.LEVER.toString()))) {
 
             // Retrieving the correct Ship
             Ship ship = game.getRoundByRoundCounter().getShipById(game.getMarketPlace().getDockedShipId());
