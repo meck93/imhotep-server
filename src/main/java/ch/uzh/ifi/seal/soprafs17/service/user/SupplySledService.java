@@ -21,6 +21,11 @@ public class SupplySledService {
 
     private final Logger log = LoggerFactory.getLogger(SupplySledService.class);
 
+    private static final int twoStones = 2;
+    private static final int threeStones = 3;
+    private static final int fourStones = 4;
+    private static final int fiveStones = 5;
+
     private final SupplySledRepository supplySledRepository;
     private final StoneQuarryService stoneQuarryService;
 
@@ -33,36 +38,43 @@ public class SupplySledService {
     public SupplySled createSupplySled(Long playerId){
         log.debug("creating SupplySled for Player with playerId: " + playerId);
 
+        // Retrieving a possible existing SupplySled
+        SupplySled supplySled = this.supplySledRepository.findSupplySledByPlayerId(playerId);
+
+        // Checking if the SupplySled already exists
+        if (supplySled != null){
+            // Resetting the Stones on the SupplySled
+            supplySled.setStones(new ArrayList<>());
+            this.supplySledRepository.save(supplySled);
+
+            return supplySled;
+        }
+
         // Creating the SupplySled for a Player
-        SupplySled supplySled = new SupplySled();
+        supplySled = new SupplySled();
         supplySled.setStones(new ArrayList<>());
         supplySled.setPlayerId(playerId);
 
-        supplySledRepository.save(supplySled);
+        this.supplySledRepository.save(supplySled);
 
         return supplySled;
     }
 
+    protected SupplySled getSupplySledByPlayerId(Long playerId) throws NotFoundException {
+        log.debug("Retrieving the SupplySled for Player: " + playerId);
 
-    public SupplySled getSupplySledByGameId(Game game, Long playerId) {
-        log.debug("Retrieving the Supply Sled of Player: " + playerId + " in Game: " + game.getId());
+        SupplySled supplySled = this.supplySledRepository.findSupplySledByPlayerId(playerId);
 
-        List<SupplySled> supplySleds = (List<SupplySled>) supplySledRepository.findAll();
+        if (supplySled == null) throw new NotFoundException(playerId, "SupplySled for Player: ");
 
-        // Check whether the SupplySled belongs to the Player: playerNumber in Game: gameId
-        for (SupplySled supplySled : supplySleds){
-            if (supplySled.getPlayerId().equals(playerId)){
-                return supplySled;
-            }
-        }
-        String msg = "SupplySled for Player: " + playerId + "in Game:";
-        throw new NotFoundException(game.getId(), msg);
+        return supplySled;
     }
 
-    public void fillSupplySled(Game game, int playerNumber, int stonesToBeAdded){
+    private void fillSupplySled(Game game, int playerNumber, int stonesToBeAdded){
         log.debug("Filling a SupplySled for Player: " + playerNumber + " in Game: " + game.getId());
 
-        SupplySled supplySled = this.getSupplySledByGameId(game, game.getPlayerByPlayerNr(playerNumber).getId());
+        // Retrieving the correct SupplySled according to the Player's ID
+        SupplySled supplySled = this.getSupplySledByPlayerId(game.getPlayerByPlayerNr(playerNumber).getId());
 
         // Retrieving the list of Stones
         List<Stone> stones = supplySled.getStones();
@@ -81,16 +93,16 @@ public class SupplySledService {
         log.debug("Filling all SupplySleds in Game: " + game.getId());
 
         // The initial player gets 2 initial Stones, the 2nd 3 initial Stones
-        fillSupplySled(game, 1, 2);
-        fillSupplySled(game, 2, 3);
+        this.fillSupplySled(game, 1, twoStones);
+        this.fillSupplySled(game, 2, threeStones);
 
         if (game.getPlayers().size() > 2){
             // The 3rd player gets 4 initial Stones
-            fillSupplySled(game, 3, 4);
+            this.fillSupplySled(game, 3, fourStones);
         }
         if (game.getPlayers().size() > 3){
             // The 4th player gets 5 initial Stones
-            fillSupplySled(game, 4, 5);
+            this.fillSupplySled(game, 4, fiveStones);
         }
     }
 }
