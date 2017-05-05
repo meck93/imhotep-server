@@ -10,7 +10,9 @@ import java.util.List;
 @DiscriminatorValue("MARKET_PLACE")
 public class MarketPlace extends ASite{
 
-    public MarketPlace(){};
+    public MarketPlace(){
+        // Spring needs an empty constructor
+    }
 
     public MarketPlace(Long gameId){
         super.setGameId(gameId);
