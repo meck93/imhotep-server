@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service.move;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
@@ -95,7 +96,7 @@ public class MoveService {
         this.checkNextRound(game);
     }
 
-    public synchronized void checkNextRound(Game game){
+    private synchronized void checkNextRound(Game game){
         log.debug("Checks if the Game: {} needs to proceed to the next Round", game.getId());
 
         // Advancing the Game to the next Player, only if the Game is in Status: RUNNING
@@ -137,7 +138,7 @@ public class MoveService {
         this.gameRepository.save(game);
     }
 
-    public synchronized void checkSubRound(AMove move, Game game){
+    private synchronized void checkSubRound(AMove move, Game game){
         log.debug("Checks if the Game: {} is currently in a SubRound", game.getId());
 
         // Advancing the Sub-Round when the Game is in Status: SUBROUND
@@ -159,7 +160,6 @@ public class MoveService {
 
         // Setting the next currentSubRoundPlayer according to the next Stone on the ship according to the placeOnShip
         if (!ship.getStones().isEmpty()){
-            forloop:
             for (int i = 1; i <= ship.getMAX_STONES(); i++){
                 if (ship.getStoneByPlace(i) != null){
                     switch (ship.getStoneByPlace(i).getColor()){
@@ -168,11 +168,12 @@ public class MoveService {
                         case BROWN: game.setCurrentSubRoundPlayer(3); break;
                         case GRAY:  game.setCurrentSubRoundPlayer(4); break;
                     }
-                    // Removing the stone from the Stones on the Ship & putting it back to the StoneQuarry
+                    // Putting the Stone from the MarketPlace back to the StoneQuarry
                     game.getStoneQuarry().getStonesByPlayerNr(game.getCurrentSubRoundPlayer()).add(ship.getStoneByPlace(i));
+                    // Removing the stone from the Stones on the Ship
                     ship.getStones().remove(ship.getStoneByPlace(i));
                     // Only loop to the first hit -> afterwards break
-                    break forloop;
+                    break;
                 }
             }
         }
@@ -187,33 +188,33 @@ public class MoveService {
         this.gameRepository.save(game);
     }
 
-    public void logMove(final AMove move, final Game game){
+    protected void logMove(final AMove move, final Game game){
         log.debug("Logging Move: {} of Type: {} in Game: {}", move.getId(), move.getMoveType(), game.getId());
 
+        // Logging the userName for any type of Move
         move.setUserName(game.getPlayerByPlayerNr(move.getPlayerNr()).getUsername());
 
-        // Creating a description for each Move
-        switch (move.getMoveType()){
-            case GameConstants.SAIL_SHIP:
-                // Set the destination of the move
-                ((SailShipMove) move).setTargetSiteType(game.getSiteById(((SailShipMove) move).getTargetSiteId()).getSiteType());
-                break;
-            case GameConstants.GET_CARD:
-                // Setting the MarketCardType to the same of the taken Card
-                ((GetCardMove) move).setMarketCardType(game.getMarketPlace().getMarketCardById(((GetCardMove) move).getMarketCardId()).getMarketCardType());
-                break;
-            case LEVER:
-                // Set the destination of the move
-                ((PlayCardMove) move).setTargetSiteType(game.getSiteById(((PlayCardMove) move).getTargetSiteId()).getSiteType());
-                // Setting the MarketCardType to the same of the taken Card
-                ((PlayCardMove) move).setMarketCardType(game.getPlayerByPlayerNr(move.getPlayerNr()).getMarketCardById(((PlayCardMove) move).getCardId()).getMarketCardType());
-                break;
-            case SAIL:
-                // Set the destination of the move
-                ((PlayCardMove) move).setTargetSiteType(game.getSiteById(((PlayCardMove) move).getTargetSiteId()).getSiteType());
-                // Setting the MarketCardType to the same of the taken Card
-                ((PlayCardMove) move).setMarketCardType(game.getPlayerByPlayerNr(move.getPlayerNr()).getMarketCardById(((PlayCardMove) move).getCardId()).getMarketCardType());
-                break;
+        // Specifying what shall be logged for a SAIL_SHIP Move
+        if (move.getMoveType().equals(GameConstants.SAIL_SHIP)) {
+            // Set the destination of the move
+            ((SailShipMove) move).setTargetSiteType(game.getSiteById(((SailShipMove) move).getTargetSiteId()).getSiteType());
+        }
+        // Specifying what shall be logged for a GET_CARD Move
+        else if (move.getMoveType().equals(GameConstants.GET_CARD)) {
+            // Setting the MarketCardType to the same of the taken Card
+            ((GetCardMove) move).setMarketCardType(game.getMarketPlace().getMarketCardById(((GetCardMove) move).getMarketCardId()).getMarketCardType());
+        }
+        // Specifying what shall be logged for a SAIL or LEVER Move
+        else if (move.getMoveType().equals(MarketCardType.LEVER.toString()) || move.getMoveType().equals(MarketCardType.SAIL.toString())) {
+            // Set the destination of the move
+            ((PlayCardMove) move).setTargetSiteType(game.getSiteById(((PlayCardMove) move).getTargetSiteId()).getSiteType());
+            // Setting the MarketCardType to the same of the taken Card
+            ((PlayCardMove) move).setMarketCardType(game.getPlayerByPlayerNr(move.getPlayerNr()).getMarketCardById(((PlayCardMove) move).getCardId()).getMarketCardType());
+        }
+        // Specifying what shall be logged for a HAMMER or CHISEL Move
+        else if (move.getMoveType().equals(MarketCardType.HAMMER.toString()) || move.getMoveType().equals(MarketCardType.CHISEL.toString())) {
+            // Setting the MarketCardType to the same of the taken Card
+            ((PlayCardMove) move).setMarketCardType(game.getPlayerByPlayerNr(move.getPlayerNr()).getMarketCardById(((PlayCardMove) move).getCardId()).getMarketCardType());
         }
 
         // Saving the Move including Description to the database
