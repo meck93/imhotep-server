@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository("AMoveRepository")
 public interface AMoveRepository extends CrudRepository<AMove, Long> {
 
-    // Finding the last five moves
+    // Finding the last (sorted DESC) X moves of game: gameId specified by the pageable
     @Query(value = "SELECT m FROM AMove m WHERE m.gameId = :gameId ORDER BY m.id DESC")
     Page<AMove> findLastFiveMoves(@Param("gameId") Long gameId, Pageable pageable);
 }
