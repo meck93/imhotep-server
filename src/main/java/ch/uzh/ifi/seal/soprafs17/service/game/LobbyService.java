@@ -124,8 +124,6 @@ public class LobbyService {
 
         // Deleting All Players in the Game
         game.getPlayers().forEach(player -> this.playerService.deletePlayer(player.getId()));
-
-        // TODO: Deleting the actual Game and not just the Players
     }
 
     /*
