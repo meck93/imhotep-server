@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,6 +24,12 @@ public class PlayCardMoveTest {
 
     @Test
     public void PlayCardMove() {
+        PlayCardMove testMove = new PlayCardMove(GameConstants.PLAY_CARD);
+        Assert.assertEquals(testMove.getMoveType(), GameConstants.PLAY_CARD);
+    }
+
+    @Test
+    public void setMoveType() {
         PlayCardMove testMove = new PlayCardMove();
         testMove.setMoveType(GameConstants.PLAY_CARD);
         Assert.assertEquals(testMove.getMoveType(), GameConstants.PLAY_CARD);
@@ -79,11 +86,14 @@ public class PlayCardMoveTest {
     @Test
     public void setUnloadingOrder() {
         PlayCardMove testPlayCardMove = new PlayCardMove();
-        ArrayList<Long> testOrder = new ArrayList<>();
+
+        List<Long> testOrder = new ArrayList<>();
         Long testUnloadOrder1 = 1L;
         Long testUnloadOrder2 = 2L;
+
         testOrder.add(testUnloadOrder1);
         testOrder.add(testUnloadOrder2);
+
         testPlayCardMove.setUnloadingOrder(testOrder);
         Assert.assertEquals(testPlayCardMove.getUnloadingOrder(),testOrder);
     }
