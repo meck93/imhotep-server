@@ -27,9 +27,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static ch.uzh.ifi.seal.soprafs17.GameConstants.LEVER;
-import static ch.uzh.ifi.seal.soprafs17.GameConstants.SAIL;
-
 /**
  * Test class for the GameResource REST resource.
  *
@@ -302,31 +299,35 @@ public class MoveServiceTest {
 
         for (AMove move : result){
             System.out.println("UserName: " + move.getUserName() + " MoveType: " + move.getMoveType() + " MoveID: " + move.getId());
-            Assert.assertNotNull(move.getUserName());
 
-            switch (move.getMoveType()){
-                case GameConstants.SAIL_SHIP:
-                    // Assert that the TargetSiteType is added by the Logging Function
-                    Assert.assertNotNull(((SailShipMove) move).getTargetSiteType());
-                    break;
-                case GameConstants.GET_CARD:
-                    // Assert getMarketCardType is added by the Logging Function
-                    Assert.assertNotNull(((GetCardMove) move).getMarketCardType());
-                    break;
-                case LEVER:
-                    // Assert that the TargetSiteType is added by the Logging Function
-                    Assert.assertNotNull(((PlayCardMove) move).getTargetSiteType());
+            // Asserts which must hold for every move disregarding its type
+            Assert.assertNotNull(move.getUserName());
+            Assert.assertNotNull(move.getGameId());
+            Assert.assertNotNull(move.getRoundNr());
+            Assert.assertNotNull(move.getPlayerNr());
+
+            // Assert that must hold for every SAIL_SHIP Move
+            if (move.getMoveType().equals(GameConstants.SAIL_SHIP)) {
+                // Assert that the TargetSiteType is added by the Logging Function
+                Assert.assertNotNull(((SailShipMove) move).getTargetSiteType());
+            }
+            // Assert that must hold for every GET_CARD Move
+            else if (move.getMoveType().equals(GameConstants.GET_CARD)) {
+                // Assert getMarketCardType is added by the Logging Function
+                Assert.assertNotNull(((GetCardMove) move).getMarketCardType());
+            }
+            // Assert that must hold for every LEVER & SAIL Move
+            else if (move.getMoveType().equals(MarketCardType.LEVER.toString()) || move.getMoveType().equals(MarketCardType.SAIL.toString())) {
+                // Assert that the TargetSiteType is added by the Logging Function
+                Assert.assertNotNull(((PlayCardMove) move).getTargetSiteType());
+                // Assert getMarketCardType is added by the Logging Function
+                Assert.assertNotNull(((PlayCardMove) move).getMarketCardType());
+            }
+            // Assert that must hold for every HAMMER & CHISEL Move
+            else if (move.getMoveType().equals(MarketCardType.HAMMER.toString()) || move.getMoveType().equals(MarketCardType.CHISEL.toString())) {
                     // Assert getMarketCardType is added by the Logging Function
                     Assert.assertNotNull(((PlayCardMove) move).getMarketCardType());
-                    break;
-                case SAIL:
-                    // Assert that the TargetSiteType is added by the Logging Function
-                    Assert.assertNotNull(((PlayCardMove) move).getTargetSiteType());
-                    // Assert getMarketCardType is added by the Logging Function
-                    Assert.assertNotNull(((PlayCardMove) move).getMarketCardType());
-                    break;
             }
         }
     }
-
 }
