@@ -48,5 +48,9 @@ public class LeverValidator implements IValidator{
                 game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMIN_STONES()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones on ship.");
         }
+        // The unloading order must have the same amount of values than the number of stones on the ship
+        if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() != newMove.getUnloadingOrder().size()){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Site is already docked.");
+        }
     }
 }
