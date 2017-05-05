@@ -18,7 +18,7 @@ public class LeverValidator implements IValidator{
     @Override
     public void validate(final AMove move, final Game game) throws MoveValidationException {
 
-        // Casting the abstract Move to a PlaceStoneMove
+        // Casting the abstract Move to a PlayCardMove
         PlayCardMove newMove = (PlayCardMove) move;
 
         // The ship must exist in the round
