@@ -237,33 +237,67 @@ public class MoveServiceTest {
     }
 
     @Test
+    // Validating a non-red GetCardMove
     public void validateAndApplyGetCard(){
+        // Set Up of the Environment for the Test
         this.validateAndApplySailShip();
 
-        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setColor(GameConstants.RED);
-        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setMarketCardType(MarketCardType.ENTRANCE);
-
-        boolean isRed = false;
-        String siteType = null;
-
-        if (game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).getColor().equals(GameConstants.RED)){
-            isRed = true;
-            switch (game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).getMarketCardType()){
-                case PAVED_PATH: siteType = GameConstants.OBELISK; break;
-                case SARCOPHAGUS: siteType = GameConstants.BURIAL_CHAMBER; break;
-                case ENTRANCE: siteType = GameConstants.PYRAMID;
-            }
-        }
+        // Changing the marketCard of the designated move to the required type for the test
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setColor(GameConstants.GREEN);
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setMarketCardType(MarketCardType.BURIAL_CHAMBER_DECORATION);
 
         this.moveService.validateAndApply(move6);
 
         // Assert the MarketCard ID of the HandCard and the move are the same
-        if (!isRed) {
-            Assert.assertEquals(game.getPlayerByPlayerNr(1).getHandCards().get(0).getId(), move6.getMarketCardId());
-        }
-        else {
-            Assert.assertEquals(game.getBuildingSite(siteType).getStones().size(), 1);
-        }
+        Assert.assertEquals(game.getPlayerByPlayerNr(1).getHandCards().get(0).getId(), move6.getMarketCardId());
+    }
+
+    /* VALIDATION OF THE RED MARKET CARDS */
+
+    @Test
+    // Validating the ENTRANCE MarketCard
+    public void validateAndApplyEntrance(){
+        // Set Up of the Environment for the Test
+        this.validateAndApplySailShip();
+
+        // Changing the marketCard of the designated move to the required type for the test
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setColor(GameConstants.RED);
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setMarketCardType(MarketCardType.ENTRANCE);
+
+        this.moveService.validateAndApply(move6);
+
+        Assert.assertEquals(game.getBuildingSite(GameConstants.PYRAMID).getStones().size(), 1);
+    }
+
+    @Test
+    // Validating the PAVED_PATH MarketCard
+    public void validateAndApplyPavedPath(){
+        // Set Up of the Environment for the Test
+        this.validateAndApplySailShip();
+
+        // Changing the marketCard of the designated move to the required type for the test
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setColor(GameConstants.RED);
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setMarketCardType(MarketCardType.PAVED_PATH);
+
+        this.moveService.validateAndApply(move6);
+
+        Assert.assertEquals(game.getBuildingSite(GameConstants.OBELISK).getStones().size(), 1);
+    }
+
+
+    @Test
+    // Validating the SARCOPHAGUS MarketCard
+    public void validateAndApplySarcophagus(){
+        // Set Up of the Environment for the Test
+        this.validateAndApplySailShip();
+
+        // Changing the marketCard of the designated move to the required type for the test
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setColor(GameConstants.RED);
+        game.getMarketPlace().getMarketCardById(move6.getMarketCardId()).setMarketCardType(MarketCardType.SARCOPHAGUS);
+
+        this.moveService.validateAndApply(move6);
+
+        Assert.assertEquals(game.getBuildingSite(GameConstants.BURIAL_CHAMBER).getStones().size(), 1);
     }
 
     @Test
@@ -275,13 +309,13 @@ public class MoveServiceTest {
         Assert.assertNotNull(move);
         Assert.assertNotNull(game);
 
-        // Making sure there is no description yet
+        // Making sure there is no userName assigned with the move yet
         Assert.assertNull(move.getUserName());
 
         // Logging the Move
         this.moveService.logMove(move, game);
 
-        // Testing that the Description has been created
+        // Testing that the userName has been logged
         Assert.assertNotNull(move.getUserName());
     }
 
