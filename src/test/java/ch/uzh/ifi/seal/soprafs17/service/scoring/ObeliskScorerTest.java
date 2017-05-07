@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Test class for the BurialChamberScorer REST resource.
+ * Test class for the ObeliskScorer REST resource.
  *
- * @see BurialChamberScorer
+ * @see ObeliskScorer
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -128,27 +128,6 @@ public class ObeliskScorerTest {
 
         game.getRounds().add(round);
 
-        // Creating dummy Stones for the Obelisk
-        List<Stone> stoneList = new ArrayList<>();
-
-        Stone stone1 = new Stone();
-        stone1.setColor(GameConstants.WHITE);
-        stoneList.add(stone1);
-        Stone stone2 = new Stone();
-        stone2.setColor(GameConstants.BROWN);
-        stoneList.add(stone2);
-        Stone stone3 = new Stone();
-        stone3.setColor(GameConstants.BROWN);
-        stoneList.add(stone3);
-        Stone stone4 = new Stone();
-        stone4.setColor(GameConstants.WHITE);
-        stoneList.add(stone4);
-        Stone stone5 = new Stone();
-        stone5.setColor(GameConstants.WHITE);
-        stoneList.add(stone5);
-
-        game.getBuildingSite(GameConstants.OBELISK).setStones(stoneList);
-
         this.gameRepository.save(game);
     }
 
@@ -221,6 +200,7 @@ public class ObeliskScorerTest {
         Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
 
         Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
         Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 10);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 0);
     }
@@ -256,6 +236,7 @@ public class ObeliskScorerTest {
         Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
 
         Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
         Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 1);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 10);
     }
@@ -285,6 +266,7 @@ public class ObeliskScorerTest {
         Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
 
         Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
         Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 10);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 1);
     }
@@ -311,20 +293,199 @@ public class ObeliskScorerTest {
         Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
 
         Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
         Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 5);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 5);
     }
 
     @Test
-    public void testThreePlayer(){
+    public void testThreePlayerOnly2Score(){
         this.additionalEnvironment3Players();
+
+        // Creating DummyStones for the Obelisk
+        List<Stone> stoneList = game.getBuildingSite(GameConstants.OBELISK).getStones();
+
+        // Creating 2 BROWN Dummy Stones
+        Stone stone2 = new Stone();
+        stone2.setColor(GameConstants.BROWN);
+        stoneList.add(stone2);
+
+        // Creating 3 WHITE Dummy Stones
+        Stone stone1 = new Stone();
+        stone1.setColor(GameConstants.WHITE);
+        stoneList.add(stone1);
+        Stone stone4 = new Stone();
+        stone4.setColor(GameConstants.WHITE);
+        stoneList.add(stone4);
+
+        // Adding the Dummy Stones to the Obelisk
+        game.getBuildingSite(GameConstants.OBELISK).setStones(stoneList);
 
         Assert.assertEquals(this.obeliskScorer.scoreNow(game), null);
         Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
 
         Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
         Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 0);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 12);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(3).getPoints()[2], 6);
+    }
+
+    @Test
+    public void testThreePlayerAllDifferent(){
+        this.additionalEnvironment3Players();
+
+        Assert.assertEquals(this.obeliskScorer.scoreNow(game), null);
+        Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
+
+        // Creating DummyStones for the Obelisk
+        List<Stone> stoneList = game.getBuildingSite(GameConstants.OBELISK).getStones();
+
+        // Creating 1 BLACK Dummy Stone
+        Stone stone11 = new Stone();
+        stone11.setColor(GameConstants.BLACK);
+        stoneList.add(stone11);
+
+        // Creating 2 BROWN Dummy Stones
+        Stone stone2 = new Stone();
+        stone2.setColor(GameConstants.BROWN);
+        stoneList.add(stone2);
+        Stone stone3 = new Stone();
+        stone3.setColor(GameConstants.BROWN);
+        stoneList.add(stone3);
+
+        // Creating 3 WHITE Dummy Stones
+        Stone stone1 = new Stone();
+        stone1.setColor(GameConstants.WHITE);
+        stoneList.add(stone1);
+        Stone stone4 = new Stone();
+        stone4.setColor(GameConstants.WHITE);
+        stoneList.add(stone4);
+        Stone stone5 = new Stone();
+        stone5.setColor(GameConstants.WHITE);
+        stoneList.add(stone5);
+
+        // Adding the Dummy Stones to the Obelisk
+        game.getBuildingSite(GameConstants.OBELISK).setStones(stoneList);
+
+        Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 1);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 12);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(3).getPoints()[2], 6);
+    }
+
+    @Test
+    public void testThreePlayerTwoFirstOneLast(){
+        this.additionalEnvironment3Players();
+
+        Assert.assertEquals(this.obeliskScorer.scoreNow(game), null);
+        Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
+
+        // Creating DummyStones for the Obelisk
+        List<Stone> stoneList = game.getBuildingSite(GameConstants.OBELISK).getStones();
+
+        // Creating 1 BLACK Dummy Stone
+        Stone stone11 = new Stone();
+        stone11.setColor(GameConstants.BLACK);
+        stoneList.add(stone11);
+
+        // Creating 2 BROWN Dummy Stones
+        Stone stone2 = new Stone();
+        stone2.setColor(GameConstants.BROWN);
+        stoneList.add(stone2);
+        Stone stone3 = new Stone();
+        stone3.setColor(GameConstants.BROWN);
+        stoneList.add(stone3);
+
+        // Creating 3 WHITE Dummy Stones
+        Stone stone1 = new Stone();
+        stone1.setColor(GameConstants.WHITE);
+        stoneList.add(stone1);
+        Stone stone4 = new Stone();
+        stone4.setColor(GameConstants.WHITE);
+        stoneList.add(stone4);
+
+        // Adding the Dummy Stones to the Obelisk
+        game.getBuildingSite(GameConstants.OBELISK).setStones(stoneList);
+
+        Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 1);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 9);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(3).getPoints()[2], 9);
+    }
+
+    @Test
+    public void testThreePlayerOneFirstTwoLast(){
+        this.additionalEnvironment3Players();
+
+        Assert.assertEquals(this.obeliskScorer.scoreNow(game), null);
+        Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
+
+        // Creating DummyStones for the Obelisk
+        List<Stone> stoneList = game.getBuildingSite(GameConstants.OBELISK).getStones();
+
+        // Creating 1 BLACK Dummy Stone
+        Stone stone11 = new Stone();
+        stone11.setColor(GameConstants.BLACK);
+        stoneList.add(stone11);
+
+        // Creating 2 BROWN Dummy Stones
+        Stone stone2 = new Stone();
+        stone2.setColor(GameConstants.BROWN);
+        stoneList.add(stone2);
+
+        // Creating 3 WHITE Dummy Stones
+        Stone stone1 = new Stone();
+        stone1.setColor(GameConstants.WHITE);
+        stoneList.add(stone1);
+        Stone stone4 = new Stone();
+        stone4.setColor(GameConstants.WHITE);
+        stoneList.add(stone4);
+
+        // Adding the Dummy Stones to the Obelisk
+        game.getBuildingSite(GameConstants.OBELISK).setStones(stoneList);
+
+        Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 3);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 12);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(3).getPoints()[2], 3);
+    }
+
+    @Test
+    public void testThreePlayerAllSameScore(){
+        this.additionalEnvironment3Players();
+
+        Assert.assertEquals(this.obeliskScorer.scoreNow(game), null);
+        Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
+
+        // Creating DummyStones for the Obelisk
+        List<Stone> stoneList = game.getBuildingSite(GameConstants.OBELISK).getStones();
+
+        // Creating 1 BLACK Dummy Stone
+        Stone stone11 = new Stone();
+        stone11.setColor(GameConstants.BLACK);
+        stoneList.add(stone11);
+
+        // Creating 2 BROWN Dummy Stones
+        Stone stone2 = new Stone();
+        stone2.setColor(GameConstants.BROWN);
+        stoneList.add(stone2);
+
+        // Creating 3 WHITE Dummy Stones
+        Stone stone1 = new Stone();
+        stone1.setColor(GameConstants.WHITE);
+        stoneList.add(stone1);
+
+        // Adding the Dummy Stones to the Obelisk
+        game.getBuildingSite(GameConstants.OBELISK).setStones(stoneList);
+
+        Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 6);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 6);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(3).getPoints()[2], 6);
     }
 
@@ -365,9 +526,6 @@ public class ObeliskScorerTest {
         Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
 
         Game newGame = this.obeliskScorer.scoreEndOfGame(game);
-        for (Player player : newGame.getPlayers()){
-            System.out.println(player.getColor() + " Player has Points: " + player.getPoints()[2]);
-        }
 
         Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 15);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 3);
@@ -376,7 +534,7 @@ public class ObeliskScorerTest {
     }
 
     @Test
-    public void testFourPlayersNoSameScore(){
+    public void testFourPlayersOnly3HaveScore(){
         this.additionalEnvironment4Players();
 
         // Creating dummy Stones for the Obelisk
@@ -410,14 +568,72 @@ public class ObeliskScorerTest {
         Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
 
         Game newGame = this.obeliskScorer.scoreEndOfGame(game);
-        for (Player player : newGame.getPlayers()){
-            System.out.println(player.getColor() + " Player has Points: " + player.getPoints()[2]);
-        }
 
         Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 15);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 5);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(3).getPoints()[2], 10);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(4).getPoints()[2], 0);
+    }
+
+    @Test
+    public void testFourPlayersNoSameScore(){
+        this.additionalEnvironment4Players();
+
+        // Creating dummy Stones for the Obelisk
+        List<Stone> stoneList = new ArrayList<>();
+
+        // Creating 1 GRAY DummyStones
+        Stone stone13 = new Stone();
+        stone13.setColor(GameConstants.GRAY);
+        stoneList.add(stone13);
+
+        // Creating 2 WHITE DummyStones
+        Stone stone1 = new Stone();
+        stone1.setColor(GameConstants.WHITE);
+        stoneList.add(stone1);
+        Stone stone12 = new Stone();
+        stone12.setColor(GameConstants.WHITE);
+        stoneList.add(stone12);
+
+        // Creating 3 BROWN DummyStones
+        Stone stone2 = new Stone();
+        stone2.setColor(GameConstants.BROWN);
+        stoneList.add(stone2);
+        Stone stone3 = new Stone();
+        stone3.setColor(GameConstants.BROWN);
+        stoneList.add(stone3);
+        Stone stone11 = new Stone();
+        stone11.setColor(GameConstants.BROWN);
+        stoneList.add(stone11);
+
+        // Creating 4 BLACK DummyStones
+        Stone stone4 = new Stone();
+        stone4.setColor(GameConstants.BLACK);
+        stoneList.add(stone4);
+        Stone stone5 = new Stone();
+        stone5.setColor(GameConstants.BLACK);
+        stoneList.add(stone5);
+        Stone stone6 = new Stone();
+        stone6.setColor(GameConstants.BLACK);
+        stoneList.add(stone6);
+        Stone stone7 = new Stone();
+        stone7.setColor(GameConstants.BLACK);
+        stoneList.add(stone7);
+
+        game.getBuildingSite(GameConstants.OBELISK).setStones(stoneList);
+
+        this.gameRepository.save(game);
+
+
+        Assert.assertEquals(this.obeliskScorer.scoreNow(game), null);
+        Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
+
+        Game newGame = this.obeliskScorer.scoreEndOfGame(game);
+
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 15);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 5);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(3).getPoints()[2], 10);
+        Assert.assertEquals(newGame.getPlayerByPlayerNr(4).getPoints()[2], 1);
     }
 
     @Test
@@ -449,9 +665,6 @@ public class ObeliskScorerTest {
         Assert.assertEquals(this.obeliskScorer.scoreEndOfRound(game), null);
 
         Game newGame = this.obeliskScorer.scoreEndOfGame(game);
-        for (Player player : newGame.getPlayers()){
-            System.out.println(player.getColor() + " Player has Points: " + player.getPoints()[2]);
-        }
 
         Assert.assertEquals(newGame.getPlayerByPlayerNr(1).getPoints()[2], 7);
         Assert.assertEquals(newGame.getPlayerByPlayerNr(2).getPoints()[2], 7);

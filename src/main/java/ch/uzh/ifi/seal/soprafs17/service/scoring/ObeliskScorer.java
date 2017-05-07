@@ -177,54 +177,45 @@ public class ObeliskScorer implements IScoreable {
             // Using an iterator because entries can be removed
             while (iterator.hasNext()){
                 mapping = iterator.next();
-                // If entry has rank 1
-                if (entry.getValue() == 1) {
-                    // key of entry and mapping must be the same
-                    if (entry.getKey().equals(mapping.getKey())) {
-                        // Sett the correct result as points
-                        game.getPlayerByColor(mapping.getValue()).getPoints()[2] = res1;
-                        // remove the mapping from the iterator to make sure every color <=> player
-                        // will have the points only assigned once
-                        iterator.remove();
-                        // return outside of the while loop once 1 mapping was found
-                        break;
-                    }
+                // If entry has rank 1 && key of entry and mapping must be the same
+                if (entry.getValue() == 1 && entry.getKey().equals(mapping.getKey())) {
+                    // Sett the correct result as points
+                    game.getPlayerByColor(mapping.getValue()).getPoints()[2] = res1;
+                    // remove the mapping from the iterator to make sure every color <=> player
+                    // will have the points only assigned once
+                    iterator.remove();
+                    // return outside of the while loop once 1 mapping was found
+                    break;
                 }
-                // If entry has rank 2
-                else if (entry.getValue() == 2) {
-                    // key of entry and mapping must be the same
-                    if (entry.getKey().equals(mapping.getKey())){
-                        game.getPlayerByColor(mapping.getValue()).getPoints()[2] = res2;
-                        // remove the mapping from the iterator to make sure every color <=> player
-                        // will have the points only assigned once
-                        iterator.remove();
-                        // return outside of the while loop once 1 mapping was found
-                        break;
-                    }
+                // If entry has rank 2 && key of entry and mapping must be the same
+                else if (entry.getValue() == 2 && entry.getKey().equals(mapping.getKey())) {
+                    // Sett the correct result as points
+                    game.getPlayerByColor(mapping.getValue()).getPoints()[2] = res2;
+                    // remove the mapping from the iterator to make sure every color <=> player
+                    // will have the points only assigned once
+                    iterator.remove();
+                    // return outside of the while loop once 1 mapping was found
+                    break;
                 }
-                // If entry has rank 3
-                else if (entry.getValue() == 3) {
-                    // key of entry and mapping must be the same
-                    if (entry.getKey().equals(mapping.getKey())) {
-                        game.getPlayerByColor(mapping.getValue()).getPoints()[2] = res3;
-                        // remove the mapping from the iterator to make sure every color <=> player
-                        // will have the points only assigned once
-                        iterator.remove();
-                        // return outside of the while loop once 1 mapping was found
-                        break;
-                    }
+                // If entry has rank 3 && key of entry and mapping must be the same
+                else if (entry.getValue() == 3 && entry.getKey().equals(mapping.getKey())) {
+                    // Sett the correct result as points
+                    game.getPlayerByColor(mapping.getValue()).getPoints()[2] = res3;
+                    // remove the mapping from the iterator to make sure every color <=> player
+                    // will have the points only assigned once
+                    iterator.remove();
+                    // return outside of the while loop once 1 mapping was found
+                    break;
                 }
-                // If entry has rank 4
-                else if (entry.getValue() == 4) {
-                    // key of entry and mapping must be the same
-                    if (entry.getKey().equals(mapping.getKey())) {
-                        game.getPlayerByColor(mapping.getValue()).getPoints()[2] = scores[3];
-                        // remove the mapping from the iterator to make sure every color <=> player
-                        // will have the points only assigned once
-                        iterator.remove();
-                        // return outside of the while loop once 1 mapping was found
-                        break;
-                    }
+                // If entry has rank 4 && key of entry and mapping must be the same
+                else if (entry.getValue() == 4 && entry.getKey().equals(mapping.getKey())) {
+                    // Sett the correct result as points
+                    game.getPlayerByColor(mapping.getValue()).getPoints()[2] = scores[3];
+                    // remove the mapping from the iterator to make sure every color <=> player
+                    // will have the points only assigned once
+                    iterator.remove();
+                    // return outside of the while loop once 1 mapping was found
+                    break;
                 }
             }
         }
