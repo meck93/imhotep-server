@@ -177,11 +177,6 @@ public class GameServiceTest {
     }
 
     @Test
-    public void startGame() {
-        // test initializeGame() and initializeRound() first
-    }
-
-    @Test
     public void initializeGame() {
         this.createEnvironment();
 
