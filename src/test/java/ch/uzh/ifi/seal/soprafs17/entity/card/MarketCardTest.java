@@ -29,6 +29,14 @@ public class MarketCardTest {
     }
 
     @Test
+    public void setPositionOnMarketPlace() {
+        MarketCard testMarketCard = new MarketCard();
+        testMarketCard.setPositionOnMarketPlace(1);
+        Assert.assertNotNull(testMarketCard);
+        Assert.assertEquals(testMarketCard.getPositionOnMarketPlace(), 1);
+    }
+
+    @Test
     public void getGameId() {
         MarketCard testMarketCard = new MarketCard();
         testMarketCard.setGameId(1L);
