@@ -10,8 +10,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-//TODO the target site is now a object of the type ASite
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -39,6 +37,14 @@ public class SailShipMoveTest {
         SailShipMove testMove = new SailShipMove();
         testMove.setMoveType(GameConstants.SAIL_SHIP);
         Assert.assertEquals(testMove.getMoveType(),GameConstants.SAIL_SHIP);
+    }
+
+    @Test
+    public void setTargetSiteType() {
+        SailShipMove testMove = new SailShipMove();
+        testMove.setTargetSiteType(GameConstants.BURIAL_CHAMBER);
+        Assert.assertNotNull(testMove.getTargetSiteType());
+        Assert.assertEquals(testMove.getTargetSiteType(), GameConstants.BURIAL_CHAMBER);
     }
 
 }

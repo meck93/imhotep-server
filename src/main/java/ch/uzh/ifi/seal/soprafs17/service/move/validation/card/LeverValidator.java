@@ -18,7 +18,7 @@ public class LeverValidator implements IValidator{
     @Override
     public void validate(final AMove move, final Game game) throws MoveValidationException {
 
-        // Casting the abstract Move to a PlaceStoneMove
+        // Casting the abstract Move to a PlayCardMove
         PlayCardMove newMove = (PlayCardMove) move;
 
         // The ship must exist in the round
@@ -47,6 +47,10 @@ public class LeverValidator implements IValidator{
         if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() <
                 game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getMIN_STONES()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Not enough stones on ship.");
+        }
+        // The unloading order must have the same amount of values than the number of stones on the ship
+        if (game.getRoundByRoundCounter().getShipById(newMove.getShipId()).getStones().size() != newMove.getUnloadingOrder().size()){
+            throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. Site is already docked.");
         }
     }
 }

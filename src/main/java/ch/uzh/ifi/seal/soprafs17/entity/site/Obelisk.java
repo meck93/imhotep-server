@@ -33,22 +33,22 @@ public class Obelisk extends BuildingSite {
     }
 
     public int[] getScoresTwoPlayer() {
-        return scoresTwoPlayer;
+        return scoresTwoPlayer.clone();
     }
 
     public int[] getScoresThreePlayer() {
-        return scoresThreePlayer;
+        return scoresThreePlayer.clone();
     }
 
     public int[] getScoresFourPlayer() {
-        return scoresFourPlayer;
+        return scoresFourPlayer.clone();
     }
 
     public int[] getScores(int numberOfPlayers){
         switch (numberOfPlayers){
-            case 2: return scoresTwoPlayer;
-            case 3: return scoresThreePlayer;
-            case 4: return scoresFourPlayer;
+            case 2: return scoresTwoPlayer.clone();
+            case 3: return scoresThreePlayer.clone();
+            case 4: return scoresFourPlayer.clone();
             default: throw new InternalServerException("Wrong Nr of Players - Not Possible to have: " + numberOfPlayers + " Players");
         }
     }

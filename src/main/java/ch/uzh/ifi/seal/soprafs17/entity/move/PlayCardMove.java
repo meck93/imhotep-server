@@ -2,12 +2,14 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "PLAY_CARD")
 @DiscriminatorValue(value = GameConstants.PLAY_CARD)
@@ -35,13 +37,36 @@ public class PlayCardMove extends AMove {
     private long targetSiteId;
 
     @Column
+    private String targetSiteType;
+
+    @Column
     private long shipId2;
 
     @Column
     private int placeOnShip2;
 
     @Column
-    private ArrayList<Long> unloadingOrder;
+    @ElementCollection(targetClass = Long.class)
+    private List<Long> unloadingOrder;
+
+    @Column
+    private MarketCardType marketCardType;
+
+    public String getTargetSiteType() {
+        return targetSiteType;
+    }
+
+    public void setTargetSiteType(String targetSiteType) {
+        this.targetSiteType = targetSiteType;
+    }
+
+    public MarketCardType getMarketCardType() {
+        return marketCardType;
+    }
+
+    public void setMarketCardType(MarketCardType marketCardType) {
+        this.marketCardType = marketCardType;
+    }
 
     public Long getCardId() {
         return cardId;
@@ -91,11 +116,11 @@ public class PlayCardMove extends AMove {
         this.placeOnShip2 = placeOnShip2;
     }
 
-    public ArrayList<Long> getUnloadingOrder() {
+    public List<Long> getUnloadingOrder() {
         return unloadingOrder;
     }
 
-    public void setUnloadingOrder(ArrayList<Long> unloadingOrder) {
+    public void setUnloadingOrder(List<Long> unloadingOrder) {
         this.unloadingOrder = unloadingOrder;
     }
 }

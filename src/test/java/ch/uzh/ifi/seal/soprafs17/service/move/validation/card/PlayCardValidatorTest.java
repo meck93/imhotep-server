@@ -1,20 +1,25 @@
-package ch.uzh.ifi.seal.soprafs17.service.move.validation;
+package ch.uzh.ifi.seal.soprafs17.service.move.validation.card;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
+import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.GetCardMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.repository.MarketCardRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.move.validation.MoveValidator;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
 import org.junit.Assert;
@@ -30,18 +35,18 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Test class for the GameResource REST resource.
  *
- * @see GetCardValidator
+ * @see PlayCardValidator
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
-public class GetCardValidatorTest {
+public class PlayCardValidatorTest {
 
-    private GetCardValidator getCardValidator;
+    private PlayCardValidator playCardValidator;
     private AMove move;
-    private GetCardMove gMove;
+    private PlayCardMove pMove;
     private Game game;
 
     @Autowired
@@ -56,21 +61,23 @@ public class GetCardValidatorTest {
     private PlayerService playerService;
     @Autowired
     private RoundRepository roundRepository;
+    @Autowired
+    private MarketCardRepository marketCardRepository;
 
     @Before
     public void create(){
         // Set Up for supports()
-        move = new GetCardMove();
+        move = new PlayCardMove();
         Assert.assertNotNull(move);
-        move.setMoveType(GameConstants.GET_CARD);
         move.setGameId(1L);
         move.setRoundNr(1);
         move.setPlayerNr(1);
+        move.setMoveType(GameConstants.PLAY_CARD);
 
-        gMove = (GetCardMove) move;
+        pMove = (PlayCardMove) move;
 
-        getCardValidator = new GetCardValidator();
-        Assert.assertNotNull(getCardValidator);
+        playCardValidator = new PlayCardValidator();
+        Assert.assertNotNull(playCardValidator);
 
         // Set Up for validate()
         game = this.gameService.createGame("Test", "test");
@@ -107,92 +114,61 @@ public class GetCardValidatorTest {
 
         Round round = this.roundRepository.findById(1L);
         game.getRounds().add(round);
-        game.setCurrentSubRoundPlayer(1);
-        game.setStatus(GameStatus.SUBROUND);
-
-        // Setting the GetCardMove's marketCardId to an existing MarketCard's ID
-        gMove.setMarketCardId(game.getMarketPlace().getMarketCards().get(0).getId());
 
         this.gameRepository.save(game);
+
+        // Setting up a dummy MarketCard for the Test
+        MarketCard marketCard = new MarketCard();
+        marketCard.setMarketCardType(MarketCardType.CHISEL);
+        marketCard.setColor(GameConstants.BLUE);
+        marketCard.setGameId(1L);
+
+        this.marketCardRepository.save(marketCard);
+
+        // Adding the card to the players handCards
+        game.getPlayerByPlayerNr(game.getCurrentPlayer()).getHandCards().add(marketCard);
+
+        this.gameRepository.save(game);
+
+        // Set the Id of the DummyCard to the Move's CardId
+        pMove.setCardId(marketCard.getId());
     }
 
     @Test
     public void supports() {
         // Check that the move is supported
-        Assert.assertEquals(getCardValidator.supports(move), true);
+        Assert.assertEquals(playCardValidator.supports(move), true);
 
         // Checking that the move is not supported
-        move = new GetStonesMove();
-        Assert.assertEquals(getCardValidator.supports(move), false);
+        move = new PlaceStoneMove();
+        Assert.assertEquals(playCardValidator.supports(move), false);
     }
 
     @Test
     public void validateAllTrue(){
         // Satisfying all requirements
-        Game testGame = this.gameService.findById(game.getId());
+        Assert.assertNotNull(pMove);
 
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(0).getId());
-        getCardValidator.validate(gMove, testGame);
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(1).getId());
-        getCardValidator.validate(gMove, testGame);
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(2).getId());
-        getCardValidator.validate(gMove, testGame);
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(3).getId());
-        getCardValidator.validate(gMove, testGame);
+        playCardValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validateStatus(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: STATUS
-        Assert.assertNotNull(move);
-        testGame.setStatus(GameStatus.PENDING);
-        // Throws the exception
-        getCardValidator.validate(move, testGame);
-    }
+        Assert.assertNotNull(pMove);
+        game.setStatus(GameStatus.PENDING);
 
-    @Test(expected = MoveValidationException.class)
-    public void validateMoveType(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
-        // Dissatisfying the requirements: MOVE_TYPE
-        move.setMoveType(GameConstants.GET_STONES);
-        Assert.assertNotNull(move);
         // Throws the exception
-        getCardValidator.validate(move, testGame);
+        playCardValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
     public void validatePlayerNumber(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
         // Dissatisfying the requirements: Game_ID
-        Assert.assertNotNull(move);
-        move.setPlayerNr(2);
-        // Throws the exception
-        getCardValidator.validate(move, testGame);
-    }
+        Assert.assertNotNull(pMove);
+        pMove.setPlayerNr(2);
 
-    @Test(expected = MoveValidationException.class)
-    public void validateMarketCardExists(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
-
-        // Dissatisfying the requirements: Game_ID
-        Assert.assertNotNull(move);
-        gMove.setMarketCardId(100L);
         // Throws the exception
-        getCardValidator.validate(gMove, testGame);
+        playCardValidator.validate(pMove, game);
     }
 }

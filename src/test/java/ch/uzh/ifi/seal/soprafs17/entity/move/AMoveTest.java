@@ -26,14 +26,14 @@ public class AMoveTest {
     }
 
     @Test
-    public void setDescription() {
+    public void setUserName() {
         AMove testMove = new GetStonesMove();
-        String testDescrption = "Hello World";
+        String testDescrption = "Moritz";
 
         testMove.setId(1L);
-        testMove.setDescription(testDescrption);
+        testMove.setUserName(testDescrption);
         Assert.assertNotNull(testMove);
-        Assert.assertEquals(testMove.getDescription(), testDescrption);
+        Assert.assertEquals(testMove.getUserName(), testDescrption);
     }
 
     @Test

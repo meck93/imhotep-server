@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,6 +24,12 @@ public class PlayCardMoveTest {
 
     @Test
     public void PlayCardMove() {
+        PlayCardMove testMove = new PlayCardMove(GameConstants.PLAY_CARD);
+        Assert.assertEquals(testMove.getMoveType(), GameConstants.PLAY_CARD);
+    }
+
+    @Test
+    public void setMoveType() {
         PlayCardMove testMove = new PlayCardMove();
         testMove.setMoveType(GameConstants.PLAY_CARD);
         Assert.assertEquals(testMove.getMoveType(), GameConstants.PLAY_CARD);
@@ -78,12 +86,31 @@ public class PlayCardMoveTest {
     @Test
     public void setUnloadingOrder() {
         PlayCardMove testPlayCardMove = new PlayCardMove();
-        ArrayList<Long> testOrder = new ArrayList<>();
+
+        List<Long> testOrder = new ArrayList<>();
         Long testUnloadOrder1 = 1L;
         Long testUnloadOrder2 = 2L;
+
         testOrder.add(testUnloadOrder1);
         testOrder.add(testUnloadOrder2);
+
         testPlayCardMove.setUnloadingOrder(testOrder);
         Assert.assertEquals(testPlayCardMove.getUnloadingOrder(),testOrder);
+    }
+
+    @Test
+    public void setMarketCardType() {
+        PlayCardMove testMove = new PlayCardMove();
+        testMove.setMarketCardType(MarketCardType.CHISEL);
+        Assert.assertNotNull(testMove.getMarketCardType());
+        Assert.assertEquals(testMove.getMarketCardType(), MarketCardType.CHISEL);
+    }
+
+    @Test
+    public void setTargetSiteType() {
+        PlayCardMove testMove = new PlayCardMove();
+        testMove.setTargetSiteType(GameConstants.BURIAL_CHAMBER);
+        Assert.assertNotNull(testMove.getTargetSiteType());
+        Assert.assertEquals(testMove.getTargetSiteType(), GameConstants.BURIAL_CHAMBER);
     }
 }

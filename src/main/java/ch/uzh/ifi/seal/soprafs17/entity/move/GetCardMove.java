@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.entity.move;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Column;
@@ -22,6 +23,17 @@ public class GetCardMove extends AMove {
 
     @Column
     private Long marketCardId;
+
+    @Column
+    private MarketCardType marketCardType;
+
+    public MarketCardType getMarketCardType() {
+        return marketCardType;
+    }
+
+    public void setMarketCardType(MarketCardType marketCardType) {
+        this.marketCardType = marketCardType;
+    }
 
     public Long getMarketCardId() {
         return marketCardId;

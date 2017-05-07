@@ -1,8 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.entity.site;
 
-/**
- * Created by Cristian on 06.04.2017.
- */
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
@@ -23,6 +20,19 @@ import java.util.List;
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
 public class MarketPlaceTest {
+
+    @Test
+    public void MarketPlace(){
+        MarketPlace testMarketPlace = new MarketPlace(1L);
+        Assert.assertNotNull(testMarketPlace);
+
+        MarketPlace marketPlace2 = new MarketPlace();
+        marketPlace2.setSiteType("MARKET_PLACE");
+        marketPlace2.setGameId(1L);
+        Assert.assertNotNull(marketPlace2);
+
+        Assert.assertEquals(marketPlace2.getGameId(), testMarketPlace.getGameId());
+    }
 
     @Test
     public void setMarketCards() {

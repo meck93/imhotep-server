@@ -1,13 +1,13 @@
-package ch.uzh.ifi.seal.soprafs17.service.move.validation;
+package ch.uzh.ifi.seal.soprafs17.service.move.validation.card;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.GetCardMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
@@ -27,21 +27,23 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 /**
  * Test class for the GameResource REST resource.
  *
- * @see GetCardValidator
+ * @see SailValidator
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
-public class GetCardValidatorTest {
+public class SailValidatorTest {
 
-    private GetCardValidator getCardValidator;
+    private SailValidator sailValidator;
     private AMove move;
-    private GetCardMove gMove;
+    private PlayCardMove pMove;
     private Game game;
 
     @Autowired
@@ -60,17 +62,20 @@ public class GetCardValidatorTest {
     @Before
     public void create(){
         // Set Up for supports()
-        move = new GetCardMove();
+        move = new PlayCardMove();
         Assert.assertNotNull(move);
-        move.setMoveType(GameConstants.GET_CARD);
+        move.setMoveType(MarketCardType.SAIL.toString());
         move.setGameId(1L);
         move.setRoundNr(1);
         move.setPlayerNr(1);
 
-        gMove = (GetCardMove) move;
+        pMove = (PlayCardMove) move;
+        pMove.setPlaceOnShip(1);
+        pMove.setShipId(1L);
+        pMove.setTargetSiteId(1L);
 
-        getCardValidator = new GetCardValidator();
-        Assert.assertNotNull(getCardValidator);
+        sailValidator = new SailValidator();
+        Assert.assertNotNull(sailValidator);
 
         // Set Up for validate()
         game = this.gameService.createGame("Test", "test");
@@ -106,12 +111,17 @@ public class GetCardValidatorTest {
         Assert.assertNotNull(game.getStoneQuarry().getWhiteStones());
 
         Round round = this.roundRepository.findById(1L);
-        game.getRounds().add(round);
-        game.setCurrentSubRoundPlayer(1);
-        game.setStatus(GameStatus.SUBROUND);
 
-        // Setting the GetCardMove's marketCardId to an existing MarketCard's ID
-        gMove.setMarketCardId(game.getMarketPlace().getMarketCards().get(0).getId());
+        for (int i = round.getShipById(1L).getMAX_STONES(); i > 1; i--){
+            Stone stone = new Stone();
+            stone.setColor(GameConstants.BLACK);
+            stone.setPlaceOnShip(i);
+
+            round.getShipById(1L).getStones().add(stone);
+        }
+        this.roundRepository.save(round);
+
+        game.getRounds().add(round);
 
         this.gameRepository.save(game);
     }
@@ -119,80 +129,111 @@ public class GetCardValidatorTest {
     @Test
     public void supports() {
         // Check that the move is supported
-        Assert.assertEquals(getCardValidator.supports(move), true);
+        Assert.assertEquals(sailValidator.supports(pMove), true);
 
         // Checking that the move is not supported
-        move = new GetStonesMove();
-        Assert.assertEquals(getCardValidator.supports(move), false);
+        pMove.setMoveType(GameConstants.PLACE_STONE);
+        Assert.assertEquals(sailValidator.supports(pMove), false);
     }
 
     @Test
     public void validateAllTrue(){
         // Satisfying all requirements
         Game testGame = this.gameService.findById(game.getId());
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(0).getId());
-        getCardValidator.validate(gMove, testGame);
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(1).getId());
-        getCardValidator.validate(gMove, testGame);
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(2).getId());
-        getCardValidator.validate(gMove, testGame);
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(3).getId());
-        getCardValidator.validate(gMove, testGame);
+        sailValidator.validate(pMove, testGame);
     }
 
     @Test(expected = MoveValidationException.class)
-    public void validateStatus(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
+    public void validateShipId(){
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
+        pMove.setShipId(5L);
 
-        // Dissatisfying the requirements: STATUS
-        Assert.assertNotNull(move);
-        testGame.setStatus(GameStatus.PENDING);
         // Throws the exception
-        getCardValidator.validate(move, testGame);
+        sailValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
-    public void validateMoveType(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
+    public void validateShipHasSailed(){
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
 
-        // Dissatisfying the requirements: MOVE_TYPE
-        move.setMoveType(GameConstants.GET_STONES);
-        Assert.assertNotNull(move);
+        // Set Ship 1 to sailed
+        game.getRoundByRoundCounter().getShipById(1L).setHasSailed(true);
+
         // Throws the exception
-        getCardValidator.validate(move, testGame);
+        sailValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
-    public void validatePlayerNumber(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
+    public void validateSiteFree(){
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
+        pMove.setTargetSiteId(2L);
 
-        // Dissatisfying the requirements: Game_ID
-        Assert.assertNotNull(move);
-        move.setPlayerNr(2);
+        // Changing the site with ID: 2 to occupied
+        Assert.assertNotNull(game.getBuildingSite(GameConstants.OBELISK));
+        game.getBuildingSite(GameConstants.OBELISK).setDocked(true);
+
         // Throws the exception
-        getCardValidator.validate(move, testGame);
+        sailValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
-    public void validateMarketCardExists(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
+    public void validateSupplySled(){
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
 
-        // Dissatisfying the requirements: Game_ID
-        Assert.assertNotNull(move);
-        gMove.setMarketCardId(100L);
+        // Set SupplySled empty
+        game.getPlayerByPlayerNr(1).getSupplySled().setStones(new ArrayList<>());
+
         // Throws the exception
-        getCardValidator.validate(gMove, testGame);
+        sailValidator.validate(pMove, game);
+    }
+
+    @Test(expected = MoveValidationException.class)
+    public void validateShipHasFreeSpace(){
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
+        pMove.setShipId(1L);
+        pMove.setPlaceOnShip(1);
+
+        // Filling the Stones to the Ship
+        for (int i = 1; i <= game.getRoundByRoundCounter().getShipById(1L).getMAX_STONES(); i++){
+            game.getRoundByRoundCounter().getShipById(1L).getStones().add(new Stone());
+        }
+
+        // Throws the exception
+        sailValidator.validate(pMove, game);
+    }
+
+    @Test(expected = MoveValidationException.class)
+    public void validatePlaceOnShipValid(){
+        // Dissatisfying the requirements: Ship_ID - negative value
+        Assert.assertNotNull(pMove);
+        pMove.setPlaceOnShip(-2);
+
+        // Throws the exception
+        sailValidator.validate(pMove, game);
+
+        // Dissatisfying the requirements: Ship_ID - too large value
+        Assert.assertNotNull(pMove);
+        pMove.setPlaceOnShip(5);
+
+        // Throws the exception
+        sailValidator.validate(pMove, game);
+    }
+
+    @Test(expected = MoveValidationException.class)
+    public void validatePlaceOnShipOccupied(){
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
+
+        // Set SupplySled empty
+        game.getRoundByRoundCounter().getShipById(1L).getStones().add(new Stone());
+        game.getRoundByRoundCounter().getShipById(1L).getStones().get(0).setPlaceOnShip(1);
+
+        // Throws the exception
+        sailValidator.validate(pMove, game);
     }
 }

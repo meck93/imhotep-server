@@ -24,6 +24,6 @@ public class Pyramid extends BuildingSite {
     }
 
     public int[] getScores() {
-        return scores;
+        return scores.clone();
     }
 }

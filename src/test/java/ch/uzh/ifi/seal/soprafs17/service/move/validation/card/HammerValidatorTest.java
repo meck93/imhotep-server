@@ -1,13 +1,16 @@
-package ch.uzh.ifi.seal.soprafs17.service.move.validation;
+package ch.uzh.ifi.seal.soprafs17.service.move.validation.card;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
+import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.GetCardMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
@@ -15,6 +18,7 @@ import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.move.validation.GetCardValidator;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
 import org.junit.Assert;
@@ -27,21 +31,22 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 /**
  * Test class for the GameResource REST resource.
  *
- * @see GetCardValidator
+ * @see HammerValidator
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
-public class GetCardValidatorTest {
-
-    private GetCardValidator getCardValidator;
+public class HammerValidatorTest {
+    private HammerValidator hammerValidator;
     private AMove move;
-    private GetCardMove gMove;
+    private PlayCardMove pMove;
     private Game game;
 
     @Autowired
@@ -60,17 +65,19 @@ public class GetCardValidatorTest {
     @Before
     public void create(){
         // Set Up for supports()
-        move = new GetCardMove();
+        move = new PlayCardMove();
         Assert.assertNotNull(move);
-        move.setMoveType(GameConstants.GET_CARD);
+        move.setMoveType(MarketCardType.HAMMER.toString());
         move.setGameId(1L);
         move.setRoundNr(1);
         move.setPlayerNr(1);
 
-        gMove = (GetCardMove) move;
+        pMove = (PlayCardMove) move;
+        pMove.setPlaceOnShip(1);
+        pMove.setShipId(1L);
 
-        getCardValidator = new GetCardValidator();
-        Assert.assertNotNull(getCardValidator);
+        hammerValidator = new HammerValidator();
+        Assert.assertNotNull(hammerValidator);
 
         // Set Up for validate()
         game = this.gameService.createGame("Test", "test");
@@ -107,11 +114,6 @@ public class GetCardValidatorTest {
 
         Round round = this.roundRepository.findById(1L);
         game.getRounds().add(round);
-        game.setCurrentSubRoundPlayer(1);
-        game.setStatus(GameStatus.SUBROUND);
-
-        // Setting the GetCardMove's marketCardId to an existing MarketCard's ID
-        gMove.setMarketCardId(game.getMarketPlace().getMarketCards().get(0).getId());
 
         this.gameRepository.save(game);
     }
@@ -119,80 +121,116 @@ public class GetCardValidatorTest {
     @Test
     public void supports() {
         // Check that the move is supported
-        Assert.assertEquals(getCardValidator.supports(move), true);
+        Assert.assertEquals(hammerValidator.supports(pMove), true);
 
         // Checking that the move is not supported
-        move = new GetStonesMove();
-        Assert.assertEquals(getCardValidator.supports(move), false);
+        pMove.setMoveType(GameConstants.PLACE_STONE);
+        Assert.assertEquals(hammerValidator.supports(pMove), false);
     }
 
     @Test
     public void validateAllTrue(){
         // Satisfying all requirements
         Game testGame = this.gameService.findById(game.getId());
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(0).getId());
-        getCardValidator.validate(gMove, testGame);
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(1).getId());
-        getCardValidator.validate(gMove, testGame);
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(2).getId());
-        getCardValidator.validate(gMove, testGame);
-
-        // Get the first marketCard on the MarketPlace
-        gMove.setMarketCardId(testGame.getMarketPlace().getMarketCards().get(3).getId());
-        getCardValidator.validate(gMove, testGame);
+        hammerValidator.validate(pMove, testGame);
     }
 
     @Test(expected = MoveValidationException.class)
-    public void validateStatus(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
+    public void validateSupplySledSize(){
+        // Dissatisfying the requirements: Size of SupplySled != 5
+        Stone stone = stoneQuarryRepository.findOne(1L).getBlackStones().remove(0);
+        Assert.assertNotNull(stone);
+        game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().add(stone);
 
-        // Dissatisfying the requirements: STATUS
-        Assert.assertNotNull(move);
-        testGame.setStatus(GameStatus.PENDING);
+        Stone stone2 = stoneQuarryRepository.findOne(1L).getBlackStones().remove(0);
+        Assert.assertNotNull(stone2);
+        game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().add(stone2);
+
+        Stone stone3 = stoneQuarryRepository.findOne(1L).getBlackStones().remove(0);
+        Assert.assertNotNull(stone3);
+        game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().add(stone3);
+
+        Assert.assertEquals(game.getPlayerByPlayerNr(game.getCurrentPlayer()).getSupplySled().getStones().size(), 5);
+
         // Throws the exception
-        getCardValidator.validate(move, testGame);
+        hammerValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
-    public void validateMoveType(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
+    public void validateStoneQuarry(){
+        // Dissatisfying the requirements: Size of StoneQuarry not empty
+        game.getStoneQuarry().setBlackStones(new ArrayList<>());
+        Assert.assertEquals(game.getStoneQuarry().getBlackStones().size(), 0);
 
-        // Dissatisfying the requirements: MOVE_TYPE
-        move.setMoveType(GameConstants.GET_STONES);
-        Assert.assertNotNull(move);
         // Throws the exception
-        getCardValidator.validate(move, testGame);
+        hammerValidator.validate(pMove, game);
     }
 
     @Test(expected = MoveValidationException.class)
-    public void validatePlayerNumber(){
+    public void validateShipId(){
         // Finding the Game
         Game testGame = this.gameService.findById(game.getId());
 
-        // Dissatisfying the requirements: Game_ID
-        Assert.assertNotNull(move);
-        move.setPlayerNr(2);
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
+        pMove.setShipId(5L);
         // Throws the exception
-        getCardValidator.validate(move, testGame);
+        hammerValidator.validate(pMove, testGame);
     }
 
     @Test(expected = MoveValidationException.class)
-    public void validateMarketCardExists(){
-        // Finding the Game
-        Game testGame = this.gameService.findById(game.getId());
+    public void validateShipHasSailed(){
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
 
-        // Dissatisfying the requirements: Game_ID
-        Assert.assertNotNull(move);
-        gMove.setMarketCardId(100L);
+        // Set SupplySled empty
+        game.getRoundByRoundCounter().getShipById(1L).setHasSailed(true);
+
         // Throws the exception
-        getCardValidator.validate(gMove, testGame);
+        hammerValidator.validate(pMove, game);
+    }
+
+    @Test(expected = MoveValidationException.class)
+    public void validateShipHasFreeSpace(){
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
+
+        // Filling the Stones to the Ship
+        for (int i = 1; i <= game.getRoundByRoundCounter().getShipById(1L).getMAX_STONES(); i++){
+            game.getRoundByRoundCounter().getShipById(1L).getStones().add(new Stone());
+        }
+
+        // Throws the exception
+        hammerValidator.validate(pMove, game);
+    }
+
+    @Test(expected = MoveValidationException.class)
+    public void validatePlaceOnShipValid(){
+        // Dissatisfying the requirements: Ship_ID - negative value
+        Assert.assertNotNull(pMove);
+        pMove.setPlaceOnShip(-2);
+
+        // Throws the exception
+        hammerValidator.validate(pMove, game);
+
+        // Dissatisfying the requirements: Ship_ID - too large value
+        Assert.assertNotNull(pMove);
+        pMove.setPlaceOnShip(5);
+
+        // Throws the exception
+        hammerValidator.validate(pMove, game);
+    }
+
+    @Test(expected = MoveValidationException.class)
+    public void validatePlaceOnShipOccupied(){
+        // Dissatisfying the requirements: Ship_ID
+        Assert.assertNotNull(pMove);
+
+        // Set SupplySled empty
+        game.getRoundByRoundCounter().getShipById(1L).getStones().add(new Stone());
+        game.getRoundByRoundCounter().getShipById(1L).getStones().get(0).setPlaceOnShip(1);
+
+        // Throws the exception
+        hammerValidator.validate(pMove, game);
     }
 }
