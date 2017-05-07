@@ -5,10 +5,7 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
-import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
@@ -178,32 +175,14 @@ public class LobbyService {
         this.gameService.initializeGame(gameId);
 
         for (int i = 1; i <= 6; i++){
-            // Creating the first round of the game
-            Round newRound = new Round();
-            newRound.setGame(game);
-            newRound.setRoundNumber(i);
-
-            // getting a new roundCard
-            RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
-            newRound.setCard(newRoundCard);
-
-            // adding ships to the round
-            List<Ship> currentShips = shipService.createShips(newRoundCard);
-            newRound.setShips(currentShips);
-
-            roundRepository.save(newRound);
-
-            game.getRounds().add(newRound);
+            // Creating the six rounds
+            this.gameService.initializeRound(gameId);
         }
 
         // Setting the roundCounter to the correct value
         game.setRoundCounter(6);
 
-        // adding marketCards to the marketPlace
-        List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);
-        game.getMarketPlace().setMarketCards(fourCards);
-
-        gameRepository.save(game);
+        this.gameRepository.save(game);
 
         //Set stones on burialChamber
         Stone s1 = new Stone();
@@ -290,7 +269,6 @@ public class LobbyService {
         s21.setColor(GameConstants.WHITE);
         s22.setColor(GameConstants.WHITE);
         s23.setColor(GameConstants.BLACK);
-
 
         ls3.add(s20);
         ls3.add(s21);
@@ -416,7 +394,5 @@ public class LobbyService {
         game.getPlayerByPlayerNr(2).setPoints(scoreP2);
 
         gameRepository.save(game);
-
     }
-
 }
