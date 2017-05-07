@@ -243,6 +243,7 @@ public class GameService {
 
         // Create the stoneQuarry & fill it with Stones
         StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry(game);
+        game.setStoneQuarry(stoneQuarry);
         stoneQuarryService.fillQuarry(stoneQuarry);
 
         // Filling the SupplySled
@@ -269,11 +270,22 @@ public class GameService {
         // Initializing the first round
         roundService.initializeRound(round.getId(), gameId);
 
+        // Add the Round to the Game
+        game.getRounds().add(round);
+
         // Setting the roundCounter to the correct value
         game.setRoundCounter(round.getRoundNumber());
 
         // adding marketCards to the marketPlace
         List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);
+
+        int placeOnMarketPlace = 1;
+
+        // Assign Each MarketCard with a Nr on the MarketPlace
+        for (MarketCard marketCard : fourCards){
+            marketCard.setPositionOnMarketPlace(placeOnMarketPlace++);
+        }
+
         game.getMarketPlace().setMarketCards(fourCards);
 
         gameRepository.save(game);
