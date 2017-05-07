@@ -29,8 +29,6 @@ import java.util.List;
 
 /**
  * Implements the logic of the game.
- *
- * Created by Moritz Eck on 11.03.2017.
  */
 @Service
 @Transactional
@@ -278,14 +276,6 @@ public class GameService {
 
         // adding marketCards to the marketPlace
         List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);
-
-        int placeOnMarketPlace = 1;
-
-        // Assign Each MarketCard with a Nr on the MarketPlace
-        for (MarketCard marketCard : fourCards){
-            marketCard.setPositionOnMarketPlace(placeOnMarketPlace++);
-        }
-
         game.getMarketPlace().setMarketCards(fourCards);
 
         gameRepository.save(game);
