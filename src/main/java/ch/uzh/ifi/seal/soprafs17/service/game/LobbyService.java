@@ -211,9 +211,10 @@ public class LobbyService {
 
         // Setting the roundCounter to the correct value
         this.gameService.initializeRound(gameId);
-        game.setRoundCounter(6);
 
         this.gameRepository.save(game);
+
+        game = this.gameService.findById(gameId);
 
         //Set stones on burialChamber
         Stone s1 = new Stone();
