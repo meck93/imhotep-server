@@ -33,9 +33,6 @@ public class UserService {
 
     public User createUser(String name, String username) {
 
-        if (userRepository.findByName(name) != null) {
-            throw new BadRequestHttpException("A user with the name: " + name + " already exists!");
-        }
         if (userRepository.findByUsername(username) != null) {
             throw new BadRequestHttpException("A user with the username: " + username + " already exists!");
         }
