@@ -35,7 +35,7 @@ public class UserController extends GenericController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public User addUser(@RequestBody User user) {
-        return userService.createUser(user.getName(), user.getUsername());
+        return userService.createUser(user.getUsername());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{userId}")

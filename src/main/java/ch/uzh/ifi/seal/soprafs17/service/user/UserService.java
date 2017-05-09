@@ -31,14 +31,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(String name, String username) {
+    public User createUser(String username) {
 
         if (userRepository.findByUsername(username) != null) {
             throw new BadRequestHttpException("A user with the username: " + username + " already exists!");
         }
 
         User newUser = new User();
-        newUser.setName(name);
         newUser.setUsername(username);
         newUser.setStatus(UserStatus.ONLINE);
         newUser.setToken(UUID.randomUUID().toString());

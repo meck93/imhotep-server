@@ -37,7 +37,7 @@ public class UserServiceTest {
     @Test
     public void createUser() {
         Assert.assertNull(userRepository.findByToken("t123"));
-        User user = userService.createUser("testName", "testUsername");
+        User user = userService.createUser("testUsername");
         user.setToken("t123");
         Assert.assertNotNull(userRepository.findByToken("t123"));
         Assert.assertEquals(userRepository.findByToken("t123"), user);
@@ -45,7 +45,7 @@ public class UserServiceTest {
 
     @Test
     public void deleteUser() {
-        User user = userService.createUser("testName", "testUsername");
+        User user = userService.createUser("testUsername");
         Assert.assertNotNull(userRepository.findById(1L));
         user.setToken("t123");
         userService.deleteUser(1L);
@@ -54,8 +54,8 @@ public class UserServiceTest {
 
     @Test
     public void deleteAll() {
-        User user1 = userService.createUser("testName1", "testUsername1");
-        User user2 = userService.createUser("testName2", "testUsername2");
+        User user1 = userService.createUser("testUsername1");
+        User user2 = userService.createUser("testUsername2");
         user1.setToken("t123");
         user2.setToken("t1234");
         Assert.assertEquals(userRepository.findByToken("t123"), user1);
@@ -71,8 +71,8 @@ public class UserServiceTest {
             List<User> testUsers = userService.listUsers();
         } catch(NotFoundException e) {}
 
-        User user1 = userService.createUser("testName1", "testUsername1");
-        User user2 = userService.createUser("testName2", "testUsername2");
+        User user1 = userService.createUser("testUsername1");
+        User user2 = userService.createUser("testUsername2");
         user1.setToken("t123");
         user2.setToken("t1234");
         List<User> testUsers = userService.listUsers();
@@ -87,8 +87,8 @@ public class UserServiceTest {
             userService.getUser(1L);
         } catch(NotFoundException e) {}
 
-        User user1 = userService.createUser("testName1", "testUsername1");
-        User user2 = userService.createUser("testName2", "testUsername2");
+        User user1 = userService.createUser("testUsername1");
+        User user2 = userService.createUser("testUsername2");
         user1.setToken("t123");
         user2.setToken("t1234");
         Assert.assertEquals(userService.getUser(1L),user1);
