@@ -2,25 +2,23 @@ package ch.uzh.ifi.seal.soprafs17.entity.site;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity(name = GameConstants.OBELISK)
+@JsonIgnoreProperties(value = {"scoresTwoPlayer", "scoresThreePlayer", "scoresFourPlayer"})
 @DiscriminatorValue(value = GameConstants.OBELISK)
 public class Obelisk extends BuildingSite {
 
     // Scores for the Obelisk - 2 Player
-    @JsonIgnore
     private static final int[] scoresTwoPlayer = {10, 1};
 
     // Scores for the Obelisk - 3 Player
-    @JsonIgnore
     private static final int[] scoresThreePlayer = {12, 6, 1};
 
     // Scores for the Obelisk - 4 Player
-    @JsonIgnore
     private static final int[] scoresFourPlayer = {15, 10, 5, 1};
 
     public Obelisk(){
