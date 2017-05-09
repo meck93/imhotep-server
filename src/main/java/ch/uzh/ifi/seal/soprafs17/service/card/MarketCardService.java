@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Random;
 
 import static ch.uzh.ifi.seal.soprafs17.constant.MarketCardType.*;
-import static ch.uzh.ifi.seal.soprafs17.constant.MarketCardType.SAIL;
-import static ch.uzh.ifi.seal.soprafs17.constant.MarketCardType.STATUE;
 
 @Service
 @Transactional

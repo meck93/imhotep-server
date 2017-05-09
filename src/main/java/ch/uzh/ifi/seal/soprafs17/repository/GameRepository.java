@@ -2,7 +2,6 @@ package ch.uzh.ifi.seal.soprafs17.repository;
 
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
-import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

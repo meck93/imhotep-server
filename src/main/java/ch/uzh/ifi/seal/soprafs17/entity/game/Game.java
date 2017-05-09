@@ -208,7 +208,9 @@ public class Game implements Serializable {
 
 	public ASite getSiteById(Long id){
 
-		if (this.marketPlace.getId().equals(id)) return this.marketPlace;
+		if (this.marketPlace.getId().equals(id)) {
+			return this.marketPlace;
+		}
 
 		for (BuildingSite site : buildingSites){
 			if (site.getId().equals(id)){
