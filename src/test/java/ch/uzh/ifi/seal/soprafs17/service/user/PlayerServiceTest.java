@@ -55,7 +55,7 @@ public class PlayerServiceTest {
     public void createPlayer() {
         Game testGame = gameService.createGame("testName","testOwner");
         testGame.setId(1L);
-        User user = userService.createUser("testName","testOwner");
+        User user = userService.createUser("testOwner");
         Player testPlayer = playerService.createPlayer(1L,1L);
         Assert.assertEquals(testPlayer,playerRepository.findById(1L));
 
@@ -67,13 +67,13 @@ public class PlayerServiceTest {
         } catch (BadRequestHttpException e) {}
 
         try {
-            User user2 = userService.createUser("testName","testOwner2");
+            User user2 = userService.createUser("testOwner2");
             Player testPlayer2 = playerService.createPlayer(1L,2L);
-            User user3 = userService.createUser("testName","testOwner3");
+            User user3 = userService.createUser("testOwner3");
             Player testPlayer3 = playerService.createPlayer(1L,3L);
-            User user4 = userService.createUser("testName","testOwner4");
+            User user4 = userService.createUser("testOwner4");
             Player testPlayer4 = playerService.createPlayer(1L,1L);
-            User user5 = userService.createUser("testName","testOwner5");
+            User user5 = userService.createUser("testOwner5");
             Player testPlayer5 = playerService.createPlayer(1L,1L);
         } catch (BadRequestHttpException e) {}
 
@@ -121,7 +121,7 @@ public class PlayerServiceTest {
     public void getPlayer() {
         Game game = gameService.createGame("test","testOwner");
         game.setId(1L);
-        User user1 = userService.createUser("testName","testOwner");
+        User user1 = userService.createUser("testOwner");
         user1.setId(1L);
         Player player1 = playerService.createPlayer(1L,1L);
         Assert.assertEquals(playerService.getPlayer(1L,1), playerRepository.findById(1L));
@@ -148,7 +148,7 @@ public class PlayerServiceTest {
     public void getPlayers() {
         Game game = gameService.createGame("test","testOwner");
         game.setId(1L);
-        User user1 = userService.createUser("testName","testOwner");
+        User user1 = userService.createUser("testOwner");
         user1.setId(1L);
         Player player1 = playerService.createPlayer(1L,1L);
         List<Player> players = new ArrayList<>();
@@ -161,7 +161,7 @@ public class PlayerServiceTest {
     public void getPlayerSupplySled() {
         Game game = gameService.createGame("test","testOwner");
         game.setId(1L);
-        User user1 = userService.createUser("testName","testOwner");
+        User user1 = userService.createUser("testOwner");
         user1.setId(1L);
         Player player1 = playerService.createPlayer(1L,1L);
         player1.setPlayerNumber(1);
@@ -177,7 +177,7 @@ public class PlayerServiceTest {
     public void findPlayerById() {
         Game game = gameService.createGame("test","testOwner");
         game.setId(1L);
-        User user1 = userService.createUser("testName","testOwner");
+        User user1 = userService.createUser("testOwner");
         user1.setId(1L);
         Player player1 = playerService.createPlayer(1L,1L);
         player1.setPlayerId(1L);
@@ -193,7 +193,7 @@ public class PlayerServiceTest {
     public void deletePlayer() {
         Game game = gameService.createGame("test","testOwner");
         game.setId(1L);
-        User user1 = userService.createUser("testName","testOwner");
+        User user1 = userService.createUser("testOwner");
         user1.setId(1L);
         Player player1 = playerService.createPlayer(1L,1L);
         player1.setPlayerId(1L);

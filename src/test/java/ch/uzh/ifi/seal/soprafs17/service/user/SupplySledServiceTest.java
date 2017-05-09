@@ -60,9 +60,9 @@ public class SupplySledServiceTest {
         Assert.assertNotNull(game);
         Assert.assertEquals(game, this.gameService.findById(game.getId()));
 
-        User user1 = this.userService.createUser("test", "test");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
         Assert.assertNotNull(user1);
-        User user2 = this.userService.createUser("test2", "test2");
         Assert.assertNotNull(user2);
 
         Player player1 = this.playerService.createPlayer(game.getId(), user1.getId());
@@ -83,7 +83,7 @@ public class SupplySledServiceTest {
     }
 
     public void addPlayerThree(){
-        User user3 = this.userService.createUser("test3", "test3");
+        User user3 = this.userService.createUser("test3");
         Assert.assertNotNull(user3);
 
         Player player3 = this.playerService.createPlayer(game.getId(), user3.getId());
@@ -95,7 +95,7 @@ public class SupplySledServiceTest {
     }
 
     public void addPlayerFour(){
-        User user4 = this.userService.createUser("test4", "test4");
+        User user4 = this.userService.createUser("test4");
         Assert.assertNotNull(user4);
 
         Player player4 = this.playerService.createPlayer(game.getId(), user4.getId());

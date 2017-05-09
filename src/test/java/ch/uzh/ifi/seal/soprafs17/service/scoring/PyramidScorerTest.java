@@ -62,19 +62,19 @@ public class PyramidScorerTest {
             Game game = gameService.createGame("testName", "testOwner");
             List<Player> players = new ArrayList<>();
 
-            User user1 = userService.createUser("test","testOwner");
+            User user1 = userService.createUser("testOwner");
             Player player1 = playerService.createPlayer(1L,1L);
             playerService.initializePlayer(game.getId(), player1);
 
-            User user2 = userService.createUser("test2","test2");
+            User user2 = userService.createUser("test2");
             Player player2 = playerService.createPlayer(1L,2L);
             playerService.initializePlayer(game.getId(), player2);
 
-            User user3 = userService.createUser("test3","test3");
+            User user3 = userService.createUser("test3");
             Player player3 = playerService.createPlayer(1L,3L);
             playerService.initializePlayer(game.getId(), player3);
 
-            User user4 = userService.createUser("test4","test4");
+            User user4 = userService.createUser("test4");
             Player player4 = playerService.createPlayer(1L,4L);
             playerService.initializePlayer(game.getId(), player4);
 

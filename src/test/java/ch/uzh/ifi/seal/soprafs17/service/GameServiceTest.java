@@ -88,7 +88,7 @@ public class GameServiceTest {
         Assert.assertNotNull(gameRepository.findById(1L));
         Assert.assertEquals(gameRepository.findById(1L),testGame);
         try{
-            User user1 = userService.createUser("testName","testName");
+            User user1 = userService.createUser("testName");
             Player player1 = playerService.createPlayer(1L,1L);
             playerService.initializePlayer(testGame.getId(), player1);
             gameService.addPlayer(1L,player1);
@@ -151,9 +151,9 @@ public class GameServiceTest {
         Assert.assertNotNull(game);
         Assert.assertEquals(game, this.gameService.findById(game.getId()));
 
-        User user1 = this.userService.createUser("test", "test");
+        User user1 = this.userService.createUser("test");
         Assert.assertNotNull(user1);
-        User user2 = this.userService.createUser("test2", "test2");
+        User user2 = this.userService.createUser("test2");
         Assert.assertNotNull(user2);
 
         Player player1 = this.playerService.createPlayer(game.getId(), user1.getId());
@@ -246,8 +246,8 @@ public class GameServiceTest {
     @Test
     public void sizeOfQuarry() {
         //Creating prerequisites
-        User user1 = userService.createUser("testUser1", "test1");
-        User user2 = userService.createUser("testUser2", "test2");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
 
         Game game = gameService.createGame("testGame", "test1");
 
