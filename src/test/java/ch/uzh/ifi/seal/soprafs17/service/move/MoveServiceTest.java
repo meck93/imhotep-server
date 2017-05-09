@@ -5,7 +5,6 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.move.*;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;

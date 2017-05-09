@@ -194,7 +194,7 @@ public class MoveService {
         this.gameRepository.save(game);
     }
 
-    protected void logMove(final AMove move, final Game game){
+    public void logMove(final AMove move, final Game game){
         log.debug("Logging Move: {} of Type: {} in Game: {}", move.getId(), move.getMoveType(), game.getId());
 
         // Logging the userName for any type of Move

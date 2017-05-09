@@ -3,7 +3,6 @@ package ch.uzh.ifi.seal.soprafs17.service.game;
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
@@ -294,7 +293,7 @@ public class LobbyServiceTest {
 
         //Check if handCards are set correctly
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().size(),3);
-        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().size(),4);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().size(),5);
 
         //Check if the marketCards are correctly set in the first players' handCards
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().get(0).getColor(), GameConstants.BLUE);
