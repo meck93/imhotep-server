@@ -240,7 +240,7 @@ public class BurialChamberScorerTest {
     @Test
     public void addPoints(){
         Game game = gameService.createGame("testName", "testOwner");
-        User user1 = userService.createUser("testName","testUser");
+        User user1 = userService.createUser("test1");
         Player player1 = playerService.createPlayer(1L,1L);
         user1.setPlayer(player1);
         List<Player> players = new ArrayList<>();
@@ -283,7 +283,7 @@ public class BurialChamberScorerTest {
 
 
         Game game = gameService.createGame("testName", "testOwner");
-        User user1 = userService.createUser("testName","testUser");
+        User user1 = userService.createUser("test1");
         Player player1 = playerService.createPlayer(1L,1L);
         user1.setPlayer(player1);
         List<Player> players = new ArrayList<>();

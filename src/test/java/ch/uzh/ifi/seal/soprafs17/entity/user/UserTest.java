@@ -1,9 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.entity.user;
 
-/**
- * Created by Cristian on 06.04.2017.
- */
-
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import org.junit.Assert;
@@ -26,14 +22,6 @@ public class UserTest {
         testUser.setId(1L);
         Assert.assertNotNull(testUser);
         Assert.assertEquals(testUser.getId(), Long.valueOf(1L));
-    }
-
-    @Test
-    public void setName() {
-        User testUser = new User();
-        testUser.setName("testName");
-        Assert.assertNotNull(testUser);
-        Assert.assertEquals(testUser.getName(), "testName");
     }
 
     @Test

@@ -22,7 +22,7 @@ public class Game implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String name;
 
 	@Column(nullable = false)
@@ -208,7 +208,9 @@ public class Game implements Serializable {
 
 	public ASite getSiteById(Long id){
 
-		if (this.marketPlace.getId().equals(id)) return this.marketPlace;
+		if (this.marketPlace.getId().equals(id)) {
+			return this.marketPlace;
+		}
 
 		for (BuildingSite site : buildingSites){
 			if (site.getId().equals(id)){

@@ -5,19 +5,17 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
-import ch.uzh.ifi.seal.soprafs17.entity.card.RoundCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
-import ch.uzh.ifi.seal.soprafs17.entity.game.Ship;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
+import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.exceptions.http.BadRequestHttpException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
-import ch.uzh.ifi.seal.soprafs17.service.card.MarketCardService;
-import ch.uzh.ifi.seal.soprafs17.service.card.RoundCardService;
+import ch.uzh.ifi.seal.soprafs17.service.move.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,23 +29,15 @@ public class LobbyService {
 
     private final GameService gameService;
     private final PlayerService playerService;
-    private final RoundCardService roundCardService;
-    private final MarketCardService marketCardService;
-    private final RoundRepository roundRepository;
     private final GameRepository gameRepository;
-    private final ShipService shipService;
-    private final StoneQuarryRepository stoneQuarryRepository;
+    private final MoveService moveService;
 
     @Autowired
-    public LobbyService(GameService gameService, PlayerService playerService, RoundCardService roundCardService, MarketCardService marketCardService, RoundRepository roundRepository, GameRepository gameRepository, ShipService shipService, StoneQuarryRepository stoneQuarryRepository) {
+    public LobbyService(GameService gameService, PlayerService playerService, GameRepository gameRepository, MoveService moveService) {
         this.gameService = gameService;
         this.playerService = playerService;
-        this.roundCardService = roundCardService;
-        this.marketCardService = marketCardService;
-        this.roundRepository = roundRepository;
         this.gameRepository = gameRepository;
-        this.shipService = shipService;
-        this.stoneQuarryRepository = stoneQuarryRepository;
+        this.moveService = moveService;
     }
 
     /*
@@ -177,33 +167,54 @@ public class LobbyService {
 
         this.gameService.initializeGame(gameId);
 
-        for (int i = 1; i <= 6; i++){
-            // Creating the first round of the game
-            Round newRound = new Round();
-            newRound.setGame(game);
-            newRound.setRoundNumber(i);
-
-            // getting a new roundCard
-            RoundCard newRoundCard = roundCardService.getRoundCard(gameId);
-            newRound.setCard(newRoundCard);
-
-            // adding ships to the round
-            List<Ship> currentShips = shipService.createShips(newRoundCard);
-            newRound.setShips(currentShips);
-
-            roundRepository.save(newRound);
-
-            game.getRounds().add(newRound);
+        for (int i = 1; i <= 5; i++){
+            // Creating the six rounds
+            this.gameService.initializeRound(gameId);
         }
 
+        game = this.gameService.findById(gameId);
+
+        // Creating 4 Dummy Moves for the MoveLog
+        GetStonesMove move1 = new GetStonesMove(GameConstants.GET_STONES);
+        move1.setGameId(gameId);
+        move1.setPlayerNr(1);
+        move1.setRoundNr(5);
+
+        PlayCardMove move2 = new PlayCardMove(GameConstants.PLAY_CARD);
+        move2.setGameId(gameId);
+        move2.setPlayerNr(2);
+        move2.setRoundNr(5);
+        move2.setMarketCardType(MarketCardType.HAMMER);
+        move2.setShipId(18L);
+        move2.setPlaceOnShip(1);
+        move2.setCardId(39L);
+
+        PlaceStoneMove move3 = new PlaceStoneMove(GameConstants.PLACE_STONE);
+        move3.setGameId(gameId);
+        move3.setRoundNr(5);
+        move3.setPlayerNr(1);
+        move3.setPlaceOnShip(2);
+        move3.setShipId(18L);
+
+        SailShipMove move4 = new SailShipMove(GameConstants.SAIL_SHIP);
+        move4.setGameId(gameId);
+        move4.setRoundNr(5);
+        move4.setPlayerNr(2);
+        move4.setShipId(18L);
+        move4.setTargetSiteId(game.getBuildingSite("OBELISK").getId());
+
+        // Logging the four dummy moves
+        this.moveService.logMove(move1, game);
+        this.moveService.logMove(move2, game);
+        this.moveService.logMove(move3, game);
+        this.moveService.logMove(move4, game);
+
         // Setting the roundCounter to the correct value
-        game.setRoundCounter(6);
+        this.gameService.initializeRound(gameId);
 
-        // adding marketCards to the marketPlace
-        List<MarketCard> fourCards = marketCardService.getMarketCardDeck(gameId);
-        game.getMarketPlace().setMarketCards(fourCards);
+        this.gameRepository.save(game);
 
-        gameRepository.save(game);
+        game = this.gameService.findById(gameId);
 
         //Set stones on burialChamber
         Stone s1 = new Stone();
@@ -291,7 +302,6 @@ public class LobbyService {
         s22.setColor(GameConstants.WHITE);
         s23.setColor(GameConstants.BLACK);
 
-
         ls3.add(s20);
         ls3.add(s21);
         ls3.add(s22);
@@ -328,12 +338,11 @@ public class LobbyService {
 
         game.getBuildingSite(GameConstants.OBELISK).setStones(ls4);
 
-        game.setStoneQuarry(this.stoneQuarryRepository.findOne(game.getId()));
-
         //Removing the stones from the supply sled
         List<Stone> stoneQuarry1 = game.getStoneQuarry().getBlackStones();
         List<Stone> stoneQuarry2 = game.getStoneQuarry().getWhiteStones();
 
+        // Correcting the Stones on the StoneQuarry
         for (int i = 0; i<10;i++) {
             stoneQuarry1.remove(0);
         }
@@ -348,6 +357,7 @@ public class LobbyService {
         //Setting the handCards
         MarketCard chisel = new MarketCard();
         MarketCard lever = new MarketCard();
+        MarketCard sail = new MarketCard();
         MarketCard statue1 = new MarketCard();
         MarketCard statue2 = new MarketCard();
         MarketCard statue3 = new MarketCard();
@@ -357,6 +367,7 @@ public class LobbyService {
         //Setting marketCard color
         chisel.setColor(GameConstants.BLUE);
         lever.setColor(GameConstants.BLUE);
+        sail.setColor(GameConstants.BLUE);
         statue1.setColor(GameConstants.VIOLET);
         statue2.setColor(GameConstants.VIOLET);
         statue3.setColor(GameConstants.VIOLET);
@@ -366,6 +377,7 @@ public class LobbyService {
         //Setting marketCardType
         chisel.setMarketCardType(MarketCardType.CHISEL);
         lever.setMarketCardType(MarketCardType.LEVER);
+        sail.setMarketCardType(MarketCardType.SAIL);
         statue1.setMarketCardType(MarketCardType.STATUE);
         statue2.setMarketCardType(MarketCardType.STATUE);
         statue3.setMarketCardType(MarketCardType.STATUE);
@@ -375,6 +387,7 @@ public class LobbyService {
         //Setting marketCards gameId
         chisel.setGameId(gameId);
         lever.setGameId(gameId);
+        sail.setGameId(gameId);
         statue1.setGameId(gameId);
         statue2.setGameId(gameId);
         statue3.setGameId(gameId);
@@ -384,14 +397,17 @@ public class LobbyService {
         List<MarketCard> handcardsP1 = game.getPlayerByPlayerNr(1).getHandCards();
         List<MarketCard> handcardsP2 = game.getPlayerByPlayerNr(2).getHandCards();
 
-        handcardsP1.add(chisel);
+        // Add the handCards of the Player 1
+        handcardsP1.add(sail);
         handcardsP1.add(lever);
         handcardsP1.add(burialDeco);
 
+        // Add the handCards of the Player 2
         handcardsP2.add(statue1);
         handcardsP2.add(statue2);
         handcardsP2.add(statue3);
         handcardsP2.add(statue4);
+        handcardsP2.add(chisel);
 
         game.getPlayerByPlayerNr(1).setHandCards(handcardsP1);
         game.getPlayerByPlayerNr(2).setHandCards(handcardsP2);
@@ -416,7 +432,5 @@ public class LobbyService {
         game.getPlayerByPlayerNr(2).setPoints(scoreP2);
 
         gameRepository.save(game);
-
     }
-
 }

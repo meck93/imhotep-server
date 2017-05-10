@@ -29,8 +29,6 @@ import java.util.List;
 
 /**
  * Implements the logic of the game.
- *
- * Created by Moritz Eck on 11.03.2017.
  */
 @Service
 @Transactional
@@ -67,14 +65,17 @@ public class GameService {
      */
     public Game createGame(String name, String owner) {
 
-        if (gameRepository.findByName(name) != null){
-            throw new BadRequestHttpException("A Game with name: " + name + " already exists!");
-        }
+        this.gameRepository.findGamesByName(name).forEach(game -> {
+            if (!game.getStatus().equals(GameStatus.FINISHED)){
+                throw new BadRequestHttpException("A Game with name: " + name + " already exists! " +
+                        "A new Game with the same name can only be created once the current one has finished.");
+            }
+        });
 
-        this.gameRepository.findAll().forEach(game -> {
-            if (game.getOwner().equals(owner) && !game.getStatus().equals(GameStatus.FINISHED)){
+        this.gameRepository.findGamesByOwner(owner).forEach(game -> {
+            if (!game.getStatus().equals(GameStatus.FINISHED)){
                 throw new BadRequestHttpException("The Game with the Owner: " + owner + " is not finished yet! " +
-                        "A new Game with the same owner can only be started once the running-one is finished");
+                        "A new Game with the same owner can only be created once the current one has finished.");
             }
         });
 
@@ -240,6 +241,7 @@ public class GameService {
 
         // Create the stoneQuarry & fill it with Stones
         StoneQuarry stoneQuarry = stoneQuarryService.createStoneQuarry(game);
+        game.setStoneQuarry(stoneQuarry);
         stoneQuarryService.fillQuarry(stoneQuarry);
 
         // Filling the SupplySled
@@ -265,6 +267,9 @@ public class GameService {
 
         // Initializing the first round
         roundService.initializeRound(round.getId(), gameId);
+
+        // Add the Round to the Game
+        game.getRounds().add(round);
 
         // Setting the roundCounter to the correct value
         game.setRoundCounter(round.getRoundNumber());

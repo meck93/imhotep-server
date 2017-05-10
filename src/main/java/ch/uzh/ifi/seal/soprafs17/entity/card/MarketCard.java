@@ -24,6 +24,9 @@ public class MarketCard implements Serializable {
     @Column
     private Long gameId;
 
+    @Column
+    private int positionOnMarketPlace;
+
     @Column(nullable = false)
     @JsonIgnore
     private boolean alreadyChosen;
@@ -69,5 +72,13 @@ public class MarketCard implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public int getPositionOnMarketPlace() {
+        return positionOnMarketPlace;
+    }
+
+    public void setPositionOnMarketPlace(int positionOnMarketPlace) {
+        this.positionOnMarketPlace = positionOnMarketPlace;
     }
 }

@@ -1,12 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.service.move.validation;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
-import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
-import ch.uzh.ifi.seal.soprafs17.entity.site.Obelisk;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
@@ -68,9 +65,9 @@ public class MoveValidatorTest {
         Assert.assertNotNull(game);
         Assert.assertEquals(game, this.gameService.findById(game.getId()));
 
-        User user1 = this.userService.createUser("test", "test");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
         Assert.assertNotNull(user1);
-        User user2 = this.userService.createUser("test2", "test2");
         Assert.assertNotNull(user2);
 
         Player player1 = this.playerService.createPlayer(game.getId(), user1.getId());

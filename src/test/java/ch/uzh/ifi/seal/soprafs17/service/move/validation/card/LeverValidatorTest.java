@@ -81,9 +81,9 @@ public class LeverValidatorTest {
         Assert.assertNotNull(game);
         Assert.assertEquals(game, this.gameService.findById(game.getId()));
 
-        User user1 = this.userService.createUser("test", "test");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
         Assert.assertNotNull(user1);
-        User user2 = this.userService.createUser("test2", "test2");
         Assert.assertNotNull(user2);
 
         Player player1 = this.playerService.createPlayer(game.getId(), user1.getId());

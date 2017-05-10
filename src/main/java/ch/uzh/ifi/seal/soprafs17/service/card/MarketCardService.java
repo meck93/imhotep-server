@@ -1,8 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.service.card;
 
-/**
- * Created by Cristian on 25.03.2017.
- */
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
@@ -14,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static ch.uzh.ifi.seal.soprafs17.constant.MarketCardType.*;
 
@@ -57,37 +56,6 @@ public class MarketCardService {
         return marketCard;
     }
 
-    public MarketCard getMarketCard(Long gameId) {
-        log.debug("Picking a random marketCard out of the marketCardDeck associated with gameId: " + gameId);
-
-        List<MarketCard> marketCardDeck = new ArrayList<>();
-        marketCardRepository.findAllMarketCards(gameId).forEach(marketCardDeck::add);
-
-        // Removing all alreadyChosen marketCards from the deck
-        marketCardDeck.removeIf(MarketCard::isAlreadyChosen);
-
-        // Choosing one of the new marketCards by random
-        Random rnd = new Random();
-        MarketCard chosenMarketCard = marketCardDeck.get(rnd.nextInt(marketCardDeck.size()-1));
-
-        // Marking the chosen card as used
-        chosenMarketCard.setAlreadyChosen(true);
-        marketCardRepository.save(chosenMarketCard);
-
-        return chosenMarketCard;
-    }
-
-    public List<MarketCard> getMarketCardDeck(Long gameId) {
-        log.debug("Get the next four Market Cards by random for the Game: " + gameId);
-
-        List<MarketCard> result = new ArrayList<>();
-        for (int i = 0; i < MARKET_CARD_DECK_SIZE; i++){
-            result.add(getMarketCard(gameId));
-        }
-
-        return result;
-    }
-
     /**
      * Creates the marketCardDeck
      * @param   gameId
@@ -122,6 +90,46 @@ public class MarketCardService {
         }
     }
 
+    protected MarketCard getMarketCard(Long gameId) {
+        log.debug("A random MarketCard from the deck of Game: " + gameId);
 
+        List<MarketCard> marketCardDeck = new ArrayList<>();
+        this.marketCardRepository.findAllMarketCards(gameId).forEach(marketCardDeck::add);
 
+        // Removing all alreadyChosen marketCards from the deck
+        marketCardDeck.removeIf(MarketCard::isAlreadyChosen);
+
+        // Choosing one of the new marketCards by random
+        Random rnd = new Random();
+        MarketCard chosenMarketCard = marketCardDeck.get(rnd.nextInt(marketCardDeck.size()-1));
+
+        // Marking the chosen card as used
+        chosenMarketCard.setAlreadyChosen(true);
+
+        this.marketCardRepository.save(chosenMarketCard);
+
+        return chosenMarketCard;
+    }
+
+    public List<MarketCard> getMarketCardDeck(Long gameId) {
+        log.debug("Four random MarketCards by Game: " + gameId);
+
+        // Create a deck of four Market Cards
+        List<MarketCard> fourCards = new ArrayList<>();
+
+        // Adding four random Market Cards to the deck
+        for (int i = 1; i <= MARKET_CARD_DECK_SIZE; i++){
+            MarketCard marketCard = getMarketCard(gameId);
+
+            // Assign each Market Card with a position number to be ordered on the Market Place
+            marketCard.setPositionOnMarketPlace(i);
+
+            this.marketCardRepository.save(marketCard);
+
+            // Add the card to the deck
+            fourCards.add(marketCard);
+        }
+
+        return fourCards;
+    }
 }

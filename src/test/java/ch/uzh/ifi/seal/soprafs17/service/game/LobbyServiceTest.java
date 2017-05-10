@@ -3,7 +3,6 @@ package ch.uzh.ifi.seal.soprafs17.service.game;
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
@@ -72,7 +71,7 @@ public class LobbyServiceTest {
     @Test
     public void createGame() {
         Game testGame = new Game();
-        User user1 = userService.createUser("testName","testOwner");
+        User user1 = userService.createUser("testOwner");
         testGame.setId(1L);
         testGame.setOwner("testOwner");
         testGame.setName("testGame");
@@ -92,8 +91,8 @@ public class LobbyServiceTest {
 
     @Test
     public void joinGame() {
-        User user1 = userService.createUser("testName","testOwner");
-        User user2 = userService.createUser("testName2","testOwner2");
+        User user1 = userService.createUser("testOwner");
+        User user2 = userService.createUser("testOwner2");
         Game game = gameService.createGame("testGame","testOwner");
         lobbyService.joinGame(1L,2L);
         lobbyService.joinGame(1L,1L);
@@ -104,8 +103,8 @@ public class LobbyServiceTest {
     public void removePlayer() {
         Game game = gameService.createGame("testGame", "testOwner1");
 
-        User user1 = userService.createUser("testUser1", "testOwner1");
-        User user2 = userService.createUser("testUser2", "testOwner2");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
 
         Player player1 = playerService.createPlayer(game.getId(), user1.getId());
         playerService.initializePlayer(game.getId(), player1);
@@ -126,8 +125,8 @@ public class LobbyServiceTest {
 
     @Test
     public void startGame() {
-        User user1 = userService.createUser("testUser1", "test1");
-        User user2 = userService.createUser("testUser2", "test2");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
 
         Game game = gameService.createGame("testGame", "test1");
 
@@ -154,8 +153,8 @@ public class LobbyServiceTest {
 
     @Test
     public void startGameWithException() {
-        User user1 = userService.createUser("testUser1", "test1");
-        User user2 = userService.createUser("testUser2", "test2");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
 
         Game game = gameService.createGame("testGame", "test1");
 
@@ -182,8 +181,8 @@ public class LobbyServiceTest {
 
     @Test
     public void stopGame() {
-        User user1 = userService.createUser("testUser1", "test1");
-        User user2 = userService.createUser("testUser2", "test2");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
 
         Game game = gameService.createGame("testGame", "test1");
 
@@ -204,8 +203,8 @@ public class LobbyServiceTest {
 
     @Test
     public void deleteGame() {
-        User user1 = userService.createUser("testUser1", "test1");
-        User user2 = userService.createUser("testUser2", "test2");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
 
         Game game = gameService.createGame("testGame", "test1");
 
@@ -232,8 +231,8 @@ public class LobbyServiceTest {
         */
 
         //Creating prerequisites
-        User user1 = userService.createUser("testUser1", "test1");
-        User user2 = userService.createUser("testUser2", "test2");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
 
         Game game = gameService.createGame("testGame", "test1");
 
@@ -258,8 +257,8 @@ public class LobbyServiceTest {
         */
 
         //Creating prerequisites
-        User user3 = userService.createUser("testUser3", "test3");
-        User user4 = userService.createUser("testUser4", "test4");
+        User user3 = userService.createUser("test3");
+        User user4 = userService.createUser("test4");
 
         Game game2 = gameService.createGame("testGame2", "test3");
 
@@ -294,7 +293,7 @@ public class LobbyServiceTest {
 
         //Check if handCards are set correctly
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().size(),3);
-        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().size(),4);
+        Assert.assertEquals(game2.getPlayerByPlayerNr(2).getHandCards().size(),5);
 
         //Check if the marketCards are correctly set in the first players' handCards
         Assert.assertEquals(game2.getPlayerByPlayerNr(1).getHandCards().get(0).getColor(), GameConstants.BLUE);

@@ -1,17 +1,17 @@
 package ch.uzh.ifi.seal.soprafs17.entity.site;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity(name = GameConstants.PYRAMID)
+@JsonIgnoreProperties(value = {"scores"})
 @DiscriminatorValue(value = GameConstants.PYRAMID)
 public class Pyramid extends BuildingSite {
 
     // Scores for the Pyramid
-    @JsonIgnore
     private static final int[] scores = {2, 1, 3, 2, 4, 3, 2, 1, 3, 2, 3, 1, 3, 4};
 
     public Pyramid() {

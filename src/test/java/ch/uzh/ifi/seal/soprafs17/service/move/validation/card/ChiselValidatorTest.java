@@ -2,17 +2,16 @@ package ch.uzh.ifi.seal.soprafs17.service.move.validation.card;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.MarketCardType;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
-import ch.uzh.ifi.seal.soprafs17.entity.move.*;
+import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
+import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
 import ch.uzh.ifi.seal.soprafs17.exceptions.MoveValidationException;
 import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -84,9 +83,9 @@ public class ChiselValidatorTest {
         Assert.assertNotNull(game);
         Assert.assertEquals(game, this.gameService.findById(game.getId()));
 
-        User user1 = this.userService.createUser("test", "test");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
         Assert.assertNotNull(user1);
-        User user2 = this.userService.createUser("test2", "test2");
         Assert.assertNotNull(user2);
 
         Player player1 = this.playerService.createPlayer(game.getId(), user1.getId());

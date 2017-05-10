@@ -8,7 +8,6 @@ import ch.uzh.ifi.seal.soprafs17.entity.card.MarketCard;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Round;
 import ch.uzh.ifi.seal.soprafs17.entity.move.AMove;
-import ch.uzh.ifi.seal.soprafs17.entity.move.GetStonesMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.PlaceStoneMove;
 import ch.uzh.ifi.seal.soprafs17.entity.move.PlayCardMove;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
@@ -19,7 +18,6 @@ import ch.uzh.ifi.seal.soprafs17.repository.MarketCardRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
 import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
-import ch.uzh.ifi.seal.soprafs17.service.move.validation.MoveValidator;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
 import org.junit.Assert;
@@ -84,9 +82,9 @@ public class PlayCardValidatorTest {
         Assert.assertNotNull(game);
         Assert.assertEquals(game, this.gameService.findById(game.getId()));
 
-        User user1 = this.userService.createUser("test", "test");
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
         Assert.assertNotNull(user1);
-        User user2 = this.userService.createUser("test2", "test2");
         Assert.assertNotNull(user2);
 
         Player player1 = this.playerService.createPlayer(game.getId(), user1.getId());

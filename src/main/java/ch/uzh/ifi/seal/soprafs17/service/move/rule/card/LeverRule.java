@@ -23,6 +23,8 @@ public class LeverRule implements IRule{
     @Override
     public Game apply(AMove move, Game game) throws ApplyMoveException {
 
+        /* LEVER MOVE: let's the Player decide the Unloading order of the Stones on the specified Ship */
+
         // Typecasting the AbstractMove to a PlaceStoneMove
         PlayCardMove newMove = (PlayCardMove) move;
 
@@ -48,7 +50,14 @@ public class LeverRule implements IRule{
             // Docking the Ship with correct ID to the MarketPlace
             game.getMarketPlace().setDockedShipId(newMove.getShipId());
             game.getMarketPlace().setDocked(true);
+
+            // Reordering the stones on the Ship according to the unload order
+            for (int i = 0; i < newMove.getUnloadingOrder().size(); i++) {
+                // Retrieve the Stones on the Ship according to the unloadOrder and set the new placeOnShip
+                assignedShip.getStoneById(newMove.getUnloadingOrder().get(i)).setPlaceOnShip(i + 1);
+            }
         }
+
         else {
             // Retrieving the correct BuildingSite
             BuildingSite buildingSite = (BuildingSite) game.getSiteById(newMove.getTargetSiteId());
@@ -73,8 +82,10 @@ public class LeverRule implements IRule{
             // Adding the updated BuildingSite back to the game
             game.getBuildingSites().add(buildingSite);
         }
+
         // Adding the updated ship back to the game
         game.getRoundByRoundCounter().getShips().add(assignedShip);
+
         // Adding the updated Player back to the Game
         game.getPlayers().add(player);
 
