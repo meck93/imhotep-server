@@ -47,10 +47,9 @@ public abstract class GenericController {
 	}
 
 	// Keep this one disable for all testing purposes -> it shows more detail with this one disabled
-	/*@ExceptionHandler(Exception.class)
+	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public void handleException(Exception exception) {
 		log.error("Exception raised " + exception);
 	}
-*/
 }
