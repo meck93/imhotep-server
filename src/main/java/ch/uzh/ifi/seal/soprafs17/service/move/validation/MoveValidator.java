@@ -10,7 +10,7 @@ public class MoveValidator implements IValidator {
     @Override
     public boolean supports(AMove move) {
         // This Validation shall be made by every Move disregarding of its type
-        return (move != null);
+        return move != null;
     }
 
     @Override

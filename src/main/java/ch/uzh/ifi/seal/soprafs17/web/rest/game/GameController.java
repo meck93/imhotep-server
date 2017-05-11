@@ -23,7 +23,7 @@ public class GameController extends GenericController {
         this.gameService = gameService;
     }
 
-    /*
+    /**
      * Context: /game
      * Returns a list of all games
      */
@@ -33,7 +33,7 @@ public class GameController extends GenericController {
         return gameService.listGames();
     }
 
-    /*
+    /**
      * Handles the request for the game with Id: {gameId}
      */
     @RequestMapping(value = "/{gameId}", method = RequestMethod.GET)
@@ -42,7 +42,7 @@ public class GameController extends GenericController {
         return gameService.findById(gameId);
     }
 
-    /*
+    /**
      * Handles the request for the size of the StoneQuarry of each Player
      */
     @RequestMapping(value = "/{gameId}/stoneQuarry/{playerNumber}", method = RequestMethod.GET)

@@ -16,7 +16,7 @@ public class CardScorer implements IScoreable {
 
     @Override
     public boolean supports(String siteType) {
-        return (siteType.equals(GameConstants.CARD));
+        return siteType.equals(GameConstants.CARD);
     }
 
     @Override

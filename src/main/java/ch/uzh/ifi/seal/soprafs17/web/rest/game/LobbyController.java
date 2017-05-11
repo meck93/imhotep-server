@@ -23,7 +23,7 @@ public class LobbyController extends GenericController {
         this.lobbyService = lobbyService;
     }
 
-    /*
+    /**
      * Context: /lobby
      * Returns a list of all games
      */
@@ -33,7 +33,7 @@ public class LobbyController extends GenericController {
         return lobbyService.listGames();
     }
 
-    /*
+    /**
      * Context: /lobby/games
      * Creates a game
      * @Param Game a game body (at least all non-nullable fields), userId - User
@@ -45,7 +45,7 @@ public class LobbyController extends GenericController {
         return lobbyService.createGame(game, userId);
     }
 
-    /*
+    /**
      * Context: /lobby/games/{gameId}
      * Let's a user join a game / let's a user become a player
      * @Param Game a game body (at least all non-nullable fields), userId - User
@@ -56,7 +56,7 @@ public class LobbyController extends GenericController {
         lobbyService.joinGame(gameId, userId);
     }
 
-    /*
+    /**
      * Context: /lobby/games/{gameId}/start
      * Starting a Game
      * @Param gameId Game, playerId - The Owner
@@ -67,7 +67,7 @@ public class LobbyController extends GenericController {
         lobbyService.startGame(gameId, playerId);
     }
 
-    /*
+    /**
      * Context: /lobby/games/{gameId}/delete
      * Removing a Game
      * @Param gameId Game
@@ -78,7 +78,7 @@ public class LobbyController extends GenericController {
         lobbyService.deleteGame(gameId);
     }
 
-    /*
+    /**
      * Context: /lobby/games/{gameId}/players/{playerNr}/delete
      * Removing a Game
      * @Param gameId Game
@@ -89,7 +89,7 @@ public class LobbyController extends GenericController {
         lobbyService.removePlayer(gameId, playerId);
     }
 
-    /*
+    /**
     * Context: /lobby/games/{gameId}/fastforward
     * Fastforward function
     * @Param gameId

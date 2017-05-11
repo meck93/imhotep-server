@@ -31,7 +31,7 @@ public class HammerValidator implements IValidator {
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. SupplySled is already full! - Move cannot be applied");
         }
         // Stones taken from StoneQuarry must be less than the maximal allowed amount (30)
-        if (game.getStoneQuarry().getStonesByPlayerNr(game.getCurrentPlayer()).size() == 0){
+        if (game.getStoneQuarry().getStonesByPlayerNr(game.getCurrentPlayer()).isEmpty()){
             throw new MoveValidationException("Validation for Move: " + move.getMoveType() + " failed. The Player: " + game.getCurrentPlayer() + " has already used the maximal amount of stones allowed!");
         }
 

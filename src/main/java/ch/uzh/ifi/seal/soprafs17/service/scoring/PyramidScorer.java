@@ -15,9 +15,10 @@ public class PyramidScorer implements IScoreable {
 
     @Override
     public boolean supports(String siteType) {
-        return (siteType.equals(PYRAMID));
+        return siteType.equals(GameConstants.PYRAMID);
     }
 
+    @Override
     public Game score(Game game){
         return this.scoreNow(game);
     }
