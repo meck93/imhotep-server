@@ -42,31 +42,21 @@ public class PyramidScorer implements IScoreable {
             if (stones.indexOf(stone) < 14){
                 // Add the points to the correct player according to the color
                 switch (stone.getColor()){
-                    case BLACK: points[0] = points[0] + scores[stones.indexOf(stone)]; break;
-                    case WHITE: points[1] = points[1] + scores[stones.indexOf(stone)]; break;
-                    case BROWN: points[2] = points[2] + scores[stones.indexOf(stone)]; break;
-                    case GRAY: points[3] = points[3] + scores[stones.indexOf(stone)]; break;
+                    case BLACK: points[0] += scores[stones.indexOf(stone)]; break;
+                    case WHITE: points[1] += scores[stones.indexOf(stone)]; break;
+                    case BROWN: points[2] += scores[stones.indexOf(stone)]; break;
+                    case GRAY:  points[3] += scores[stones.indexOf(stone)]; break;
                 }
             }
             // Just add 1 if all 14 places on the pyramid are already occupied
             else {
                 // Add the points to the correct player according to the color
                 switch (stone.getColor()){
-                    case BLACK:
-                        points[0] += 1;
-                        break;
-                    case WHITE:
-                        points[1] += 1;
-                        break;
-                    case BROWN:
-                        points[2] += 1;
-                        break;
-                    case GRAY:
-                        points[3] += 1;
-                        break;
-                    default:
-                        throw new InternalServerException("Wrong Color - Color doesn't exist");
-
+                    case BLACK: points[0] += 1; break;
+                    case WHITE: points[1] += 1; break;
+                    case BROWN: points[2] += 1; break;
+                    case GRAY: points[3] += 1; break;
+                    default: throw new InternalServerException("Wrong Color - Color doesn't exist");
                 }
             }
         }
