@@ -179,7 +179,8 @@ public class ObeliskScorer implements IScoreable {
         // final resulting scores for each rank
         int res1 = 0, res2 = 0, res3 = 0;
 
-        // making sure the result, sum and counter are not null, calculating the resulting value
+        // making sure the result, sum and counter are not null
+        // calculating the resulting value: purposely integer division -> rounding down
         if (sum1 != 0) {
             res1 = sum1/counter1;
         }
