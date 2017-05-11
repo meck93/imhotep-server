@@ -46,113 +46,110 @@ public class BurialChamberScorer implements IScoreable {
 
     // method to add points to each player
     public void addPoints(Game game, int player, int figure){
-        int[] arr;
+        int[] arr = game.getPlayerByPlayerNr(player).getPoints();
         if (figure == 1){
             // add one point for a figure of size 1
-            arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+1;
-            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure == 2){
             // add 3 points for a figure of size 2
-            arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+3;
-            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure == 3){
             // add 6 points for a figure of size 3
-            arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+6;
-            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure == 4){
             // add 10 points for a figure of size 4
-            arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+10;
-            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure == 5){
             // add 15 points for a figure of size 5
-            arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+15;
-            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
         else if (figure > 5){
             // add 15 points + for every additional stone you get two points
-            arr = game.getPlayerByPlayerNr(player).getPoints();
             arr[3] = arr[3]+2*(figure-5)+15;
-            game.getPlayerByPlayerNr(player).setPoints(arr);
         }
+        game.getPlayerByPlayerNr(player).setPoints(arr);
     }
 
     // lookup method: Checks if the index exists (to prevent out of bound exception)
     public boolean isValid(int position) {
-        if (position >= 0 && position <= 29) {
-            return true;
-        } else {
-            return false;
-        }
+        return position >= 0 && position <= 29;
     }
+
     // looks down, returns the index that is below the chosen index
     public int lookDown(int[] arr, int position) {
 
         // An index of the last row (position 20-29) is not allowed to look down
-        if (position >= 20 || position <0) return -1;
-        int pos;
-        pos = (position + 10) % arr.length;
-        return pos;
+        if (position >= 20 || position <0) {
+            return -1;
+        }
+
+        return (position + 10) % arr.length;
     }
     // looks up, returns the index that is above the chosen index
     public int lookUp(int[] arr, int position) {
 
         // An index of the first row (position 0-9) is not allowed to look up
-        if (position <=9 || position <0 || position >= 30 ) return -1;
-        int pos;
-        pos = (position - 10 ) % arr.length;
-        return pos;
+        if (position <=9 || position <0 || position >= 30 ) {
+            return -1;
+        }
+
+        return (position - 10 ) % arr.length;
     }
     // looks right, returns the index after the one chosen (next position)
     public int lookRight(int[] arr, int position) {
 
         // The last index of each row is not allowed to look right
-        if (position >= 29 || position<0 || position == 9 || position == 19 ) return -1;
-        int pos;
-        pos = (position + 1) % arr.length;
-        return pos;
+        if (position >= 29 || position<0 || position == 9 || position == 19 ) {
+            return -1;
+        }
+
+        return (position + 1) % arr.length;
     }
 
     // looks right, returns the index before the chosen index
     public int lookLeft(int[] arr, int position) {
 
         // The first index of each row is not allowed to look left
-        if (position > 29 || position<=0 || position == 10 || position == 20 ) return -1;
-        int pos;
-        pos = (position + -1) % arr.length;
-        return pos;
+        if (position > 29 || position<=0 || position == 10 || position == 20 ) {
+            return -1;
+        }
+        return (position + -1) % arr.length;
     }
 
     // Increments the lookup counter
     public int incrementCount(int counter, int[] arr) {
 
         // Return -1 for an invalid index
-        if (counter >= 29 || counter < 0) return -1;
+        if (counter >= 29 || counter < 0) {
+            return -1;
+        }
         // To match the correct filling order, an index of the first row follows the index of the last row
-        if (counter >= 20) return (counter + 11) % arr.length;
+        if (counter >= 20) {
+            return (counter + 11) % arr.length;
+        }
         // To match the correct filling order, after the first row comes the second row, after the second row comes the third
-        else return (counter + 10) % arr.length;
+        else {
+            return (counter + 10) % arr.length;
+        }
     }
 
     // finds the correct lookup index
     public int findLookUpIndex(int[] arr){
         for (int i = 0; i<arr.length; i++){
             // Set to -2 (Left to be computed)
-            if(arr[i] == -2) return i;
+            if (arr[i] == -2) {
+                return i;
+            }
         }
         return -1;
     }
 
     // Method that goes trough the array and computes all figures
-    public void scoreChamber(int arr[], int player, Game game) {
+    public void scoreChamber(int[] arr, int player, Game game) {
         int count = 0;
         int figure = 0;
         while (isValid(count)) {
