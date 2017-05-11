@@ -6,27 +6,10 @@ import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 
 import java.util.List;
 
-
-
 public class BurialChamberScorer implements IScoreable {
     @Override
     public boolean supports(String siteType) {
         return siteType.equals(GameConstants.BURIAL_CHAMBER);
-    }
-
-    @Override
-    public Game score(Game game) {
-        return this.scoreEndOfGame(game);
-    }
-
-    @Override
-    public Game scoreNow(Game game) {
-        return null;
-    }
-
-    @Override
-    public Game scoreEndOfRound(Game game) {
-        return null;
     }
 
     public int[] convertToArray(List<Stone> aList){
@@ -209,5 +192,20 @@ public class BurialChamberScorer implements IScoreable {
         }
 
         return game;
+    }
+
+    @Override
+    public Game score(Game game) {
+        return this.scoreEndOfGame(game);
+    }
+
+    @Override
+    public Game scoreNow(Game game) {
+        return null;
+    }
+
+    @Override
+    public Game scoreEndOfRound(Game game) {
+        return null;
     }
 }
