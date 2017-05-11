@@ -43,10 +43,10 @@ public class TempleScorer implements IScoreable {
 
         // Variables for adding up the Points
         // Upper Limit - Starting Point
-        int size = 0;
+        int size;
 
         // Lower Limit - which Stones to be included
-        int limit = 0;
+        int limit;
 
         // With 2 Players only the first 4 places on the Temple will be scored
         if (game.getNumberOfPlayers() == 2){
