@@ -140,10 +140,9 @@ public class ObeliskScorer implements IScoreable {
         // Counter to iterate through the scores[]
         int nr1 = 0;
 
-        // Sorting the Map according to Value
+        // Sorting the Map according to Value and creating a new sorted one
         Map<Integer, Integer> sortedMap = testMap.entrySet().stream().sorted(Map.Entry.comparingByValue())
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (e1,e2) -> e1, LinkedHashMap::new));
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1,e2) -> e1, LinkedHashMap::new));
 
         // Calculating the sum of each rank
         for (Integer integer : sortedMap.values()){
