@@ -65,7 +65,7 @@ public class TempleScorer implements IScoreable {
             limit = 0;
         }
 
-        // Adding up the Points on the Temple
+        // Adding up the Points on the Temple (Size = StartPosition, Limit = EndPosition)
         for (int i = size; i >= limit; i--) {
             // Add the points to the correct player according to the color
             switch (stones.get(i).getColor()) {
