@@ -180,28 +180,6 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void stopGame() {
-        User user1 = userService.createUser("test1");
-        User user2 = userService.createUser("test2");
-
-        Game game = gameService.createGame("testGame", "test1");
-
-        Player player1 = playerService.createPlayer(game.getId(), user1.getId());
-        playerService.initializePlayer(game.getId(), player1);
-        gameService.addPlayer(game.getId(), player1);
-        gameService.updateNrOfPlayers(game.getId());
-
-        Player player2 = playerService.createPlayer(game.getId(), user2.getId());
-        playerService.initializePlayer(game.getId(), player2);
-        gameService.addPlayer(game.getId(), player2);
-        gameService.updateNrOfPlayers(game.getId());
-
-        lobbyService.startGame(game.getId(),player1.getId());
-        lobbyService.stopGame(1L);
-        Assert.assertEquals(game.getStatus(),GameStatus.FINISHED);
-    }
-
-    @Test
     public void deleteGame() {
         User user1 = userService.createUser("test1");
         User user2 = userService.createUser("test2");

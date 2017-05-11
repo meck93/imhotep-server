@@ -68,17 +68,6 @@ public class LobbyController extends GenericController {
     }
 
     /*
-     * Context: /lobby/games/{gameId}/stop
-     * Stopping a Game
-     * @Param gameId Game, playerId - The Owner
-     */
-    @RequestMapping(value = "games/{gameId}/stop", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void stopGame(@PathVariable Long gameId, @RequestParam("playerId") Long playerId) {
-        lobbyService.stopGame(gameId);
-    }
-
-    /*
      * Context: /lobby/games/{gameId}/delete
      * Removing a Game
      * @Param gameId Game
