@@ -2,14 +2,20 @@ package ch.uzh.ifi.seal.soprafs17.service.scoring;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Game;
 import ch.uzh.ifi.seal.soprafs17.entity.game.Stone;
 import ch.uzh.ifi.seal.soprafs17.entity.user.Player;
 import ch.uzh.ifi.seal.soprafs17.entity.user.User;
+import ch.uzh.ifi.seal.soprafs17.exceptions.InternalServerException;
+import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.repository.RoundRepository;
+import ch.uzh.ifi.seal.soprafs17.repository.StoneQuarryRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.user.PlayerService;
 import ch.uzh.ifi.seal.soprafs17.service.user.UserService;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +24,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,85 +39,103 @@ import java.util.List;
 @Transactional
 public class BurialChamberScorerTest {
 
-    @Autowired
-    public GameService gameService;
-    @Autowired
-    public PlayerService playerService;
-    @Autowired
-    public UserService userService;
+    private Game game;
 
-    private  BurialChamberScorer burialChamberScorer = new BurialChamberScorer();
+    @Autowired
+    private GameService gameService;
+    @Autowired
+    private GameRepository gameRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private PlayerService playerService;
+
+    private  BurialChamberScorer burialChamberScorer;
     
     @Test
     public void supports() {
         Assert.assertEquals(burialChamberScorer.supports(GameConstants.BURIAL_CHAMBER),true);
     }
 
-    @Test
-    public void score() {
-        try {
-            Assert.assertNull(burialChamberScorer.score(new Game()));
-        } catch (NullPointerException e) {}
-    }
+    @Before
+    public void createEnvironment(){
+        // Creating the burialChamberScorer
+        burialChamberScorer = new BurialChamberScorer();
+        Assert.assertNotNull(burialChamberScorer);
 
-    @Test
-    public void scoreNow() {
-        try {
-            // score the chamber now. (Should return null, since the chamber gets scored at the end of the game)
-            Assert.assertNull(burialChamberScorer.scoreNow(new Game()));
-        } catch (NullPointerException e) {}
-    }
+        // Set Up the Environment for the Tests (1 Game with 2 Players)
+        game = this.gameService.createGame("Test", "test1");
+        Assert.assertNotNull(game);
+        Assert.assertEquals(game, this.gameService.findById(game.getId()));
 
-    @Test
-    public void scoreEndOfRound() {
-        try {
-            // score the chamber at the end of the round. (Should return null, since the chamber gets scored at the end of the game)
-            Assert.assertNull(burialChamberScorer.scoreEndOfRound(new Game()));
-        } catch (NullPointerException e) {}
+        // Creating 2 Users
+        User user1 = userService.createUser("test1");
+        User user2 = userService.createUser("test2");
+        Assert.assertNotNull(user1);
+        Assert.assertNotNull(user2);
+
+        // Converting the first user into the first player
+        Player player1 = this.playerService.createPlayer(game.getId(), user1.getId());
+        Assert.assertNotNull(player1);
+        Assert.assertEquals(player1, this.playerService.findPlayerById(player1.getId()));
+        this.playerService.initializePlayer(game.getId(), player1);
+        // adding the player to the game
+        this.gameService.addPlayer(game.getId(), player1);
+        this.gameService.updateNrOfPlayers(game.getId());
+
+        // Converting the second user into the second player
+        Player player2 = this.playerService.createPlayer(game.getId(), user2.getId());
+        Assert.assertNotNull(player2);
+        Assert.assertEquals(player2, this.playerService.findPlayerById(player2.getId()));
+        this.playerService.initializePlayer(game.getId(), player2);
+        // adding the player to the game
+        this.gameService.addPlayer(game.getId(), player2);
+        this.gameService.updateNrOfPlayers(game.getId());
+
+        Assert.assertEquals(game.getPlayers().size(), 2);
+
+        // Starting the Game
+        this.gameService.startGame(1L);
+        Assert.assertEquals(game.getStatus(), GameStatus.RUNNING);
+
+        this.gameRepository.save(game);
     }
 
     @Test
     public void convertToArray(){
-        // Create List of stones
+
+        // Creating a list for the DummyStones
         List<Stone> stones = new ArrayList<>();
-        // Create stones
+
+        // Creating four DummyStones (all different Color)
         Stone stone1 = new Stone();
         Stone stone2 = new Stone();
         Stone stone3 = new Stone();
         Stone stone4 = new Stone();
-        Stone stone5 = new Stone();
-        Stone stone6 = new Stone();
-        Stone stone7 = new Stone();
-        Stone stone8 = new Stone();
-
-
-        // testArray: Player 1's stones = 1, Player 2's stones = 2, Player 3's stones = 33, Player 4's stones = 4,
-        int[] testArray ={
-                1,4,3,0,0,0,0,0,0,0,
-                2,1,4,0,0,0,0,0,0,0,
-                3,2,0,0,0,0,0,0,0,0
-        };
 
         // Set the stone's color according to the testArray
         stone1.setColor(GameConstants.BLACK);
         stone2.setColor(GameConstants.WHITE);
         stone3.setColor(GameConstants.BROWN);
         stone4.setColor(GameConstants.GRAY);
-        stone5.setColor(GameConstants.BLACK);
-        stone6.setColor(GameConstants.WHITE);
-        stone7.setColor(GameConstants.BROWN);
-        stone8.setColor(GameConstants.GRAY);
 
-        // Add the stones to the list
+        // Adding the four Stones to the List for the first time
+        stones.add(stone1);
+        stones.add(stone2);
+        stones.add(stone3);
+        stones.add(stone4);
+      
+        // Adding the same four Stones again
         stones.add(stone1);
         stones.add(stone2);
         stones.add(stone3);
         stones.add(stone4);
 
-        stones.add(stone5);
-        stones.add(stone6);
-        stones.add(stone7);
-        stones.add(stone8);
+        int[] testArray ={
+                1,4,3,0,0,0,0,0,0,0,
+                2,1,4,0,0,0,0,0,0,0,
+                3,2,0,0,0,0,0,0,0,0
+        };
 
         // Convert the list to an array to compute the algorithm
         int[] resultArray = burialChamberScorer.convertToArray(stones);
@@ -279,25 +304,12 @@ public class BurialChamberScorerTest {
 
         // find lookUpIndex
         Assert.assertEquals(burialChamberScorer.findLookUpIndex(testArray),1);
-
     }
 
     @Test
     public void addPoints(){
-        // Create game and user
-        Game game = gameService.createGame("testName", "testOwner");
-        User user1 = userService.createUser("test1");
-        // Convert user to player
-        Player player1 = playerService.createPlayer(1L,1L);
-        user1.setPlayer(player1);
-        // Add player to game
-        List<Player> players = new ArrayList<>();
-        players.add(player1);
-        game.setPlayers(players);
-        // Initialize player points
-        int[] points = {0,0,0,0};
-        player1.setPoints(points);
-        // score points
+        Player player1 = game.getPlayerByPlayerNr(1);
+
         burialChamberScorer.addPoints(game,1,0);
         Assert.assertEquals(player1.getPoints()[3],0);
         // score points
@@ -322,6 +334,8 @@ public class BurialChamberScorerTest {
 
     @Test
     public void scoreChamber(){
+        game = this.gameService.findById(1L);
+      
         // testArray
         int[] testArray ={
                 0,1,1,1,1,0,0,0,0,0,
@@ -329,49 +343,87 @@ public class BurialChamberScorerTest {
                 0,1,1,1,0,0,0,0,0,0
         };
 
-        // create game and user
-        Game game = gameService.createGame("testName", "testOwner");
-        User user1 = userService.createUser("test1");
-        // convert user to player
-        Player player1 = playerService.createPlayer(1L,1L);
-        user1.setPlayer(player1);
-        // add player to the game
-        List<Player> players = new ArrayList<>();
-        players.add(player1);
-        game.setPlayers(players);
-        // initialize player score
-        int[] points = {0,0,0,0};
-        player1.setPoints(points);
-        // score chamber
-        burialChamberScorer.scoreChamber(testArray,1,game);
-        Assert.assertEquals(player1.getPoints()[3],24);
+        burialChamberScorer.scoreChamber(testArray,1, game);
+
+        Assert.assertEquals(game.getPlayerByPlayerNr(1).getPoints()[3],24);
     }
 
-   /* @Test
+    @Test
     public void scoreEndOfGame(){
-        Game game = gameService.createGame("testName", "testOwner");
-        game.setId(1L);
-        User user1 = userService.createUser("testName","testUser");
-        Player player1 = playerService.createPlayer(1L,1L);
-        user1.setPlayer(player1);
-        List<Player> players = new ArrayList<>();
-        players.add(player1);
-        *//*User user2 = userService.createUser("testName2","testUser2");
-        Player player2 = playerService.createPlayer(1L,2L);
-        user2.setPlayer(player2);
-        players.add(player2);
-        game.setPlayers(players);
-*//*
-        int[] points = {0,0,0,0};
-        player1.setPoints(points);
-        *//*player2.setPoints(points);*//*
-        int[] testArray ={
-                1,0,0,1,0,2,0,1,0,2,
-                1,0,0,1,2,2,2,1,0,0,
-                1,1,1,1,0,2,0,0,0,1
-        };
+        // Retrieving the Game
+        game = this.gameService.findById(1L);
+
+        // Creating a list for the testStones
+        List<Stone> stoneList = new ArrayList<>();
+
+        // Dummy Stone Color BLACK
+        Stone stoneBlack = new Stone();
+        stoneBlack.setColor(GameConstants.BLACK);
+
+        // Dummy Stone Color WHITE
+        Stone stoneWhite = new Stone();
+        stoneWhite.setColor(GameConstants.WHITE);
+
+        /* Creating a form on the BURIAL CHAMBER that looks like this
+           1 = BLACK Color 2 = WHITE Color
+
+           1 2 2 1 2
+           1 2 2 1 2
+           1 1 1 1 2
+
+           Player with color BLACK has 8 connected Stone-Blocks
+           Player with color WHITE has 4 and 3 connected Stone-Blocks
+
+         */
+
+        // First Row
+        stoneList.add(stoneBlack);
+        stoneList.add(stoneBlack);
+        stoneList.add(stoneBlack);
+
+        // Second Row
+        stoneList.add(stoneWhite);
+        stoneList.add(stoneWhite);
+        stoneList.add(stoneBlack);
+
+        // Third Row
+        stoneList.add(stoneWhite);
+        stoneList.add(stoneWhite);
+        stoneList.add(stoneBlack);
+
+        // Fourth Row
+        stoneList.add(stoneBlack);
+        stoneList.add(stoneBlack);
+        stoneList.add(stoneBlack);
+
+        // Fifth Row
+        stoneList.add(stoneWhite);
+        stoneList.add(stoneWhite);
+        stoneList.add(stoneWhite);
+
+        // Adding the Test-Stones to the BURIAL CHAMBER
+        game.getBuildingSite(GameConstants.BURIAL_CHAMBER).setStones(stoneList);
+
+        // Scoring the BURIAL CHAMBER
         burialChamberScorer.scoreEndOfGame(game);
-        Assert.assertEquals(game.getPlayerByPlayerNr(1).getPoints()[3],25);
-       *//* Assert.assertEquals(player2.getPoints()[3],18);*//*
-    }*/
+
+        // Asserting that the score is correct
+        Assert.assertEquals(game.getPlayerByPlayerNr(1).getPoints()[3],21);
+        Assert.assertEquals(game.getPlayerByPlayerNr(2).getPoints()[3],16);
+    }
+
+    /*
+    The following methods are not supported by the BURIAL CHAMBER
+    And will always return null.
+     */
+
+    @Test
+    public void scoreNow() {
+        Assert.assertNull(burialChamberScorer.scoreNow(new Game()));
+    }
+
+    @Test
+    public void scoreEndOfRound() {
+        Assert.assertNull(burialChamberScorer.scoreNow(new Game()));
+    }
 }

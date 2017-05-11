@@ -44,24 +44,28 @@ public class TempleScorer implements IScoreable {
         // Variables for adding up the Points
         // Upper Limit - Starting Point
         int size = 0;
+
         // Lower Limit - which Stones to be included
         int limit = 0;
 
         // With 2 Players only the first 4 places on the Temple will be scored
         if (game.getNumberOfPlayers() == 2){
-            size = (stones.size() - 1);
+            size = stones.size() - 1;
             limit = size - 3;
         }
+
         // With 3/4 Players all 5 places on the Temple will be scored
         else {
-            size = (stones.size() - 1);
+            size = stones.size() - 1;
             limit = size - 4;
         }
 
         // Ensuring that the last element is at least at position 0
-        if (limit < 0) limit = 0;
+        if (limit < 0) {
+            limit = 0;
+        }
 
-        // Adding up the Points on the Temple
+        // Adding up the Points on the Temple (Size = StartPosition, Limit = EndPosition)
         for (int i = size; i >= limit; i--) {
             // Add the points to the correct player according to the color
             switch (stones.get(i).getColor()) {
@@ -75,9 +79,9 @@ public class TempleScorer implements IScoreable {
 
         // Adding the points to the Players points[] at position 1: Temple Position
         for (int i = 0; i < game.getNumberOfPlayers(); i++){
+            // Adding the points for each Player
             game.getPlayerByPlayerNr(i+1).getPoints()[1] += points[i];
         }
-
         return game;
     }
 
