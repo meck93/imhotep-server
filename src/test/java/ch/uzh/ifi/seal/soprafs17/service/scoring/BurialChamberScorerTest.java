@@ -50,20 +50,19 @@ public class BurialChamberScorerTest {
     @Autowired
     private PlayerService playerService;
 
-    private  BurialChamberScorer burialChamberScorer = new BurialChamberScorer();
+    private  BurialChamberScorer burialChamberScorer;
     
     @Test
     public void supports() {
         Assert.assertEquals(burialChamberScorer.supports(GameConstants.BURIAL_CHAMBER),true);
     }
 
-    @Test
-    public void score() {
-
-    }
-
     @Before
     public void createEnvironment(){
+        // Creating the burialChamberScorer
+        burialChamberScorer = new BurialChamberScorer();
+        Assert.assertNotNull(burialChamberScorer);
+
         // Set Up the Environment for the Tests (1 Game with 2 Players)
         game = this.gameService.createGame("Test", "test1");
         Assert.assertNotNull(game);
