@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class MoveController extends GenericController {
 
     // Standard URI Mapping of this class
-    static final String CONTEXT = "/games/{gameId}";
+    private static final String CONTEXT = "/games/{gameId}";
 
     private MoveService moveService;
 

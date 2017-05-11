@@ -49,12 +49,12 @@ public class BuildingSiteService {
             throw new InternalServerException("Failed to create BuildingSite: " + siteType);
         }
 
-        aSiteRepository.save(buildingSite);
+        this.aSiteRepository.save(buildingSite);
 
         return buildingSite;
     }
 
-    /*
+    /**
      * Returns the BuildingSite of {siteType} associated to the Game with Id: {gameId}
      * @PARAM gameId the Game Id, siteType the type of the BuildingSite
      */
@@ -63,7 +63,9 @@ public class BuildingSiteService {
 
         BuildingSite result = aSiteRepository.findBuildingSite(gameId, siteType);
 
-        if (result == null) throw new NotFoundException(siteType);
+        if (result == null) {
+            throw new NotFoundException(siteType);
+        }
 
         return result;
     }

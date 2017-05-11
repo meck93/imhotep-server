@@ -28,9 +28,4 @@ public class BuildingSite extends ASite {
     public void setStones(List<Stone> stones) {
         this.stones = stones;
     }
-
-    //Do not delete
-    public void addStone(Stone stone){
-        this.stones.add(stone);
-    }
 }

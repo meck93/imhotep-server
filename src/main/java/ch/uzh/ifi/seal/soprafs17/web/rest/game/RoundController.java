@@ -24,7 +24,7 @@ public class RoundController extends GenericController {
         this.roundService = roundService;
     }
 
-    /*
+    /**
      * Returns a list of all Rounds in Game: {GameId}
      */
     @RequestMapping(method = RequestMethod.GET)
@@ -33,7 +33,7 @@ public class RoundController extends GenericController {
         return roundService.listRounds(gameId);
     }
 
-    /*
+    /**
      * Returns the Round with RoundNr in Game with GameID
      */
     @RequestMapping(method = RequestMethod.GET, value = "/{roundNr}")
@@ -42,7 +42,7 @@ public class RoundController extends GenericController {
         return roundService.getRoundByNr(gameId, roundNumber);
     }
 
-    /*
+    /**
      * Returns all ships of a specified Round
      */
     @RequestMapping(method = RequestMethod.GET, value = "/{roundNr}/ships")
@@ -51,7 +51,7 @@ public class RoundController extends GenericController {
         return roundService.getShips(gameId, roundNumber);
     }
 
-    /*
+    /**
      * Returns the ship with Id: {shipId}
      */
     @RequestMapping(method = RequestMethod.GET, value = "/{roundNr}/ships/{shipId}")

@@ -95,11 +95,11 @@ public class PlayerService {
         }
 
         //Add the SupplySled to the player
-        SupplySled supplySled = supplySledService.createSupplySled(player.getId());
+        SupplySled supplySled = this.supplySledService.createSupplySled(player.getId());
         player.setSupplySled(supplySled);
 
         // Saving the changes to the DB
-        playerRepository.save(player);
+        this.playerRepository.save(player);
     }
 
     public Player getPlayer(Long gameId, int playerNr) {
@@ -118,9 +118,11 @@ public class PlayerService {
         log.debug("List all Players of Game " + gameId);
 
         List<Player> result = new ArrayList<>();
-        gameService.findPlayersByGameId(gameId).forEach(result::add);
+        this.gameService.findPlayersByGameId(gameId).forEach(result::add);
 
-        if (result.isEmpty()) throw new NotFoundException(gameId, "Players");
+        if (result.isEmpty()) {
+            throw new NotFoundException(gameId, "Players");
+        }
 
         return result;
     }
@@ -130,7 +132,9 @@ public class PlayerService {
 
         Player player = this.getPlayer(gameId, playerNr);
 
-        if (player.getSupplySled() == null) throw new NotFoundException("SupplySled");
+        if (player.getSupplySled() == null) {
+            throw new NotFoundException("SupplySled");
+        }
 
         return player.getSupplySled();
     }
@@ -141,9 +145,11 @@ public class PlayerService {
     public Player findPlayerById(Long playerId) {
         log.debug("Find the Player with ID: " + playerId);
 
-        Player player = playerRepository.findPlayerById(playerId);
+        Player player = this.playerRepository.findPlayerById(playerId);
 
-        if (player == null) throw new NotFoundException(playerId, "Player");
+        if (player == null) {
+            throw new NotFoundException(playerId, "Player");
+        }
 
         return player;
     }
@@ -151,6 +157,6 @@ public class PlayerService {
     public void deletePlayer(Long playerId) {
         log.debug("Deleting Player: " + playerId);
 
-        playerRepository.deletePlayer(playerId);
+        this.playerRepository.deletePlayer(playerId);
     }
 }

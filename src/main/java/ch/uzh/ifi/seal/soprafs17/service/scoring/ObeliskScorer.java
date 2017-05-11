@@ -75,10 +75,22 @@ public class ObeliskScorer implements IScoreable {
         List<Integer> sizes = new ArrayList<>();
 
         // Adding the size and the obelisk (list of stones) if they're not null
-        if (!black.isEmpty()){ toBeScored.add(black); sizes.add(black.size()); }
-        if (!white.isEmpty()){ toBeScored.add(white); sizes.add(white.size()); }
-        if (!brown.isEmpty()){ toBeScored.add(brown); sizes.add(brown.size()); }
-        if (!gray.isEmpty()) { toBeScored.add(gray);  sizes.add(gray.size()); }
+        if (!black.isEmpty()) {
+            toBeScored.add(black);
+            sizes.add(black.size());
+        }
+        if (!white.isEmpty()) {
+            toBeScored.add(white);
+            sizes.add(white.size());
+        }
+        if (!brown.isEmpty()) {
+            toBeScored.add(brown);
+            sizes.add(brown.size());
+        }
+        if (!gray.isEmpty()) {
+            toBeScored.add(gray);
+            sizes.add(gray.size());
+        }
 
         // Initial Rank
         int rank = 1;
@@ -134,16 +146,19 @@ public class ObeliskScorer implements IScoreable {
         }
 
         // Intermediate results
-        int sum1 = 0, sum2 = 0, sum3 = 0;
+        int sum1 = 0;
+        int sum2 = 0;
+        int sum3 = 0;
         // Counter: How many times a certain rank has occured
-        int counter1 = 0, counter2 = 0, counter3 = 0;
+        int counter1 = 0;
+        int counter2 = 0;
+        int counter3 = 0;
         // Counter to iterate through the scores[]
         int nr1 = 0;
 
-        // Sorting the Map according to Value
+        // Sorting the Map according to Value and creating a new sorted one
         Map<Integer, Integer> sortedMap = testMap.entrySet().stream().sorted(Map.Entry.comparingByValue())
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (e1,e2) -> e1, LinkedHashMap::new));
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1,e2) -> e1, LinkedHashMap::new));
 
         // Calculating the sum of each rank
         for (Integer integer : sortedMap.values()){
@@ -164,10 +179,17 @@ public class ObeliskScorer implements IScoreable {
         // final resulting scores for each rank
         int res1 = 0, res2 = 0, res3 = 0;
 
-        // making sure the result, sum and counter are not null, calculating the resulting value
-        if (sum1 != 0) res1 = sum1/counter1;
-        if (sum2 != 0) res2 = sum2/counter2;
-        if (sum3 != 0) res3 = sum3/counter3;
+        // making sure the result, sum and counter are not null
+        // calculating the resulting value: purposely integer division -> rounding down
+        if (sum1 != 0) {
+            res1 = sum1/counter1;
+        }
+        if (sum2 != 0) {
+            res2 = sum2/counter2;
+        }
+        if (sum3 != 0) {
+            res3 = sum3/counter3;
+        }
 
         // Iterator for <Key, Color>
         Map.Entry<Integer, String> mapping;

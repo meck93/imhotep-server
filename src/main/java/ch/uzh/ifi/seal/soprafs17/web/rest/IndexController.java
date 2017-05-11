@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class IndexController {
 
+	private static final String hello = "Let's start SoPra 2017! Group 09: For the Win!";
+
 	@RequestMapping(value="/")
 	@ResponseBody
 	public String index() {
-		return "Let's start SoPra 2017! Group 09: For the Win!";
+		return hello;
 	}
 }
